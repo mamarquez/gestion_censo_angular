@@ -1,0 +1,71 @@
+.layout-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex: 0 0 57px;
+  height: 57px;
+  padding: 0 15px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #dee2e6;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  z-index: 1000;
+}
+
+.nav-header-left, .nav-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-header-right {
+  margin-left: auto;
+}
+
+.user-name {
+  color: #343a40;
+  font-weight: 500;
+}
+
+/* Dropdown del usuario (lo dejamos como lo tenías) */
+.avatar-dropdown-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: visible; 
+  height: 100%;
+}
+
+.dropdown-menu-angular {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1050; 
+  display: block;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  list-style: none;
+  font-size: 14px;
+  background-color: #ffffff;
+  border: 1px solid #e3e6f0;
+  border-radius: 4px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-menu-angular li a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  color: #343a40;
+  text-decoration: none;
+}
+
+.dropdown-menu-angular li a:hover {
+  background-color: #f8f9fc;
+  color: #000;
+}

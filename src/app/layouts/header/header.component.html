@@ -1,0 +1,52 @@
+<header id="header-navbar" class="content-mini content-mini-full layout-header">
+    
+    <!-- LADO IZQUIERDO (Botón móvil) -->
+    <ul class="nav-header-left">
+        <li class="hidden-md hidden-lg">
+            <button class="btn btn-default" type="button">
+                <i class="fa fa-navicon"></i>
+            </button>
+        </li>
+    </ul>
+
+    <!-- LADO DERECHO (Usuario y Avatar) -->
+    <!-- @if (authService.isAuthenticated()) { -->
+        <ul class="nav-header-right">
+            <li class="user-name">
+                Usuario
+                <!-- {{ authService.getUserEmail() }} -->
+            </li>
+
+            <li>
+                <div class="avatar-dropdown-wrapper">
+                    
+                    <button class="btn btn-default btn-image" 
+                            type="button" 
+                            (click)="toggleDropdown($event)"
+                            style="background: transparent; border: none; cursor: pointer;">
+                        <img src="/images/avatar.png" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%;">
+                        <span class="caret"></span>
+                    </button>
+                    
+                    @if (isDropdownOpen) {
+                        <ul class="dropdown-menu-angular">
+                            <li>
+                                <a tabindex="-1" routerLink="/mis-datos" (click)="closeDropdown()">
+                                    <i class="si si-user"></i> Perfil
+                                </a>
+                            </li>
+                            <li>
+                                <a tabindex="-1" (click)="logout()" style="cursor: pointer;">
+                                    <i class="si si-logout"></i> Salir
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </li>
+        </ul>
+        <!--
+    }
+    -->
+
+</header>

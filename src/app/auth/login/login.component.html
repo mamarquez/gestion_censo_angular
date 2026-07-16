@@ -1,0 +1,108 @@
+<app-auth-card
+  title="Censo de instalaciones deportivas"
+  subtitle="Bienvenido a la gestión de instalaciones">
+
+  <app-auth-alert
+    [visible]="loginError"
+    type="error"
+    [message]="errorMessage">
+  </app-auth-alert>
+
+  <form
+    class="login-form"
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()">
+
+    <!-- Usuario -->
+    <app-auth-input
+      formControlName="username"
+      label="Usuario"
+      [error]="usernameError">
+    </app-auth-input>
+
+    <!-- Contraseña -->
+    <app-auth-input
+      formControlName="password"
+      label="Contraseña"
+      type="password"
+      [error]="passwordError">
+    </app-auth-input>
+
+    <!-- Tipo de acceso -->
+    <div class="radio-group">
+
+      <span class="group-title">
+        Tipo de acceso
+      </span>
+
+      <div class="radio-options">
+
+        <label class="radio-option">
+
+          <input
+            type="radio"
+            formControlName="accessType"
+            [value]="0">
+
+          <span class="radio-circle"></span>
+
+          <span>Acceso externo</span>
+
+        </label>
+
+        <label class="radio-option">
+
+          <input
+            type="radio"
+            formControlName="accessType"
+            [value]="1">
+
+          <span class="radio-circle"></span>
+
+          <span>Acceso interno consejería</span>
+
+        </label>
+
+      </div>
+
+    </div>
+
+    <!-- Recordarme -->
+    <div class="login-options">
+
+      <label class="switch">
+
+        <input
+          type="checkbox"
+          formControlName="rememberMe">
+
+        <span class="slider"></span>
+
+        <span class="switch-text">
+          Recordarme
+        </span>
+
+      </label>
+
+      <!-- Botón -->
+      <app-auth-button
+        type="submit"
+        text="Acceder"
+        [loading]="loading"
+        [disabled]="loginForm.invalid">
+      </app-auth-button>
+
+    </div>
+
+    <!-- Recuperar contraseña -->
+    <div class="forgot-password">
+
+      <a routerLink="/forgot-password">
+        ¿Has olvidado la contraseña?
+      </a>
+
+    </div>
+
+  </form>
+
+</app-auth-card>

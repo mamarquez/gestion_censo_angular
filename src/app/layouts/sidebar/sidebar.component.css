@@ -1,0 +1,85 @@
+/* El contenedor principal del sidebar */
+#sidebar {
+  /* flex: 0 0 250px; */
+  height: 100vh;   /* Ocupa todo el alto de la pantalla */
+  background-color: #2c3e50;
+  overflow: hidden; /* Evitamos el scroll global aquí, lo manejamos abajo */
+}
+
+/* El contenedor interior es una columna Flex */
+#sidebar-scroll {
+  display: flex;
+  flex-direction: column; /* Apila el logo y el menú de arriba a abajo */
+  height: 100%;
+}
+
+/* La cabecera del logo no crece ni se encoge */
+.side-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 57px;
+  padding: 0 15px;
+  border-bottom: 1px solid #4b545c;
+  background-color: #2c3136;
+}
+
+/* El contenedor del menú <ul> crecerá para ocupar el espacio restante y hará scroll si es muy largo */
+.side-content:nth-child(2) {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+/* Estilos básicos para que el menú se vea decente (opcional, si tu CSS de OneUI no lo hace) */
+.nav-main {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-main li a {
+  display: block;
+  padding: 12px 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.nav-main li a:hover,
+.nav-main li a.active {
+  background-color: rgba(0,0,0,0.2);
+}
+
+/* Estilo de la imagen del logo */
+.side-header img {
+  max-height: 40px;
+  width: auto;
+}
+
+/* El contenedor principal (Padre) */
+.layout-main-wrapper {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* El contenedor de la derecha (Hijo) */
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f9fafb;
+}
+
+/* El contenido central */
+.layout-content {
+  flex: 1 1 auto; 
+  overflow-y: auto; 
+  padding: 20px;
+}

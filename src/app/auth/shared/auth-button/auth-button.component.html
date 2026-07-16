@@ -1,0 +1,13 @@
+<button
+  class="auth-button"
+  [type]="type"
+  [disabled]="disabled || loading"
+  (click)="onClick()">
+
+  @if (!loading) {
+    {{ text }}
+  } @else {
+    <span class="spinner"></span>
+    <span>Cargando...</span>
+  }
+</button>

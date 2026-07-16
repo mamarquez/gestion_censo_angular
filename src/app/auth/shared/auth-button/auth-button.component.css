@@ -1,0 +1,40 @@
+.auth-button {
+    width: 100%;
+    height: 48px;
+    border: none;
+    border-radius: 10px;
+    background: #44b4a6;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+}
+
+.auth-button:hover:not(:disabled) {
+    background: #1d4ed8;
+}
+
+.auth-button:disabled {
+    opacity: .65;
+    cursor: not-allowed;
+}
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,.35);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

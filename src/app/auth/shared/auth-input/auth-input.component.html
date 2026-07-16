@@ -1,0 +1,31 @@
+<div class="form-field">
+    <input
+        class="form-control"
+        [type]="inputType"
+        [(ngModel)]="value"
+        (ngModelChange)="update(value)"
+        [placeholder]="placeholder"
+        [disabled]="disabled"
+        (blur)="blur()">
+
+    <label>
+        {{ label }}
+    </label>
+
+    @if (type === 'password') {
+        <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePassword()">
+            {{ showPassword ? 'Ocultar' : 'Mostrar' }}
+        </button>
+
+    }
+
+    @if (error) {
+        <small class="error">
+            {{ error }}
+        </small>
+    }
+
+</div>

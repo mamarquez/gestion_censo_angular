@@ -1,0 +1,315 @@
+:host {
+  display: block;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* =========================
+   CONTENEDOR
+========================= */
+
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #eef3f8 0%, #dbe9f6 100%);
+}
+
+/* =========================
+   TARJETA
+========================= */
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   CABECERA
+========================= */
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-header h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.login-header p {
+  margin-top: 0.5rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+/* =========================
+   FORMULARIO
+========================= */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.form-field {
+  position: relative;
+}
+
+.form-control {
+  width: 100%;
+  padding: 1rem 0 0.6rem;
+  font-size: 1rem;
+  color: #1f2937;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #d1d5db;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-bottom-color: #2563eb;
+}
+
+.form-field label {
+  position: absolute;
+  left: 0;
+  top: 1rem;
+  color: #9ca3af;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus + label,
+.form-control:not(:placeholder-shown) + label {
+  top: -0.5rem;
+  font-size: 0.75rem;
+  color: #2563eb;
+}
+
+.error {
+  display: block;
+  margin-top: 0.4rem;
+  color: #dc2626;
+  font-size: 0.85rem;
+}
+
+/* ===========================
+   RADIO BUTTONS
+=========================== */
+
+/* ===========================
+   RADIO BUTTONS
+=========================== */
+
+.radio-group {
+    margin: 20px 0;
+}
+
+.group-title {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #555;
+}
+
+.radio-options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+}
+
+.radio-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    margin: 0;
+    width: auto;
+}
+
+.radio-option input {
+    display: none;
+}
+
+.radio-circle {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #0d6efd;
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.radio-circle::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #0d6efd;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: .2s;
+}
+
+.radio-option input:checked + .radio-circle::after {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* =========================
+   SWITCH
+========================= */
+
+.login-options {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.switch {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.switch input {
+  position: absolute;
+  opacity: 0;
+}
+
+.slider {
+  width: 44px;
+  height: 24px;
+  background: #d1d5db;
+  border-radius: 24px;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 3px;
+  top: 3px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.switch input:checked + .slider {
+  background: #2563eb;
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(20px);
+}
+
+.switch-text {
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+/* =========================
+   BOTÓN
+========================= */
+
+.btn-login {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-login:hover:not(:disabled) {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+}
+
+.btn-login:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* =========================
+   ENLACE
+========================= */
+
+.forgot-password {
+  text-align: center;
+  margin-top: 0.5rem;
+  color: #44b4a6;
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.toggle-password{
+
+    position:absolute;
+
+    right:0;
+
+    top:18px;
+
+    background:none;
+
+    border:none;
+
+    color:#2563eb;
+
+    cursor:pointer;
+
+    font-size:.85rem;
+
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 480px) {
+  .login-wrapper {
+    padding: 1rem;
+  }
+
+  .login-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .login-header h2 {
+    font-size: 1.7rem;
+  }
+}
