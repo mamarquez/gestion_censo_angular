@@ -1,9 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
+
+import { TableModule } from 'primeng/table';
+
+import { Usuario } from '../../models/usuario';
+import { UsuarioService } from '../../services/usuario.service';
+
 
 @Component({
   selector: 'app-usuarios',
-  imports: [],
+  imports: [TableModule],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.css',
 })
-export class UsuariosComponent {}
+export class UsuariosComponent  implements OnInit {
+
+  private readonly usuarioService = inject(UsuarioService);
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  usuarios: Usuario[] = [];
+  cargando: boolean = true;
+  
+  ngOnInit(): void {
+    this.cargarUsuarios();
+  }
+
+  cargarUsuarios(): void {
+    this.usuarioService.getAll().subscribe({
+      next: (response) => {
+        this.usuarios = [];
+        // this.usuarios = response.data;
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cargar municipios', err);
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+}
