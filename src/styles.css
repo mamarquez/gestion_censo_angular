@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Montserrat", sans-serif !important;
+    font-family: 'Open Sans', 'Montserrat', 'Source Sans Pro', sans-serif;
 }
 
 :root {
@@ -13,13 +13,25 @@
     --p-datatable-header-cell-font-size: .85rem;
     --p-datatable-body-cell-font-size: .85rem;
 
+    font-family: 'Open Sans', 'Montserrat', 'Source Sans Pro', sans-serif;
     --p-font-family: "Montserrat", sans-serif;
+
+    --primary-color: #44b4a6;
+    --primary-hover: #3CA195;
+}
+
+:host, * {
+    font-family: 'Open Sans', 'Montserrat', 'Source Sans Pro', sans-serif;
 }
 
 body {
   margin: 0;
-  font-family: "Montserrat", sans-serif !important;
+  font-family: 'Open Sans', 'Montserrat', 'Source Sans Pro', sans-serif;
   /* font-family: 'Open Sans', sans-serif; */
+}
+
+h1 {
+    color: var(--primary-color);
 }
 
 /* Campos de table */
@@ -98,8 +110,4 @@ body {
     min-width: 2rem;
     height: 2rem;
     font-size: .85rem;
-}
-
-:host, * {
-    font-family: "Montserrat", sans-serif;
 }

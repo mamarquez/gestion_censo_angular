@@ -1,11 +1,11 @@
 <div class="row">
-    <h1>Gestión de instalaciones</h1>
+    <h1>Gestión de menús</h1>
 </div>
 
 <br/>
 
 <p-table
-    [value]="instalaciones"
+    [value]="menus"
     [tableStyle]="{ 'min-width': '50rem' }"
     [size]="'small'"
     [stripedRows]="true"
@@ -37,11 +37,11 @@
         </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-instalacion>
+    <ng-template pTemplate="body" let-menu>
         <tr>
-            <td>{{ instalacion.codigo }}</td>
-            <td>{{ instalacion.nombre }}</td>
-            <td>{{ instalacion.activo }}</td>
+            <td>{{ menu.codigo }}</td>
+            <td>{{ menu.nombre }}</td>
+            <td>{{ menu.activo }}</td>
             <td></td>
         </tr>
     </ng-template>
