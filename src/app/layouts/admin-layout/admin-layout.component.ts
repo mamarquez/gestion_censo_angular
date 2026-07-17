@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core'; // Inyectamos signal
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
-import { LoaderComponent } from '../loader/loader.component';
+/* import { LoaderComponent } from '../loader/loader.component'; */
 import { HeaderComponent } from '../header/header.component';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { FooterComponent } from '../footer/footer.component';
@@ -10,7 +10,7 @@ import { FooterComponent } from '../footer/footer.component';
 @Component({
   selector: 'app-admin-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, LoaderComponent, HeaderComponent, SidebarComponent, FooterComponent],
+  imports: [CommonModule, RouterOutlet, HeaderComponent, SidebarComponent, FooterComponent],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.css'
 })

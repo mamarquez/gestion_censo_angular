@@ -1,22 +1,105 @@
-/* Importar fuentes locales desde @fontsource */
-@import '@fontsource/source-sans-pro/300.css';
-@import '@fontsource/source-sans-pro/400.css';
-@import '@fontsource/source-sans-pro/400-italic.css';
-@import '@fontsource/source-sans-pro/600.css';
-@import '@fontsource/source-sans-pro/700.css';
-
-@import '@fontsource/open-sans/300.css';
-@import '@fontsource/open-sans/400.css';
-@import '@fontsource/open-sans/400-italic.css';
-@import '@fontsource/open-sans/600.css';
-@import '@fontsource/open-sans/700.css';
-
-@import '@fontsource/montserrat/400.css';
-@import '@fontsource/montserrat/700.css';
-
 /* Resetear márgenes y paddings globales */
 * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif !important;
+}
+
+:root {
+    --p-datatable-header-cell-sm-padding: .35rem .60rem;
+    --p-datatable-body-cell-sm-padding: .35rem .60rem;
+
+    --p-datatable-header-cell-font-size: .85rem;
+    --p-datatable-body-cell-font-size: .85rem;
+
+    --p-font-family: "Montserrat", sans-serif;
+}
+
+body {
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif !important;
+  /* font-family: 'Open Sans', sans-serif; */
+}
+
+/* Campos de table */
+/* Acciones */
+.acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
+}
+
+.centrado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+}
+
+.p-datatable.p-datatable-sm .p-datatable-thead > tr > th,
+.p-datatable.p-datatable-sm .p-datatable-tbody > tr > td {
+    padding: 2px 6px !important;
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+}
+
+.p-paginator {
+    padding: .35rem .75rem !important;
+    font-size: .85rem;
+}
+
+.p-paginator .p-paginator-page,
+.p-paginator .p-paginator-first,
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next,
+.p-paginator .p-paginator-last {
+    min-width: 2rem !important;
+    height: 2rem !important;
+    font-size: .85rem;
+}
+
+.p-paginator .p-select {
+    height: 2rem;
+    font-size: .85rem;
+}
+
+.p-paginator .p-select {
+    height: 2rem;
+    min-height: 2rem;
+    font-size: .85rem;
+}
+
+.p-paginator .p-select-label {
+    /* padding: .25rem .5rem !important; */
+    /* font-size: .85rem; */
+    line-height: 1.2;
+    font-size: .80rem !important;
+}
+
+.p-paginator .p-select-dropdown {
+    width: 2rem;
+}
+
+.p-paginator .p-select-dropdown-icon {
+    font-size: .75rem;
+}
+
+.p-paginator {
+    padding: .35rem .5rem;
+    font-size: .85rem;
+}
+
+.p-paginator .p-paginator-page,
+.p-paginator .p-paginator-first,
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next,
+.p-paginator .p-paginator-last {
+    min-width: 2rem;
+    height: 2rem;
+    font-size: .85rem;
+}
+
+:host, * {
+    font-family: "Montserrat", sans-serif;
 }

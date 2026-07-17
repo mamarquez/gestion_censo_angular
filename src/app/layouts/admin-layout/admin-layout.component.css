@@ -1,27 +1,32 @@
 :host {
     display: block;
-    font-family: 'Open Sans', 'Montserrat', 'Source Sans Pro', sans-serif;
+    height: 100vh;
+    width: 100%;
 }
 
+/* El contenedor principal es una FILA (Sidebar a la izquierda, resto a la derecha) */
 .layout-main-wrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: row; 
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  background-color: #f4f6f9; /* Fondo gris típico de AdminLTE */
+  background-color: #f4f6f9;
 }
 
+/* El contenedor derecho es una COLUMNA (Header arriba, Main en medio, Footer abajo) */
 .content-wrapper {
   display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
+  flex-direction: column; 
+  flex: 1 1 auto; /* Ocupa todo el espacio restante a la derecha */
   height: 100vh;
   overflow: hidden;
 }
 
+/* El contenido central donde se cargan las páginas */
 .layout-content {
-  flex: 1 1 auto;
-  overflow-y: auto;
+  flex: 1 1 auto; /* Crece para ocupar el espacio entre el header y el footer */
+  overflow-y: auto; /* Scroll independiente si la tabla es muy larga */
   padding: 15px;
+  display: block;
 }
