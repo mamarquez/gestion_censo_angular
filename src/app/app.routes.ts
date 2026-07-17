@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { InstalacionesComponent } from './pages/instalaciones/instalaciones.component';
-import { MunicipiosComponent } from './pages/municipios/municipios.component';
-import { UsuariosComponent } from './pages/usuarios/usuarios.component';
+import { InstalacionComponent } from './pages/instalaciones/instalacion.component';
+import { MunicipioComponent } from './pages/municipios/municipio.component';
+import { UsuarioComponent } from './pages/usuarios/usuario.component';
+import { MenuComponent } from './pages/menus/menu.component';
 import { authGuard } from './auth/guards/auth.guard';
 
 export const routes: Routes = [
@@ -29,15 +30,19 @@ export const routes: Routes = [
     children: [
       {
         path: 'instalaciones', 
-        component: InstalacionesComponent
+        component: InstalacionComponent
       },
       {
         path: 'municipios', 
-        component: MunicipiosComponent
+        component: MunicipioComponent
       },
       {
         path: 'usuarios', 
-        component: UsuariosComponent
+        component: UsuarioComponent
+      },
+      {
+        path: 'menus', 
+        component: MenuComponent
       }
     ]
   },

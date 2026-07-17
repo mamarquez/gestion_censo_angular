@@ -12,7 +12,7 @@ import { MunicipioService } from '../../services/municipio.service';
   templateUrl: './municipios.component.html',
   styleUrl: './municipios.component.css',
 })
-export class MunicipiosComponent implements OnInit {
+export class MunicipioComponent implements OnInit {
 
   private readonly municipioService = inject(MunicipioService);
   private readonly cdr = inject(ChangeDetectorRef);

@@ -1,0 +1,53 @@
+/* Estructura base del switch nativo (reducido a la mitad) */
+.switch-native {
+    position: relative;
+    display: inline-block;
+    width: 25px;   /* Era 50px */
+    height: 12px;  /* Era 24px */
+}
+
+/* Ocultar el checkbox original */
+.switch-native input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* El círculo que se mueve */
+.slider-native {
+    position: absolute;
+    cursor: not-allowed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 12px; /* Era 24px */
+}
+
+.slider-native:before {
+    position: absolute;
+    content: "";
+    height: 8px;   /* Era 18px */
+    width: 8px;    /* Era 18px */
+    left: 2px;     /* Era 3px */
+    bottom: 2px;   /* Era 3px */
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+/* Color ROJO cuando está apagado (false) */
+.switch-native.rojo .slider-native {
+    background-color: #ef4444 !important;
+}
+
+/* Color VERDE y movimiento del círculo cuando está encendido (true) */
+.switch-native input:checked + .slider-native {
+    background-color: #22c55e !important;
+}
+
+.switch-native input:checked + .slider-native:before {
+    transform: translateX(13px); /* Era 26px */
+}

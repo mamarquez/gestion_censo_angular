@@ -6,10 +6,10 @@ import { Menu } from '../../models/menu';
 import { MenuService } from '../../services/menu.service';
 
 @Component({
-  selector: 'app-instalaciones',
+  selector: 'app-menus',
   imports: [TableModule],
-  templateUrl: './instalaciones.component.html',
-  styleUrl: './instalaciones.component.css',
+  templateUrl: './menu.component.html',
+  styleUrl: './menu.component.css',
 })
 export class MenuComponent implements OnInit {
 
@@ -27,8 +27,11 @@ export class MenuComponent implements OnInit {
   cargarMenus(): void {
     this.menuService.getAll().subscribe({
       next: (response) => {
+
+        console.log('Respuesta del servicio:', response); 
+
         // this.menus = [];
-        this.menus = response.data;
+        this.menus = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },

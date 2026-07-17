@@ -9,10 +9,10 @@ import { UsuarioService } from '../../services/usuario.service';
 @Component({
   selector: 'app-usuarios',
   imports: [TableModule],
-  templateUrl: './usuarios.component.html',
-  styleUrl: './usuarios.component.css',
+  templateUrl: './usuario.component.html',
+  styleUrl: './usuario.component.css',
 })
-export class UsuariosComponent  implements OnInit {
+export class UsuarioComponent  implements OnInit {
 
   private readonly usuarioService = inject(UsuarioService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -27,8 +27,8 @@ export class UsuariosComponent  implements OnInit {
   cargarUsuarios(): void {
     this.usuarioService.getAll().subscribe({
       next: (response) => {
-        this.usuarios = [];
-        // this.usuarios = response.data;
+        // this.usuarios = [];
+        this.usuarios = response.data;
         this.cargando = false;
         this.cdr.detectChanges();
       },

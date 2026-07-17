@@ -8,10 +8,10 @@ import { InstalacionService } from '../../services/instalacion.service';
 @Component({
   selector: 'app-instalaciones',
   imports: [TableModule],
-  templateUrl: './instalaciones.component.html',
-  styleUrl: './instalaciones.component.css',
+  templateUrl: './instalacion.component.html',
+  styleUrl: './instalacion.component.css',
 })
-export class InstalacionesComponent implements OnInit {
+export class InstalacionComponent implements OnInit {
 
   private readonly instalacionService = inject(InstalacionService);
   private readonly cdr = inject(ChangeDetectorRef);

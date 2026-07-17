@@ -1,3 +1,11 @@
+<style>
+  /* Forzar color rojo para el switch apagado */
+  .switch-bloqueado.rojo .p-inputswitch-slider {
+    background-color: #ef4444 !important;
+    border-color: #ef4444 !important;
+  }
+</style>
+
 <div class="row">
     <h1>Gestión de menús</h1>
 </div>
@@ -19,9 +27,8 @@
     
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="ine">INE<p-sortIcon field="ine"></p-sortIcon></th>
             <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
-            <th>Estado</th>
+            <th class="centrado">Estado</th>
             <th></th>
         </tr>
     </ng-template>
@@ -39,9 +46,13 @@
 
     <ng-template pTemplate="body" let-menu>
         <tr>
-            <td>{{ menu.codigo }}</td>
             <td>{{ menu.nombre }}</td>
-            <td>{{ menu.activo }}</td>
+<td class="centrado">
+    <label class="switch-native {{ menu.activo ? 'verde' : 'rojo' }}">
+        <input type="checkbox" [checked]="menu.activo" disabled />
+        <span class="slider-native"></span>
+    </label>
+</td>
             <td></td>
         </tr>
     </ng-template>
