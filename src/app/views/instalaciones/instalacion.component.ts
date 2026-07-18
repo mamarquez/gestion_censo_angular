@@ -9,7 +9,7 @@ import { InstalacionService } from '../../services/instalacion.service';
   selector: 'app-instalaciones',
   imports: [TableModule],
   templateUrl: './instalacion.component.html',
-  styleUrl: './instalacion.component.css',
+  styleUrl: './rol.component.css',
 })
 export class InstalacionComponent implements OnInit {
 
@@ -17,7 +17,6 @@ export class InstalacionComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
 
   instalaciones: Instalacion [] = [];
-  // instalaciones = [];
   cargando: boolean = true;
 
   ngOnInit(): void {
@@ -27,8 +26,7 @@ export class InstalacionComponent implements OnInit {
   cargarInstalaciones(): void {
     this.instalacionService.getAll().subscribe({
       next: (response) => {
-        // this.instalaciones = [];
-        this.instalaciones = response.data;
+        this.instalaciones = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },

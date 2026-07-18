@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { InstalacionComponent } from './pages/instalaciones/instalacion.component';
-import { MunicipioComponent } from './pages/municipios/municipio.component';
-import { UsuarioComponent } from './pages/usuarios/usuario.component';
-import { ProvinciaComponent } from './pages/provincias/provincia.component';
-import { MenuComponent } from './pages/menus/menu.component';
+import { InstalacionComponent } from './views/instalaciones/instalacion.component';
+import { MunicipioComponent } from './views/municipios/municipio.component';
+import { UsuarioComponent } from './views/usuarios/usuario.component';
+import { ProvinciaComponent } from './views/provincias/provincia.component';
+import { RolComponent } from './views/roles/rol.component';
+import { MenuComponent } from './views/menus/menu.component';
 import { authGuard } from './auth/guards/auth.guard';
 
 export const routes: Routes = [
@@ -30,24 +31,28 @@ export const routes: Routes = [
     canMatch: [authGuard], // Protege la zona privada
     children: [
       {
-        path: 'instalaciones', 
+        path: 'instalaciones',
         component: InstalacionComponent
       },
       {
-        path: 'municipios', 
+        path: 'municipios',
         component: MunicipioComponent
       },
       {
-        path: 'usuarios', 
+        path: 'usuarios',
         component: UsuarioComponent
       },
       {
-        path: 'menus', 
+        path: 'menus',
         component: MenuComponent
       },
       {
-        path: 'provincias', 
+        path: 'provincias',
         component: ProvinciaComponent
+      },
+      {
+        path: 'roles',
+        component: RolComponent
       }
     ]
   },
