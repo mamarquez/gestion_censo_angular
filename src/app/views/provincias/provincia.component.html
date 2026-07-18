@@ -5,6 +5,7 @@
 <br/>
 
 <p-table
+    [size]="'small'"
     [value]="provincias"
     [tableStyle]="{ 'min-width': '50rem' }"
     [stripedRows]="true"
@@ -17,7 +18,7 @@
     [loading]="cargando"
     [sortOrder]="1"
     >
-    
+
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
@@ -47,12 +48,12 @@
                 </label>
             </td>
             <td class="derecha">
-    <p-button 
-        severity="secondary" 
-        [rounded]="true" 
-        [text]="true" 
+    <p-button
+        severity="secondary"
+        [rounded]="true"
+        [text]="true"
         (onClick)="editarRegistro(provincia)">
-        
+
         <!-- SVG en lugar de icono de fuente -->
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>

@@ -1,11 +1,11 @@
 <div class="row">
-    <h1>Gestión de pavimentos</h1>
+    <h1>Gestión de medidas</h1>
 </div>
 
 <br/>
 
 <p-table
-    [value]="pavimentos"
+    [value]="medidas"
     [tableStyle]="{ 'min-width': '50rem' }"
     [size]="'small'"
     [stripedRows]="true"
@@ -19,6 +19,7 @@
 
     <ng-template pTemplate="header">
         <tr>
+            <th pSortableColumn="ine">INE<p-sortIcon field="ine"></p-sortIcon></th>
             <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
             <th>Estado</th>
             <th></th>
@@ -36,15 +37,11 @@
         </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-pavimento>
+    <ng-template pTemplate="body" let-medida>
         <tr>
-            <td>{{ pavimento.nombre }}</td>
-            <td class="centrado">
-              <label class="switch-native {{ pavimento.activo ? 'verde' : 'rojo' }}">
-                <input type="checkbox" [checked]="pavimento.activo" disabled />
-                <span class="slider-native"></span>
-              </label>
-            </td>
+            <td>{{ medida.codigo }}</td>
+            <td>{{ medida.nombre }}</td>
+            <td>{{ medida.activo }}</td>
             <td></td>
         </tr>
     </ng-template>

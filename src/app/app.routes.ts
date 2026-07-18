@@ -10,6 +10,9 @@ import { CaracteristicaComponent } from './views/caracteristicas/caracteristica.
 import { AuditoriaComponent} from './views/auditorias/auditoria.component';
 import { MenuComponent } from './views/menus/menu.component';
 import { PavimentoComponent} from './views/pavimentos/pavimento.component';
+import { MedidaComponent} from './views/medidas/medida.component';
+import { ActividadDeportivaComponent } from './views/actividadesdeportivas/actividaddeportiva.component';
+import { CentroEducativoComponent } from './views/centroseducativos/centroeducativo.component';
 import { authGuard } from './auth/guards/auth.guard';
 
 export const routes: Routes = [
@@ -68,6 +71,18 @@ export const routes: Routes = [
       {
         path: 'pavimentos',
         component: PavimentoComponent
+      },
+      {
+        path: 'medidas',
+        component: MedidaComponent
+      },
+      {
+        path: 'actividadesdeportivas',
+        component: ActividadDeportivaComponent
+      },
+      {
+        path: 'centroseducativos',
+        component: CentroEducativoComponent
       }
     ]
   },

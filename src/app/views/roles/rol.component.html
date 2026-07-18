@@ -19,7 +19,6 @@
 
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="ine">INE<p-sortIcon field="ine"></p-sortIcon></th>
             <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
             <th>Estado</th>
             <th></th>
@@ -39,9 +38,13 @@
 
     <ng-template pTemplate="body" let-rol>
         <tr>
-            <td>{{ rol.codigo }}</td>
             <td>{{ rol.nombre }}</td>
-            <td>{{ rol.activo }}</td>
+            <td class="centrado">
+              <label class="switch-native {{ rol.activo ? 'verde' : 'rojo' }}">
+                <input type="checkbox" [checked]="rol.activo" disabled />
+                <span class="slider-native"></span>
+              </label>
+            </td>
             <td></td>
         </tr>
     </ng-template>

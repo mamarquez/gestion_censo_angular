@@ -1,11 +1,11 @@
 <div class="row">
-    <h1>Gestión de pavimentos</h1>
+    <h1>Gestión de actividades deportivas</h1>
 </div>
 
 <br/>
 
 <p-table
-    [value]="pavimentos"
+    [value]="actividadesDeportivas"
     [tableStyle]="{ 'min-width': '50rem' }"
     [size]="'small'"
     [stripedRows]="true"
@@ -36,12 +36,12 @@
         </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-pavimento>
+    <ng-template pTemplate="body" let-actividadDeportiva>
         <tr>
-            <td>{{ pavimento.nombre }}</td>
+            <td>{{ actividadDeportiva.nombre }}</td>
             <td class="centrado">
-              <label class="switch-native {{ pavimento.activo ? 'verde' : 'rojo' }}">
-                <input type="checkbox" [checked]="pavimento.activo" disabled />
+              <label class="switch-native {{ actividadDeportiva.activo ? 'verde' : 'rojo' }}">
+                <input type="checkbox" [checked]="actividadDeportiva.activo" disabled />
                 <span class="slider-native"></span>
               </label>
             </td>

@@ -2,21 +2,21 @@ import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 
-import { Pavimento } from '../../models/pavimento';
-import { PavimentoService } from '../../services/pavimento.service';
+import { Medida } from '../../models/medida';
+import { MedidaService } from '../../services/medida.service';
 
 @Component({
-  selector: 'app-povimentos',
+  selector: 'app-medidas',
   imports: [TableModule],
-  templateUrl: './pavimento.component.html',
+  templateUrl: './medida.component.html',
   styleUrl: './pavimento.component.css',
 })
-export class PavimentoComponent implements OnInit {
+export class MedidaComponent implements OnInit {
 
-  private readonly service = inject(PavimentoService);
+  private readonly service = inject(MedidaService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  pavimentos: Pavimento [] = [];
+  medidas: Medida [] = [];
   cargando: boolean = true;
 
   ngOnInit(): void {
@@ -26,12 +26,12 @@ export class PavimentoComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.pavimentos = response.data || [];
+        this.medidas = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar pavimentos', err);
+        console.error('Error al cargar características', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
