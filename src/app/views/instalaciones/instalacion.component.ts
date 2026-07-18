@@ -9,22 +9,22 @@ import { InstalacionService } from '../../services/instalacion.service';
   selector: 'app-instalaciones',
   imports: [TableModule],
   templateUrl: './instalacion.component.html',
-  styleUrl: './caracteristica.component.css',
+  styleUrl: './auditoria.component.css',
 })
 export class InstalacionComponent implements OnInit {
 
-  private readonly instalacionService = inject(InstalacionService);
+  private readonly service = inject(InstalacionService);
   private readonly cdr = inject(ChangeDetectorRef);
 
   instalaciones: Instalacion [] = [];
   cargando: boolean = true;
 
   ngOnInit(): void {
-    this.cargarInstalaciones();
+    this.cargar();
   }
 
-  cargarInstalaciones(): void {
-    this.instalacionService.getAll().subscribe({
+  cargar(): void {
+    this.service.getAll().subscribe({
       next: (response) => {
         this.instalaciones = response.data || [];
         this.cargando = false;

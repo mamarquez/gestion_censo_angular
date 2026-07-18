@@ -16,18 +16,18 @@ import { ProvinciaService } from '../../services/provincia.service';
 })
 export class ProvinciaComponent implements OnInit {
 
-  private readonly provinciaService = inject(ProvinciaService);
+  private readonly service = inject(ProvinciaService);
   private readonly cdr = inject(ChangeDetectorRef);
 
   provincias: Provincia[] = [];
   cargando: boolean = true;
-  
+
   ngOnInit(): void {
-    this.cargarMunicipios();
+    this.cargar();
   }
 
-  cargarMunicipios(): void {
-    this.provinciaService.getAll().subscribe({
+  cargar(): void {
+    this.service.getAll().subscribe({
       next: (response) => {
         this.provincias = response.data || [];
         this.cargando = false;

@@ -9,22 +9,22 @@ import { RolService } from '../../services/rol.service';
   selector: 'app-roles',
   imports: [TableModule],
   templateUrl: './rol.component.html',
-  styleUrl: './caracteristica.component.css',
+  styleUrl: './auditoria.component.css',
 })
 export class RolComponent implements OnInit {
 
-  private readonly rolService = inject(RolService);
+  private readonly service = inject(RolService);
   private readonly cdr = inject(ChangeDetectorRef);
 
   roles: Rol [] = [];
   cargando: boolean = true;
 
   ngOnInit(): void {
-    this.cargarInstalaciones();
+    this.cargar();
   }
 
-  cargarInstalaciones(): void {
-    this.rolService.getAll().subscribe({
+  cargar(): void {
+    this.service.getAll().subscribe({
       next: (response) => {
         this.roles = response.data || [];
         this.cargando = false;

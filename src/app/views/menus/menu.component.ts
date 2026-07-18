@@ -13,24 +13,19 @@ import { MenuService } from '../../services/menu.service';
 })
 export class MenuComponent implements OnInit {
 
-  private readonly menuService = inject(MenuService);
+  private readonly service = inject(MenuService);
   private readonly cdr = inject(ChangeDetectorRef);
 
   menus: Menu [] = [];
-  // menus = [];
   cargando: boolean = true;
 
   ngOnInit(): void {
-    this.cargarMenus();
+    this.cargar();
   }
 
-  cargarMenus(): void {
-    this.menuService.getAll().subscribe({
+  cargar(): void {
+    this.service.getAll().subscribe({
       next: (response) => {
-
-        console.log('Respuesta del servicio:', response); 
-
-        // this.menus = [];
         this.menus = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();

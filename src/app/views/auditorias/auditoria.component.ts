@@ -2,21 +2,21 @@ import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 
-import { Caracteristica } from '../../models/caracteristica';
-import { CaracteristicaService } from '../../services/caracteristica.service';
+import { Auditoria } from '../../models/auditoria';
+import { AuditoriaService } from '../../services/auditoria.service';
 
 @Component({
-  selector: 'app-caracteristicas',
+  selector: 'app-auditorias',
   imports: [TableModule],
-  templateUrl: './caracteristica.component.html',
+  templateUrl: './auditoria.component.html',
   styleUrl: './auditoria.component.css',
 })
-export class CaracteristicaComponent implements OnInit {
+export class AuditoriaComponent implements OnInit {
 
-  private readonly service = inject(CaracteristicaService);
+  private readonly service = inject(AuditoriaService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  caracteristicas: Caracteristica [] = [];
+  auditorias: Auditoria [] = [];
   cargando: boolean = true;
 
   ngOnInit(): void {
@@ -26,7 +26,7 @@ export class CaracteristicaComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.caracteristicas = response.data || [];
+        this.auditorias = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },

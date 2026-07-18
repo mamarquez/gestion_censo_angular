@@ -14,18 +14,18 @@ import { MunicipioService } from '../../services/municipio.service';
 })
 export class MunicipioComponent implements OnInit {
 
-  private readonly municipioService = inject(MunicipioService);
+  private readonly service = inject(MunicipioService);
   private readonly cdr = inject(ChangeDetectorRef);
 
   municipios: Municipio[] = [];
   cargando: boolean = true;
-  
+
   ngOnInit(): void {
-    this.cargarMunicipios();
+    this.cargar();
   }
 
-  cargarMunicipios(): void {
-    this.municipioService.getAll().subscribe({
+  cargar(): void {
+    this.service.getAll().subscribe({
       next: (response) => {
         this.municipios = response.data;
         this.cargando = false;
