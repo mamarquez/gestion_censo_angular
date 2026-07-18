@@ -9,7 +9,7 @@ import { RolService } from '../../services/rol.service';
   selector: 'app-roles',
   imports: [TableModule],
   templateUrl: './rol.component.html',
-  styleUrl: './rol.component.css',
+  styleUrl: './caracteristica.component.css',
 })
 export class RolComponent implements OnInit {
 

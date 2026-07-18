@@ -6,6 +6,7 @@ import { MunicipioComponent } from './views/municipios/municipio.component';
 import { UsuarioComponent } from './views/usuarios/usuario.component';
 import { ProvinciaComponent } from './views/provincias/provincia.component';
 import { RolComponent } from './views/roles/rol.component';
+import { CaracteristicaComponent } from './views/caracteristicas/caracteristica.component';
 import { MenuComponent } from './views/menus/menu.component';
 import { authGuard } from './auth/guards/auth.guard';
 
@@ -53,6 +54,10 @@ export const routes: Routes = [
       {
         path: 'roles',
         component: RolComponent
+      },
+      {
+        path: 'caracteristicas',
+        component: CaracteristicaComponent
       }
     ]
   },
