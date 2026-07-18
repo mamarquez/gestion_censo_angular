@@ -1,9 +1,7 @@
 export class Menu {
-    id!: number;
-	nombre!: string;
-	description?: string;
-	created_at!: Date;
-	updated_at? :Date;
+  id!: number;
+  nombre!: string;
+  description?: string;
 
   // Configuración de validaciones
   static campos = {

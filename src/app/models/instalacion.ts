@@ -33,8 +33,6 @@ export class Instalacion {
     xy_y?: string;
     xy_z?: string;
     activo!: boolean;
-    createdAt!: Date;
-    updatedAt!: Date;
 
   // Configuración de validaciones
   static campos = {
