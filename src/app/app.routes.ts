@@ -4,6 +4,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { InstalacionComponent } from './pages/instalaciones/instalacion.component';
 import { MunicipioComponent } from './pages/municipios/municipio.component';
 import { UsuarioComponent } from './pages/usuarios/usuario.component';
+import { ProvinciaComponent } from './pages/provincias/provincia.component';
 import { MenuComponent } from './pages/menus/menu.component';
 import { authGuard } from './auth/guards/auth.guard';
 
@@ -43,6 +44,10 @@ export const routes: Routes = [
       {
         path: 'menus', 
         component: MenuComponent
+      },
+      {
+        path: 'provincias', 
+        component: ProvinciaComponent
       }
     ]
   },

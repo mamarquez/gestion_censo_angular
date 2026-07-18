@@ -27,8 +27,7 @@ export class UsuarioComponent  implements OnInit {
   cargarUsuarios(): void {
     this.usuarioService.getAll().subscribe({
       next: (response) => {
-        // this.usuarios = [];
-        this.usuarios = response.data;
+        this.usuarios = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },

@@ -6,11 +6,11 @@ import { Municipio } from '../../models/municipio';
 import { MunicipioService } from '../../services/municipio.service';
 
 @Component({
-  selector: 'app-municipios',
+  selector: 'app-municipio',
   standalone: true,
   imports: [TableModule],
-  templateUrl: './municipios.component.html',
-  styleUrl: './municipios.component.css',
+  templateUrl: './municipio.component.html',
+  styleUrl: './municipio.component.css',
 })
 export class MunicipioComponent implements OnInit {
 
@@ -27,7 +27,6 @@ export class MunicipioComponent implements OnInit {
   cargarMunicipios(): void {
     this.municipioService.getAll().subscribe({
       next: (response) => {
-        // this.municipios = [];
         this.municipios = response.data;
         this.cargando = false;
         this.cdr.detectChanges();

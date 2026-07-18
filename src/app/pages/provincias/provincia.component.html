@@ -1,35 +1,28 @@
-<style>
-  /* Forzar color rojo para el switch apagado */
-  .switch-bloqueado.rojo .p-inputswitch-slider {
-    background-color: #ef4444 !important;
-    border-color: #ef4444 !important;
-  }
-</style>
-
 <div class="row">
-    <h1>Gestión de menús</h1>
+    <h1>Gestión de provincias</h1>
 </div>
 
 <br/>
 
 <p-table
-    [value]="menus"
+    [value]="provincias"
     [tableStyle]="{ 'min-width': '50rem' }"
-    [size]="'small'"
     [stripedRows]="true"
     [paginator]="true"
-    [rows]="20"
-    [rowsPerPageOptions]="[20, 50, 100]"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 20, 50, 100]"
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
     dataKey="id"
-    [loading]="cargando">
+    [loading]="cargando"
+    [sortOrder]="1"
+    >
     
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
             <th class="centrado">Estado</th>
-            <th></th>
+            <th class="derecha">Acciones</th>
         </tr>
     </ng-template>
 
@@ -44,16 +37,28 @@
         </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-menu>
+    <ng-template pTemplate="body" let-provincia>
         <tr>
-            <td>{{ menu.nombre }}</td>
+            <td>{{ provincia.nombre }}</td>
             <td class="centrado">
-                <label class="switch-native {{ menu.activo ? 'verde' : 'rojo' }}">
-                    <input type="checkbox" [checked]="menu.activo" disabled />
+                <label class="switch-native {{ provincia.activo ? 'verde' : 'rojo' }}">
+                    <input type="checkbox" [checked]="provincia.activo" disabled />
                     <span class="slider-native"></span>
                 </label>
             </td>
-            <td></td>
+            <td class="derecha">
+    <p-button 
+        severity="secondary" 
+        [rounded]="true" 
+        [text]="true" 
+        (onClick)="editarRegistro(provincia)">
+        
+        <!-- SVG en lugar de icono de fuente -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+        </svg>
+    </p-button>
+</td>
         </tr>
     </ng-template>
 </p-table>

@@ -41,7 +41,12 @@
         <tr>
             <td>{{ municipio.ine }}</td>
             <td>{{ municipio.nombre }}</td>
-            <td>{{ municipio.activo }}</td>
+            <td class="centrado">
+                <label class="switch-native {{ municipio.activo ? 'verde' : 'rojo' }}">
+                    <input type="checkbox" [checked]="municipio.activo" disabled />
+                    <span class="slider-native"></span>
+                </label>
+            </td>
             <td></td>
         </tr>
     </ng-template>
