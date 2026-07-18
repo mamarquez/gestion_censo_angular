@@ -9,7 +9,7 @@ import { AuditoriaService } from '../../services/auditoria.service';
   selector: 'app-auditorias',
   imports: [TableModule],
   templateUrl: './auditoria.component.html',
-  styleUrl: './auditoria.component.css',
+  styleUrl: './pavimento.component.css',
 })
 export class AuditoriaComponent implements OnInit {
 

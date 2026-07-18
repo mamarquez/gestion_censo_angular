@@ -9,6 +9,7 @@ import { RolComponent } from './views/roles/rol.component';
 import { CaracteristicaComponent } from './views/caracteristicas/caracteristica.component';
 import { AuditoriaComponent} from './views/auditorias/auditoria.component';
 import { MenuComponent } from './views/menus/menu.component';
+import { PavimentoComponent} from './views/pavimentos/pavimento.component';
 import { authGuard } from './auth/guards/auth.guard';
 
 export const routes: Routes = [
@@ -63,6 +64,10 @@ export const routes: Routes = [
       {
         path: 'auditorias',
         component: AuditoriaComponent
+      },
+      {
+        path: 'pavimentos',
+        component: PavimentoComponent
       }
     ]
   },

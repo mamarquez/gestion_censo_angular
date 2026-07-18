@@ -9,7 +9,7 @@ import { InstalacionService } from '../../services/instalacion.service';
   selector: 'app-instalaciones',
   imports: [TableModule],
   templateUrl: './instalacion.component.html',
-  styleUrl: './auditoria.component.css',
+  styleUrl: './pavimento.component.css',
 })
 export class InstalacionComponent implements OnInit {
 
