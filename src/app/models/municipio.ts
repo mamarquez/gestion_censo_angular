@@ -5,7 +5,7 @@ export class Municipio {
   activo!: boolean;
 
   // Configuración de validaciones
-  static campos = {
+  public static readonly campos = {
     ine: { maxLength: 5 },
     nombre: { maxLength: 50 }
   };

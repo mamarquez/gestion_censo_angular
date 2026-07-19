@@ -1,10 +1,10 @@
 export class Menu {
   id!: number;
   nombre!: string;
-  description?: string;
+  descripcion?: string;
 
   // Configuración de validaciones
-  static campos = {
+  public static readonly campos = {
     nombre: { maxLength: 50 }
   };
 }

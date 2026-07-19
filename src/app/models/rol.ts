@@ -5,7 +5,7 @@ export class Rol {
   activo!: boolean;
 
   // Configuración de validaciones
-  static campos = {
+  public static readonly campos = {
     nombre: { maxLength: 255 }
   };
 }

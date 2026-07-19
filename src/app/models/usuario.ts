@@ -12,7 +12,7 @@ export class Usuario {
   ultimo_acceso?: Date;
 
   // Configuración de validaciones
-  static campos = {
+  public static readonly campos = {
     nombre: { maxLength: 50 }
   };
 }

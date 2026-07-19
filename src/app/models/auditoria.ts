@@ -9,7 +9,7 @@ export class Auditoria {
   valor_nuevo!: JSON;
 
   // Configuración de validaciones
-  static campos = {
+  public static readonly campos = {
     tabla: { maxLength: 50 },
     operacion: { maxLength: 10 }
   };
