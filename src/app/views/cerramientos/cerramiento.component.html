@@ -1,11 +1,11 @@
 <div class="row">
-    <h1>Gestión de auditoria</h1>
+    <h1>Gestión de cerramientos</h1>
 </div>
 
 <br/>
 
 <p-table
-    [value]="auditorias"
+    [value]="cerramientos"
     [tableStyle]="{ 'min-width': '50rem' }"
     [size]="'small'"
     [stripedRows]="true"
@@ -19,10 +19,8 @@
 
     <ng-template pTemplate="header">
         <tr>
-            <th id="auditoria-tabla" pSortableColumn="tabla">Tabla<p-sortIcon field="tabla"></p-sortIcon></th>
-            <th id="auditoria-registro" pSortableColumn="registroId">Registro<p-sortIcon field="registroId"></p-sortIcon></th>
-            <th id="auditoria-operacion" pSortableColumn="operacion">Operación<p-sortIcon field="operacion"></p-sortIcon></th>
-
+            <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+            <th>Estado</th>
             <th></th>
         </tr>
     </ng-template>
@@ -38,11 +36,15 @@
         </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-auditoria>
+    <ng-template pTemplate="body" let-cerramiento>
         <tr>
-            <td>{{ auditoria.tabla }}</td>
-            <td>{{ auditoria.registroId }}</td>
-            <td>{{ auditoria.operacion }}</td>
+            <td>{{ cerramiento.nombre }}</td>
+            <td class="centrado">
+              <label class="switch-native {{ cerramiento.activo ? 'verde' : 'rojo' }}">
+                <input type="checkbox" [checked]="cerramiento.activo" disabled />
+                <span class="slider-native"></span>
+              </label>
+            </td>
             <td></td>
         </tr>
     </ng-template>

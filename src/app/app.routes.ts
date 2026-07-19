@@ -13,6 +13,7 @@ import { PavimentoComponent} from './views/pavimentos/pavimento.component';
 import { MedidaComponent} from './views/medidas/medida.component';
 import { ActividadDeportivaComponent } from './views/actividadesdeportivas/actividaddeportiva.component';
 import { CentroEducativoComponent } from './views/centroseducativos/centroeducativo.component';
+import { CerramientoComponent} from './views/cerramientos/cerramiento.component';
 import { authGuard } from './auth/guards/auth.guard';
 
 export const routes: Routes = [
@@ -83,6 +84,10 @@ export const routes: Routes = [
       {
         path: 'centroseducativos',
         component: CentroEducativoComponent
+      },
+      {
+        path: 'cerramientos',
+        component: CerramientoComponent
       }
     ]
   },

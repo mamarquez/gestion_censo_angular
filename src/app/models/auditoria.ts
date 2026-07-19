@@ -1,11 +1,11 @@
 export class Auditoria {
   id!: number;
   tabla!: string;
-  registro_Id!: number;
+  registroId!: number;
   operacion!: string;
-  usuario_Id!: number;
+  usuarioId!: number;
   fecha!: Date;
-  valor_anterior?: JSON;
+  valor_anterior!: JSON;
   valor_nuevo!: JSON;
 
   // Configuración de validaciones
