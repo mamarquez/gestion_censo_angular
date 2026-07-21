@@ -1,11 +1,11 @@
 <div class="row">
-    <h1>Gestión de actividades deportivas</h1>
+    <h1>Gestión de espacios deportivos</h1>
 </div>
 
 <br/>
 
 <p-table
-    [value]="actividadesDeportivas"
+    [value]="espaciosDeportivos"
     [tableStyle]="{ 'min-width': '50rem' }"
     [size]="'small'"
     [stripedRows]="true"
@@ -19,9 +19,9 @@
 
     <ng-template pTemplate="header">
         <tr>
-            <th id='actividad_deportiva_nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
-            <th id='actividad_deportiva_estado'>Estado</th>
-            <th id='actividad_deportiva_accion'></th>
+            <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+            <th>Estado</th>
+            <th></th>
         </tr>
     </ng-template>
 
@@ -36,12 +36,12 @@
         </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-actividadDeportiva>
+    <ng-template pTemplate="body" let-espacioDeportivo>
         <tr>
-            <td>{{ actividadDeportiva.nombre }}</td>
+            <td>{{ espacioDeportivo.nombre }}</td>
             <td class="centrado">
-              <label class="switch-native {{ actividadDeportiva.activo ? 'verde' : 'rojo' }}">
-                <input type="checkbox" [checked]="actividadDeportiva.activo" disabled />
+              <label class="switch-native {{ espacioDeportivo.activo ? 'verde' : 'rojo' }}">
+                <input type="checkbox" [checked]="espacioDeportivo.activo" disabled />
                 <span class="slider-native"></span>
               </label>
             </td>

@@ -21,6 +21,7 @@ import { NivelDotacionComponent } from './views/nivelesdotaciones/niveldotacion.
 import { IluminacionComponent } from './views/iluminaciones/iluminacion.component';
 import { GestorComponent } from './views/gestores/cerramiento.component';
 import { EstadoUsoComponent } from './views/estadosusos/estadouso.component';
+import { EspacioDeportivoCompoment } from './views/espaciosdeportivos/espaciodeportivo.component';
 
 export const routes: Routes = [
   {
@@ -122,6 +123,10 @@ export const routes: Routes = [
       {
         path: 'estadosusos',
         component: EstadoUsoComponent
+      },
+      {
+        path: 'espaciosdeportivos',
+        component: EspacioDeportivoCompoment
       }
     ]
   },
