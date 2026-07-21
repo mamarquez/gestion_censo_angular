@@ -16,7 +16,7 @@ export class EspacioComplementarioCompoment implements OnInit {
   private readonly service = inject(EspacioComplementarioService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  espacioComplementarios: EspacioComplementario [] = [];
+  espaciosComplementarios: EspacioComplementario [] = [];
   cargando: boolean = true;
 
   ngOnInit(): void {
@@ -26,7 +26,7 @@ export class EspacioComplementarioCompoment implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.espacioComplementarios = response.data || [];
+        this.espaciosComplementarios = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
