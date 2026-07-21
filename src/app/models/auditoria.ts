@@ -1,12 +1,14 @@
+import { Usuario } from './usuario';
+
 export class Auditoria {
   id!: number;
   tabla!: string;
   registroId!: number;
   operacion!: string;
-  usuarioId!: number;
+  usuario!: Usuario;
   fecha!: Date;
-  valor_anterior!: JSON;
-  valor_nuevo!: JSON;
+  valorAnterior!: JSON;
+  valorNuevo!: JSON;
 
   // Configuración de validaciones
   public static readonly campos = {

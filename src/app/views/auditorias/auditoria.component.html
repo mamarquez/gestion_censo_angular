@@ -1,49 +1,63 @@
 <div class="row">
-    <h1>Gestión de auditoria</h1>
+  <h1>Gestión de auditoría</h1>
 </div>
 
 <br/>
 
 <p-table
-    [value]="auditorias"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    [size]="'small'"
-    [stripedRows]="true"
-    [paginator]="true"
-    [rows]="20"
-    [rowsPerPageOptions]="[20, 50, 100]"
-    [showCurrentPageReport]="true"
-    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
-    dataKey="id"
-    [loading]="cargando">
+  [value]="auditorias"
+  [tableStyle]="{ 'min-width': '50rem' }"
+  [size]="'small'"
+  [stripedRows]="true"
+  [paginator]="true"
+  [rows]="20"
+  [rowsPerPageOptions]="[20, 50, 100]"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+  dataKey="id"
+  sortField="fecha"
+  [sortOrder]="-1"
+  [loading]="cargando">
 
-    <ng-template pTemplate="header">
-        <tr>
-            <th id="auditoria-tabla" pSortableColumn="tabla">Tabla<p-sortIcon field="tabla"></p-sortIcon></th>
-            <th id="auditoria-registro" pSortableColumn="registroId">Registro<p-sortIcon field="registroId"></p-sortIcon></th>
-            <th id="auditoria-operacion" pSortableColumn="operacion">Operación<p-sortIcon field="operacion"></p-sortIcon></th>
+  <ng-template pTemplate="header">
+    <tr>
+      <th id="auditoria-fecha" pSortableColumn="fecha">Fecha<p-sortIcon field="fecha"></p-sortIcon></th>
+      <th id="auditoria-tabla" pSortableColumn="tabla">Tabla<p-sortIcon field="tabla"></p-sortIcon></th>
+      <th id="auditoria-registro" pSortableColumn="registroId">Registro<p-sortIcon field="registroId"></p-sortIcon></th>
+      <th id="auditoria-operacion" pSortableColumn="operacion">Operación<p-sortIcon field="operacion"></p-sortIcon></th>
+      <th id="auditoria-usuario" pSortableColumn="usuario.nombreUsuario">Usuario<p-sortIcon field="usuario.nombreUsuario"></p-sortIcon></th>
+      <th id='auditoria-antiguo'>Anterior</th>
+      <th id='auditoria-nuevo'>Nuevo</th>
+    </tr>
+  </ng-template>
 
-            <th></th>
-        </tr>
-    </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="6">
+        <div style="display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-off"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/></svg>
+          <p style="margin-top: 1rem; color: #64748b; font-weight: 600;">No hay registros para mostrar</p>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
 
-    <ng-template pTemplate="emptymessage">
-        <tr>
-            <td colspan="4">
-                <div style="display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-off-icon lucide-circle-off"><path d="m2 2 20 20"/><path d="M8.35 2.69A10 10 0 0 1 21.3 15.65"/><path d="M19.08 19.08A10 10 0 1 1 4.92 4.92"/></svg>
-                    <p style="margin-top: 1rem; color: #64748b; font-weight: 600;">No hay registros para mostrar</p>
-                </div>
-            </td>
-        </tr>
-    </ng-template>
-
-    <ng-template pTemplate="body" let-auditoria>
-        <tr>
-            <td>{{ auditoria.tabla }}</td>
-            <td>{{ auditoria.registroId }}</td>
-            <td>{{ auditoria.operacion }}</td>
-            <td></td>
-        </tr>
-    </ng-template>
+  <ng-template pTemplate="body" let-auditoria>
+    <tr>
+      <td>{{ auditoria.fecha | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+      <td>{{ auditoria.tabla }}</td>
+      <td>{{ auditoria.registroId }}</td>
+      <td>
+        <p-tag
+          [value]="auditoria.operacion"
+          [severity]="getSeverity(auditoria.operacion)">
+        </p-tag>
+      </td>
+      <td>
+        {{ auditoria.usuario?.nombreUsuario }}
+      </td>
+      <td>{{ auditoria.valorAnterior }}</td>
+      <td>{{ auditoria.valorNuevo }}</td>
+    </tr>
+  </ng-template>
 </p-table>

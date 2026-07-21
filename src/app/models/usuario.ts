@@ -10,9 +10,4 @@ export class Usuario {
   email!: string;
   token?: string;
   ultimo_acceso?: Date;
-
-  // Configuración de validaciones
-  public static readonly campos = {
-    nombre: { maxLength: 50 }
-  };
 }

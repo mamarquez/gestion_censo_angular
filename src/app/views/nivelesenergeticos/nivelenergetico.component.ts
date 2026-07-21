@@ -2,21 +2,21 @@ import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 
-import { Cerramiento } from '../../models/cerramiento';
-import { CerramientoService } from '../../services/cerramiento.service';
+import { NivelEnergetico } from '../../models/nivelenergetico';
+import { NivelEnergeticoService } from '../../services/nivelenergetico.service';
 
 @Component({
   selector: 'app-cerramientos',
   imports: [TableModule],
-  templateUrl: './cerramiento.component.html',
+  templateUrl: './nivelenergetico.component.html',
   styleUrl: './conservacion.component.css',
 })
-export class CerramientoComponent implements OnInit {
+export class NivelEnergeticoComponent implements OnInit {
 
-  private readonly service = inject(CerramientoService);
+  private readonly service = inject(NivelEnergeticoService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  cerramientos: Cerramiento [] = [];
+  nivelesEnergeticos: NivelEnergetico [] = [];
   cargando: boolean = true;
 
   ngOnInit(): void {
@@ -26,12 +26,12 @@ export class CerramientoComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.cerramientos = response.data || [];
+        this.nivelesEnergeticos = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar cerramientos', err);
+        console.error('Error al cargar niveles energéticos', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }

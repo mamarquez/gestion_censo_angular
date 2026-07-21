@@ -15,6 +15,8 @@ import { ActividadDeportivaComponent } from './views/actividadesdeportivas/activ
 import { CentroEducativoComponent } from './views/centroseducativos/centroeducativo.component';
 import { CerramientoComponent} from './views/cerramientos/cerramiento.component';
 import { authGuard } from './auth/guards/auth.guard';
+import { ConservacionComponent } from './views/conservaciones/conservacion.component';
+import { NivelEnergeticoComponent } from './views/nivelesenergeticos/nivelenergetico.component';
 
 export const routes: Routes = [
   {
@@ -88,6 +90,14 @@ export const routes: Routes = [
       {
         path: 'cerramientos',
         component: CerramientoComponent
+      },
+      {
+        path: 'conservaciones',
+        component: ConservacionComponent
+      },
+      {
+        path: 'nivelesenergeticos',
+        component: NivelEnergeticoComponent
       }
     ]
   },
