@@ -2,21 +2,21 @@ import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 
-import { EstadoUso } from '../../models/estadouso';
-import { EstadoUsoService } from '../../services/estadouso.service';
+import { EspacioComplementario } from '../../models/espaciocomplementario';
+import { EspacioComplementarioService } from '../../services/espaciocomplementario.service';
 
 @Component({
-  selector: 'app-estadouso',
+  selector: 'app-espaciocomplementario',
   imports: [TableModule],
-  templateUrl: './estadouso.component.html',
+  templateUrl: './espaciocomplementario.component.html',
   styleUrl: './espaciocomplementario.component.css',
 })
-export class EstadoUsoComponent implements OnInit {
+export class EspacioComplementarioCompoment implements OnInit {
 
-  private readonly service = inject(EstadoUsoService);
+  private readonly service = inject(EspacioComplementarioService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  estadosusos: EstadoUso [] = [];
+  espacioComplementarios: EspacioComplementario [] = [];
   cargando: boolean = true;
 
   ngOnInit(): void {
@@ -26,7 +26,7 @@ export class EstadoUsoComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.estadosusos = response.data || [];
+        this.espacioComplementarios = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },

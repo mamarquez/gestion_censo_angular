@@ -22,6 +22,7 @@ import { IluminacionComponent } from './views/iluminaciones/iluminacion.componen
 import { GestorComponent } from './views/gestores/cerramiento.component';
 import { EstadoUsoComponent } from './views/estadosusos/estadouso.component';
 import { EspacioDeportivoCompoment } from './views/espaciosdeportivos/espaciodeportivo.component';
+import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/espaciocomplementario.component';
 
 export const routes: Routes = [
   {
@@ -127,6 +128,10 @@ export const routes: Routes = [
       {
         path: 'espaciosdeportivos',
         component: EspacioDeportivoCompoment
+      },
+      {
+        path: 'espacioscomplementarios',
+        component: EspacioComplementarioCompoment
       }
     ]
   },
