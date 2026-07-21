@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './auth/login/login.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { InstalacionComponent } from './views/instalaciones/instalacion.component';
 import { MunicipioComponent } from './views/municipios/municipio.component';
@@ -7,16 +6,18 @@ import { UsuarioComponent } from './views/usuarios/usuario.component';
 import { ProvinciaComponent } from './views/provincias/provincia.component';
 import { RolComponent } from './views/roles/rol.component';
 import { CaracteristicaComponent } from './views/caracteristicas/caracteristica.component';
-import { AuditoriaComponent} from './views/auditorias/auditoria.component';
+import { AuditoriaComponent } from './views/auditorias/auditoria.component';
 import { MenuComponent } from './views/menus/menu.component';
-import { PavimentoComponent} from './views/pavimentos/pavimento.component';
-import { MedidaComponent} from './views/medidas/medida.component';
+import { PavimentoComponent } from './views/pavimentos/pavimento.component';
+import { MedidaComponent } from './views/medidas/medida.component';
 import { ActividadDeportivaComponent } from './views/actividadesdeportivas/actividaddeportiva.component';
 import { CentroEducativoComponent } from './views/centroseducativos/centroeducativo.component';
-import { CerramientoComponent} from './views/cerramientos/cerramiento.component';
+import { CerramientoComponent } from './views/cerramientos/cerramiento.component';
 import { authGuard } from './auth/guards/auth.guard';
 import { ConservacionComponent } from './views/conservaciones/conservacion.component';
 import { NivelEnergeticoComponent } from './views/nivelesenergeticos/nivelenergetico.component';
+import { NivelEducativoComponent } from './views/niveleseducativos/niveleducativo.component';
+import { NivelDotacionComponent } from './views/nivelesdotaciones/niveldotacion.component';
 
 export const routes: Routes = [
   {
@@ -98,6 +99,14 @@ export const routes: Routes = [
       {
         path: 'nivelesenergeticos',
         component: NivelEnergeticoComponent
+      },
+      {
+        path: 'niveleseducativos',
+        component: NivelEducativoComponent
+      },
+      {
+        path: 'nivelesdotaciones',
+        component: NivelDotacionComponent
       }
     ]
   },

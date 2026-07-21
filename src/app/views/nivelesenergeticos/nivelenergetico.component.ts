@@ -6,10 +6,10 @@ import { NivelEnergetico } from '../../models/nivelenergetico';
 import { NivelEnergeticoService } from '../../services/nivelenergetico.service';
 
 @Component({
-  selector: 'app-cerramientos',
+  selector: 'app-nivelenergetico',
   imports: [TableModule],
   templateUrl: './nivelenergetico.component.html',
-  styleUrl: './conservacion.component.css',
+  styleUrl: './nivelenergetico.component.css',
 })
 export class NivelEnergeticoComponent implements OnInit {
 

@@ -1,0 +1,51 @@
+<div class="row">
+    <h1>Gestión de niveles de dotaciones</h1>
+</div>
+
+<br/>
+
+<p-table
+    [value]="nivelesDotaciones"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [size]="'small'"
+    [stripedRows]="true"
+    [paginator]="true"
+    [rows]="20"
+    [rowsPerPageOptions]="[20, 50, 100]"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+    dataKey="id"
+    [loading]="cargando">
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="4">
+                <div style="display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-off-icon lucide-circle-off"><path d="m2 2 20 20"/><path d="M8.35 2.69A10 10 0 0 1 21.3 15.65"/><path d="M19.08 19.08A10 10 0 1 1 4.92 4.92"/></svg>
+                    <p style="margin-top: 1rem; color: #64748b; font-weight: 600;">No hay registros para mostrar</p>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-nivelDotacion>
+        <tr>
+            <td>{{ nivelDotacion.nombre }}</td>
+            <td class="centrado">
+              <label class="switch-native {{ nivelDotacion.activo ? 'verde' : 'rojo' }}">
+                <input type="checkbox" [checked]="nivelDotacion.activo" disabled />
+                <span class="slider-native"></span>
+              </label>
+            </td>
+            <td></td>
+        </tr>
+    </ng-template>
+</p-table>

@@ -2,21 +2,21 @@ import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 
-import { Cerramiento } from '../../models/cerramiento';
-import { CerramientoService } from '../../services/cerramiento.service';
+import { NivelEducativo } from '../../models/niveleducativo';
+import { NivelEducativoService } from '../../services/niveleducativo.service';
 
 @Component({
-  selector: 'app-cerramiento',
+  selector: 'app-niveleducativo',
   imports: [TableModule],
-  templateUrl: './cerramiento.component.html',
-  styleUrl: './conservacion.component.css',
+  templateUrl: './niveleducativo.component.html',
+  styleUrl: './niveldotacion.component.css',
 })
-export class CerramientoComponent implements OnInit {
+export class NivelEducativoComponent implements OnInit {
 
-  private readonly service = inject(CerramientoService);
+  private readonly service = inject(NivelEducativoService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  cerramientos: Cerramiento [] = [];
+  nivelesEducativos: NivelEducativo [] = [];
   cargando: boolean = true;
 
   ngOnInit(): void {
@@ -26,12 +26,12 @@ export class CerramientoComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.cerramientos = response.data || [];
+        this.nivelesEducativos = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar cerramientos', err);
+        console.error('Error al cargar niveles educativos', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
