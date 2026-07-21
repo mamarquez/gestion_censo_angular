@@ -19,9 +19,9 @@
 
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
-            <th>Estado</th>
-            <th></th>
+            <th id='pavimento.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+            <th id='pavimento.estado'>Estado</th>
+            <th id='pavimento.accion'></th>
         </tr>
     </ng-template>
 
@@ -41,7 +41,7 @@
             <td>{{ pavimento.nombre }}</td>
             <td class="centrado">
               <label class="switch-native {{ pavimento.activo ? 'verde' : 'rojo' }}">
-                <input type="checkbox" [checked]="pavimento.activo" disabled />
+                <input id='{{ pavimento.id }}' type="checkbox" [checked]="pavimento.activo" disabled />
                 <span class="slider-native"></span>
               </label>
             </td>
