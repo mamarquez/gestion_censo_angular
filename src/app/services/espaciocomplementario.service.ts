@@ -17,7 +17,7 @@ export class EspacioComplementarioService {
 
 
    /**
-   * Obtener todos los espacios deportivos
+   * Obtener todos los espacios complementarios
    */
   getAll(): Observable<ApiResponse<EspacioComplementario[]>> {
     return this.http.get<ApiResponse<EspacioComplementario[]>>(this.api);

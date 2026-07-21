@@ -16,10 +16,10 @@
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
     dataKey="id"
     [loading]="cargando">
-    
+
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="ine">INE<p-sortIcon field="ine"></p-sortIcon></th>
+            <th pSortableColumn="codigo">Código<p-sortIcon field="codigo"></p-sortIcon></th>
             <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
             <th>Estado</th>
             <th></th>
@@ -41,7 +41,12 @@
         <tr>
             <td>{{ instalacion.codigo }}</td>
             <td>{{ instalacion.nombre }}</td>
-            <td>{{ instalacion.activo }}</td>
+            <td class="centrado">
+              <label class="switch-native {{ instalacion.activo ? 'verde' : 'rojo' }}">
+                <input type="checkbox" [checked]="instalacion.activo" disabled />
+                <span class="slider-native"></span>
+              </label>
+            </td>
             <td></td>
         </tr>
     </ng-template>

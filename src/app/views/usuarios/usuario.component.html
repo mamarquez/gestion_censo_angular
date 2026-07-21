@@ -16,14 +16,14 @@
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
     dataKey="id"
     [loading]="cargando">
-    
+
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
-            <th pSortableColumn="apelldo1">1º Apellido<p-sortIcon field="apelldo1"></p-sortIcon></th>
-            <th pSortableColumn="apelldo2">2º Apellido<p-sortIcon field="apelldo2"></p-sortIcon></th>
-            <th>Estado</th>
-            <th></th>
+            <th id='usuario.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+            <th id='usuario.apellido1' pSortableColumn="apelldo1">1º Apellido<p-sortIcon field="apelldo1"></p-sortIcon></th>
+            <th id='usuario.appelido2' pSortableColumn="apelldo2">2º Apellido<p-sortIcon field="apelldo2"></p-sortIcon></th>
+            <th id='usuario.estado'>Estado</th>
+            <th id='usuario.acciones'></th>
         </tr>
     </ng-template>
 
@@ -43,7 +43,12 @@
             <td>{{ usuario.nombre }}</td>
             <td>{{ usuario.apellido1 }}</td>
             <td>{{ usuario.apellido2 }}</td>
-            <td>{{ usuario.activo }}</td>
+            <td class="centrado">
+              <label class="switch-native {{ usuario.activo ? 'verde' : 'rojo' }}">
+                <input type="checkbox" [checked]="usuario.activo" disabled />
+                <span class="slider-native"></span>
+              </label>
+            </td>
             <td></td>
         </tr>
     </ng-template>
