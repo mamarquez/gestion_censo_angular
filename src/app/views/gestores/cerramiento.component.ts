@@ -2,21 +2,21 @@ import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 
-import { Cerramiento } from '../../models/cerramiento';
-import { CerramientoService } from '../../services/cerramiento.service';
+import { Gestor } from '../../models/gestor';
+import { GestorService } from '../../services/gestor.service';
 
 @Component({
-  selector: 'app-cerramiento',
+  selector: 'app-gestor',
   imports: [TableModule],
   templateUrl: './cerramiento.component.html',
   styleUrl: './iluminacion.component.css',
 })
-export class CerramientoComponent implements OnInit {
+export class GestorComponent implements OnInit {
 
-  private readonly service = inject(CerramientoService);
+  private readonly service = inject(GestorService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  cerramientos: Cerramiento [] = [];
+  gestores: Gestor [] = [];
   cargando: boolean = true;
 
   ngOnInit(): void {
@@ -26,12 +26,12 @@ export class CerramientoComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.cerramientos = response.data || [];
+        this.gestores = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar cerramientos', err);
+        console.error('Error al cargar gestores', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }

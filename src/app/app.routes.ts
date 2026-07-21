@@ -18,6 +18,9 @@ import { ConservacionComponent } from './views/conservaciones/conservacion.compo
 import { NivelEnergeticoComponent } from './views/nivelesenergeticos/nivelenergetico.component';
 import { NivelEducativoComponent } from './views/niveleseducativos/niveleducativo.component';
 import { NivelDotacionComponent } from './views/nivelesdotaciones/niveldotacion.component';
+import { IluminacionComponent } from './views/iluminaciones/iluminacion.component';
+import { GestorComponent } from './views/gestores/cerramiento.component';
+import { EstadoUsoComponent } from './views/estadosusos/estadouso.component';
 
 export const routes: Routes = [
   {
@@ -107,6 +110,18 @@ export const routes: Routes = [
       {
         path: 'nivelesdotaciones',
         component: NivelDotacionComponent
+      },
+      {
+        path: 'iluminaciones',
+        component: IluminacionComponent
+      },
+      {
+        path: 'gestores',
+        component: GestorComponent
+      },
+      {
+        path: 'estadosusos',
+        component: EstadoUsoComponent
       }
     ]
   },

@@ -9,7 +9,7 @@ import { ConservacionService } from '../../services/conservacion.service';
   selector: 'app-conservaciones',
   imports: [TableModule],
   templateUrl: './conservacion.component.html',
-  styleUrl: './conservacion.component.css',
+  styleUrl: './iluminacion.component.css',
 })
 export class ConservacionComponent implements OnInit {
 

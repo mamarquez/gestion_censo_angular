@@ -2,21 +2,21 @@ import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 
-import { Cerramiento } from '../../models/cerramiento';
-import { CerramientoService } from '../../services/cerramiento.service';
+import { EstadoUso } from '../../models/estadouso';
+import { EstadoUsoService } from '../../services/estadouso.service';
 
 @Component({
-  selector: 'app-cerramiento',
+  selector: 'app-estadouso',
   imports: [TableModule],
-  templateUrl: './cerramiento.component.html',
-  styleUrl: './iluminacion.component.css',
+  templateUrl: './estadouso.component.html',
+  styleUrl: './estadouso.component.css',
 })
-export class CerramientoComponent implements OnInit {
+export class EstadoUsoComponent implements OnInit {
 
-  private readonly service = inject(CerramientoService);
+  private readonly service = inject(EstadoUsoService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  cerramientos: Cerramiento [] = [];
+  estadosusos: EstadoUso [] = [];
   cargando: boolean = true;
 
   ngOnInit(): void {
@@ -26,12 +26,12 @@ export class CerramientoComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.cerramientos = response.data || [];
+        this.estadosusos = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar cerramientos', err);
+        console.error('Error al cargar gestores', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
