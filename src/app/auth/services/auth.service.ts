@@ -69,16 +69,14 @@ export class AuthService {
   }
 
   logout(): void {
-
     this.tokenService.clear();
-
   }
 
   saveSession(response: LoginResponse): void {
 
     this.tokenService.save(response.token);
 
-    localStorage.setItem(
+    sessionStorage.setItem(
       AUTH.REFRESH_TOKEN,
       response.refreshToken
     );

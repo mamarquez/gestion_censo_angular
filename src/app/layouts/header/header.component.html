@@ -1,52 +1,55 @@
-<header id="header-navbar" class="content-mini content-mini-full layout-header">
-    
-    <!-- LADO IZQUIERDO (Botón móvil) -->
-    <ul class="nav-header-left">
-        <li class="hidden-md hidden-lg">
-            <button class="btn btn-default" type="button">
-                <i class="fa fa-navicon"></i>
-            </button>
-        </li>
-    </ul>
+<header id="header-navbar" class="content-mini content-mini-full layout-header" style="display: flex; align-items: center; justify-content: space-between;">
 
-    <!-- LADO DERECHO (Usuario y Avatar) -->
-    <!-- @if (authService.isAuthenticated()) { -->
-        <ul class="nav-header-right">
-            <li class="user-name">
-                Usuario
-                <!-- {{ authService.getUserEmail() }} -->
-            </li>
+  <!-- LADO IZQUIERDO (Botón móvil) -->
+  <ul class="nav-header-left" style="display: flex; align-items: center; margin: 0; padding: 0; list-style: none;">
+    <li class="hidden-md hidden-lg">
+      <button class="btn btn-default" type="button">
+        <i class="fa fa-navicon"></i>
+      </button>
+    </li>
+  </ul>
 
+  <!-- LADO DERECHO (Usuario y Avatar) -->
+  <!-- @if (authService.isAuthenticated()) { -->
+  <ul class="nav-header-right" style="display: flex; align-items: center; gap: 0.75rem; margin: 0; padding: 0; list-style: none;">
+
+    <!-- Nombre de usuario alineado verticalmente -->
+    <li class="user-name" style="display: flex; align-items: center;">
+      Usuario
+      <!-- {{ authService.getUserEmail() }} -->
+    </li>
+
+    <li>
+      <div class="avatar-dropdown-wrapper" style="position: relative; display: flex; align-items: center;">
+
+        <!-- Botón centrado internamente -->
+        <button class="btn btn-default btn-image"
+                type="button"
+                (click)="toggleDropdown($event)"
+                style="background: transparent; border: none; cursor: pointer; display: flex; align-items: center; gap: 0.35rem; padding: 0;">
+          <img src="/images/avatar.png" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%; display: block;">
+          <span class="caret"></span>
+        </button>
+
+        @if (isDropdownOpen) {
+        <ul class="dropdown-menu-angular" style="position: absolute; right: 0; top: 100%; margin-top: 0.5rem;">
             <li>
-                <div class="avatar-dropdown-wrapper">
-                    
-                    <button class="btn btn-default btn-image" 
-                            type="button" 
-                            (click)="toggleDropdown($event)"
-                            style="background: transparent; border: none; cursor: pointer;">
-                        <img src="/images/avatar.png" alt="Avatar" style="width: 32px; height: 32px; border-radius: 50%;">
-                        <span class="caret"></span>
-                    </button>
-                    
-                    @if (isDropdownOpen) {
-                        <ul class="dropdown-menu-angular">
-                            <li>
-                                <a tabindex="-1" routerLink="/mis-datos" (click)="closeDropdown()">
-                                    <i class="si si-user"></i> Perfil
-                                </a>
-                            </li>
-                            <li>
-                                <a tabindex="-1" (click)="logout()" style="cursor: pointer;">
-                                    <i class="si si-logout"></i> Salir
-                                </a>
-                            </li>
-                        </ul>
-                    }
-                </div>
+                <a tabindex="-1" routerLink="/mis-datos" (click)="closeDropdown()">
+                    <i class="si si-user"></i> Perfil
+                </a>
+            </li>
+            <li>
+                <a tabindex="-1" (click)="logout()" style="cursor: pointer;">
+                    <i class="si si-logout"></i> Salir
+                </a>
             </li>
         </ul>
-        <!--
-    }
-    -->
+        }
+      </div>
+    </li>
+  </ul>
+  <!--
+}
+-->
 
 </header>

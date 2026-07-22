@@ -7,7 +7,7 @@ import { UsuarioService } from '../../services/usuario.service';
 
 
 @Component({
-  selector: 'app-usuarios',
+  selector: 'app-usuario',
   imports: [TableModule],
   templateUrl: './usuario.component.html',
   styleUrl: './usuario.component.css',
@@ -19,7 +19,7 @@ export class UsuarioComponent  implements OnInit {
 
   usuarios: Usuario[] = [];
   cargando: boolean = true;
-  
+
   ngOnInit(): void {
     this.cargarUsuarios();
   }

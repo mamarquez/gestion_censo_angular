@@ -6,10 +6,10 @@ import { Medida } from '../../models/medida';
 import { MedidaService } from '../../services/medida.service';
 
 @Component({
-  selector: 'app-medidas',
+  selector: 'app-medida',
   imports: [TableModule],
   templateUrl: './medida.component.html',
-  styleUrl: './pavimento.component.css',
+  styleUrl: './medida.component.css',
 })
 export class MedidaComponent implements OnInit {
 

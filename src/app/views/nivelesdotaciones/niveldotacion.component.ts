@@ -6,7 +6,7 @@ import { NivelDotacion } from '../../models/niveldotacion';
 import { NivelDotacionService } from '../../services/niveldotacion.service';
 
 @Component({
-  selector: 'app-niveldotacion',
+  selector: 'app-nivel-dotacion',
   imports: [TableModule],
   templateUrl: './niveldotacion.component.html',
   styleUrl: './niveldotacion.component.css',

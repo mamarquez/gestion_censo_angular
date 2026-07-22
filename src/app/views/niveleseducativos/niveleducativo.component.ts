@@ -6,10 +6,10 @@ import { NivelEducativo } from '../../models/niveleducativo';
 import { NivelEducativoService } from '../../services/niveleducativo.service';
 
 @Component({
-  selector: 'app-niveleducativo',
+  selector: 'app-nivel-educativo',
   imports: [TableModule],
   templateUrl: './niveleducativo.component.html',
-  styleUrl: './niveldotacion.component.css',
+  styleUrl: './niveleducativo.component.css',
 })
 export class NivelEducativoComponent implements OnInit {
 

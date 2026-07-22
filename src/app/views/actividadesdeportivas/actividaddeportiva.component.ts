@@ -6,7 +6,7 @@ import { ActividadDeportiva } from '../../models/actividaddeportiva';
 import { ActividadDeportivaService } from '../../services/adtividaddeportiva.service';
 
 @Component({
-  selector: 'app-actividaddeportiva',
+  selector: 'app-actividad-deportiva',
   imports: [TableModule],
   templateUrl: './actividaddeportiva.component.html',
   styleUrl: './actividaddeportiva.component.css',

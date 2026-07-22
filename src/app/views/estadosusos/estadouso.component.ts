@@ -6,10 +6,10 @@ import { EstadoUso } from '../../models/estadouso';
 import { EstadoUsoService } from '../../services/estadouso.service';
 
 @Component({
-  selector: 'app-estadouso',
+  selector: 'app-estado-uso',
   imports: [TableModule],
   templateUrl: './estadouso.component.html',
-  styleUrl: './espaciocomplementario.component.css',
+  styleUrl: './estadouso.component.css',
 })
 export class EstadoUsoComponent implements OnInit {
 

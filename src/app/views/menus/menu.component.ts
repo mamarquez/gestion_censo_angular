@@ -6,7 +6,7 @@ import { Menu } from '../../models/menu';
 import { MenuService } from '../../services/menu.service';
 
 @Component({
-  selector: 'app-menus',
+  selector: 'app-menu',
   imports: [TableModule],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',

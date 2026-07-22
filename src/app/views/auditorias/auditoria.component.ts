@@ -7,7 +7,7 @@ import { Auditoria } from '../../models/auditoria';
 import { AuditoriaService } from '../../services/auditoria.service';
 
 @Component({
-  selector: 'app-auditorias',
+  selector: 'app-auditoria',
   imports: [TableModule, TagModule, DatePipe],
   templateUrl: './auditoria.component.html',
   styleUrl: './pavimento.component.css',

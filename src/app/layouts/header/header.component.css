@@ -9,7 +9,10 @@
   background-color: #ffffff;
   border-bottom: 1px solid #dee2e6;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  z-index: 1000;
+  /* 1. Subimos el z-index de la cabecera completa */
+  z-index: 1050;
+  /* 2. Aseguramos que nada dentro de la cabecera recorte elementos flotantes */
+  overflow: visible !important;
 }
 
 .nav-header-left, .nav-header-right {
@@ -30,24 +33,23 @@
   font-weight: 500;
 }
 
-/* Dropdown del usuario (lo dejamos como lo tenías) */
+/* Dropdown del usuario */
 .avatar-dropdown-wrapper {
   position: relative;
-  display: flex;
+  display: inline-flex; /* Cambiado a inline-flex para mejor comportamiento del botón */
   align-items: center;
-  overflow: visible; 
-  height: 100%;
 }
 
 .dropdown-menu-angular {
   position: absolute;
   top: 100%;
   right: 0;
-  z-index: 1050; 
+  /* 3. Aumentamos el z-index del desplegable por encima del header */
+  z-index: 9999 !important;
   display: block;
   min-width: 160px;
   padding: 5px 0;
-  margin: 2px 0 0;
+  margin-top: 8px; /* Pequeño margen para separarlo sutilmente del botón */
   list-style: none;
   font-size: 14px;
   background-color: #ffffff;

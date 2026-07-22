@@ -6,10 +6,10 @@ import { Rol } from '../../models/rol';
 import { RolService } from '../../services/rol.service';
 
 @Component({
-  selector: 'app-roles',
+  selector: 'app-rol',
   imports: [TableModule],
   templateUrl: './rol.component.html',
-  styleUrl: './pavimento.component.css',
+  styleUrl: './rol.component.css',
 })
 export class RolComponent implements OnInit {
 

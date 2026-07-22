@@ -6,7 +6,7 @@ import { EspacioComplementario } from '../../models/espaciocomplementario';
 import { EspacioComplementarioService } from '../../services/espaciocomplementario.service';
 
 @Component({
-  selector: 'app-espaciocomplementario',
+  selector: 'app-espacio-complementario',
   imports: [TableModule],
   templateUrl: './espaciocomplementario.component.html',
   styleUrl: './espaciocomplementario.component.css',

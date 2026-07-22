@@ -6,7 +6,7 @@ import { EspacioDeportivo } from '../../models/espaciodeportivo';
 import { EspacioDeportivoService } from '../../services/espaciodeportivo.service';
 
 @Component({
-  selector: 'app-espaciodeportivo',
+  selector: 'app-espacio-deportivo',
   imports: [TableModule],
   templateUrl: './espaciodeportivo.component.html',
   styleUrl: './espaciodeportivo.component.css',

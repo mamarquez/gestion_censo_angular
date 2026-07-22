@@ -6,7 +6,7 @@ import { NivelEnergetico } from '../../models/nivelenergetico';
 import { NivelEnergeticoService } from '../../services/nivelenergetico.service';
 
 @Component({
-  selector: 'app-nivelenergetico',
+  selector: 'app-nivel-energetico',
   imports: [TableModule],
   templateUrl: './nivelenergetico.component.html',
   styleUrl: './nivelenergetico.component.css',

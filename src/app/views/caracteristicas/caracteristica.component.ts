@@ -6,7 +6,7 @@ import { Caracteristica } from '../../models/caracteristica';
 import { CaracteristicaService } from '../../services/caracteristica.service';
 
 @Component({
-  selector: 'app-caracteristicas',
+  selector: 'app-caracteristica',
   imports: [TableModule],
   templateUrl: './caracteristica.component.html',
   styleUrl: './pavimento.component.css',

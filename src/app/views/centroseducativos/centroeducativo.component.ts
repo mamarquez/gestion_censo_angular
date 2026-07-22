@@ -6,7 +6,7 @@ import { CentroEducativo } from '../../models/centroeducativo';
 import { CentroEducativoService } from '../../services/centroeducativo.service';
 
 @Component({
-  selector: 'app-centroseducativos',
+  selector: 'app-centro-educativo',
   imports: [TableModule],
   templateUrl: './centroeducativo.component.html',
   styleUrl: './centroeducativo.component.css',

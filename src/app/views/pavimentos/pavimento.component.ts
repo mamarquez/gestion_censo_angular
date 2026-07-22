@@ -6,7 +6,7 @@ import { Pavimento } from '../../models/pavimento';
 import { PavimentoService } from '../../services/pavimento.service';
 
 @Component({
-  selector: 'app-povimentos',
+  selector: 'app-povimento',
   imports: [TableModule],
   templateUrl: './pavimento.component.html',
   styleUrl: './pavimento.component.css',

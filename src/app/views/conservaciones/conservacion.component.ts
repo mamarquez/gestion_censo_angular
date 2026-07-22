@@ -6,10 +6,10 @@ import { Conservacion } from '../../models/conservacion';
 import { ConservacionService } from '../../services/conservacion.service';
 
 @Component({
-  selector: 'app-conservaciones',
+  selector: 'app-conservacion',
   imports: [TableModule],
   templateUrl: './conservacion.component.html',
-  styleUrl: './iluminacion.component.css',
+  styleUrl: './conservacion.component.css',
 })
 export class ConservacionComponent implements OnInit {
 

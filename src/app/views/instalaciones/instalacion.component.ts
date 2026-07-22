@@ -6,10 +6,10 @@ import { Instalacion } from '../../models/instalacion';
 import { InstalacionService } from '../../services/instalacion.service';
 
 @Component({
-  selector: 'app-instalaciones',
+  selector: 'app-instalacion',
   imports: [TableModule],
   templateUrl: './instalacion.component.html',
-  styleUrl: './pavimento.component.css',
+  styleUrl: './instalacion.component.css',
 })
 export class InstalacionComponent implements OnInit {
 
