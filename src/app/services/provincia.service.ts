@@ -20,6 +20,9 @@ export class ProvinciaService {
 
   private readonly http = inject(HttpClient);
   private readonly api = `${AUTH.API}/provincias`;
+  private readonly headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
 
   /**
    * Obtener provincias
@@ -33,16 +36,18 @@ export class ProvinciaService {
    * @param filtros
    */
   getProvincias(filtros?: any): Observable<ApiResponseWrapper<Provincia[]>> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
-
     const body = {
       ine: filtros?.ine || null,
       nombre: filtros?.nombre || null,
       activo: filtros?.activo === '1' ? true : (filtros?.activo === '0' ? false : null)
     };
 
-    return this.http.post<ApiResponseWrapper<Provincia[]>>(this.api + '/filtrar', body, { headers });
+    return this.http.post<ApiResponseWrapper<Provincia[]>>(`${this.api}/filtrar` , body, { headers: this.headers });
   }
+
+
+  cambiarEstado(id: number): Observable<ApiResponse<Provincia>> {
+    return this.http.patch<ApiResponse<Provincia>>(`${this.api}/${id}`, null, { headers: this.headers });
+  }
+
 }

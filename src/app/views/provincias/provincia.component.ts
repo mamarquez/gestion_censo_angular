@@ -9,7 +9,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
-// import { ToastModule } from 'primeng/toast';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 import { Provincia } from '../../models/provincia';
 import { ProvinciaService } from '../../services/provincia.service';
@@ -25,7 +26,8 @@ import { ProvinciaService } from '../../services/provincia.service';
     RadioButtonModule,
     CheckboxModule,
     DropdownModule,
-    InputTextModule
+    InputTextModule,
+    ToastModule
   ],
   templateUrl: './provincia.component.html',
   styleUrl: './provincia.component.css'
@@ -35,6 +37,7 @@ export class ProvinciaComponent implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly service = inject(ProvinciaService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly messageService = inject(MessageService);
 
   provincias: Provincia[] = [];
   cargando: boolean = true;
@@ -96,8 +99,31 @@ export class ProvinciaComponent implements OnInit {
     // Tu lógica de edición aquí
   }
 
+  cambiarEstado(id: number): void {
+    this.cargando = true;
+
+    this.service.cambiarEstado(id).subscribe({
+      next: () => {
+        const provincia = this.provincias.find(p => p.id === id);
+        if (provincia) {
+          provincia.activo = !provincia.activo;
+        }
+
+        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cambiar el estado de la provincia', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cambiar el estado' });
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   /*
-  showInfo() {
+    showInfo() {
         this.messageService.add({ severity: 'info', summary: 'Heads up', detail: 'There’s something you might want to check.' });
     }
     showSuccess() {
