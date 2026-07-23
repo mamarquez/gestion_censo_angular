@@ -6,9 +6,8 @@ import { Rol } from '../models/rol';
 import { AUTH } from '../auth/auth.constants';
 import { ApiResponse } from '../models/apiresponse';
 import { Municipio } from '../models/municipio';
-import { ApiResponseWrapper } from './provincia.service';
 import { buildHttpParams } from '../utils/params.util';
-
+import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -38,4 +37,13 @@ export class RolService {
   cambiarEstado(id: number): Observable<ApiResponse<Rol>> {
     return this.http.patch<ApiResponse<Municipio>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
+
+  /**
+   * Borra un registro
+   * @param id Id del registro
+   */
+  borrarRegistro(id: number): Observable<ApiResponse<boolean>> {
+    return this.http.delete<ApiResponse<boolean>>(`${this.api}/${id}`, { headers: this.headers });
+  }
+
 }

@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Menu } from '../models/menu';
 import { AUTH } from '../auth/auth.constants';
 import { ApiResponse } from '../models/apiresponse';
-import { ApiResponseWrapper } from './provincia.service';
+import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
 @Injectable({
@@ -23,9 +23,10 @@ export class MenuService {
    * Obtener menús
    */
   getAll(filtros?: any): Observable<ApiResponse<Menu[]>> {
-    const params = buildHttpParams(filtros);
-
-    return this.http.get<ApiResponseWrapper<Menu[]>>(`${this.api}`, { params, headers: this.headers });
+    return this.http.get<ApiResponseWrapper<Menu[]>>(`${this.api}`, {
+      params: buildHttpParams(filtros),
+      headers: this.headers
+    });
   }
 
   /**

@@ -6,13 +6,9 @@ import { AUTH } from '../auth/auth.constants';
 import { ApiResponse } from '../models/apiresponse';
 import { Provincia } from '../models/provincia';
 import { buildHttpParams } from '../utils/params.util';
+import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 
-export interface ApiResponseWrapper<T> {
-  message: string;
-  data: T;
-  success: boolean;
-  fieldErrors: any;
-}
+
 
 @Injectable({
   providedIn: 'root'

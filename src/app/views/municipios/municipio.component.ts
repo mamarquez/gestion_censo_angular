@@ -1,15 +1,15 @@
 import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
-
-import { Municipio } from '../../models/municipio';
-import { MunicipioService } from '../../services/municipio.service';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../services/dialog.service';
+
+import { Municipio } from '../../models/municipio';
+import { MunicipioService } from '../../services/municipio.service';
 
 @Component({
   selector: 'app-municipio',
@@ -34,7 +34,7 @@ export class MunicipioComponent implements OnInit {
     cmun: [''],
     dc: [''],
     nombre: [''],
-    activo: ['2']
+    activo: ['']
   });
 
   ngOnInit(): void {

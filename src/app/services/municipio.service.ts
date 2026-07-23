@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Municipio } from '../models/municipio';
 import { AUTH } from '../auth/auth.constants';
 import { ApiResponse } from '../models/apiresponse';
-import { ApiResponseWrapper } from './provincia.service';
+import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
 

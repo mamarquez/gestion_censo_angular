@@ -53,7 +53,7 @@ export class ProvinciaComponent implements OnInit {
   form: FormGroup = this.fb.group({
     nombre: [''],
     ine: [''],
-    activo: ['2']
+    activo: ['']
   });
 
   ngOnInit(): void {

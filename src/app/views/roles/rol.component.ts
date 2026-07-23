@@ -30,7 +30,7 @@ export class RolComponent implements OnInit {
 
   form: FormGroup = this.fb.group({
     nombre: [''],
-    activo: ['2']
+    activo: ['']
   });
 
   ngOnInit(): void {
@@ -120,11 +120,9 @@ export class RolComponent implements OnInit {
   private borrarRegistro(id: number) {
     this.cargando = true;
 
-    /*
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.provincias = this.provincias.filter(p => p.id !== id);
-
+        this.roles = this.roles.filter(p => p.id !== id);
         this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -136,7 +134,7 @@ export class RolComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
-    */
+
     this.cargando = false;
   }
 
