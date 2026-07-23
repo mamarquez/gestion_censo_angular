@@ -2,9 +2,10 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Provincia } from '../models/provincia';
 import { AUTH } from '../auth/auth.constants';
 import { ApiResponse } from '../models/apiresponse';
+import { Provincia } from '../models/provincia';
+import { buildHttpParams } from '../utils/params.util';
 
 export interface ApiResponseWrapper<T> {
   message: string;
@@ -27,27 +28,27 @@ export class ProvinciaService {
   /**
    * Obtener provincias
    */
-  getAll(): Observable<ApiResponse<Provincia[]>> {
-    return this.http.get<ApiResponse<Provincia[]>>(this.api);
+  getAll(filtros?: any): Observable<ApiResponse<Provincia[]>> {
+    return this.http.get<ApiResponseWrapper<Provincia[]>>(`${this.api}`, {
+      params: buildHttpParams(filtros),
+      headers: this.headers
+    });
   }
 
   /**
-   * Obtener provincias filtradas
-   * @param filtros
+   * Cambia el estado de un registro
+   * @param id Id del registro
    */
-  getProvincias(filtros?: any): Observable<ApiResponseWrapper<Provincia[]>> {
-    const body = {
-      ine: filtros?.ine || null,
-      nombre: filtros?.nombre || null,
-      activo: filtros?.activo === '1' ? true : (filtros?.activo === '0' ? false : null)
-    };
-
-    return this.http.post<ApiResponseWrapper<Provincia[]>>(`${this.api}/filtrar` , body, { headers: this.headers });
-  }
-
-
   cambiarEstado(id: number): Observable<ApiResponse<Provincia>> {
     return this.http.patch<ApiResponse<Provincia>>(`${this.api}/${id}`, null, { headers: this.headers });
+  }
+
+  /**
+   * Borra un registro
+   * @param id Id del registro
+   */
+  borrarRegistro(id: number): Observable<ApiResponse<Provincia>> {
+    return this.http.delete<ApiResponse<Provincia>>(`${this.api}/${id}`, { headers: this.headers });
   }
 
 }

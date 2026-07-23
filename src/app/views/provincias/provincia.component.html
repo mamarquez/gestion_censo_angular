@@ -65,6 +65,7 @@
 
 <!-- Tabla PrimeNG -->
 <p-table
+  size='small'
   [value]='provincias'
   [tableStyle]="{ 'min-width': '50rem' }"
   [stripedRows]='true'
@@ -157,7 +158,7 @@
           severity='secondary'
           [rounded]='true'
           [text]='true'
-          (onClick)='editarRegistro(provincia)'>
+          (onClick)='confirmarBorrado(provincia)'>
             <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none'
                stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
                class='text-red-600'

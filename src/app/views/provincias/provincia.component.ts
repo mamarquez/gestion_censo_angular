@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
@@ -10,10 +10,12 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { Provincia } from '../../models/provincia';
 import { ProvinciaService } from '../../services/provincia.service';
+import { DialogService } from '../../services/dialog.service';
 
 @Component({
   selector: 'app-provincia',
@@ -27,7 +29,12 @@ import { ProvinciaService } from '../../services/provincia.service';
     CheckboxModule,
     DropdownModule,
     InputTextModule,
-    ToastModule
+    ToastModule,
+    ConfirmDialogModule
+  ],
+  providers: [
+    MessageService,
+    ConfirmationService
   ],
   templateUrl: './provincia.component.html',
   styleUrl: './provincia.component.css'
@@ -38,6 +45,7 @@ export class ProvinciaComponent implements OnInit {
   private readonly service = inject(ProvinciaService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
+  private readonly dialog = inject(DialogService);
 
   provincias: Provincia[] = [];
   cargando: boolean = true;
@@ -61,7 +69,7 @@ export class ProvinciaComponent implements OnInit {
     const filtros = this.form.value;
     this.cargando = true;
 
-    this.service.getProvincias(filtros).subscribe({
+    this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
           this.provincias = response.data;
@@ -74,6 +82,8 @@ export class ProvinciaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando provincias:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar las provincias' });
+        this.cargando = false;
         this.provincias = [];
       }
     });
@@ -115,11 +125,43 @@ export class ProvinciaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cambiar el estado de la provincia', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cambiar el estado' });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
+  }
+
+  confirmarBorrado(provincia: Provincia): void {
+    this.dialog.confirmar({
+      mensaje: `¿Deseas eliminar "<strong>${provincia.nombre}</strong>"?`,
+      titulo: 'Confirmar eliminación',
+      labelAceptar: 'Sí, eliminar',
+      onAccept: () => this.borrarRegistro(provincia.id)
+    });
+  }
+
+  private borrarRegistro(id: number) {
+    this.cargando = true;
+
+    /*
+    this.service.borrarRegistro(id).subscribe({
+      next: () => {
+        this.provincias = this.provincias.filter(p => p.id !== id);
+
+        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al borrar el registro', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+    */
+    this.cargando = false;
   }
 
   /*
