@@ -1,69 +1,69 @@
 /* Resetear márgenes y paddings globales */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Open Sans', 'Montserrat', 'Source Sans Pro', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', 'Montserrat', 'Source Sans Pro', sans-serif;
 }
 
 :root {
-    --p-datatable-header-cell-sm-padding: .35rem .60rem;
-    --p-datatable-body-cell-sm-padding: .35rem .60rem;
+  --p-datatable-header-cell-sm-padding: .35rem .60rem;
+  --p-datatable-body-cell-sm-padding: .35rem .60rem;
 
-    --p-datatable-header-cell-font-size: .85rem;
-    --p-datatable-body-cell-font-size: .85rem;
+  --p-datatable-header-cell-font-size: .85rem;
+  --p-datatable-body-cell-font-size: .85rem;
 
-    font-family: 'Open Sans', 'Montserrat', 'Source Sans Pro', sans-serif;
-    --p-font-family: "Montserrat", sans-serif;
+  font-family: 'Open Sans', 'Montserrat', 'Source Sans Pro', sans-serif;
+  --p-font-family: "Montserrat", sans-serif;
 
-    --primary-color: #44b4a6;
-    --primary-hover: #3CA195;
+  --primary-color: #44b4a6;
+  --primary-hover: #3CA195;
 }
 
 :host, * {
-    font-family: 'Open Sans', 'Montserrat', 'Source Sans Pro', sans-serif;
+  font-family: 'Open Sans', 'Montserrat', 'Source Sans Pro', sans-serif;
 }
 
 body {
   margin: 0;
   font-family: 'Open Sans', 'Montserrat', 'Source Sans Pro', sans-serif;
-  /* font-family: 'Open Sans', sans-serif; */
 }
 
 h1 {
-    color: var(--primary-color);
+  color: var(--primary-color);
 }
 
-/* Campos de table */
-/* Acciones */
+/* Campos de tabla y alineaciones */
 .acciones {
-    display: flex;
-    justify-content: flex-end;
-    gap: .5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
 }
 
 .centrado {
-    justify-content: center;
-    align-items: center;
-    gap: .5rem;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
 }
 
 .derecha {
-    justify-content: flex-end;
-    align-items: center;
-    gap: .5rem;
+  justify-content: flex-end;
+  align-items: center;
+  gap: .5rem;
 }
 
+/* Personalización de PrimeNG DataTable */
 .p-datatable.p-datatable-sm .p-datatable-thead > tr > th,
 .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td {
-    padding: 2px 6px !important;
-    font-size: 12px !important;
-    line-height: 1.1 !important;
+  padding: 2px 6px !important;
+  font-size: 12px !important;
+  line-height: 1.1 !important;
 }
 
+/* Personalización de PrimeNG Paginator */
 .p-paginator {
-    padding: .35rem .75rem !important;
-    font-size: .85rem;
+  padding: .35rem .5rem !important;
+  font-size: .85rem;
 }
 
 .p-paginator .p-paginator-page,
@@ -71,103 +71,192 @@ h1 {
 .p-paginator .p-paginator-prev,
 .p-paginator .p-paginator-next,
 .p-paginator .p-paginator-last {
-    min-width: 2rem !important;
-    height: 2rem !important;
-    font-size: .85rem;
+  min-width: 2rem !important;
+  height: 2rem !important;
+  font-size: .85rem;
 }
 
 .p-paginator .p-select {
-    height: 2rem;
-    font-size: .85rem;
-}
-
-.p-paginator .p-select {
-    height: 2rem;
-    min-height: 2rem;
-    font-size: .85rem;
+  height: 2rem;
+  min-height: 2rem;
+  font-size: .85rem;
 }
 
 .p-paginator .p-select-label {
-    /* padding: .25rem .5rem !important; */
-    /* font-size: .85rem; */
-    line-height: 1.2;
-    font-size: .80rem !important;
+  line-height: 1.2;
+  font-size: .80rem !important;
 }
 
 .p-paginator .p-select-dropdown {
-    width: 2rem;
+  width: 2rem;
 }
 
 .p-paginator .p-select-dropdown-icon {
-    font-size: .75rem;
+  font-size: .75rem;
 }
 
-.p-paginator {
-    padding: .35rem .5rem;
-    font-size: .85rem;
-}
-
-.p-paginator .p-paginator-page,
-.p-paginator .p-paginator-first,
-.p-paginator .p-paginator-prev,
-.p-paginator .p-paginator-next,
-.p-paginator .p-paginator-last {
-    min-width: 2rem;
-    height: 2rem;
-    font-size: .85rem;
-}
-
-/* Estilos para el switch */
-/* Estructura base del switch nativo (reducido a la mitad) */
+/* Estilos para el switch nativo */
 .switch-native {
-    position: relative;
-    display: inline-block;
-    width: 50px;   /* Era 50px */
-    height: 24px;  /* Era 24px */
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
 }
 
 /* Ocultar el checkbox original */
 .switch-native input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
-/* El círculo que se mueve */
+/* El círculo del switch */
 .slider-native {
-    position: absolute;
-    cursor: not-allowed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 24px; /* Era 24px */
+  position: absolute;
+  cursor: not-allowed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
 }
 
 .slider-native:before {
-    position: absolute;
-    content: "";
-    height: 18px;   /* Era 18px */
-    width: 18px;    /* Era 18px */
-    left: 3px;     /* Era 3px */
-    bottom: 3px;   /* Era 3px */
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
 }
 
 /* Color ROJO cuando está apagado (false) */
 .switch-native.rojo .slider-native {
-    background-color: #ef4444 !important;
+  background-color: #ef4444 !important;
 }
 
 /* Color VERDE y movimiento del círculo cuando está encendido (true) */
 .switch-native input:checked + .slider-native {
-    background-color: #22c55e !important;
+  background-color: #22c55e !important;
 }
 
 .switch-native input:checked + .slider-native:before {
-    transform: translateX(26px); /* Era 26px */
+  transform: translateX(26px);
 }
+
+/* ==========================================================================
+   Estructura Global y Layout del Menú Lateral / Main
+   ========================================================================== */
+
+/* 1. Contenedor Raíz (Pantalla Completa sin scroll en body) */
+.layout-main-wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 2. Componente Sidebar Lateral */
+app-sidebar {
+  width: 260px;
+  min-width: 260px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estructura interna de la navegación en el sidebar */
+.layout-sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+/* Header/Logo fijo del sidebar */
+.side-header {
+  flex-shrink: 0;
+  height: 60px;
+}
+
+/* Scroll independiente para los enlaces del menú lateral */
+#sidebar-scroll {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* 3. Columna Derecha (Header + Contenido Principal + Footer) */
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* 4. Zona Central donde se cargan las vistas con router-outlet */
+.layout-content {
+  flex: 1;
+  overflow-y: auto; /* Scroll aislado para las páginas */
+  padding: 1.5rem;
+}
+
+/* 5. Header y Footer globales fijos */
+app-header,
+app-footer {
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   Reducción quirúrgica del Datepicker para igualar a Tabla
+   ========================================================= */
+
+/* src/styles.css - Estilos limpios para el Datepicker */
+
+/* 1. Contenedor flex con orden correcto (Input a la izq, Botón a la der) */
+.datepicker-container span.p-datepicker.p-inputwrapper {
+  display: flex !important;
+  flex-direction: row !important; /* Mantiene Input a la izq y Botón a la der */
+  align-items: center !important;
+  width: 100% !important;
+  height: 33px !important;
+  max-height: 33px !important;
+  box-sizing: border-box !important;
+}
+
+/* 2. El Input de texto */
+.datepicker-container input.p-datepicker-input {
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: 33px !important;
+  padding: 0 0.5rem !important;
+  font-size: 0.875rem !important; /* Misma fuente que el input Tabla */
+  line-height: 33px !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* 3. El Botón con el icono (a la derecha) */
+.datepicker-container button.p-datepicker-dropdown {
+  height: 33px !important;
+  width: 33px !important;
+  min-width: 33px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-top-right-radius: 6px !important;
+  border-bottom-right-radius: 6px !important;
+  box-sizing: border-box !important;
+}
+

@@ -36,5 +36,7 @@ export function buildHttpParams(filtros: any): HttpParams {
     params = params.set(key, value.toString().trim());
   });
 
+  console.log(params);
+
   return params;
 }

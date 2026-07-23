@@ -9,158 +9,206 @@
   <div id='sidebar-scroll' class='sidebar-content'>
     <div class='side-content'>
       <ul class='nav-main'>
+
+        <!-- Enlace Simple: Instalaciones -->
         <li>
           <a routerLink='/instalaciones' routerLinkActive='active'>
-            <!-- <i class="pi pi-home"></i> -->
+            <i class='pi pi-building'></i>
             <span class='sidebar-mini-hide'>Instalaciones</span>
           </a>
         </li>
-        <li>
-          <hr />
+
+        <li><hr /></li>
+
+        <!-- SUBMENÚ 1: Administración -->
+        <li class='nav-submenu'>
+          <details>
+            <summary>
+              <i class='pi pi-users'></i>
+              <span class='sidebar-mini-hide'>Administración</span>
+              <i class='pi pi-chevron-down arrow-icon'></i>
+            </summary>
+            <ul>
+              <!-- Auditoria -->
+              <li>
+                <a routerLink='/auditorias' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Auditorías</span>
+                </a>
+              </li>
+              <!-- Menu -->
+              <li>
+                <a routerLink='/menus' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Menús</span>
+                </a>
+              </li>
+              <!-- Usuario -->
+              <li>
+                <a routerLink='/usuarios' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Usuarios</span>
+                </a>
+              </li>
+              <!-- Rol -->
+              <li>
+                <a routerLink='/roles' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Roles</span>
+                </a>
+              </li>
+            </ul>
+          </details>
         </li>
-        <li>
-          <a routerLink='/municipios'>
-            <i class='si si-home'></i><span class='sidebar-mini-hide'>Municipios</span>
-          </a>
+
+        <!-- SUBMENÚ 2: Territorio -->
+        <li class='nav-submenu'>
+          <details>
+            <summary>
+              <i class='pi pi-map-marker'></i>
+              <span class='sidebar-mini-hide'>Territorio</span>
+              <i class='pi pi-chevron-down arrow-icon'></i>
+            </summary>
+            <ul>
+              <li>
+                <a routerLink='/municipios' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Municipios</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink='/provincias' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Provincias</span>
+                </a>
+              </li>
+            </ul>
+          </details>
         </li>
-        <li>
-          <a routerLink='/provincias'>
-            <i class='si si-home'></i><span class='sidebar-mini-hide'>Provincias</span>
-          </a>
+
+        <!-- SUBMENÚ 3: Espacios y Servicios -->
+        <li class='nav-submenu'>
+          <details>
+            <summary>
+              <i class='pi pi-th-large'></i>
+              <span class='sidebar-mini-hide'>Espacios y Servicios</span>
+              <i class='pi pi-chevron-down arrow-icon'></i>
+            </summary>
+            <ul>
+              <li>
+                <a routerLink='/actividadesdeportivas' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Actividades Deportivas</span>
+                </a>
+              </li>
+
+              <li>
+                <a routerLink='/espacioscomplementarios' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Espacios Complementarios</span>
+                </a>
+              </li>
+
+              <li>
+                <a routerLink='/espaciosdeportivos' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Espacios Deportivos</span>
+                </a>
+              </li>
+
+
+              <li>
+                <a routerLink='/centroseducativos' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Centros Educativos</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink='/gestores' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Gestores</span>
+                </a>
+              </li>
+            </ul>
+          </details>
         </li>
-        <li>
-          <a routerLink='/usuarios'>
-            <i class='pi pi-users'></i><span class='sidebar-mini-hide'>Usuarios</span>
-          </a>
+
+        <!-- SUBMENÚ 4: Parámetros Técnicos -->
+        <li class='nav-submenu'>
+          <details>
+            <summary>
+              <i class='pi pi-cog'></i>
+              <span class='sidebar-mini-hide'>Parámetros Técnicos</span>
+              <i class='pi pi-chevron-down arrow-icon'></i>
+            </summary>
+            <ul>
+              <li>
+                <a routerLink='/caracteristicas' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Características</span>
+                </a>
+              </li>
+
+              <li>
+                <a routerLink='/cerramientos' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Cerramientos</span>
+                </a>
+              </li>
+
+              <li>
+                <a routerLink='/conservaciones' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Estados de conservación</span>
+                </a>
+              </li>
+
+              <li>
+                <a routerLink='/estadosusos' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Estados de uso</span>
+                </a>
+              </li>
+
+              <li>
+                <a routerLink='/iluminaciones' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Iluminaciones</span>
+                </a>
+              </li>
+
+              <li>
+                <a routerLink='/medidas' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Medidas</span>
+                </a>
+              </li>
+
+              <li>
+                <a routerLink='/pavimentos' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Pavimentos</span>
+                </a>
+              </li>
+
+            </ul>
+          </details>
         </li>
-        <li>
-          <a routerLink='/menus'>
-            <!-- <i class='si si-home'></i> -->
-            <span class='sidebar-mini-hide'>Menus</span>
-          </a>
+
+        <!-- SUBMENÚ 5: Niveles -->
+        <li class='nav-submenu'>
+          <details>
+            <summary>
+              <i class='pi pi-sliders-h'></i>
+              <span class='sidebar-mini-hide'>Niveles</span>
+              <i class='pi pi-chevron-down arrow-icon'></i>
+            </summary>
+            <ul>
+
+              <li>
+                <a routerLink='/nivelesdotaciones' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Niveles Dotaciones</span>
+                </a>
+              </li>
+
+              <li>
+                <a routerLink='/niveleseducativos' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Niveles Educativos</span>
+                </a>
+              </li>
+
+              <li>
+                <a routerLink='/nivelesenergeticos' routerLinkActive='active'>
+                  <span class='sidebar-mini-hide'>Niveles Energéticos</span>
+                </a>
+              </li>
+
+            </ul>
+          </details>
         </li>
-        <li>
-          <a routerLink='/roles'>
-            <span class='sidebar-mini-hide'>Roles</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/caracteristicas'>
-            <i class='si si-home'></i><span class='sidebar-mini-hide'>Características</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/auditorias'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Auditorias</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/pavimentos'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Pavimentos</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/medidas'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Medidas</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/actividadesdeportivas'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Actividades Deportivas</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/centroseducativos'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Centros Educativos</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/cerramientos'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Cerramientos</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/conservaciones'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Estado de conservación</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/nivelesenergeticos'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Niveles energéticos</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/niveleseducativos'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Niveles educativos</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/nivelesdotaciones'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Niveles de dotaciones</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/iluminaciones'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Iluminaciones</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/estadosusos'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Estados de uso</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/espaciosdeportivos'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Espacios deportivos</span>
-          </a>
-        </li>
-        <li>
-          <a routerLink='/espacioscomplementarios'>
-            <!--
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-clock-icon lucide-clipboard-clock"><path d="M16 14v2.2l1.6 1"/><path d="M16 4h2a2 2 0 0 1 2 2v.832"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h2"/><circle cx="16" cy="16" r="6"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
-            -->
-            <span class='sidebar-mini-hide'>Espacios complementarios</span>
-          </a>
-        </li>
+
       </ul>
     </div>
   </div>

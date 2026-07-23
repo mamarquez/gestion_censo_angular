@@ -203,17 +203,20 @@
 <br/>
 
 <p-table
-    [value]="instalaciones"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    [size]="'small'"
-    [stripedRows]="true"
-    [paginator]="true"
-    [rows]="20"
-    [rowsPerPageOptions]="[20, 50, 100]"
-    [showCurrentPageReport]="true"
-    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
-    dataKey="id"
-    [loading]="cargando">
+  size='small'
+  [value]='instalaciones'
+  [tableStyle]="{ 'min-width': '50rem' }"
+  [stripedRows]='true'
+  [paginator]='true'
+  [rows]='10'
+  [rowsPerPageOptions]='[10, 20, 50, 100]'
+  [showCurrentPageReport]='true'
+  currentPageReportTemplate='Mostrando {first} a {last} de {totalRecords} registros'
+  dataKey='id'
+  [loading]='cargando'
+  sortField='nombre'
+  [sortOrder]='1'
+>
 
     <ng-template pTemplate="header">
         <tr>

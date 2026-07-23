@@ -1,10 +1,12 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { AUTH } from '../auth/auth.constants';
 import { NivelEnergetico } from '../models/nivelenergetico';
 import { ApiResponse } from '../models/apiresponse';
+import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
+import { buildHttpParams } from '../utils/params.util';
 
 
 @Injectable({
@@ -14,12 +16,33 @@ export class NivelEnergeticoService {
 
   private readonly http = inject(HttpClient);
   private readonly api = `${AUTH.API}/nivelesenergeticos`;
+  private readonly headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
 
-
-   /**
-   * Obtener todos los estados de conservaciones
+  /**
+   * Obtener nivel energetico
    */
-  getAll(): Observable<ApiResponse<NivelEnergetico[]>> {
-    return this.http.get<ApiResponse<NivelEnergetico[]>>(this.api);
+  getAll(filtros?: any): Observable<ApiResponse<NivelEnergetico[]>> {
+    return this.http.get<ApiResponseWrapper<NivelEnergetico[]>>(`${this.api}`, {
+      params: buildHttpParams(filtros),
+      headers: this.headers
+    });
+  }
+
+  /**
+   * Cambia el estado de un registro
+   * @param id Id del registro
+   */
+  cambiarEstado(id: number): Observable<ApiResponse<NivelEnergetico>> {
+    return this.http.patch<ApiResponse<NivelEnergetico>>(`${this.api}/${id}`, null, { headers: this.headers });
+  }
+
+  /**
+   * Borra un registro
+   * @param id Id del registro
+   */
+  borrarRegistro(id: number): Observable<ApiResponse<NivelEnergetico>> {
+    return this.http.delete<ApiResponse<NivelEnergetico>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

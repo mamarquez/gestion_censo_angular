@@ -1,39 +1,147 @@
 <div class="row">
-  <h1>Gestión de auditoría</h1>
+  <h1>Auditoría</h1>
 </div>
 
 <br/>
 
+<!-- Contenedor principal del filtro -->
+<div class='bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-6' [formGroup]='form'>
+
+  <!-- Rejilla de Filtros Inline (Forzado con estilos inline) -->
+  <div style="display: flex !important; flex-wrap: wrap !important; align-items: flex-end !important; gap: 1rem !important; margin-bottom: 1rem !important;">
+
+    <!-- Filtro Fecha -->
+    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+      <label for="filtro-fecha" class="text-xs font-semibold text-slate-600">Fecha</label>
+
+      <p-datepicker
+        #dp
+        inputId="filtro-fecha"
+        formControlName="fecha"
+        [showIcon]="true"
+        [showOnFocus]="false"
+        dateFormat="dd/mm/yy"
+        selectionMode="range"
+        [readonlyInput]="true"
+        [style]="{'width':'100%'}"
+        styleClass="w-full"
+      >
+        <!-- Footer con los botones Hoy / Limpiar -->
+        <ng-template pTemplate="footer">
+          <div class="flex justify-between p-2 border-t border-slate-200 bg-slate-50">
+            <button
+              type="button"
+              class="p-button-text p-button-sm text-xs font-semibold text-emerald-600 hover:text-emerald-700 cursor-pointer"
+              (click)="dp.onTodayButtonClick($event)">
+              Hoy
+            </button>
+            <button
+              type="button"
+              class="p-button-text p-button-sm text-xs font-semibold text-rose-500 hover:text-rose-600 cursor-pointer"
+              (click)="dp.onClearButtonClick($event)">
+              Limpiar
+            </button>
+          </div>
+        </ng-template>
+      </p-datepicker>
+    </div>
+
+    <!-- Filtro Tabla -->
+    <div style="display: flex; flex-direction: column; gap: 0.25rem; width: 12rem;">
+      <label for="filtro-tabla" class="text-xs font-semibold text-slate-600">Tabla</label>
+      <input
+        id="filtro-tabla"
+        type="text"
+        pInputText
+        formControlName="tabla"
+        placeholder="Ej. Usuarios..."
+        style="width: 100% !important;"
+      />
+    </div>
+
+    <!-- Filtro operaciones -->
+    <div style="display: flex; flex-direction: column; gap: 0.25rem; width: 12rem;">
+      <label for="filtro-operacion" class="text-xs font-semibold text-slate-600">Operación</label>
+
+      <p-select
+        inputId="filtro-operacion"
+        formControlName="operacion"
+        [options]="operacionesOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Todos"
+        [showClear]="true"
+        styleClass="w-full"
+        [style]="{'width':'100%'}"
+      >
+      </p-select>
+    </div>
+
+    <!-- Filtro usuario -->
+    <div style="display: flex; flex-direction: column; gap: 0.25rem; width: 12rem;">
+      <label for="filtro-usuario" class="text-xs font-semibold text-slate-600">Usuario</label>
+      <input
+        id="filtro-usuario"
+        type="text"
+        pInputText
+        formControlName="usuario"
+        placeholder="Ej. Prueba..."
+        style="width: 100% !important;"
+      />
+    </div>
+
+    <!-- Botones de Acción (Alineados a la derecha en la misma línea) -->
+    <div style="display: flex !important; align-items: flex-end !important; gap: 0.5rem !important; margin-left: auto !important;">
+      <p-button
+        icon='pi pi-filter-slash'
+        styleClass='p-button-outlined p-button-secondary p-button-sm'
+        (onClick)='limpiar()'>
+      </p-button>
+      <p-button
+        type='button'
+        icon='pi pi-search'
+        styleClass='p-button-primary p-button-sm'
+        (onClick)='buscar()'>
+      </p-button>
+    </div>
+
+  </div>
+
+</div>
+
+<br />
+
 <p-table
-  [value]="auditorias"
+  size='small'
+  [value]='auditorias'
   [tableStyle]="{ 'min-width': '50rem' }"
-  [size]="'small'"
-  [stripedRows]="true"
-  [paginator]="true"
-  [rows]="20"
-  [rowsPerPageOptions]="[20, 50, 100]"
-  [showCurrentPageReport]="true"
-  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
-  dataKey="id"
-  sortField="fecha"
-  [sortOrder]="-1"
-  [loading]="cargando">
+  [stripedRows]='true'
+  [paginator]='true'
+  [rows]='10'
+  [rowsPerPageOptions]='[10, 20, 50, 100]'
+  [showCurrentPageReport]='true'
+  currentPageReportTemplate='Mostrando {first} a {last} de {totalRecords} registros'
+  dataKey='id'
+  [loading]='cargando'
+  sortField='fecha'
+  [sortOrder]='-1'
+>
 
   <ng-template pTemplate="header">
     <tr>
-      <th id="auditoria-fecha" pSortableColumn="fecha">Fecha<p-sortIcon field="fecha"></p-sortIcon></th>
-      <th id="auditoria-tabla" pSortableColumn="tabla">Tabla<p-sortIcon field="tabla"></p-sortIcon></th>
-      <th id="auditoria-registro" pSortableColumn="registroId">Registro<p-sortIcon field="registroId"></p-sortIcon></th>
-      <th id="auditoria-operacion" pSortableColumn="operacion">Operación<p-sortIcon field="operacion"></p-sortIcon></th>
-      <th id="auditoria-usuario" pSortableColumn="usuario.nombreUsuario">Usuario<p-sortIcon field="usuario.nombreUsuario"></p-sortIcon></th>
-      <th id='auditoria-antiguo'>Anterior</th>
-      <th id='auditoria-nuevo'>Nuevo</th>
+      <th id="auditoria-fecha" style='width: 10%;' pSortableColumn="fecha">Fecha<p-sortIcon field="fecha"></p-sortIcon></th>
+      <th id="auditoria-tabla" style='width: 10%;' pSortableColumn="tabla">Tabla<p-sortIcon field="tabla"></p-sortIcon></th>
+      <th id="auditoria-operacion" style="text-align: center !important; width: 10%;" pSortableColumn="operacion">Operación<p-sortIcon field="operacion"></p-sortIcon></th>
+      <th id="auditoria-usuario" style='width: 10%;' pSortableColumn="usuario.nombreUsuario">Usuario<p-sortIcon field="usuario.nombreUsuario"></p-sortIcon></th>
+      <th id='auditoria-antiguo'>V. Anterior</th>
+      <th id='auditoria-nuevo'>V. Nuevo</th>
+      <th id="auditoria-ver" style='width: 5%;'></th>
     </tr>
   </ng-template>
 
   <ng-template pTemplate="emptymessage">
     <tr>
-      <td colspan="6">
+      <td colspan="7">
         <div style="display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-off"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/></svg>
           <p style="margin-top: 1rem; color: #64748b; font-weight: 600;">No hay registros para mostrar</p>
@@ -44,20 +152,33 @@
 
   <ng-template pTemplate="body" let-auditoria>
     <tr>
-      <td>{{ auditoria.fecha | date:'dd/MM/yyyy HH:mm:ss' }}</td>
-      <td>{{ auditoria.tabla }}</td>
-      <td>{{ auditoria.registroId }}</td>
-      <td>
+      <td style='width: 10%;'>{{ auditoria.fecha | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+      <td style='width: 10%;'>{{ auditoria.tabla }}</td>
+      <td style="text-align: center !important; width: 10%;">
         <p-tag
           [value]="auditoria.operacion"
           [severity]="getSeverity(auditoria.operacion)">
         </p-tag>
       </td>
-      <td>
-        {{ auditoria.usuario?.nombreUsuario }}
-      </td>
+      <td style='width: 10%;'>{{ auditoria.usuario?.nombreUsuario }}</td>
       <td>{{ auditoria.valorAnterior }}</td>
       <td>{{ auditoria.valorNuevo }}</td>
+      <td>
+        <p-button
+          severity='secondary'
+          [rounded]='true'
+          [text]='true'
+          pTooltip='Ver'
+          tooltipPosition='left'
+          placeholder='Left'
+          (onClick)='ver(auditoria.id)'
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style='color: #0d6efd'>
+            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </p-button>
+      </td>
     </tr>
   </ng-template>
 </p-table>

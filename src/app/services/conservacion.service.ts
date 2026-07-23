@@ -1,10 +1,12 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { AUTH } from '../auth/auth.constants';
 import { Conservacion } from '../models/conservacion';
 import { ApiResponse } from '../models/apiresponse';
+import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
+import { buildHttpParams } from '../utils/params.util';
 
 
 @Injectable({
@@ -14,12 +16,33 @@ export class ConservacionService {
 
   private readonly http = inject(HttpClient);
   private readonly api = `${AUTH.API}/conservaciones`;
+  private readonly headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
 
-
-   /**
-   * Obtener todos los estados de conservaciones
+  /**
+   * Obtener estado de conservación
    */
-  getAll(): Observable<ApiResponse<Conservacion[]>> {
-    return this.http.get<ApiResponse<Conservacion[]>>(this.api);
+  getAll(filtros?: any): Observable<ApiResponse<Conservacion[]>> {
+    return this.http.get<ApiResponseWrapper<Conservacion[]>>(`${this.api}`, {
+      params: buildHttpParams(filtros),
+      headers: this.headers
+    });
+  }
+
+  /**
+   * Cambia el estado de un registro
+   * @param id Id del registro
+   */
+  cambiarEstado(id: number): Observable<ApiResponse<Conservacion>> {
+    return this.http.patch<ApiResponse<Conservacion>>(`${this.api}/${id}`, null, { headers: this.headers });
+  }
+
+  /**
+   * Borra un registro
+   * @param id Id del registro
+   */
+  borrarRegistro(id: number): Observable<ApiResponse<Conservacion>> {
+    return this.http.delete<ApiResponse<Conservacion>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

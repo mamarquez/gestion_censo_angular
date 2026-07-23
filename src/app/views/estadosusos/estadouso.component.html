@@ -5,23 +5,27 @@
 <br/>
 
 <p-table
-    [value]="estadosusos"
-    [tableStyle]="{ 'min-width': '50rem' }"
-    [size]="'small'"
-    [stripedRows]="true"
-    [paginator]="true"
-    [rows]="20"
-    [rowsPerPageOptions]="[20, 50, 100]"
-    [showCurrentPageReport]="true"
-    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
-    dataKey="id"
-    [loading]="cargando">
+  size='small'
+  [value]='estadosusos'
+  [tableStyle]="{ 'min-width': '50rem' }"
+  [stripedRows]='true'
+  [paginator]='true'
+  [rows]='10'
+  [rowsPerPageOptions]='[10, 20, 50, 100]'
+  [showCurrentPageReport]='true'
+  currentPageReportTemplate='Mostrando {first} a {last} de {totalRecords} registros'
+  dataKey='id'
+  [loading]='cargando'
+  sortField='nombre'
+  [sortOrder]='1'
+>
 
     <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
-            <th>Estado</th>
-            <th></th>
+          <th id='estadouso.nombre' pSortableColumn='nombre'>Nombre<p-sortIcon field='nombre'></p-sortIcon></th>
+          <th id='estadouso.descripcion' pSortableColumn='descripcion'>Descripción<p-sortIcon field='descripcion'></p-sortIcon></th>
+          <th id='estadouso.estado' class='text-center' style='width: 10%'>Estado</th>
+          <th id='estadouso.accion' class='text-right' style='width: 10%'></th>
         </tr>
     </ng-template>
 

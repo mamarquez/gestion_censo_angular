@@ -19,7 +19,7 @@ import { NivelEnergeticoComponent } from './views/nivelesenergeticos/nivelenerge
 import { NivelEducativoComponent } from './views/niveleseducativos/niveleducativo.component';
 import { NivelDotacionComponent } from './views/nivelesdotaciones/niveldotacion.component';
 import { IluminacionComponent } from './views/iluminaciones/iluminacion.component';
-import { GestorComponent } from './views/gestores/cerramiento.component';
+import { GestorComponent } from './views/gestores/gestor.component';
 import { EstadoUsoComponent } from './views/estadosusos/estadouso.component';
 import { EspacioDeportivoCompoment } from './views/espaciosdeportivos/espaciodeportivo.component';
 import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/espaciocomplementario.component';

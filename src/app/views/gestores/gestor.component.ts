@@ -7,30 +7,30 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../services/dialog.service';
+import { TooltipModule } from 'primeng/tooltip';
 
-
-import { Caracteristica } from '../../models/caracteristica';
-import { CaracteristicaService } from '../../services/caracteristica.service';
+import { Gestor } from '../../models/gestor';
+import { GestorService } from '../../services/gestor.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-caracteristica',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule],
-  templateUrl: './caracteristica.component.html',
-  styleUrl: './pavimento.component.css',
+  selector: 'app-gestor',
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
+  templateUrl: './gestor.component.html',
+  styleUrl: './gestor.component.css',
 })
-export class CaracteristicaComponent implements OnInit {
+export class GestorComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(CaracteristicaService);
+  private readonly service = inject(GestorService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  caracteristicas: Caracteristica [] = [];
+  gestores: Gestor [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
+    id: [''],
     nombre: [''],
     descripcion: [''],
     activo: ['']
@@ -52,9 +52,9 @@ export class CaracteristicaComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.caracteristicas = response.data;
+          this.gestores = response.data;
         } else {
-          this.caracteristicas = [];
+          this.gestores = [];
         }
 
         this.cargando = false;
@@ -62,9 +62,13 @@ export class CaracteristicaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando provincias:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los municipios' });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar los gestores'
+        });
         this.cargando = false;
-        this.caracteristicas = [];
+        this.gestores = [];
       }
     });
   }
@@ -72,12 +76,12 @@ export class CaracteristicaComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.caracteristicas = response.data;
+        this.gestores = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar municipios', err);
+        console.error('Error al cargar gestores', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -93,9 +97,9 @@ export class CaracteristicaComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const caracteristica = this.caracteristicas.find(p => p.id === id);
-        if (caracteristica) {
-          caracteristica.activo = !caracteristica.activo;
+        const gestor = this.gestores.find(p => p.id === id);
+        if (gestor) {
+          gestor.activo = !gestor.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -103,7 +107,7 @@ export class CaracteristicaComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado de la caracteristica', err);
+        console.error('Error al cambiar el estado de gestor', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -111,12 +115,12 @@ export class CaracteristicaComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(caracteristica: Caracteristica): void {
+  confirmarBorrado(gestor: Gestor): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${caracteristica.nombre}</strong>"?`,
+      mensaje: `¿Deseas eliminar "<strong>${gestor.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(caracteristica.id)
+      onAccept: () => this.borrarRegistro(gestor.id)
     });
   }
 
@@ -125,9 +129,12 @@ export class CaracteristicaComponent implements OnInit {
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.caracteristicas = this.caracteristicas.filter(p => p.id !== id);
-
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
+        this.gestores = this.gestores.filter(p => p.id !== id);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Eliminado',
+          detail: 'Se ha borrado el registro correctamente'
+        });
         this.cargando = false;
         this.cdr.detectChanges();
       },
