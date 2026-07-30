@@ -13,6 +13,7 @@ import { Gestor } from '../../models/gestor';
 import { GestorService } from '../../services/gestor.service';
 
 @Component({
+  standalone: true,
   selector: 'app-gestor',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
   templateUrl: './gestor.component.html',
