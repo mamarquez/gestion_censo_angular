@@ -77,9 +77,9 @@
 
     <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
-          <th pSortableColumn="descripcion">Descripción<p-sortIcon field="descripcion"></p-sortIcon></th>
-          <th id='municipio.estado' class='text-center' style='width: 10%'>Estado</th>
+          <th id='municipio.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+          <th id='municipio.descripcion' pSortableColumn="descripcion">Descripción<p-sortIcon field="descripcion"></p-sortIcon></th>
+          <th id='municipio.estado' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
           <th id='municipio.accion' class='text-right' style='width: 10%'></th>
         </tr>
     </ng-template>

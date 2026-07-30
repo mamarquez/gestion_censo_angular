@@ -67,7 +67,7 @@
     <ng-template pTemplate="header">
         <tr>
           <th id='rol.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
-          <th id='rol.estado' class='text-center' style='width: 10%'>Estado</th>
+          <th id='rol.estado' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
           <th id='rol.accion' class='text-right' style='width: 10%'></th>
         </tr>
     </ng-template>

@@ -93,14 +93,14 @@
       <th id='medida.nombre' pSortableColumn='nombre'>Nombre<p-sortIcon field='nombre'></p-sortIcon></th>
       <th id='medida.descripcion' pSortableColumn='descripcion'>Descripción<p-sortIcon field='descripcion'></p-sortIcon></th>
       <th id='medida.valor' pSortableColumn='valor' class='text-center' style='width: 10%'>Valor<p-sortIcon field='valor'></p-sortIcon></th>
-      <th id='medida.estado' class='text-center' style='width: 10%'>Estado</th>
+      <th id='medida.estado' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
       <th id='medida.accion' class='text-right' style='width: 10%'></th>
     </tr>
   </ng-template>
 
   <ng-template pTemplate='emptymessage'>
     <tr>
-      <td colspan='4'>
+      <td colspan='5'>
         <div style='display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;'>
           <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'
                stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
