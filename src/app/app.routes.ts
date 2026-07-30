@@ -25,6 +25,7 @@ import { EspacioDeportivoCompoment } from './views/espaciosdeportivos/espaciodep
 import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/espaciocomplementario.component';
 import { PropietarioComponent } from './views/propietarios/propietario.component';
 import { TiposGestoresPropiedadesComponent } from './views/tiposgestorespropiedades/tiposgestorespropiedades.component';
+import { ConfiguracionComponent } from './views/configuracion/configuraciones.component';
 
 export const routes: Routes = [
   {
@@ -90,6 +91,10 @@ export const routes: Routes = [
       {
         path: 'pavimentos',
         component: PavimentoComponent
+      },
+      {
+        path: 'configuraciones',
+        component: ConfiguracionComponent
       },
       {
         path: 'medidas',

@@ -1,37 +1,41 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
+import { Conservacion } from '../../models/conservacion';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogService } from '../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
-
-import { Menu } from '../../models/menu';
-import { MenuService } from '../../services/menu.service';
+import { MessageService } from 'primeng/api';
+import { DialogService } from '../../services/dialog.service';
+import { Configuracion } from '../../models/configuracion';
+import { ConfiguracionService } from '../../services/configuracion.service';
+import { Truncar } from '../../pipe/trucar.pipe';
 
 @Component({
-  selector: 'app-menu',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './menu.component.html',
-  styleUrl: './menu.component.css',
+  standalone: true,
+  selector: 'app-parametros',
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, Truncar],
+  templateUrl: './configuraciones.component.html',
+  styleUrl: './configuraciones.component.css'
 })
-export class MenuComponent implements OnInit {
+export class ConfiguracionComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(MenuService);
+  private readonly service = inject(ConfiguracionService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  menus: Menu [] = [];
+  configuraciones: Configuracion [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
+    id: [''],
     nombre: [''],
     descripcion: [''],
+    valor: [''],
     activo: ['']
   });
 
@@ -51,19 +55,19 @@ export class MenuComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.menus = response.data;
+          this.configuraciones = response.data;
         } else {
-          this.menus = [];
+          this.configuraciones = [];
         }
 
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando provincias:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los roles' });
+        console.error('Error cargando configuración:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar configuración' });
         this.cargando = false;
-        this.menus = [];
+        this.configuraciones = [];
       }
     });
   }
@@ -71,12 +75,12 @@ export class MenuComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.menus = response.data || [];
+        this.configuraciones = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar menús', err);
+        console.error('Error al cargar configuración', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -92,9 +96,9 @@ export class MenuComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const menu = this.menus.find(p => p.id === id);
-        if (menu) {
-          menu.activo = !menu.activo;
+        const configuracion = this.configuraciones.find(p => p.id === id);
+        if (configuracion) {
+          configuracion.activo = !configuracion.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -102,7 +106,7 @@ export class MenuComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado del menu', err);
+        console.error('Error al cambiar el estado', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -110,34 +114,36 @@ export class MenuComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(menu: Menu): void {
+  confirmarBorrado(registro: Conservacion): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${menu.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${registro.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(menu.id)
+      onAccept: () => this.borrarRegistro(registro.id)
     });
   }
 
-  private borrarRegistro(id: number) {
+  private borrarRegistro(id: number): void {
     this.cargando = true;
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.menus = this.menus.filter(p => p.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
+        this.configuraciones = this.configuraciones.filter(p => p.id !== id);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Eliminado',
+          detail: 'Se ha borrado el registro correctamente'
+        });
         this.cargando = false;
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
         this.cargando = false;
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       }
     });
-
-    this.cargando = false;
   }
 
 }
