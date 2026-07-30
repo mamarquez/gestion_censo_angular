@@ -24,7 +24,7 @@ import { EstadoUsoComponent } from './views/estadosusos/estadouso.component';
 import { EspacioDeportivoCompoment } from './views/espaciosdeportivos/espaciodeportivo.component';
 import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/espaciocomplementario.component';
 import { PropietarioComponent } from './views/propietarios/propietario.component';
-import { TipoGestorPropiedadComponent} from './views/tiposgestorespropiedades/tipogestorpropiedades.component';
+import { TiposGestoresPropiedadesComponent } from './views/tiposgestorespropiedades/tiposgestorespropiedades.component';
 
 export const routes: Routes = [
   {
@@ -68,8 +68,8 @@ export const routes: Routes = [
         component: ProvinciaComponent
       },
       {
-        path: 'tiposgestorpropiedades',
-        component: TipoGestorPropiedadComponent
+        path: 'tiposgestorespropiedades',
+        component: TiposGestoresPropiedadesComponent
       },
       {
         path: 'roles',

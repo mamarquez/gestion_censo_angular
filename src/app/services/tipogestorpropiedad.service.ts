@@ -1,20 +1,20 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Rol } from '../models/rol';
 import { AUTH } from '../auth/auth.constants';
 import { ApiResponse } from '../models/apiresponse';
+import { TipoGestorPropiedad } from '../models/TipoGestorPropiedad';
 import { buildHttpParams } from '../utils/params.util';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RolService {
+export class TipoGestorPropiedadService {
 
   private readonly http = inject(HttpClient);
-  private readonly api = `${AUTH.API}/roles`;
+  private readonly api = `${AUTH.API}/tiposgestorespropiedades`;
   private readonly headers = new HttpHeaders({
     'Content-Type': 'application/json'
   });
@@ -22,8 +22,8 @@ export class RolService {
   /**
    * Obtener roles
    */
-  getAll(filtros?: any): Observable<ApiResponse<Rol[]>> {
-    return this.http.get<ApiResponseWrapper<Rol[]>>(`${this.api}`, {
+  getAll(filtros?: any): Observable<ApiResponse<TipoGestorPropiedad[]>> {
+    return this.http.get<ApiResponseWrapper<TipoGestorPropiedad[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
     });
@@ -33,8 +33,8 @@ export class RolService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<Rol>> {
-    return this.http.patch<ApiResponse<Rol>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponse<TipoGestorPropiedad>> {
+    return this.http.patch<ApiResponse<TipoGestorPropiedad>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**

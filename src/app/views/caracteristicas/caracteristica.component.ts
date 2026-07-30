@@ -17,7 +17,7 @@ import { CaracteristicaService } from '../../services/caracteristica.service';
   selector: 'app-caracteristica',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule],
   templateUrl: './caracteristica.component.html',
-  styleUrl: './pavimento.component.css',
+  styleUrl: './caracteristica.component.css',
 })
 export class CaracteristicaComponent implements OnInit {
 

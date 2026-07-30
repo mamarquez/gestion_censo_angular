@@ -9,28 +9,27 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { Gestor } from '../../models/gestor';
-import { GestorService } from '../../services/gestor.service';
+import { Menu } from '../../models/menu';
+import { MenuService } from '../../services/menu.service';
 
 @Component({
-  selector: 'app-gestor',
+  selector: 'app-menu',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './gestor.component.html',
-  styleUrl: './gestor.component.css',
+  templateUrl: './menu.component.html',
+  styleUrl: './menu.component.css',
 })
-export class GestorComponent implements OnInit {
+export class MenuComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(GestorService);
+  private readonly service = inject(MenuService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  gestores: Gestor [] = [];
+  menus: Menu [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
-    id: [''],
     nombre: [''],
     descripcion: [''],
     activo: ['']
@@ -52,9 +51,9 @@ export class GestorComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.gestores = response.data;
+          this.menus = response.data;
         } else {
-          this.gestores = [];
+          this.menus = [];
         }
 
         this.cargando = false;
@@ -62,13 +61,9 @@ export class GestorComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando provincias:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar los gestores'
-        });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los roles' });
         this.cargando = false;
-        this.gestores = [];
+        this.menus = [];
       }
     });
   }
@@ -76,12 +71,12 @@ export class GestorComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.gestores = response.data || [];
+        this.menus = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar gestores', err);
+        console.error('Error al cargar menús', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -97,9 +92,9 @@ export class GestorComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const gestor = this.gestores.find(p => p.id === id);
-        if (gestor) {
-          gestor.activo = !gestor.activo;
+        const menu = this.menus.find(p => p.id === id);
+        if (menu) {
+          menu.activo = !menu.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -107,7 +102,7 @@ export class GestorComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado de gestor', err);
+        console.error('Error al cambiar el estado del menu', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -115,12 +110,12 @@ export class GestorComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(gestor: Gestor): void {
+  confirmarBorrado(menu: Menu): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${gestor.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${menu.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(gestor.id)
+      onAccept: () => this.borrarRegistro(menu.id)
     });
   }
 
@@ -129,12 +124,8 @@ export class GestorComponent implements OnInit {
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.gestores = this.gestores.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        this.menus = this.menus.filter(p => p.id !== id);
+        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
         this.cargando = false;
         this.cdr.detectChanges();
       },

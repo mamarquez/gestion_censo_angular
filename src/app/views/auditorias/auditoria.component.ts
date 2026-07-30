@@ -19,7 +19,7 @@ import { Tooltip } from 'primeng/tooltip';
   selector: 'app-auditoria',
   imports: [TableModule, DatePipe, Button, InputText, ReactiveFormsModule, DatePickerModule, InputMaskModule, TagModule, SelectModule, Tooltip],
   templateUrl: './auditoria.component.html',
-  styleUrl: './pavimento.component.css'
+  styleUrl: './auditoria.component.css'
 })
 export class AuditoriaComponent implements OnInit {
 

@@ -1,5 +1,5 @@
 <div class="row">
-    <h1>Gestión de tipos de gestores/propiedades</h1>
+    <h1>Gestión de menús</h1>
 </div>
 
 <br/>
@@ -17,20 +17,20 @@
         pInputText
         type='text'
         formControlName='nombre'
-        placeholder='Ej. Nombre...'
+        placeholder='Ej. Usuarios...'
         class='p-inputtext-sm w-full'
       />
     </div>
 
-    <!-- Mostrar -->
+    <!-- Descripcion -->
     <div style='display: flex; flex-direction: column; gap: 0.375rem; width: 250px;'>
-      <label for='filtro-mostrar' class='text-xs font-semibold text-slate-600'>Mostrar</label>
+      <label for='filtro-descripcion' class='text-xs font-semibold text-slate-600'>Descripción</label>
       <input
-        id='filtro-mostrar'
+        id='filtro-descripcion'
         pInputText
         type='text'
-        formControlName='mostrar'
-        placeholder='Ej. Mostrar...'
+        formControlName='descripcion'
+        placeholder='Ej. Menú de...'
         class='p-inputtext-sm w-full'
       />
     </div>
@@ -61,7 +61,7 @@
 
 <p-table
   size='small'
-  [value]='tiposGestoresPropiedades'
+  [value]='menus'
   [tableStyle]="{ 'min-width': '50rem' }"
   [stripedRows]='true'
   [paginator]='true'
@@ -77,10 +77,10 @@
 
     <ng-template pTemplate="header">
         <tr>
-          <th id='gestor.nombre' pSortableColumn='nombre'>Nombre<p-sortIcon field='nombre'></p-sortIcon></th>
-          <th id='gestor.mostrar' pSortableColumn='mostrar'>Mostrar<p-sortIcon field='mostrar'></p-sortIcon></th>
-          <th id='gestor.estado' class='text-center' style='width: 10%'>Estado</th>
-          <th id='gestor.accion' class='text-right' style='width: 10%'></th>
+          <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+          <th pSortableColumn="descripcion">Descripción<p-sortIcon field="descripcion"></p-sortIcon></th>
+          <th id='municipio.estado' class='text-center' style='width: 10%'>Estado</th>
+          <th id='municipio.accion' class='text-right' style='width: 10%'></th>
         </tr>
     </ng-template>
 
@@ -95,23 +95,26 @@
         </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-tiposGestoresPropiedades>
+    <ng-template pTemplate="body" let-menu>
         <tr>
-          <td>{{ tiposGestoresPropiedades.nombre }}</td>
-          <td>{{ tiposGestoresPropiedades.mostrar }}</td>
-          <td class='centrado'>
-            <label class="switch-native {{ tiposGestoresPropiedades.activo ? 'verde' : 'rojo' }}">
-              <input type='checkbox' [checked]='tiposGestoresPropiedades.activo' disabled />
-              <span class='slider-native'></span>
-            </label>
-          </td>
-
+            <td>{{ menu.nombre }}</td>
+            <td>{{ menu.descripcion }}</td>
+            <td class="centrado">
+                <label class="switch-native {{ menu.activo ? 'verde' : 'rojo' }}">
+                    <input type="checkbox" [checked]="menu.activo" disabled />
+                    <span class="slider-native"></span>
+                </label>
+            </td>
           <td
             style='display: flex !important; justify-content: flex-end !important; align-items: center !important; gap: 0.25rem !important;'>
             <p-button
               severity='secondary'
               [rounded]='true'
-              [text]='true'>
+              [text]='true'
+              pTooltip="Editar"
+              tooltipPosition="left"
+              placeholder="Left"
+            >
               <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
                    stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
                 <path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'></path>
@@ -123,20 +126,21 @@
               severity='secondary'
               [rounded]='true'
               [text]='true'
-              (onClick)='cambiarEstado(tiposGestoresPropiedades.id)'
+              (onClick)='cambiarEstado(menu.id)'
+              [pTooltip]="menu.activo ? 'Desactivar' : 'Activar'"
+              tooltipPosition="left"
+              placeholder="Left"
             >
-              @if (tiposGestoresPropiedades.activo) {
-                <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
-                         stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
-                         style='color: blue'>
-                  <rect x='6' y='6' width='12' height='12' rx='2'></rect>
-                </svg>
+              @if (menu.activo) {
+              <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
+                   stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='color: blue'>
+                <rect x='6' y='6' width='12' height='12' rx='2'></rect>
+              </svg>
               } @else {
-                <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
-                   stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
-                   style='color: green'>
-                  <polygon points='6 3 20 12 6 21 6 3'></polygon>
-                </svg>
+              <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
+                 stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='color: green'>
+                <polygon points='6 3 20 12 6 21 6 3'></polygon>
+              </svg>
               }
             </p-button>
 
@@ -144,7 +148,10 @@
               severity='secondary'
               [rounded]='true'
               [text]='true'
-              (onClick)='confirmarBorrado(tiposGestoresPropiedades)'
+              (onClick)='confirmarBorrado(menu)'
+              pTooltip="Borrar"
+              tooltipPosition="left"
+              placeholder="Left"
             >
               <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none'
                    stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
