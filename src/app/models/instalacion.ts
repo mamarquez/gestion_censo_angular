@@ -1,16 +1,22 @@
+import {Provincia} from './provincia';
+import {Municipio} from './municipio';
+import {InstalacionTelefono} from './instalaciontelefono';
+import {Gestor} from './gestor';
+
 export class Instalacion {
     id!: number;
+    codigo!: string;
     nombre!: string;
     nombre_popular?: string;
     direccion?: string;
-    id_provincia!: number;
-    id_municipio!: number;
+    id_provincia!: Provincia;
+    id_municipio!: Municipio;
     cp!: string;
-    tlf_fijo?: string;
-    tlf_movil?: string;
+    telefonos?: InstalacionTelefono;
     fax?: string;
     email?: string;
     web?: string;
+    gestor?: Gestor;
     visible?: boolean = false;
     observaciones?: string;
     baja?: boolean = false;

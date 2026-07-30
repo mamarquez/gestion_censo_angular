@@ -11,13 +11,13 @@
   "private": true,
   "packageManager": "npm@10.9.8",
   "dependencies": {
-    "@angular/animations": "19.1.0",
+    "@angular/animations": "^19.2.25",
     "@angular/common": "19.1.0",
     "@angular/compiler": "19.1.0",
     "@angular/core": "19.1.0",
-    "@angular/forms": "19.1.0",
+    "@angular/forms": "^19.2.25",
     "@angular/platform-browser": "19.1.0",
-    "@angular/router": "19.1.0",
+    "@angular/router": "^19.2.25",
     "@fontsource/montserrat": "^5.2.8",
     "@fontsource/open-sans": "^5.2.7",
     "@fontsource/source-sans-pro": "^5.2.5",
@@ -28,9 +28,9 @@
     "zone.js": "0.15.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "19.1.0",
-    "@angular/cli": "19.1.0",
-    "@angular/compiler-cli": "19.1.0",
+    "@angular-devkit/build-angular": "^21.2.19",
+    "@angular/cli": "^19.2.27",
+    "@angular/compiler-cli": "^19.2.25",
     "typescript": "~5.7.0"
   }
 }

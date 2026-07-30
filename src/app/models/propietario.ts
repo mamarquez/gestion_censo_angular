@@ -1,8 +1,5 @@
-import {TipoGestorPropiedad} from './TipoGestorPropiedad';
-
-export class Gestor {
+export class Propietario {
   id!: number;
-  tipoGestor?: TipoGestorPropiedad;
   nombre!: string;
   descripcion?: string;
   activo!: boolean;

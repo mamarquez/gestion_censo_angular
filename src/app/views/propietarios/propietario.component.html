@@ -1,5 +1,5 @@
 <div class="row">
-    <h1>Gestión de gestores</h1>
+    <h1>Gestión de propietarios</h1>
 </div>
 
 <br/>
@@ -61,7 +61,7 @@
 
 <p-table
   size='small'
-  [value]='gestores'
+  [value]='propietarios'
   [tableStyle]="{ 'min-width': '50rem' }"
   [stripedRows]='true'
   [paginator]='true'
@@ -79,7 +79,6 @@
         <tr>
           <th id='gestor.nombre' pSortableColumn='nombre'>Nombre<p-sortIcon field='nombre'></p-sortIcon></th>
           <th id='gestor.descripcion' pSortableColumn='descripcion'>Descripción<p-sortIcon field='descripcion'></p-sortIcon></th>
-          <th id='gestor.tipogestor' pSortableColumn='tipoGestor.mostrar'>Tipo<p-sortIcon field='tipogestor'></p-sortIcon></th>
           <th id='gestor.estado' class='text-center' style='width: 10%'>Estado</th>
           <th id='gestor.accion' class='text-right' style='width: 10%'></th>
         </tr>
@@ -96,24 +95,16 @@
         </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-gestor>
+    <ng-template pTemplate="body" let-propietario>
         <tr>
-          <td>{{ gestor.nombre }}</td>
-          <td>{{ gestor.descripcion }}</td>
-
-          <td>
-            @if (gestor.tipoGestor) {
-              {{ gestor.tipoGestor.mostrar }}
-            }
-          </td>
-
+          <td>{{ propietario.nombre }}</td>
+          <td>{{ propietario.descripcion }}</td>
           <td class='centrado'>
-            <label class="switch-native {{ gestor.activo ? 'verde' : 'rojo' }}">
-              <input type='checkbox' [checked]='gestor.activo' disabled />
+            <label class="switch-native {{ propietario.activo ? 'verde' : 'rojo' }}">
+              <input type='checkbox' [checked]='propietario.activo' disabled />
               <span class='slider-native'></span>
             </label>
           </td>
-
           <td
             style='display: flex !important; justify-content: flex-end !important; align-items: center !important; gap: 0.25rem !important;'>
             <p-button
@@ -131,9 +122,9 @@
               severity='secondary'
               [rounded]='true'
               [text]='true'
-              (onClick)='cambiarEstado(gestor.id)'
+              (onClick)='cambiarEstado(propietario.id)'
             >
-              @if (gestor.activo) {
+              @if (propietario.activo) {
                 <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
                          stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
                          style='color: blue'>
@@ -152,7 +143,7 @@
               severity='secondary'
               [rounded]='true'
               [text]='true'
-              (onClick)='confirmarBorrado(gestor)'
+              (onClick)='confirmarBorrado(propietario)'
             >
               <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none'
                    stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'

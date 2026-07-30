@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
@@ -8,25 +8,25 @@ import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
-
-import { Gestor } from '../../models/gestor';
-import { GestorService } from '../../services/gestor.service';
+import { Propietario } from '../../models/propietario';
+import { PropietarioService } from '../../services/propietario.service';
 
 @Component({
-  selector: 'app-gestor',
+  standalone: true,
+  selector: 'app-propietario',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './gestor.component.html',
-  styleUrl: './propietario.component.css',
+  templateUrl: './propietario.component.html',
+  styleUrl: './propietario.component.css'
 })
-export class GestorComponent implements OnInit {
+export class PropietarioComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(GestorService);
+  private readonly service = inject(PropietarioService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  gestores: Gestor [] = [];
+  propietarios: Propietario [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
@@ -52,23 +52,23 @@ export class GestorComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.gestores = response.data;
+          this.propietarios = response.data;
         } else {
-          this.gestores = [];
+          this.propietarios = [];
         }
 
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando provincias:', err);
+        console.error('Error cargando propietarios:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Error al cargar los gestores'
+          detail: 'Error al cargar los propietarios'
         });
         this.cargando = false;
-        this.gestores = [];
+        this.propietarios = [];
       }
     });
   }
@@ -76,13 +76,12 @@ export class GestorComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.gestores = response.data || [];
-        console.log(response.data);
+        this.propietarios = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar gestores', err);
+        console.error('Error al cargar propietarios', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -98,9 +97,9 @@ export class GestorComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const gestor = this.gestores.find(p => p.id === id);
-        if (gestor) {
-          gestor.activo = !gestor.activo;
+        const propietario = this.propietarios.find(p => p.id === id);
+        if (propietario) {
+          propietario.activo = !propietario.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -116,12 +115,12 @@ export class GestorComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(gestor: Gestor): void {
+  confirmarBorrado(propietario: Propietario): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${gestor.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${propietario.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(gestor.id)
+      onAccept: () => this.borrarRegistro(propietario.id)
     });
   }
 
@@ -130,7 +129,7 @@ export class GestorComponent implements OnInit {
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.gestores = this.gestores.filter(p => p.id !== id);
+        this.propietarios = this.propietarios.filter(p => p.id !== id);
         this.messageService.add({
           severity: 'success',
           summary: 'Eliminado',

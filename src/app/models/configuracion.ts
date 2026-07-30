@@ -1,10 +1,8 @@
-import {TipoGestorPropiedad} from './TipoGestorPropiedad';
-
-export class Gestor {
+export class Configuracion {
   id!: number;
-  tipoGestor?: TipoGestorPropiedad;
   nombre!: string;
-  descripcion?: string;
+  descripcion?: number;
+  valor!: string;
   activo!: boolean;
 
   // Configuración de validaciones
