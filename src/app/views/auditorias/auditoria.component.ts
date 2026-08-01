@@ -98,22 +98,6 @@ export class AuditoriaComponent implements OnInit {
     });
   }
 
-  ver(id: number): void {
-    this.service.get(id).subscribe({
-      next: (response) => {
-        console.log(response.data);
-        this.auditorias = response.data || [];
-        this.cargando = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al cargar auditoria', err);
-        this.cargando = false;
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
   getSeverity(operacion: string): 'success' | 'warn' | 'danger' | 'secondary' {
     switch (operacion) {
       case 'INSERT':

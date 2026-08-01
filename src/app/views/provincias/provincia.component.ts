@@ -178,10 +178,10 @@ export class ProvinciaComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Something went wrong', detail: 'We couldn’t complete the action. Please try again.' });
     }
     showSecondary() {
-        this.messageService.add({ severity: 'secondary', summary: 'For your information', detail: 'This is a secondary toast message.' });
+        this.messageService.add({ severity: 'secondary', summary: 'For your information', detail: 'This is acciones-tabla.component.html secondary toast message.' });
     }
     showContrast() {
-        this.messageService.add({ severity: 'contrast', summary: 'High contrast', detail: 'This is a contrast toast message.' });
+        this.messageService.add({ severity: 'contrast', summary: 'High contrast', detail: 'This is acciones-tabla.component.html contrast toast message.' });
     }
    */
 }

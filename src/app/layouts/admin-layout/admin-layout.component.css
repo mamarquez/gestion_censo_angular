@@ -4,10 +4,10 @@
     width: 100%;
 }
 
-/* El contenedor principal es una FILA (Sidebar a la izquierda, resto a la derecha) */
+/* El contenedor principal es una FILA (Sidebar acciones-tabla.component.html la izquierda, resto acciones-tabla.component.html la derecha) */
 .layout-main-wrapper {
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
   height: 100vh;
   width: 100%;
   overflow: hidden;
@@ -17,8 +17,8 @@
 /* El contenedor derecho es una COLUMNA (Header arriba, Main en medio, Footer abajo) */
 .content-wrapper {
   display: flex;
-  flex-direction: column; 
-  flex: 1 1 auto; /* Ocupa todo el espacio restante a la derecha */
+  flex-direction: column;
+  flex: 1 1 auto; /* Ocupa todo el espacio restante acciones-tabla.component.html la derecha */
   height: 100vh;
   overflow: hidden;
 }

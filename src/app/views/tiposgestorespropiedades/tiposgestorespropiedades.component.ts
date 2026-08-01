@@ -9,7 +9,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../services/dialog.service';
 
 import { TipoGestorPropiedadService } from '../../services/tipogestorpropiedad.service';
-import { TipoGestorPropiedad } from '../../models/TipoGestorPropiedad';
+import { TipoGestorPropiedad } from '../../models/tipogestorpropiedad';
 
 @Component({
   standalone: true,

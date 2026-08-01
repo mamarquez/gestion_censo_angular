@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { AUTH } from '../auth/auth.constants';
 import { ApiResponse } from '../models/apiresponse';
-import { TipoGestorPropiedad } from '../models/TipoGestorPropiedad';
+import { TipoGestorPropiedad } from '../models/tipogestorpropiedad';
 import { buildHttpParams } from '../utils/params.util';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 

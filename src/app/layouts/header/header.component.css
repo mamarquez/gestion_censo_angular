@@ -36,7 +36,7 @@
 /* Dropdown del usuario */
 .avatar-dropdown-wrapper {
   position: relative;
-  display: inline-flex; /* Cambiado a inline-flex para mejor comportamiento del botón */
+  display: inline-flex; /* Cambiado acciones-tabla.component.html inline-flex para mejor comportamiento del botón */
   align-items: center;
 }
 

@@ -26,6 +26,7 @@ import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/
 import { PropietarioComponent } from './views/propietarios/propietario.component';
 import { TiposGestoresPropiedadesComponent } from './views/tiposgestorespropiedades/tiposgestorespropiedades.component';
 import { ConfiguracionComponent } from './views/configuracion/configuraciones.component';
+import { EditUsuarioComponent } from './views/editusuario/edit.component';
 
 export const routes: Routes = [
   {
@@ -54,11 +55,17 @@ export const routes: Routes = [
       },
       {
         path: 'municipios',
-        component: MunicipioComponent
+        children: [
+          { path: '', component: MunicipioComponent },
+          // { path: ':id', component: EditUsuarioComponent },
+        ]
       },
       {
         path: 'usuarios',
-        component: UsuarioComponent
+        children: [
+          { path: '', component: UsuarioComponent },
+          { path: ':id', component: EditUsuarioComponent },
+        ]
       },
       {
         path: 'menus',

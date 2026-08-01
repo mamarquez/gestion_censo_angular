@@ -55,7 +55,7 @@ h1 {
 /* Personalización de PrimeNG DataTable */
 .p-datatable.p-datatable-sm .p-datatable-thead > tr > th,
 .p-datatable.p-datatable-sm .p-datatable-tbody > tr > td {
-  padding: 2px 6px !important;
+  padding: 1px 6px !important;
   font-size: 12px !important;
   line-height: 1.1 !important;
 }
@@ -214,15 +214,15 @@ app-footer {
 }
 
 /* =========================================================
-   Reducción quirúrgica del Datepicker para igualar a Tabla
+   Reducción quirúrgica del Datepicker para igualar acciones-tabla.component.html Tabla
    ========================================================= */
 
 /* src/styles.css - Estilos limpios para el Datepicker */
 
-/* 1. Contenedor flex con orden correcto (Input a la izq, Botón a la der) */
+/* 1. Contenedor flex con orden correcto (Input acciones-tabla.component.html la izq, Botón acciones-tabla.component.html la der) */
 .datepicker-container span.p-datepicker.p-inputwrapper {
   display: flex !important;
-  flex-direction: row !important; /* Mantiene Input a la izq y Botón a la der */
+  flex-direction: row !important; /* Mantiene Input acciones-tabla.component.html la izq y Botón acciones-tabla.component.html la der */
   align-items: center !important;
   width: 100% !important;
   height: 33px !important;
@@ -243,7 +243,7 @@ app-footer {
   box-sizing: border-box !important;
 }
 
-/* 3. El Botón con el icono (a la derecha) */
+/* 3. El Botón con el icono (acciones-tabla.component.html la derecha) */
 .datepicker-container button.p-datepicker-dropdown {
   height: 33px !important;
   width: 33px !important;
@@ -260,3 +260,21 @@ app-footer {
   box-sizing: border-box !important;
 }
 
+/***
+  Tag personalizado
+ */
+
+.p-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* background: var(--p-tag-primary-background); */
+  /* color: var(--p-tag-primary-color); */
+  font-size: 0.575rem !important;
+  /*
+  font-weight: var(--p-tag-font-weight);
+  padding: var(--p-tag-padding);
+  border-radius: var(--p-tag-border-radius);
+  gap: var(--p-tag-gap);
+  */
+}

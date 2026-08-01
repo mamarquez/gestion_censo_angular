@@ -12,11 +12,12 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CentroEducativo } from '../../models/centroeducativo';
 import { CentroEducativoService } from '../../services/centroeducativo.service';
 import { ActividadDeportiva } from '../../models/actividaddeportiva';
+import { AccionesTablaComponent } from '../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   standalone: true,
   selector: 'app-centro-educativo',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
   templateUrl: './centroeducativo.component.html',
   styleUrl: './centroeducativo.component.css',
 })

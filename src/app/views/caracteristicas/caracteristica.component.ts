@@ -11,11 +11,12 @@ import { DialogService } from '../../services/dialog.service';
 
 import { Caracteristica } from '../../models/caracteristica';
 import { CaracteristicaService } from '../../services/caracteristica.service';
+import { AccionesTablaComponent } from '../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   standalone: true,
   selector: 'app-caracteristica',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, AccionesTablaComponent],
   templateUrl: './caracteristica.component.html',
   styleUrl: './caracteristica.component.css',
 })

@@ -242,15 +242,15 @@
 
 .login-options {
   display: flex;
-  justify-content: space-between; /* Empuja el switch a la izquierda y el botón a la derecha */
+  justify-content: space-between; /* Empuja el switch acciones-tabla.component.html la izquierda y el botón acciones-tabla.component.html la derecha */
   align-items: center;            /* Los alinea verticalmente al centro */
   width: 100%;                    /* Asegura que ocupe todo el ancho disponible */
   gap: 1.5rem;                    /* Espacio mínimo de separación entre ellos */
-  margin-top: 0.5rem;             
+  margin-top: 0.5rem;
 }
 
 .switch {
-  display: inline-flex;           /* Cambiado a inline-flex para ajustarse bien a su contenido */
+  display: inline-flex;           /* Cambiado acciones-tabla.component.html inline-flex para ajustarse bien acciones-tabla.component.html su contenido */
   align-items: center;
   gap: 0.75rem;
   cursor: pointer;

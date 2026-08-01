@@ -11,10 +11,11 @@ import { TooltipModule } from 'primeng/tooltip';
 
 import { ActividadDeportiva } from '../../models/actividaddeportiva';
 import { ActividadDeportivaService } from '../../services/adtividaddeportiva.service';
+import { AccionesTablaComponent } from '../../utils/acciones-tabla/acciones-tabla.component';
 @Component({
   standalone: true,
   selector: 'app-actividad-deportiva',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
   templateUrl: './actividaddeportiva.component.html',
   styleUrl: './actividaddeportiva.component.css'
 })

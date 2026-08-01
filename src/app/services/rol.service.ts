@@ -22,7 +22,7 @@ export class RolService {
   /**
    * Obtener roles
    */
-  getAll(filtros?: any): Observable<ApiResponse<Rol[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<Rol[]>> {
     return this.http.get<ApiResponseWrapper<Rol[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers

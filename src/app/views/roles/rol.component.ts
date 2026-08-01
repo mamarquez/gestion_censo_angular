@@ -12,6 +12,7 @@ import { Rol } from '../../models/rol';
 import { RolService } from '../../services/rol.service';
 
 @Component({
+  standalone: true,
   selector: 'app-rol',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule],
   templateUrl: './rol.component.html',

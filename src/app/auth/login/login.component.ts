@@ -106,11 +106,11 @@ export class LoginComponent {
       // Guardar sesión utilizando tu servicio estructurado
       this.authService.saveSession(response);
 
-      // Restablecer estados de carga previos a la navegación
+      // Restablecer estados de carga previos acciones-tabla.component.html la navegación
       this.loading = false;
       this.loginForm.enable();
 
-      // Navegar a la raíz del aplicativo
+      // Navegar acciones-tabla.component.html la raíz del aplicativo
       await this.router.navigate(['/']);
 
     } catch (error: any) {
@@ -123,7 +123,7 @@ export class LoginComponent {
       // 5. Forzamos el vaciado inmediato de los campos de texto
       this.loginForm.get('username')?.setValue('');
       this.loginForm.get('password')?.setValue('');
-      
+
       // 6. Reseteamos el formulario preservando los tipos de acceso
       this.loginForm.reset({
         username: '',

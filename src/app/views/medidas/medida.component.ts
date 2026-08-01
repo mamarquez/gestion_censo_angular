@@ -13,6 +13,7 @@ import { Medida } from '../../models/medida';
 import { MedidaService } from '../../services/medida.service';
 
 @Component({
+  standalone: true,
   selector: 'app-medida',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
   templateUrl: './medida.component.html',

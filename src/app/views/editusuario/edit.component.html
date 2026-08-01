@@ -1,0 +1,96 @@
+<div class='content'>
+  <div class='block'>
+    <ul class='nav nav-tabs'>
+      <li [class.active]="tabActiva === 'datos'">
+        <a (click)="seleccionarTab('datos')">Datos</a>
+      </li>
+    </ul>
+
+    @if (tabActiva === 'datos') {
+      <div class="tab-content">
+
+        @if (cargando) {
+          <p>Cargando...</p>
+        } @else {
+          <form [formGroup]="form" (ngSubmit)="guardar()">
+
+            <div class="fields-row">
+              <div class="field">
+                <label for="username">Usuario</label>
+                <input id="username" type="text" pInputText formControlName="username" />
+              </div>
+
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" type="email" pInputText formControlName="email" />
+              </div>
+            </div>
+
+            <div class="fields-row">
+              <div class="field">
+                <label for="nombre">Nombre</label>
+                <input id="nombre" type="text" pInputText formControlName="nombre" />
+              </div>
+
+              <div class="field">
+                <label for="apellido1">Primer apellido</label>
+                <input id="apellido1" type="text" pInputText formControlName="apellido1" />
+              </div>
+
+              <div class="field">
+                <label for="apellido2">Segundo apellido</label>
+                <input id="apellido2" type="text" pInputText formControlName="apellido2" />
+              </div>
+
+              <div class="field field-checkbox">
+                <label class="switch-native {{ form.value.activo ? 'verde' : 'rojo' }}">
+                  <input id="activo" type="checkbox" formControlName="activo" />
+                  <span class="slider-native"></span>
+                  <span class="sr-only">Activo</span>
+                </label>
+                <label for="activo">Activo</label>
+              </div>
+
+            </div>
+
+            <div class="fields-row">
+              <div class="field field-full">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" type="text" pInputText formControlName="descripcion"></textarea>
+              </div>
+            </div>
+
+            <div class="fields-row">
+              @for (rol of roles; track rol.id) {
+                <div class="field field-checkbox">
+                  <label class="switch-native {{ tieneRol(rol.id) ? 'verde' : 'rojo' }}">
+                    <input
+                      [id]="'rol-' + rol.id"
+                      type="checkbox"
+                      [checked]="tieneRol(rol.id)"
+                      (change)="toggleRol(rol.id)"
+                    />
+                    <span class="slider-native"></span>
+                    <span class="sr-only">{{ rol.nombre }}</span>
+                  </label>
+                <label [for]="'rol-' + rol.id">{{ rol.nombre }}</label>
+              </div>
+              } @empty {
+                <p>No hay roles disponibles</p>
+              }
+            </div>
+
+            <div class="actions">
+              <p-button type="submit" label="Guardar" [loading]="guardando" [disabled]="form.invalid"></p-button>
+            </div>
+
+          </form>
+        }
+
+      </div>
+    }
+
+  </div>
+</div>
+
+<p-toast />

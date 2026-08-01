@@ -6,6 +6,7 @@ import { Instalacion } from '../../models/instalacion';
 import { InstalacionService } from '../../services/instalacion.service';
 
 @Component({
+  standalone: true,
   selector: 'app-instalacion',
   imports: [TableModule],
   templateUrl: './instalacion.component.html',

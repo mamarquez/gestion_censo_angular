@@ -121,8 +121,8 @@
       <td>{{ medida.descripcion }}</td>
       <td>{{ medida.valor }}</td>
       <td class="centrado">
-        <label class="switch-native {{ medida.activo ? 'verde' : 'rojo' }}">
-          <input type="checkbox" [checked]="medida.activo" disabled />
+        <label for="medida + medida.id" class="switch-native {{ medida.activo ? 'verde' : 'rojo' }}">
+          <input id="medida + medida.id" type="checkbox" [checked]="medida.activo" disabled />
           <span class="slider-native"></span>
         </label>
       </td>

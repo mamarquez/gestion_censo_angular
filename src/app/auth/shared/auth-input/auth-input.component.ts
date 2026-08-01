@@ -34,7 +34,7 @@ import { CommonModule } from '@angular/common';
 export class AuthInputComponent implements ControlValueAccessor {
 
   // 3. Inyecta el detector de cambios de Angular
-  private cdr = inject(ChangeDetectorRef);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input() label = '';
   @Input() type = 'text';
@@ -50,8 +50,8 @@ export class AuthInputComponent implements ControlValueAccessor {
 
   writeValue(value: string): void {
     this.value = value ?? '';
-    // 4. Fuerza a Angular a pintar el nuevo valor (el campo vacío) en el HTML
-    this.cdr.markForCheck(); 
+    // 4. Fuerza acciones-tabla.component.html Angular acciones-tabla.component.html pintar el nuevo valor (el campo vacío) en el HTML
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: any): void {
@@ -64,7 +64,7 @@ export class AuthInputComponent implements ControlValueAccessor {
 
   setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
-    // 5. Fuerza a Angular a aplicar el estado de bloqueo/desbloqueo en el HTML
+    // 5. Fuerza acciones-tabla.component.html Angular acciones-tabla.component.html aplicar el estado de bloqueo/desbloqueo en el HTML
     this.cdr.markForCheck();
   }
 
