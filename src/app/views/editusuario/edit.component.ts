@@ -72,6 +72,12 @@ export class EditUsuarioComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit(): void {
+    alert('Prueba');
+    // const boton = this.elementRef.nativeElement.querySelector('#miBoton');
+    // boton.style.color = 'red';
+  }
+
   private cargarDatos(id: string): void {
     this.service.get(id).subscribe({
       next: (response: ApiResponse<Usuario>) => {
