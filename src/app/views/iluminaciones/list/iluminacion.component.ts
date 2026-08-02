@@ -1,33 +1,32 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 
-import { NivelDotacion } from '../../models/niveldotacion';
-import { NivelDotacionService } from '../../services/niveldotacion.service';
-import { Button } from 'primeng/button';
+import { Iluminacion } from '../../../models/iluminacion';
+import { IluminacionService } from '../../../services/iluminacion.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { DialogService } from '../../services/dialog.service';
+import { DialogService } from '../../../services/dialog.service';
+import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
-  standalone: true,
-  selector: 'app-nivel-dotacion',
+  selector: 'app-iluminacion',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './niveldotacion.component.html',
-  styleUrl: './niveldotacion.component.css'
+  templateUrl: './iluminacion.component.html',
+  styleUrl: './iluminacion.component.css',
 })
-export class NivelDotacionComponent implements OnInit {
+export class IluminacionComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(NivelDotacionService);
+  private readonly service = inject(IluminacionService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  nivelesDotaciones: NivelDotacion [] = [];
+  iluminaciones: Iluminacion [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
@@ -53,23 +52,19 @@ export class NivelDotacionComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.nivelesDotaciones = response.data;
+          this.iluminaciones = response.data;
         } else {
-          this.nivelesDotaciones = [];
+          this.iluminaciones = [];
         }
 
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando niveles dotaciones', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar los gestores'
-        });
+        console.error('Error cargando iluminaciones:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar las iluminaciones' });
         this.cargando = false;
-        this.nivelesDotaciones = [];
+        this.iluminaciones = [];
       }
     });
   }
@@ -77,12 +72,12 @@ export class NivelDotacionComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.nivelesDotaciones = response.data || [];
+        this.iluminaciones = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar niveles educativos', err);
+        console.error('Error al cargar iluminaciones', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -98,9 +93,9 @@ export class NivelDotacionComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const nivelDotacion = this.nivelesDotaciones.find(p => p.id === id);
-        if (nivelDotacion) {
-          nivelDotacion.activo = !nivelDotacion.activo;
+        const iluminacion = this.iluminaciones.find(p => p.id === id);
+        if (iluminacion) {
+          iluminacion.activo = !iluminacion.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -108,7 +103,7 @@ export class NivelDotacionComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado de nivel energético', err);
+        console.error('Error al cambiar el estado', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -116,12 +111,12 @@ export class NivelDotacionComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(nivel: NivelDotacion): void {
+  confirmarBorrado(iluminacion: Iluminacion): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${nivel.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${iluminacion.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(nivel.id)
+      onAccept: () => this.borrarRegistro(iluminacion.id)
     });
   }
 
@@ -130,7 +125,7 @@ export class NivelDotacionComponent implements OnInit {
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.nivelesDotaciones = this.nivelesDotaciones.filter(p => p.id !== id);
+        this.iluminaciones = this.iluminaciones.filter(p => p.id !== id);
         this.messageService.add({
           severity: 'success',
           summary: 'Eliminado',

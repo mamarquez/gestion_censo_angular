@@ -1,35 +1,37 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
+
+import { NivelDotacion } from '../../../models/niveldotacion';
+import { NivelDotacionService } from '../../../services/niveldotacion.service';
 import { Button } from 'primeng/button';
-import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { DialogService } from '../../../services/dialog.service';
+import { InputText } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogService } from '../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { Menu } from '../../models/menu';
-import { MenuService } from '../../services/menu.service';
-
 @Component({
-  selector: 'app-menu',
+  standalone: true,
+  selector: 'app-nivel-dotacion',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './menu.component.html',
-  styleUrl: './menu.component.css',
+  templateUrl: './niveldotacion.component.html',
+  styleUrl: './niveldotacion.component.css'
 })
-export class MenuComponent implements OnInit {
+export class NivelDotacionComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(MenuService);
+  private readonly service = inject(NivelDotacionService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  menus: Menu [] = [];
+  nivelesDotaciones: NivelDotacion [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
+    id: [''],
     nombre: [''],
     descripcion: [''],
     activo: ['']
@@ -51,19 +53,23 @@ export class MenuComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.menus = response.data;
+          this.nivelesDotaciones = response.data;
         } else {
-          this.menus = [];
+          this.nivelesDotaciones = [];
         }
 
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando provincias:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los roles' });
+        console.error('Error cargando niveles dotaciones', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar los gestores'
+        });
         this.cargando = false;
-        this.menus = [];
+        this.nivelesDotaciones = [];
       }
     });
   }
@@ -71,12 +77,12 @@ export class MenuComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.menus = response.data || [];
+        this.nivelesDotaciones = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar menús', err);
+        console.error('Error al cargar niveles educativos', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -92,9 +98,9 @@ export class MenuComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const menu = this.menus.find(p => p.id === id);
-        if (menu) {
-          menu.activo = !menu.activo;
+        const nivelDotacion = this.nivelesDotaciones.find(p => p.id === id);
+        if (nivelDotacion) {
+          nivelDotacion.activo = !nivelDotacion.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -102,7 +108,7 @@ export class MenuComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado del menu', err);
+        console.error('Error al cambiar el estado de nivel energético', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -110,12 +116,12 @@ export class MenuComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(menu: Menu): void {
+  confirmarBorrado(nivel: NivelDotacion): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${menu.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${nivel.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(menu.id)
+      onAccept: () => this.borrarRegistro(nivel.id)
     });
   }
 
@@ -124,8 +130,12 @@ export class MenuComponent implements OnInit {
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.menus = this.menus.filter(p => p.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
+        this.nivelesDotaciones = this.nivelesDotaciones.filter(p => p.id !== id);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Eliminado',
+          detail: 'Se ha borrado el registro correctamente'
+        });
         this.cargando = false;
         this.cdr.detectChanges();
       },

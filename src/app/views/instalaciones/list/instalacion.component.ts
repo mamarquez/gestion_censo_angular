@@ -2,8 +2,8 @@ import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 
-import { Instalacion } from '../../models/instalacion';
-import { InstalacionService } from '../../services/instalacion.service';
+import { Instalacion } from '../../../models/instalacion';
+import { InstalacionService } from '../../../services/instalacion.service';
 
 @Component({
   standalone: true,

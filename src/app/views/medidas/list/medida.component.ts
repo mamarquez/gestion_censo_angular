@@ -6,11 +6,11 @@ import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogService } from '../../services/dialog.service';
+import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { Medida } from '../../models/medida';
-import { MedidaService } from '../../services/medida.service';
+import { Medida } from '../../../models/medida';
+import { MedidaService } from '../../../services/medida.service';
 
 @Component({
   standalone: true,
