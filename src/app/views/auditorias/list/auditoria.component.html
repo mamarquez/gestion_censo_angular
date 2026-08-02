@@ -128,11 +128,11 @@
 
   <ng-template pTemplate="header">
     <tr>
-      <th id="auditoria-fecha" style='width: 10%;' pSortableColumn="fecha">Fecha<p-sortIcon field="fecha"></p-sortIcon></th>
-      <th id="auditoria-tabla" style='width: 10%;' pSortableColumn="tabla">Tabla<p-sortIcon field="tabla"></p-sortIcon></th>
-      <th id="auditoria-operacion" style="text-align: center !important; width: 10%;" pSortableColumn="operacion">Operación<p-sortIcon field="operacion"></p-sortIcon></th>
-      <th id="auditoria-usuario" style='width: 10%;' pSortableColumn="usuario.nombreUsuario">Usuario<p-sortIcon field="usuario.nombreUsuario"></p-sortIcon></th>
-      <th id="auditoria-ver" style='width: 5%;'></th>
+      <th id="auditoria.fecha" style='width: 10%;' pSortableColumn="fecha">Fecha<p-sortIcon field="fecha"></p-sortIcon></th>
+      <th id="auditoria.tabla" style='width: 10%;' pSortableColumn="tabla">Tabla<p-sortIcon field="tabla"></p-sortIcon></th>
+      <th id="auditoria.operacion" style="text-align: center !important; width: 10%;" pSortableColumn="operacion">Operación<p-sortIcon field="operacion"></p-sortIcon></th>
+      <th id="auditoria.usuario" pSortableColumn="usuario.nombreUsuario">Usuario<p-sortIcon field="usuario.nombreUsuario"></p-sortIcon></th>
+      <th id='auditoria.accion' class='text-right' style='width: 1%'></th>
     </tr>
   </ng-template>
 
