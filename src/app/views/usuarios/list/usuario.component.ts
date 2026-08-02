@@ -1,43 +1,48 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { Button } from 'primeng/button';
-import { InputText } from 'primeng/inputtext';
+import { Usuario } from '../../../models/usuario';
+import { UsuarioService } from '../../../services/usuario.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { DialogService } from '../../../services/dialog.service';
+import { Button } from 'primeng/button';
+import { InputText } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogService } from '../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
+import { Tag } from 'primeng/tag';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
-import { Pavimento } from '../../models/pavimento';
-import { PavimentoService } from '../../services/pavimento.service';
 
 @Component({
-  selector: 'app-pavimento',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './pavimento.component.html',
-  styleUrl: './pavimento.component.css',
+  standalone: true,
+  selector: 'app-usuario',
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, Tag, AccionesTablaComponent],
+  templateUrl: './usuario.component.html',
+  styleUrl: './usuario.component.css'
 })
-export class PavimentoComponent implements OnInit {
+export class UsuarioComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(PavimentoService);
+  private readonly service = inject(UsuarioService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  pavimentos: Pavimento [] = [];
+  usuarios: Usuario [] = [];
   cargando: boolean = true;
-
-  form: FormGroup = this.fb.group({
-    nombre: [''],
-    descripcion: [''],
-    activo: ['']
-  });
 
   ngOnInit(): void {
     this.cargar();
   }
+
+  form: FormGroup = this.fb.group({
+    id: [''],
+    nombre: [''],
+    apellido1: [''],
+    apellido2: [''],
+    valor: [''],
+    activo: ['']
+  });
 
   limpiar(): void {
     this.form.reset();
@@ -51,19 +56,19 @@ export class PavimentoComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.pavimentos = response.data;
+          this.usuarios = response.data;
         } else {
-          this.pavimentos = [];
+          this.usuarios = [];
         }
 
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando pavimentos:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los pavimentos' });
+        console.error('Error cargando provincias:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los roles' });
         this.cargando = false;
-        this.pavimentos = [];
+        this.usuarios = [];
       }
     });
   }
@@ -71,12 +76,13 @@ export class PavimentoComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.pavimentos = response.data || [];
+        this.usuarios = response.data || [];
+        console.log(this.usuarios);
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar pavimentos', err);
+        console.error('Error al cargar menús', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -87,14 +93,14 @@ export class PavimentoComponent implements OnInit {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): void {
+  cambiarEstado(id: string): void {
     this.cargando = true;
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const pavimento = this.pavimentos.find(p => p.id === id);
-        if (pavimento) {
-          pavimento.activo = !pavimento.activo;
+        const usuario = this.usuarios.find(p => p.id === id);
+        if (usuario) {
+          usuario.activo = !usuario.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -102,7 +108,7 @@ export class PavimentoComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado del pavimento', err);
+        console.error('Error al cambiar el estado del menu', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -110,22 +116,26 @@ export class PavimentoComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(pavimento: Pavimento): void {
+  confirmarBorrado(registro: Usuario): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${pavimento.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${registro.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(pavimento.id)
+      onAccept: () => this.borrarRegistro(registro.id)
     });
   }
 
-  private borrarRegistro(id: number) {
+  private borrarRegistro(id: string): void {
     this.cargando = true;
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.pavimentos = this.pavimentos.filter(p => p.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
+        this.usuarios = this.usuarios.filter(p => p.id !== id);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Eliminado',
+          detail: 'Se ha borrado el registro correctamente'
+        });
         this.cargando = false;
         this.cdr.detectChanges();
       },

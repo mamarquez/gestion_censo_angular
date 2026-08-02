@@ -13,9 +13,9 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
-import { Provincia } from '../../models/provincia';
-import { ProvinciaService } from '../../services/provincia.service';
-import { DialogService } from '../../services/dialog.service';
+import { Provincia } from '../../../models/provincia';
+import { ProvinciaService } from '../../../services/provincia.service';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-provincia',

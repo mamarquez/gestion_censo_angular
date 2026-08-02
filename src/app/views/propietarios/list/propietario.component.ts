@@ -1,34 +1,32 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
-
-import { NivelEnergetico } from '../../models/nivelenergetico';
-import { NivelEnergeticoService } from '../../services/nivelenergetico.service';
-import { Conservacion } from '../../models/conservacion';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
-import { DialogService } from '../../services/dialog.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogService } from '../../../services/dialog.service';
+import { TooltipModule } from 'primeng/tooltip';
+import { Propietario } from '../../../models/propietario';
+import { PropietarioService } from '../../../services/propietario.service';
 
 @Component({
   standalone: true,
-  selector: 'app-nivel-energetico',
+  selector: 'app-propietario',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './nivelenergetico.component.html',
-  styleUrl: './nivelenergetico.component.css'
+  templateUrl: './propietario.component.html',
+  styleUrl: './propietario.component.css'
 })
-export class NivelEnergeticoComponent implements OnInit {
+export class PropietarioComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(NivelEnergeticoService);
+  private readonly service = inject(PropietarioService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  nivelesEnergeticos: NivelEnergetico [] = [];
+  propietarios: Propietario [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
@@ -54,19 +52,23 @@ export class NivelEnergeticoComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.nivelesEnergeticos = response.data;
+          this.propietarios = response.data;
         } else {
-          this.nivelesEnergeticos = [];
+          this.propietarios = [];
         }
 
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando conservaciones:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar las conservaciones' });
+        console.error('Error cargando propietarios:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar los propietarios'
+        });
         this.cargando = false;
-        this.nivelesEnergeticos = [];
+        this.propietarios = [];
       }
     });
   }
@@ -74,12 +76,12 @@ export class NivelEnergeticoComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.nivelesEnergeticos = response.data || [];
+        this.propietarios = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar niveles energéticos', err);
+        console.error('Error al cargar propietarios', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -95,9 +97,9 @@ export class NivelEnergeticoComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const nivelEnergetico = this.nivelesEnergeticos.find(p => p.id === id);
-        if (nivelEnergetico) {
-          nivelEnergetico.activo = !nivelEnergetico.activo;
+        const propietario = this.propietarios.find(p => p.id === id);
+        if (propietario) {
+          propietario.activo = !propietario.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -105,7 +107,7 @@ export class NivelEnergeticoComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado', err);
+        console.error('Error al cambiar el estado de gestor', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -113,32 +115,38 @@ export class NivelEnergeticoComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(conservacion: Conservacion): void {
+  confirmarBorrado(propietario: Propietario): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${conservacion.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${propietario.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(conservacion.id)
+      onAccept: () => this.borrarRegistro(propietario.id)
     });
   }
 
-  private borrarRegistro(id: number): void {
+  private borrarRegistro(id: number) {
     this.cargando = true;
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.nivelesEnergeticos = this.nivelesEnergeticos.filter(p => p.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
+        this.propietarios = this.propietarios.filter(p => p.id !== id);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Eliminado',
+          detail: 'Se ha borrado el registro correctamente'
+        });
         this.cargando = false;
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
         this.cargando = false;
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       }
     });
+
+    this.cargando = false;
   }
 
 }

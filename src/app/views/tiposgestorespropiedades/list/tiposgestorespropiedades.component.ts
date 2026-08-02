@@ -1,39 +1,37 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
-
-import { NivelEducativo } from '../../models/niveleducativo';
-import { NivelEducativoService } from '../../services/niveleducativo.service';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
-import { DialogService } from '../../services/dialog.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogService } from '../../../services/dialog.service';
+
+import { TipoGestorPropiedadService } from '../../../services/tipogestorpropiedad.service';
+import { TipoGestorPropiedad } from '../../../models/tipogestorpropiedad';
 
 @Component({
   standalone: true,
-  selector: 'app-nivel-educativo',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './niveleducativo.component.html',
-  styleUrl: './niveleducativo.component.css',
+  selector: 'app-tipos-gestores-propiedades',
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule],
+  templateUrl: './tiposgestorespropiedades.component.html',
+  styleUrl: './tiposgestorespropiedades.component.css',
 })
-export class NivelEducativoComponent implements OnInit {
+export class TiposGestoresPropiedadesComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(NivelEducativoService);
+  private readonly service = inject(TipoGestorPropiedadService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  nivelesEducativos: NivelEducativo [] = [];
+  tiposGestoresPropiedades: TipoGestorPropiedad [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
-    id: [''],
     nombre: [''],
-    descripcion: [''],
+    mostrar: [''],
     activo: ['']
   });
 
@@ -53,23 +51,19 @@ export class NivelEducativoComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.nivelesEducativos = response.data;
+          this.tiposGestoresPropiedades = response.data;
         } else {
-          this.nivelesEducativos = [];
+          this.tiposGestoresPropiedades = [];
         }
 
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando provincias:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar los gestores'
-        });
+        console.error('Error cargando tipos gestores propiedades:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los tipos gestores propiedades' });
         this.cargando = false;
-        this.nivelesEducativos = [];
+        this.tiposGestoresPropiedades = [];
       }
     });
   }
@@ -77,12 +71,12 @@ export class NivelEducativoComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.nivelesEducativos = response.data || [];
+        this.tiposGestoresPropiedades = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar niveles educativos', err);
+        console.error('Error al cargar tipos de gestores de propiedades', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -98,9 +92,9 @@ export class NivelEducativoComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const niveleEducativo = this.nivelesEducativos.find(p => p.id === id);
-        if (niveleEducativo) {
-          niveleEducativo.activo = !niveleEducativo.activo;
+        const tipoGestorPropiedad = this.tiposGestoresPropiedades.find(p => p.id === id);
+        if (tipoGestorPropiedad) {
+          tipoGestorPropiedad.activo = !tipoGestorPropiedad.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -108,7 +102,7 @@ export class NivelEducativoComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado de nivel energético', err);
+        console.error('Error al cambiar el estado de los tipos gestores propiedades', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -116,12 +110,12 @@ export class NivelEducativoComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(nivelEnergetico: NivelEducativo): void {
+  confirmarBorrado(tipoGestorPropiedad: TipoGestorPropiedad): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${nivelEnergetico.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${tipoGestorPropiedad.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(nivelEnergetico.id)
+      onAccept: () => this.borrarRegistro(tipoGestorPropiedad.id)
     });
   }
 
@@ -130,12 +124,8 @@ export class NivelEducativoComponent implements OnInit {
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.nivelesEducativos = this.nivelesEducativos.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        this.tiposGestoresPropiedades = this.tiposGestoresPropiedades.filter(p => p.id !== id);
+        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
         this.cargando = false;
         this.cdr.detectChanges();
       },

@@ -6,32 +6,32 @@ import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogService } from '../../services/dialog.service';
+import { DialogService } from '../../../services/dialog.service';
+import { TooltipModule } from 'primeng/tooltip';
 
-import { TipoGestorPropiedadService } from '../../services/tipogestorpropiedad.service';
-import { TipoGestorPropiedad } from '../../models/tipogestorpropiedad';
+import { Pavimento } from '../../../models/pavimento';
+import { PavimentoService } from '../../../services/pavimento.service';
 
 @Component({
-  standalone: true,
-  selector: 'app-tipos-gestores-propiedades',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule],
-  templateUrl: './tiposgestorespropiedades.component.html',
-  styleUrl: './tiposgestorespropiedades.component.css',
+  selector: 'app-pavimento',
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
+  templateUrl: './pavimento.component.html',
+  styleUrl: './pavimento.component.css',
 })
-export class TiposGestoresPropiedadesComponent implements OnInit {
+export class PavimentoComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(TipoGestorPropiedadService);
+  private readonly service = inject(PavimentoService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  tiposGestoresPropiedades: TipoGestorPropiedad [] = [];
+  pavimentos: Pavimento [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
     nombre: [''],
-    mostrar: [''],
+    descripcion: [''],
     activo: ['']
   });
 
@@ -51,19 +51,19 @@ export class TiposGestoresPropiedadesComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.tiposGestoresPropiedades = response.data;
+          this.pavimentos = response.data;
         } else {
-          this.tiposGestoresPropiedades = [];
+          this.pavimentos = [];
         }
 
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando tipos gestores propiedades:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los tipos gestores propiedades' });
+        console.error('Error cargando pavimentos:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los pavimentos' });
         this.cargando = false;
-        this.tiposGestoresPropiedades = [];
+        this.pavimentos = [];
       }
     });
   }
@@ -71,12 +71,12 @@ export class TiposGestoresPropiedadesComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.tiposGestoresPropiedades = response.data || [];
+        this.pavimentos = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar tipos de gestores de propiedades', err);
+        console.error('Error al cargar pavimentos', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -92,9 +92,9 @@ export class TiposGestoresPropiedadesComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const tipoGestorPropiedad = this.tiposGestoresPropiedades.find(p => p.id === id);
-        if (tipoGestorPropiedad) {
-          tipoGestorPropiedad.activo = !tipoGestorPropiedad.activo;
+        const pavimento = this.pavimentos.find(p => p.id === id);
+        if (pavimento) {
+          pavimento.activo = !pavimento.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -102,7 +102,7 @@ export class TiposGestoresPropiedadesComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado de los tipos gestores propiedades', err);
+        console.error('Error al cambiar el estado del pavimento', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -110,12 +110,12 @@ export class TiposGestoresPropiedadesComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(tipoGestorPropiedad: TipoGestorPropiedad): void {
+  confirmarBorrado(pavimento: Pavimento): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${tipoGestorPropiedad.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${pavimento.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(tipoGestorPropiedad.id)
+      onAccept: () => this.borrarRegistro(pavimento.id)
     });
   }
 
@@ -124,7 +124,7 @@ export class TiposGestoresPropiedadesComponent implements OnInit {
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.tiposGestoresPropiedades = this.tiposGestoresPropiedades.filter(p => p.id !== id);
+        this.pavimentos = this.pavimentos.filter(p => p.id !== id);
         this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
         this.cargando = false;
         this.cdr.detectChanges();

@@ -1,32 +1,33 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
+
+import { NivelEducativo } from '../../../models/niveleducativo';
+import { NivelEducativoService } from '../../../services/niveleducativo.service';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogService } from '../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
-import { Propietario } from '../../models/propietario';
-import { PropietarioService } from '../../services/propietario.service';
+import { MessageService } from 'primeng/api';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   standalone: true,
-  selector: 'app-propietario',
+  selector: 'app-nivel-educativo',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './propietario.component.html',
-  styleUrl: './propietario.component.css'
+  templateUrl: './niveleducativo.component.html',
+  styleUrl: './niveleducativo.component.css',
 })
-export class PropietarioComponent implements OnInit {
+export class NivelEducativoComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(PropietarioService);
+  private readonly service = inject(NivelEducativoService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  propietarios: Propietario [] = [];
+  nivelesEducativos: NivelEducativo [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
@@ -52,23 +53,23 @@ export class PropietarioComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.propietarios = response.data;
+          this.nivelesEducativos = response.data;
         } else {
-          this.propietarios = [];
+          this.nivelesEducativos = [];
         }
 
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando propietarios:', err);
+        console.error('Error cargando provincias:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Error al cargar los propietarios'
+          detail: 'Error al cargar los gestores'
         });
         this.cargando = false;
-        this.propietarios = [];
+        this.nivelesEducativos = [];
       }
     });
   }
@@ -76,12 +77,12 @@ export class PropietarioComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.propietarios = response.data || [];
+        this.nivelesEducativos = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar propietarios', err);
+        console.error('Error al cargar niveles educativos', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -97,9 +98,9 @@ export class PropietarioComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const propietario = this.propietarios.find(p => p.id === id);
-        if (propietario) {
-          propietario.activo = !propietario.activo;
+        const niveleEducativo = this.nivelesEducativos.find(p => p.id === id);
+        if (niveleEducativo) {
+          niveleEducativo.activo = !niveleEducativo.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -107,7 +108,7 @@ export class PropietarioComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado de gestor', err);
+        console.error('Error al cambiar el estado de nivel energético', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -115,12 +116,12 @@ export class PropietarioComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(propietario: Propietario): void {
+  confirmarBorrado(nivelEnergetico: NivelEducativo): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${propietario.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${nivelEnergetico.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(propietario.id)
+      onAccept: () => this.borrarRegistro(nivelEnergetico.id)
     });
   }
 
@@ -129,7 +130,7 @@ export class PropietarioComponent implements OnInit {
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.propietarios = this.propietarios.filter(p => p.id !== id);
+        this.nivelesEducativos = this.nivelesEducativos.filter(p => p.id !== id);
         this.messageService.add({
           severity: 'success',
           summary: 'Eliminado',

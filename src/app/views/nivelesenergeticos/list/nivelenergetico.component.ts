@@ -1,48 +1,46 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
+
 import { TableModule } from 'primeng/table';
-import { Usuario } from '../../models/usuario';
-import { UsuarioService } from '../../services/usuario.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
-import { DialogService } from '../../services/dialog.service';
+
+import { NivelEnergetico } from '../../../models/nivelenergetico';
+import { NivelEnergeticoService } from '../../../services/nivelenergetico.service';
+import { Conservacion } from '../../../models/conservacion';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
-import { Tag } from 'primeng/tag';
-import { AccionesTablaComponent } from '../../utils/acciones-tabla/acciones-tabla.component';
-
+import { MessageService } from 'primeng/api';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   standalone: true,
-  selector: 'app-usuario',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, Tag, AccionesTablaComponent],
-  templateUrl: './usuario.component.html',
-  styleUrl: './usuario.component.css'
+  selector: 'app-nivel-energetico',
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
+  templateUrl: './nivelenergetico.component.html',
+  styleUrl: './nivelenergetico.component.css'
 })
-export class UsuarioComponent implements OnInit {
+export class NivelEnergeticoComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(UsuarioService);
+  private readonly service = inject(NivelEnergeticoService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  usuarios: Usuario [] = [];
+  nivelesEnergeticos: NivelEnergetico [] = [];
   cargando: boolean = true;
-
-  ngOnInit(): void {
-    this.cargar();
-  }
 
   form: FormGroup = this.fb.group({
     id: [''],
     nombre: [''],
-    apellido1: [''],
-    apellido2: [''],
-    valor: [''],
+    descripcion: [''],
     activo: ['']
   });
+
+  ngOnInit(): void {
+    this.cargar();
+  }
 
   limpiar(): void {
     this.form.reset();
@@ -56,19 +54,19 @@ export class UsuarioComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.usuarios = response.data;
+          this.nivelesEnergeticos = response.data;
         } else {
-          this.usuarios = [];
+          this.nivelesEnergeticos = [];
         }
 
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando provincias:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los roles' });
+        console.error('Error cargando conservaciones:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar las conservaciones' });
         this.cargando = false;
-        this.usuarios = [];
+        this.nivelesEnergeticos = [];
       }
     });
   }
@@ -76,13 +74,12 @@ export class UsuarioComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.usuarios = response.data || [];
-        console.log(this.usuarios);
+        this.nivelesEnergeticos = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar menús', err);
+        console.error('Error al cargar niveles energéticos', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -93,14 +90,14 @@ export class UsuarioComponent implements OnInit {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: string): void {
+  cambiarEstado(id: number): void {
     this.cargando = true;
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const usuario = this.usuarios.find(p => p.id === id);
-        if (usuario) {
-          usuario.activo = !usuario.activo;
+        const nivelEnergetico = this.nivelesEnergeticos.find(p => p.id === id);
+        if (nivelEnergetico) {
+          nivelEnergetico.activo = !nivelEnergetico.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -108,7 +105,7 @@ export class UsuarioComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado del menu', err);
+        console.error('Error al cambiar el estado', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -116,38 +113,32 @@ export class UsuarioComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(registro: Usuario): void {
+  confirmarBorrado(conservacion: Conservacion): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${registro.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${conservacion.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(registro.id)
+      onAccept: () => this.borrarRegistro(conservacion.id)
     });
   }
 
-  private borrarRegistro(id: string): void {
+  private borrarRegistro(id: number): void {
     this.cargando = true;
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.usuarios = this.usuarios.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        this.nivelesEnergeticos = this.nivelesEnergeticos.filter(p => p.id !== id);
+        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
         this.cargando = false;
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
         this.cargando = false;
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       }
     });
-
-    this.cargando = false;
   }
 
 }

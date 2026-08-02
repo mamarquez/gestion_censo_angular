@@ -8,11 +8,11 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
-import { Usuario } from '../../models/usuario';
-import { Rol } from '../../models/rol';
-import { ApiResponse } from '../../models/apiresponse';
-import { UsuarioService } from '../../services/usuario.service';
-import { RolService } from '../../services/rol.service';
+import { Usuario } from '../../../models/usuario';
+import { Rol } from '../../../models/rol';
+import { ApiResponse } from '../../../models/apiresponse';
+import { UsuarioService } from '../../../services/usuario.service';
+import { RolService } from '../../../services/rol.service';
 
 @Component({
   standalone: true,
@@ -26,7 +26,7 @@ import { RolService } from '../../services/rol.service';
     ToastModule
   ],
   providers: [MessageService],
-  templateUrl: 'edit.component.html',
+  templateUrl: './edit.component.html',
   styleUrl: 'edit.component.css'
 })
 export class EditUsuarioComponent implements OnInit {
