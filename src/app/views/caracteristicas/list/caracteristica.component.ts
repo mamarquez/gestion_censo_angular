@@ -6,12 +6,12 @@ import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogService } from '../../services/dialog.service';
+import { DialogService } from '../../../services/dialog.service';
 
 
-import { Caracteristica } from '../../models/caracteristica';
-import { CaracteristicaService } from '../../services/caracteristica.service';
-import { AccionesTablaComponent } from '../../utils/acciones-tabla/acciones-tabla.component';
+import { Caracteristica } from '../../../models/caracteristica';
+import { CaracteristicaService } from '../../../services/caracteristica.service';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   standalone: true,

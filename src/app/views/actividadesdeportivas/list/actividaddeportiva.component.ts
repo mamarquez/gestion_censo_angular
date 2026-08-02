@@ -6,12 +6,12 @@ import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogService } from '../../services/dialog.service';
+import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { ActividadDeportiva } from '../../models/actividaddeportiva';
-import { ActividadDeportivaService } from '../../services/adtividaddeportiva.service';
-import { AccionesTablaComponent } from '../../utils/acciones-tabla/acciones-tabla.component';
+import { ActividadDeportiva } from '../../../models/actividaddeportiva';
+import { ActividadDeportivaService } from '../../../services/adtividaddeportiva.service';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 @Component({
   standalone: true,
   selector: 'app-actividad-deportiva',
