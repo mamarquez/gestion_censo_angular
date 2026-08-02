@@ -25,7 +25,7 @@ import { EspacioDeportivoCompoment } from './views/espaciosdeportivos/espaciodep
 import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/espaciocomplementario.component';
 import { PropietarioComponent } from './views/propietarios/propietario.component';
 import { TiposGestoresPropiedadesComponent } from './views/tiposgestorespropiedades/tiposgestorespropiedades.component';
-import { ConfiguracionComponent } from './views/configuracion/configuraciones.component';
+import { ConfiguracionComponent } from './views/configuracion/list/configuraciones.component';
 import { EditUsuarioComponent } from './views/editusuario/edit.component';
 import { ListComunidadesComponent } from './views/comunidades/list/comunidades.component';
 

@@ -1,17 +1,17 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
-import { Conservacion } from '../../models/conservacion';
+import { Conservacion } from '../../../models/conservacion';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
-import { DialogService } from '../../services/dialog.service';
-import { Configuracion } from '../../models/configuracion';
-import { ConfiguracionService } from '../../services/configuracion.service';
-import { Truncar } from '../../pipe/trucar.pipe';
+import { DialogService } from '../../../services/dialog.service';
+import { Configuracion } from '../../../models/configuracion';
+import { ConfiguracionService } from '../../../services/configuracion.service';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 @Component({
   standalone: true,

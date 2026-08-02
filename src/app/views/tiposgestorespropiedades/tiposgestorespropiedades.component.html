@@ -35,24 +35,20 @@
       />
     </div>
 
-  </div>
+    <div style="display: flex !important; align-items: flex-end !important; gap: 0.5rem !important; margin-left: auto !important;">
+      <p-button
+        icon='pi pi-filter-slash'
+        styleClass='p-button-outlined p-button-secondary p-button-sm'
+        (onClick)='limpiar()'>
+      </p-button>
+      <p-button
+        type='button'
+        icon='pi pi-search'
+        styleClass='p-button-primary p-button-sm'
+        (onClick)='buscar()'>
+      </p-button>
+    </div>
 
-  <!-- Botones forzados por estilo en línea para evitar conflictos de CSS global -->
-  <div
-    style='display: flex !important; justify-content: flex-end !important; align-items: center !important; gap: 0.5rem !important; margin-top: 1.5rem !important; padding-top: 1rem !important; border-top: 1px solid #e2e8f0 !important; width: 100% !important;'>
-    <p-button
-      icon='pi pi-filter-slash'
-      styleClass='p-button-outlined p-button-secondary p-button-sm'
-      (onClick)='limpiar()'
-    >
-    </p-button>
-    <p-button
-      type='button'
-      icon='pi pi-search'
-      styleClass='p-button-primary p-button-sm'
-      (onClick)='buscar()'
-    >
-    </p-button>
   </div>
 
 </div>
