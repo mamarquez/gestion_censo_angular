@@ -133,15 +133,13 @@
       <th id="auditoria-tabla" style='width: 10%;' pSortableColumn="tabla">Tabla<p-sortIcon field="tabla"></p-sortIcon></th>
       <th id="auditoria-operacion" style="text-align: center !important; width: 10%;" pSortableColumn="operacion">Operación<p-sortIcon field="operacion"></p-sortIcon></th>
       <th id="auditoria-usuario" style='width: 10%;' pSortableColumn="usuario.nombreUsuario">Usuario<p-sortIcon field="usuario.nombreUsuario"></p-sortIcon></th>
-      <th id='auditoria-antiguo'>V. Anterior</th>
-      <th id='auditoria-nuevo'>V. Nuevo</th>
       <th id="auditoria-ver" style='width: 5%;'></th>
     </tr>
   </ng-template>
 
   <ng-template pTemplate="emptymessage">
     <tr>
-      <td colspan="7">
+      <td colspan="5">
         <div style="display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-off"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/></svg>
           <p style="margin-top: 1rem; color: #64748b; font-weight: 600;">No hay registros para mostrar</p>
@@ -161,8 +159,6 @@
         </p-tag>
       </td>
       <td style='width: 10%;'>{{ auditoria.usuario?.nombreUsuario }}</td>
-      <td>{{ auditoria.valorAnterior }}</td>
-      <td>{{ auditoria.valorNuevo }}</td>
       <td>
         <p-button
           severity='secondary'
@@ -182,3 +178,47 @@
     </tr>
   </ng-template>
 </p-table>
+
+<!-- Caja mágica -->
+<p-dialog
+  header="Auditoría"
+  [(visible)]="mostrarModal"
+  [modal]="true"
+  [style]="{ width: '50rem' }"
+>
+  @if (auditoria) {
+    <div class="grid">
+
+      <div class="fields-row" style="display: flex; gap: 1rem; width: 100%; margin-bottom: 1rem;">
+
+        <div class="field" style="flex: 1;">
+          <label for="tabla"><strong>Tabla</strong></label>
+          <input id="tabla" type="text" pInputText readonly disabled [value]="auditoria.tabla" style="width: 100%;" />
+        </div>
+
+        <div class="field" style="flex: 1;">
+          <label for="operacion"><strong>Operación</strong></label>
+          <input id="operacion" type="text" pInputText readonly disabled [value]="auditoria.operacion" style="width: 100%;" />
+        </div>
+
+        <div class="field" style="flex: 1;">
+          <label for="fecha"><strong>Fecha</strong></label>
+          <input id="fecha" type="text" pInputText readonly disabled [value]="auditoria.fecha | date:'dd/MM/yyyy HH:mm'" style="width: 100%;" />
+        </div>
+
+      </div>
+
+      <div class="col-12">
+        <label><strong>Cambios</strong></label>
+        <div id='cambios' [innerHTML]="auditoria.cambios | safeHtml"
+          style="background: #f8f9fa; padding: 15px; border-radius: 5px; width: 100%; max-height: 300px; overflow-y: auto; border: 1px solid #ddd;">
+        </div>
+      </div>
+
+    </div>
+  }
+
+  <ng-template pTemplate="footer">
+    <p-button label="Cerrar" (onClick)="mostrarModal = false"></p-button>
+  </ng-template>
+</p-dialog>

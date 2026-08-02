@@ -1,20 +1,19 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-import { Auditoria } from '../models/auditoria';
 import { AUTH } from '../auth/auth.constants';
 import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
+import { ComunidadAutonoma } from '../models/comunidadautonoma';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuditoriaService {
+export class ComunidadautonomaService {
 
   private readonly http = inject(HttpClient);
-  private readonly api = `${AUTH.API}/auditorias`;
+  private readonly api = `${AUTH.API}/comunidadesautonomicas`;
   private readonly headers = new HttpHeaders({
     'Content-Type': 'application/json'
   });
@@ -22,8 +21,8 @@ export class AuditoriaService {
   /**
    * Obtener registros
    */
-  getAll(filtros?: any): Observable<ApiResponse<Auditoria[]>> {
-    return this.http.get<ApiResponseWrapper<Auditoria[]>>(`${this.api}`, {
+  getAll(filtros?: any): Observable<ApiResponse<ComunidadAutonoma[]>> {
+    return this.http.get<ApiResponseWrapper<ComunidadAutonoma[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
     });
@@ -33,8 +32,8 @@ export class AuditoriaService {
    * Obtiene el registro
    * @param id Id del registro
    */
-  get(id: String) : Observable<ApiResponseWrapper<Auditoria>> {
-    return this.http.get<ApiResponseWrapper<Auditoria>>(`${this.api}/${id}`, {
+  get(id: String): Observable<ApiResponseWrapper<ComunidadAutonoma>> {
+    return this.http.get<ApiResponseWrapper<ComunidadAutonoma>>(`${this.api}/${id}`, {
       headers: this.headers
     });
   }

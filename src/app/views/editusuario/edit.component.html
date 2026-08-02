@@ -14,10 +14,12 @@
         } @else {
           <form [formGroup]="form" (ngSubmit)="guardar()">
 
+            <input id='id' formControl='id' hidden='hidden' />
+
             <div class="fields-row">
               <div class="field">
                 <label for="username">Usuario</label>
-                <input id="username" type="text" pInputText formControlName="username" />
+                <input id="username" type="text" pInputText formControlName="nombreUsuario" />
               </div>
 
               <div class="field">

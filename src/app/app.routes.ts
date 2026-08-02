@@ -4,14 +4,14 @@ import { InstalacionComponent } from './views/instalaciones/instalacion.componen
 import { MunicipioComponent } from './views/municipios/municipio.component';
 import { UsuarioComponent } from './views/usuarios/usuario.component';
 import { ProvinciaComponent } from './views/provincias/provincia.component';
-import { RolComponent } from './views/roles/rol.component';
+import { RolComponent } from './views/roles/list/rol.component';
 import { CaracteristicaComponent } from './views/caracteristicas/caracteristica.component';
-import { AuditoriaComponent } from './views/auditorias/auditoria.component';
+import { AuditoriaComponent } from './views/auditorias/list/auditoria.component';
 import { MenuComponent } from './views/menus/menu.component';
 import { PavimentoComponent } from './views/pavimentos/pavimento.component';
 import { MedidaComponent } from './views/medidas/medida.component';
 import { ActividadDeportivaComponent } from './views/actividadesdeportivas/actividaddeportiva.component';
-import { CentroEducativoComponent } from './views/centroseducativos/centroeducativo.component';
+import { ListCentroEducativoComponent } from './views/centroseducativos/list/centroeducativo.component';
 import { CerramientoComponent } from './views/cerramientos/cerramiento.component';
 import { authGuard } from './auth/guards/auth.guard';
 import { ConservacionComponent } from './views/conservaciones/conservacion.component';
@@ -27,6 +27,7 @@ import { PropietarioComponent } from './views/propietarios/propietario.component
 import { TiposGestoresPropiedadesComponent } from './views/tiposgestorespropiedades/tiposgestorespropiedades.component';
 import { ConfiguracionComponent } from './views/configuracion/configuraciones.component';
 import { EditUsuarioComponent } from './views/editusuario/edit.component';
+import { ListComunidadesComponent } from './views/comunidades/list/comunidades.component';
 
 export const routes: Routes = [
   {
@@ -113,7 +114,14 @@ export const routes: Routes = [
       },
       {
         path: 'centroseducativos',
-        component: CentroEducativoComponent
+        component: ListCentroEducativoComponent
+      },
+      {
+        path: 'comunidades',
+        children: [
+          { path: '', component: ListComunidadesComponent },
+          // { path: ':id', component: EditUsuarioComponent },
+        ]
       },
       {
         path: 'cerramientos',

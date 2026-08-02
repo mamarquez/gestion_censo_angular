@@ -9,6 +9,7 @@ export class Auditoria {
   fecha!: Date;
   valorAnterior!: JSON;
   valorNuevo!: JSON;
+  cambios!: string;
 
   // Configuración de validaciones
   public static readonly campos = {

@@ -6,10 +6,10 @@ import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogService } from '../../services/dialog.service';
+import { DialogService } from '../../../services/dialog.service';
 
-import { Rol } from '../../models/rol';
-import { RolService } from '../../services/rol.service';
+import { Rol } from '../../../models/rol';
+import { RolService } from '../../../services/rol.service';
 
 @Component({
   standalone: true,

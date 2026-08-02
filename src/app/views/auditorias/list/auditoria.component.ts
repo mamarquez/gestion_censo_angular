@@ -2,8 +2,8 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 
-import { Auditoria } from '../../models/auditoria';
-import { AuditoriaService } from '../../services/auditoria.service';
+import { Auditoria } from '../../../models/auditoria';
+import { AuditoriaService } from '../../../services/auditoria.service';
 import { Button } from 'primeng/button';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
@@ -13,13 +13,16 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { DatePipe } from '@angular/common';
 import { SelectModule } from 'primeng/select';
 import { Tooltip } from 'primeng/tooltip';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { DialogModule } from 'primeng/dialog';
+import { SafeHtmlPipe } from 'primeng/menu';
 
 @Component({
   standalone: true,
   selector: 'app-auditoria',
-  imports: [TableModule, DatePipe, Button, InputText, ReactiveFormsModule, DatePickerModule, InputMaskModule, TagModule, SelectModule, Tooltip],
-  templateUrl: './auditoria.component.html',
-  styleUrl: './auditoria.component.css'
+  imports: [TableModule, DatePipe, Button, InputText, ReactiveFormsModule, DatePickerModule, InputMaskModule, TagModule, SelectModule, Tooltip, DialogModule, SafeHtmlPipe],
+  templateUrl: 'auditoria.component.html',
+  styleUrl: 'auditoria.component.css'
 })
 export class AuditoriaComponent implements OnInit {
 
@@ -29,7 +32,9 @@ export class AuditoriaComponent implements OnInit {
   private readonly messageService = inject(MessageService);
 
   auditorias: Auditoria[] = [];
+  auditoria: Auditoria = null;
   cargando: boolean = true;
+  mostrarModal: boolean = false;
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -45,7 +50,6 @@ export class AuditoriaComponent implements OnInit {
     { label: 'INSERT', value: 'INSERT' },
     { label: 'UPDATE', value: 'UPDATE' },
     { label: 'DELETE', value: 'DELETE' }
-    // Puedes añadir más si tienes otros tipos de operaciones
   ];
 
   ngOnInit(): void {
@@ -83,7 +87,7 @@ export class AuditoriaComponent implements OnInit {
     });
   }
 
-  cargar(): void {
+  private cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
         this.auditorias = response.data || [];
@@ -92,6 +96,29 @@ export class AuditoriaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar auditorias', err);
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  ver(id: string) {
+    this.mostrarModal = true;
+
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<Auditoria>) => {
+        this.auditoria = response.data ?? null;
+
+        if (this.auditoria) {
+          console.log('Auditoría cargada:', this.auditoria);
+        }
+
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cargar auditoria', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar auditoria' });
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -110,4 +137,5 @@ export class AuditoriaComponent implements OnInit {
         return 'secondary';
     }
   }
+
 }
