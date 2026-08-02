@@ -1,34 +1,33 @@
 import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
-
-import { EstadoUso } from '../../models/estadouso';
-import { EstadoUsoService } from '../../services/estadouso.service';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
-import { DialogService } from '../../services/dialog.service';
-import { NivelEducativo } from '../../models/niveleducativo';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogService } from '../../../services/dialog.service';
+import { TooltipModule } from 'primeng/tooltip';
+
+import { Gestor } from '../../../models/gestor';
+import { GestorService } from '../../../services/gestor.service';
 
 @Component({
   standalone: true,
-  selector: 'app-estado-uso',
+  selector: 'app-gestor',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './estadouso.component.html',
-  styleUrl: './estadouso.component.css',
+  templateUrl: './gestor.component.html',
+  styleUrl: './gestor.component.css',
 })
-export class EstadoUsoComponent implements OnInit {
+export class GestorComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(EstadoUsoService);
+  private readonly service = inject(GestorService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  estadosusos: EstadoUso [] = [];
+  gestores: Gestor [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
@@ -54,9 +53,9 @@ export class EstadoUsoComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.estadosusos = response.data;
+          this.gestores = response.data;
         } else {
-          this.estadosusos = [];
+          this.gestores = [];
         }
 
         this.cargando = false;
@@ -70,7 +69,7 @@ export class EstadoUsoComponent implements OnInit {
           detail: 'Error al cargar los gestores'
         });
         this.cargando = false;
-        this.estadosusos = [];
+        this.gestores = [];
       }
     });
   }
@@ -78,12 +77,12 @@ export class EstadoUsoComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.estadosusos = response.data || [];
+        this.gestores = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar niveles educativos', err);
+        console.error('Error al cargar gestores', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -99,9 +98,9 @@ export class EstadoUsoComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const estadouso = this.estadosusos.find(p => p.id === id);
-        if (estadouso) {
-          estadouso.activo = !estadouso.activo;
+        const gestor = this.gestores.find(p => p.id === id);
+        if (gestor) {
+          gestor.activo = !gestor.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -109,7 +108,7 @@ export class EstadoUsoComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado de estado uso', err);
+        console.error('Error al cambiar el estado de gestor', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -117,12 +116,12 @@ export class EstadoUsoComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(estadouso: EstadoUso): void {
+  confirmarBorrado(gestor: Gestor): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${estadouso.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${gestor.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(estadouso.id)
+      onAccept: () => this.borrarRegistro(gestor.id)
     });
   }
 
@@ -131,7 +130,7 @@ export class EstadoUsoComponent implements OnInit {
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.estadosusos = this.estadosusos.filter(p => p.id !== id);
+        this.gestores = this.gestores.filter(p => p.id !== id);
         this.messageService.add({
           severity: 'success',
           summary: 'Eliminado',

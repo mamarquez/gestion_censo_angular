@@ -2,16 +2,16 @@ import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 
-import { EspacioDeportivo } from '../../models/espaciodeportivo';
-import { EspacioDeportivoService } from '../../services/espaciodeportivo.service';
-import { NivelEducativo } from '../../models/niveleducativo';
+import { EspacioDeportivo } from '../../../models/espaciodeportivo';
+import { EspacioDeportivoService } from '../../../services/espaciodeportivo.service';
+import { NivelEducativo } from '../../../models/niveleducativo';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
-import { DialogService } from '../../services/dialog.service';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   standalone: true,

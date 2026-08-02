@@ -2,12 +2,12 @@ import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 
-import { Cerramiento } from '../../models/cerramiento';
-import { CerramientoService } from '../../services/cerramiento.service';
-import { ActividadDeportiva } from '../../models/actividaddeportiva';
+import { Cerramiento } from '../../../models/cerramiento';
+import { CerramientoService } from '../../../services/cerramiento.service';
+import { ActividadDeportiva } from '../../../models/actividaddeportiva';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { DialogService } from '../../services/dialog.service';
+import { DialogService } from '../../../services/dialog.service';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';

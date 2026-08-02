@@ -1,33 +1,34 @@
 import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
-import { DialogService } from '../../services/dialog.service';
+
+import { EstadoUso } from '../../../models/estadouso';
+import { EstadoUsoService } from '../../../services/estadouso.service';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
-
-import { EspacioComplementario } from '../../models/espaciocomplementario';
-import { EspacioComplementarioService } from '../../services/espaciocomplementario.service';
+import { MessageService } from 'primeng/api';
+import { DialogService } from '../../../services/dialog.service';
+import { NivelEducativo } from '../../../models/niveleducativo';
 
 @Component({
   standalone: true,
-  selector: 'app-espacio-complementario',
+  selector: 'app-estado-uso',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './espaciocomplementario.component.html',
-  styleUrl: './espaciocomplementario.component.css'
+  templateUrl: './estadouso.component.html',
+  styleUrl: './estadouso.component.css',
 })
-export class EspacioComplementarioCompoment implements OnInit {
+export class EstadoUsoComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(EspacioComplementarioService);
+  private readonly service = inject(EstadoUsoService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  espaciosComplementarios: EspacioComplementario [] = [];
+  estadosusos: EstadoUso [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
@@ -53,23 +54,23 @@ export class EspacioComplementarioCompoment implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.espaciosComplementarios = response.data;
+          this.estadosusos = response.data;
         } else {
-          this.espaciosComplementarios = [];
+          this.estadosusos = [];
         }
 
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando espacios complementarios:', err);
+        console.error('Error cargando provincias:', err);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'Error al cargar espacios complementarios'
+          detail: 'Error al cargar los gestores'
         });
         this.cargando = false;
-        this.espaciosComplementarios = [];
+        this.estadosusos = [];
       }
     });
   }
@@ -77,12 +78,12 @@ export class EspacioComplementarioCompoment implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.espaciosComplementarios = response.data || [];
+        this.estadosusos = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar espacios complementarios', err);
+        console.error('Error al cargar niveles educativos', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -98,9 +99,9 @@ export class EspacioComplementarioCompoment implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const espacioComplementario = this.espaciosComplementarios.find(p => p.id === id);
-        if (espacioComplementario) {
-          espacioComplementario.activo = !espacioComplementario.activo;
+        const estadouso = this.estadosusos.find(p => p.id === id);
+        if (estadouso) {
+          estadouso.activo = !estadouso.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -108,7 +109,7 @@ export class EspacioComplementarioCompoment implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado', err);
+        console.error('Error al cambiar el estado de estado uso', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -116,12 +117,12 @@ export class EspacioComplementarioCompoment implements OnInit {
     });
   }
 
-  confirmarBorrado(espacioComplementario: EspacioComplementario): void {
+  confirmarBorrado(estadouso: EstadoUso): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${espacioComplementario.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${estadouso.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(espacioComplementario.id)
+      onAccept: () => this.borrarRegistro(estadouso.id)
     });
   }
 
@@ -130,7 +131,7 @@ export class EspacioComplementarioCompoment implements OnInit {
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.espaciosComplementarios = this.espaciosComplementarios.filter(p => p.id !== id);
+        this.estadosusos = this.estadosusos.filter(p => p.id !== id);
         this.messageService.add({
           severity: 'success',
           summary: 'Eliminado',

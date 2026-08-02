@@ -1,32 +1,33 @@
 import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
-import { Button } from 'primeng/button';
-import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { DialogService } from '../../../services/dialog.service';
+import { Button } from 'primeng/button';
+import { InputText } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogService } from '../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
 
-import { Conservacion } from '../../models/conservacion';
-import { ConservacionService } from '../../services/conservacion.service';
+import { EspacioComplementario } from '../../../models/espaciocomplementario';
+import { EspacioComplementarioService } from '../../../services/espaciocomplementario.service';
 
 @Component({
-  selector: 'app-conservacion',
+  standalone: true,
+  selector: 'app-espacio-complementario',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './conservacion.component.html',
-  styleUrl: './conservacion.component.css',
+  templateUrl: './espaciocomplementario.component.html',
+  styleUrl: './espaciocomplementario.component.css'
 })
-export class ConservacionComponent implements OnInit {
+export class EspacioComplementarioCompoment implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(ConservacionService);
+  private readonly service = inject(EspacioComplementarioService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  conservaciones: Conservacion [] = [];
+  espaciosComplementarios: EspacioComplementario [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
@@ -52,19 +53,23 @@ export class ConservacionComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.conservaciones = response.data;
+          this.espaciosComplementarios = response.data;
         } else {
-          this.conservaciones = [];
+          this.espaciosComplementarios = [];
         }
 
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando conservaciones:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar las conservaciones' });
+        console.error('Error cargando espacios complementarios:', err);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar espacios complementarios'
+        });
         this.cargando = false;
-        this.conservaciones = [];
+        this.espaciosComplementarios = [];
       }
     });
   }
@@ -72,12 +77,12 @@ export class ConservacionComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.conservaciones = response.data || [];
+        this.espaciosComplementarios = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar conservaciones', err);
+        console.error('Error al cargar espacios complementarios', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -93,9 +98,9 @@ export class ConservacionComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const conservacione = this.conservaciones.find(p => p.id === id);
-        if (conservacione) {
-          conservacione.activo = !conservacione.activo;
+        const espacioComplementario = this.espaciosComplementarios.find(p => p.id === id);
+        if (espacioComplementario) {
+          espacioComplementario.activo = !espacioComplementario.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -111,12 +116,12 @@ export class ConservacionComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(conservacion: Conservacion): void {
+  confirmarBorrado(espacioComplementario: EspacioComplementario): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${conservacion.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${espacioComplementario.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(conservacion.id)
+      onAccept: () => this.borrarRegistro(espacioComplementario.id)
     });
   }
 
@@ -125,7 +130,7 @@ export class ConservacionComponent implements OnInit {
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.conservaciones = this.conservaciones.filter(p => p.id !== id);
+        this.espaciosComplementarios = this.espaciosComplementarios.filter(p => p.id !== id);
         this.messageService.add({
           severity: 'success',
           summary: 'Eliminado',
