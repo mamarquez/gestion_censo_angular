@@ -1,0 +1,12 @@
+<label>Provincia</label>
+<p-select
+  [options]="municipios"
+  optionLabel="nombre"
+  optionValue="id"
+  placeholder="Selecciona una provincia"
+  [ngModel]="value"
+  (onChange)="seleccionar($event)"
+  [loading]="cargandoMunicipios"
+  styleClass="w-full"
+  [style]="{'width': '100%'}"
+></p-select>

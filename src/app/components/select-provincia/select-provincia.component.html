@@ -1,0 +1,12 @@
+<label>Provincia</label>
+<p-select
+  [options]="provincias"
+  optionLabel="nombre"
+  optionValue="id"
+  placeholder="Selecciona una provincia"
+  [ngModel]="value"
+  (onChange)="seleccionar($event)"
+  [loading]="cargandoProvincias"
+  styleClass="w-full"
+  [style]="{'width': '100%'}"
+></p-select>

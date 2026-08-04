@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { InstalacionComponent } from './views/instalaciones/list/instalacion.component';
+import { ListInstalacionesComponent } from './views/instalaciones/list/instalaciones.component';
 import { MunicipioComponent } from './views/municipios/list/municipio.component';
 import { UsuarioComponent } from './views/usuarios/list/usuario.component';
 import { ProvinciaComponent } from './views/provincias/list/provincia.component';
@@ -28,6 +28,7 @@ import { TiposGestoresPropiedadesComponent } from './views/tiposgestorespropieda
 import { ConfiguracionComponent } from './views/configuracion/list/configuraciones.component';
 import { EditUsuarioComponent } from './views/usuarios/edit/edit.component';
 import { ListComunidadesComponent } from './views/comunidades/list/comunidades.component';
+import { EditInstalacionComponent } from './views/instalaciones/edit/editInstalacion.component';
 
 export const routes: Routes = [
   {
@@ -52,7 +53,10 @@ export const routes: Routes = [
     children: [
       {
         path: 'instalaciones',
-        component: InstalacionComponent
+        children: [
+          { path: '', component: ListInstalacionesComponent },
+          { path: ':id', component: EditInstalacionComponent }
+        ]
       },
       {
         path: 'municipios',

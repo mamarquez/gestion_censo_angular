@@ -1,9 +1,10 @@
-import {Instalacion} from './instalacion';
+import { Instalacion } from './instalacion';
 
 export class InstalacionTelefono {
-  id!: number;
+  id?: number;
   id_instalacion!: Instalacion;
   numero!: string;
   contacto?: string;
-  nota?: string;
+  notas?: string;
+  visible!: boolean;
 }

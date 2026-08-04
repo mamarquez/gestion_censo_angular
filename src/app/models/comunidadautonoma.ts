@@ -1,5 +1,5 @@
 export class ComunidadAutonoma {
-  id!: number;
+  id?: number;
   codigo!: string;
   nombre!: string;
   activo!: boolean;

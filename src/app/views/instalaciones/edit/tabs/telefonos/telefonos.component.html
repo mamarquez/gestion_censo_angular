@@ -1,0 +1,97 @@
+<form [formGroup]="form" (ngSubmit)="guardar()">
+
+  <div class="fields-row">
+    <div class="field col-3">
+      <input id="id" type="text" pInputText formControlName="id" readonly />
+    </div>
+    <div class="field col-3">
+      <label for="codigo">Código de instalación</label>
+      <input id="codigo" type="text" pInputText formControlName="codigo" readonly />
+    </div>
+  </div>
+
+  <div class="fields-row">
+    <div class="field col-3">
+      <label for="numero">Número</label>
+      <input id="numero" type="text" pInputText formControlName="numero" />
+    </div>
+
+    <div class="field col-4">
+      <label for="contacto">Contacto</label>
+      <input id="contacto" type="text" pInputText formControlName="contacto" />
+    </div>
+
+    <div class="field col-5">
+      <label for="notas">Notas</label>
+      <input id="notas" type="text" pInputText formControlName="notas" />
+    </div>
+  </div>
+
+  <div class="actions">
+    <p-button type="submit" label="Añadir" [loading]="guardando" [disabled]="form.invalid"></p-button>
+  </div>
+
+  <br />
+
+</form>
+
+<p-table
+  size='small'
+  [value]='telefonos'
+  [tableStyle]="{ 'min-width': '50rem' }"
+  [stripedRows]='true'
+  [paginator]='true'
+  [rows]='10'
+  [rowsPerPageOptions]='[10, 20, 50, 100]'
+  [showCurrentPageReport]='true'
+  currentPageReportTemplate='Mostrando {first} a {last} de {totalRecords} registros'
+  dataKey='id'
+  [loading]='cargando'
+  sortField='nombre'
+  [sortOrder]='1'
+>
+
+<ng-template pTemplate="header">
+  <tr>
+    <th id='instalacion-telefono.numero' style='width: 10%' pSortableColumn="numero">Código<p-sortIcon field="numero"></p-sortIcon></th>
+    <th id='instalacion-telefono.contacto' pSortableColumn="contacto">Nombre<p-sortIcon field="contacto"></p-sortIcon></th>
+    <th id='instalacion-telefono.nota' pSortableColumn='notas' class='text-center' style='width: 10%'>Notas<p-sortIcon field='notas'></p-sortIcon></th>
+    <th id='instalacion-telefono.visible' pSortableColumn='visible' class='text-center' style='width: 10%'>Visible<p-sortIcon field='visible'></p-sortIcon></th>
+    <th id='instalacion-telefono.accion' class='text-right' style='width: 10%'></th>
+  </tr>
+</ng-template>
+
+<ng-template pTemplate="emptymessage">
+  <tr>
+    <td colspan="5">
+      <div style="display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-off-icon lucide-circle-off"><path d="m2 2 20 20"/><path d="M8.35 2.69A10 10 0 0 1 21.3 15.65"/><path d="M19.08 19.08A10 10 0 1 1 4.92 4.92"/></svg>
+        <p style="margin-top: 1rem; color: #64748b; font-weight: 600;">No hay registros para mostrar</p>
+      </div>
+    </td>
+  </tr>
+</ng-template>
+
+<ng-template pTemplate="body" let-telefono>
+  <tr>
+    <td>{{ telefono.numero }}</td>
+    <td>{{ telefono.contacto }}</td>
+    <td>{{ telefono.notas }}</td>
+    <td class="centrado">
+      <label class="switch-native {{ telefono.visible ? 'verde' : 'rojo' }}">
+        <input type="checkbox" [checked]="!telefono.visible" disabled />
+        <span class="slider-native"></span>
+      </label>
+    </td>
+    <app-acciones-tabla
+      [editarRoute]="['/instalacion', telefono.id]"
+      [activo]="telefono.visible"
+      (toggleEstado)="cambiarEstado(telefono.id)"
+      (borrar)="confirmarBorrado(telefono)"
+    />
+  </tr>
+</ng-template>
+
+</p-table>
+
+<p-toast />

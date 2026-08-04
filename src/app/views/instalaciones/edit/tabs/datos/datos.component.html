@@ -1,0 +1,57 @@
+<form [formGroup]="form">
+
+  <input id="id" type="text" formControlName="id" readonly hidden='hidden' />
+
+  <div class="fields-row">
+    <div class="field col-2">
+      <label for="codigo">Código</label>
+      <input id="codigo" type="text" pInputText formControlName="codigo" />
+    </div>
+
+    <div class="field col-3">
+      <label for="referencia_catastral">Referencia Catastral</label>
+      <input id="referencia_catastral" type="text" pInputText formControlName="referencia_catastral" maxlength='20' />
+    </div>
+
+  </div>
+
+  <div class="fields-row">
+    <div class="field col-6">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" pInputText formControlName="nombre" />
+    </div>
+
+    <div class="field col-6">
+      <label for="nombre_popular">Nombre Popular</label>
+      <input id="nombre_popular" type="text" pInputText formControlName="nombrePopular" />
+    </div>
+  </div>
+
+  <div class="fields-row">
+    <div class="field col-12">
+      <label for="direccion">Dirección</label>
+      <input id="direccion" type="text" pInputText formControlName="direccion" />
+    </div>
+  </div>
+
+  <div class="fields-row">
+    <div class="field col-3">
+      <label for="cp">Código Postal</label>
+      <input id="cp" type="text" pInputText formControlName="cp" maxlength='5' />
+    </div>
+
+    <div class="field col-3">
+      <app-select-comunidad formControlName="id_comunidad" />
+    </div>
+
+    <div class="field col-3">
+      <app-select-provincia formControlName="id_provincia" />
+    </div>
+
+    <div class="field col-3">
+      <app-select-municipio formControlName="id_municipio" />
+    </div>
+
+  </div>
+
+</form>

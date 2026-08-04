@@ -2,38 +2,39 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 
-import { Iluminacion } from '../../../models/iluminacion';
-import { IluminacionService } from '../../../services/iluminacion.service';
+import { Instalacion } from '../../../models/instalacion';
+import { InstalacionService } from '../../../services/instalacion.service';
+import { Button } from 'primeng/button';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { InputText } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../services/dialog.service';
-import { Button } from 'primeng/button';
-import { InputText } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   standalone: true,
-  selector: 'app-iluminacion',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './iluminacion.component.html',
-  styleUrl: './iluminacion.component.css'
+  selector: 'app-instalaciones',
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  templateUrl: './instalaciones.component.html',
+  styleUrl: './instalaciones.component.css'
 })
-export class IluminacionComponent implements OnInit {
+export class ListInstalacionesComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(IluminacionService);
+  private readonly service = inject(InstalacionService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  iluminaciones: Iluminacion [] = [];
+  instalaciones: Instalacion [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
     id: [''],
+    codigo: [''],
     nombre: [''],
-    descripcion: [''],
     activo: ['']
   });
 
@@ -53,19 +54,19 @@ export class IluminacionComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.iluminaciones = response.data;
+          this.instalaciones = response.data;
         } else {
-          this.iluminaciones = [];
+          this.instalaciones = [];
         }
 
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando iluminaciones:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar las iluminaciones' });
+        console.error('Error cargando instalación:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar las instalaciones' });
         this.cargando = false;
-        this.iluminaciones = [];
+        this.instalaciones = [];
       }
     });
   }
@@ -73,12 +74,13 @@ export class IluminacionComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.iluminaciones = response.data || [];
+        this.instalaciones = response.data || [];
+        console.log(this.instalaciones);
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar iluminaciones', err);
+        console.error('Error al cargar instalaciones', err);
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -94,9 +96,9 @@ export class IluminacionComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const iluminacion = this.iluminaciones.find(p => p.id === id);
-        if (iluminacion) {
-          iluminacion.activo = !iluminacion.activo;
+        const instalacion = this.instalaciones.find(p => p.id === id);
+        if (instalacion) {
+          instalacion.visible = !instalacion.visible;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -104,7 +106,7 @@ export class IluminacionComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado', err);
+        console.error('Error al cambiar el estado de la instalaciones', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
         this.cargando = false;
         this.cdr.detectChanges();
@@ -112,12 +114,12 @@ export class IluminacionComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(iluminacion: Iluminacion): void {
+  confirmarBorrado(instalacion: Instalacion): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${iluminacion.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${instalacion.nombre}</strong>"?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(iluminacion.id)
+      onAccept: () => this.borrarRegistro(instalacion.id)
     });
   }
 
@@ -126,7 +128,7 @@ export class IluminacionComponent implements OnInit {
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.iluminaciones = this.iluminaciones.filter(p => p.id !== id);
+        this.instalaciones = this.instalaciones.filter(p => p.id !== id);
         this.messageService.add({
           severity: 'success',
           summary: 'Eliminado',
