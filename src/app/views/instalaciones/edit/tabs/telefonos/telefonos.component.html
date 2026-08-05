@@ -52,7 +52,7 @@
 
 <ng-template pTemplate="header">
   <tr>
-    <th id='instalacion-telefono.numero' style='width: 10%' pSortableColumn="numero">Código<p-sortIcon field="numero"></p-sortIcon></th>
+    <th id='instalacion-telefono.numero' style='width: 10%' pSortableColumn="numero">Teléfono<p-sortIcon field="numero"></p-sortIcon></th>
     <th id='instalacion-telefono.contacto' pSortableColumn="contacto">Nombre<p-sortIcon field="contacto"></p-sortIcon></th>
     <th id='instalacion-telefono.nota' pSortableColumn='notas' class='text-center' style='width: 10%'>Notas<p-sortIcon field='notas'></p-sortIcon></th>
     <th id='instalacion-telefono.visible' pSortableColumn='visible' class='text-center' style='width: 10%'>Visible<p-sortIcon field='visible'></p-sortIcon></th>
@@ -77,14 +77,14 @@
     <td>{{ telefono.contacto }}</td>
     <td>{{ telefono.notas }}</td>
     <td class="centrado">
-      <label for='telefono-{{ telefono.id }}' class="switch-native {{ telefono.visible ? 'verde' : 'rojo' }}">
-        <input id='telefono-{{ telefono.id }}' type="checkbox" [checked]="!telefono.visible" disabled />
+      <label for='espacioDeportivo-activo-{{ telefono.id }}' class="switch-native {{ telefono.visible ? 'verde' : 'rojo' }}">
+        <input id='espacioDeportivo-activo-{{ telefono.id }}' type="checkbox" [checked]="telefono.visible" disabled />
         <span class="slider-native"></span>
       </label>
     </td>
     <app-acciones-tabla
       [editarRoute]="['/instalacionestelefonos', telefono.id]"
-      [activo]="telefono.visible"
+      [visible]="telefono.visible"
       (toggleEstado)="cambiarEstado(telefono.id)"
       (borrar)="confirmarBorrado(telefono)"
     />

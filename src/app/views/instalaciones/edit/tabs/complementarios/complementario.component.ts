@@ -1,47 +1,22 @@
 import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { InstalacionService } from '../../../../../services/instalacion.service';
 import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../../../services/dialog.service';
-import { CheckboxModule } from 'primeng/checkbox';
-import { ToastModule } from 'primeng/toast';
-import { ActivatedRoute } from '@angular/router';
-import { ApiResponse } from '../../../../../models/apiresponse';
-import { InstalacionespaciodeportivoService } from '../../../../../services/instalacionespaciodeportivo.service';
-import { InstalacionEspacioDeportivo } from '../../../../../models/instalacionEspacioDeportivo';
-import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acciones-tabla.component';
-import { InputText } from 'primeng/inputtext';
-import { TableModule } from 'primeng/table';
 import { EspacioDeportivo } from '../../../../../models/espaciodeportivo';
 
 @Component({
   standalone: true,
-  selector: 'app-datos-espacios-deportivos',
-  imports: [
-    ReactiveFormsModule,
-    FormsModule,
-    CheckboxModule,
-    ButtonModule,
-    ToastModule,
-    AccionesTablaComponent,
-    InputText,
-    TableModule
-    /*
-    SelectModule,
-    SelectComunidadComponent,
-    SelectProvinciaComponent,
-    SelectMunicipioComponent
-
-     */
-  ],
-  providers: [MessageService],
-  templateUrl: './deportivo.component.html'
+  selector: 'app-datos-complementarios',
+  imports: [],
+  templateUrl: './complementario.component.html'
 })
-export class DatosEspaciosDeportivosComponent implements OnInit {
+export class ComplementarioComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(InstalacionespaciodeportivoService);
+  private readonly service = inject(InstalacionService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
@@ -49,7 +24,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   @Output() cargandoChange = new EventEmitter<boolean>();
 
   private id: string | null = null;
-  espaciosDeportivos: InstalacionEspacioDeportivo[] = [];
+  // espaciosDeportivos: InstalacionEspacioComplementario[] = [];
   cargando = false;
   guardando = false;
 
@@ -71,6 +46,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   }
 
   private cargarDatos(id: string): void {
+    /*
     this.cargando = true;
     this.cargandoChange.emit(true);
 
@@ -98,6 +74,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+    */
   }
 
   limpiar() {
@@ -109,6 +86,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   }
 
   cambiarEstado(id: number) {
+    /*
     this.cargando = true;
 
     this.service.cambiarEstado(id).subscribe({
@@ -129,6 +107,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+    */
   }
 
   cambiarVisible(id: number) {
@@ -145,6 +124,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   }
 
   private borrarRegistro(id: number): void {
+    /*
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.espaciosDeportivos = this.espaciosDeportivos.filter(t => t.id !== id);
@@ -157,6 +137,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+    */
   }
 
 }

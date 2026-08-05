@@ -17,6 +17,7 @@ import { SelectProvinciaComponent} from '../../../../../components/select-provin
 import {
   SelectMunicipioComponent
 } from '../../../../../components/select-municipio/select-provincia.component';
+import { InputText } from 'primeng/inputtext';
 
 @Component({
   standalone: true,
@@ -30,7 +31,8 @@ import {
     SelectModule,
     SelectComunidadComponent,
     SelectProvinciaComponent,
-    SelectMunicipioComponent
+    SelectMunicipioComponent,
+    InputText
   ],
   providers: [MessageService],
   templateUrl: './datos.component.html'

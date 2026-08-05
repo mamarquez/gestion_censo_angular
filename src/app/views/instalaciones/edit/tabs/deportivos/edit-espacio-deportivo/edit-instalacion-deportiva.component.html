@@ -1,0 +1,43 @@
+<div class="row">
+  <h1>Espacio deportivo </h1>
+</div>
+
+<br/>
+
+<form [formGroup]="form">
+
+  <input id="id" type="text" pInputText formControlName="id" readonly />
+
+  <div class="fields-row">
+    <div class="field col-10">
+      <label for="nombre">Nombre</label>
+      <input id="nombre" type="text" pInputText formControlName="nombre" />
+    </div>
+
+    <!--
+    <div class="field col-1">
+      <label for='espacioDeportivo-visible-{{ id }}' class="switch-native {{ visible ? 'verde' : 'rojo' }}">
+        <input id='espacioDeportivo-visible-{{ id }}' type="checkbox" [checked]="visible" disabled />
+        <span class="slider-native"></span>
+      </label>
+    </div>
+    -->
+
+  </div>
+
+  <div class="fields-row">
+    <div class="field col-12">
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" type="text" pInputText formControlName="descripcion"></textarea>
+    </div>
+  </div>
+
+  <app-list-caracteristicas [idEspacioDeportivo]="espacioDeportivo?.id" />
+
+  <div class='fields-row'>
+    <div class='field col-12'>
+      <p-button type="submit" label="Guardar" [disabled]="form.invalid"></p-button>
+    </div>
+  </div>
+
+</form>

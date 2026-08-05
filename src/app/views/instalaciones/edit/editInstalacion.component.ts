@@ -7,6 +7,9 @@ import { LoaderComponent } from '../../../layouts/loader/loader.component';
 import { DatosComponent } from './tabs/datos/datos.component';
 import { DatosTelefonosComponent } from './tabs/telefonos/telefonos.component';
 import { DatosEspaciosDeportivosComponent } from './tabs/deportivos/deportivo.component';
+import { DatosCaracteristicaComponent} from './tabs/caracteristicas/caracteristica.component';
+import { GeoPosicionComponent} from './tabs/geoposicion/geoposicion.component';
+import { ComplementarioComponent } from './tabs/complementarios/complementario.component';
 
 @Component({
   standalone: true,
@@ -19,17 +22,20 @@ import { DatosEspaciosDeportivosComponent } from './tabs/deportivos/deportivo.co
     DatosComponent,
     LoaderComponent,
     DatosTelefonosComponent,
-    DatosEspaciosDeportivosComponent
+    DatosEspaciosDeportivosComponent,
+    DatosCaracteristicaComponent,
+    ComplementarioComponent,
+	GeoPosicionComponent
   ],
   templateUrl: './editInstalacion.component.html',
   styleUrl: './editInstalacion.component.css'
 })
 export class EditInstalacionComponent {
 
-  tabActiva: 'datos' | 'geoposicion' | 'telefonos' | 'deportivos' | 'fotos' = 'datos';
+  tabActiva: 'datos' | 'geoposicion' | 'caracteristicas' | 'complementarios' | 'telefonos' | 'deportivos' | 'fotos' = 'datos';
   cargando: boolean = false;
 
-  seleccionarTab(tab: 'datos' | 'geoposicion' | 'telefonos' | 'deportivos' | 'fotos'): void {
+  seleccionarTab(tab: 'datos' | 'geoposicion' | 'caracteristicas' | 'complementarios' | 'telefonos' | 'deportivos' | 'fotos'): void {
     this.tabActiva = tab;
   }
 

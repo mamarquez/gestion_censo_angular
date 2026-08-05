@@ -16,7 +16,7 @@ import { buildHttpParams } from '../utils/params.util';
 export class EspacioDeportivoService {
 
   private readonly http = inject(HttpClient);
-  private readonly api = `${AUTH.API}/espaciosdeportivos`;
+  private readonly api = `${AUTH.API}/instalacionesespaciosdeportivos`;
   private readonly headers = new HttpHeaders({
     'Content-Type': 'application/json'
   });

@@ -1,12 +1,12 @@
 <label>Comunidad Autónoma</label>
 <p-select
-  [options]="comunidades"
+  [options]="comunidades()"
   optionLabel="nombre"
   optionValue="id"
   placeholder="Selecciona una comunidad"
   [ngModel]="value"
   (onChange)="seleccionar($event)"
-  [loading]="cargandoComunidades"
+  [loading]="cargandoComunidades()"
   styleClass="w-full"
   [style]="{'width': '100%'}"
 ></p-select>

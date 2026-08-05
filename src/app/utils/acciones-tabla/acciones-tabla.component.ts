@@ -10,7 +10,9 @@ import { RouterLink } from '@angular/router';
 })
 export class AccionesTablaComponent {
   @Input() editarRoute: any[] = [];
-  @Input() activo = true;
+  @Input() activo?: boolean;
+  @Input() visible?: boolean;
   @Output() toggleEstado = new EventEmitter<void>();
+  @Output() toggleVisible = new EventEmitter<void>();
   @Output() borrar = new EventEmitter<void>();
 }

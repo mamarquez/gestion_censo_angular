@@ -1,0 +1,129 @@
+<div class="p-4 bg-white rounded shadow-sm">
+
+  <form [formGroup]="geoForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+    <!-- Retícula Principal: 2 columnas en pantallas medianas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- 1. SECCIÓN XY -->
+      <p-fieldset legend="Coordenadas" formGroupName="xy">
+
+        <p-fluid>
+          <div class="fields-row">
+            <div class="field col-4">
+              <label for="xyX" class="text-sm font-medium">X <span class="text-red-500">*</span></label>
+              <input id="xyX" pInputText formControlName="x" placeholder="Coordenada X" />
+            </div>
+
+            <div class="field col-4">
+              <label for="xyY" class="text-sm font-medium">Y <span class="text-red-500">*</span></label>
+              <input id="xyY" pInputText formControlName="y" placeholder="Coordenada Y" />
+            </div>
+
+            <div class="field col-4">
+              <label for="xyZ" class="text-sm font-medium">Z <span class="text-red-500">*</span></label>
+              <input id="xyZ" pInputText formControlName="z" placeholder="Coordenada Z" />
+            </div>
+          </div>
+        </p-fluid>
+      </p-fieldset>
+
+      <!-- 2. SECCIÓN NMEA -->
+      <p-fieldset legend="NMEA" formGroupName="nmea">
+        <p-fluid>
+          <div class="fields-row">
+            <div class="field col-6">
+              <label for="nmeaLat" class="text-sm font-medium">Latitud</label>
+              <input id="nmeaLat" pInputText formControlName="latitud" placeholder="Latitud" />
+            </div>
+
+            <div class="field col-6">
+              <label for="nmeaLong" class="text-sm font-medium">Longitud</label>
+              <input id="nmeaLong" pInputText formControlName="longitud" placeholder="Longitud" />
+            </div>
+          </div>
+        </p-fluid>
+      </p-fieldset>
+
+      <!-- 3. SECCIÓN UTM -->
+      <p-fieldset legend="UTM" formGroupName="utm">
+        <p-fluid>
+          <div class="fields-row">
+            <div class="field col-3">
+              <label for="utmX" class="text-sm font-medium">UTM-X <span class="text-red-500">*</span></label>
+              <input id="utmX" pInputText formControlName="x" placeholder="UTM X" />
+            </div>
+
+            <div class="field col-3">
+              <label for="utmY" class="text-sm font-medium">UTM-Y <span class="text-red-500">*</span></label>
+              <input id="utmY" pInputText formControlName="y" placeholder="UTM Y" />
+            </div>
+
+            <div class="field col-3">
+              <label for="utmBanda" class="text-sm font-medium">Banda <span class="text-red-500">*</span></label>
+              <input id="utmBanda" pInputText formControlName="banda" placeholder="Banda" />
+            </div>
+
+            <div class="field col-3">
+              <label for="utmHuso" class="text-sm font-medium">Huso <span class="text-red-500">*</span></label>
+              <input id="utmHuso" pInputText formControlName="huso" placeholder="Huso" />
+            </div>
+          </div>
+        </p-fluid>
+      </p-fieldset>
+
+      <!-- 4. SECCIÓN GMS -->
+      <p-fieldset legend="GMS" formGroupName="gms">
+        <p-fluid>
+          <!-- Latitud GMS -->
+          <div class="fields-row">
+            <div class="field col-4">
+              <label for="gmsGradLat" class="text-xs font-medium">Grados Lat.</label>
+              <input id="gmsGradLat" pInputText formControlName="gradosLatitud" />
+            </div>
+            <div class="field col-4">
+              <label for="gmsMinLat" class="text-xs font-medium">Minutos Lat.</label>
+              <input id="gmsMinLat" pInputText formControlName="minutosLatitud" />
+            </div>
+            <div class="field col-4">
+              <label for="gmsSegLat" class="text-xs font-medium">Segundos Lat.</label>
+              <input id="gmsSegLat" pInputText formControlName="segundosLatitud" />
+            </div>
+          </div>
+
+          <!-- Longitud GMS -->
+          <div class="fields-row">
+            <div class="field col-3">
+              <label for="gmsGradLong" class="text-xs font-medium">Grados Long.</label>
+              <input id="gmsGradLong" pInputText formControlName="gradosLongitud" />
+            </div>
+            <div class="field col-3">
+              <label for="gmsMinLong" class="text-xs font-medium">Minutos Long.</label>
+              <input id="gmsMinLong" pInputText formControlName="minutosLongitud" />
+            </div>
+            <div class="field col-3">
+              <label for="gmsSegLong" class="text-xs font-medium">Segundos Long.</label>
+              <input id="gmsSegLong" pInputText formControlName="segundosLongitud" />
+            </div>
+            <div class="field col-3">
+              <label for="gmsAltitud" class="text-xs font-medium">Altitud</label>
+              <input id="gmsAltitud" pInputText formControlName="altitud" />
+            </div>
+          </div>
+
+          </p-fluid>
+      </p-fieldset>
+
+    </div>
+
+    <!-- Botón de guardado inferior -->
+    <div class="flex justify-end pt-4">
+      <p-button label="Guardar"
+                icon="pi pi-check"
+                severity="success"
+                [loading]="cargandoGeo()"
+                type="submit">
+      </p-button>
+    </div>
+  </form>
+</div>

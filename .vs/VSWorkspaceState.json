@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\views",
+    "\\src\\app\\views\\instalaciones",
+    "\\src\\app\\views\\instalaciones\\edit",
+    "\\src\\app\\views\\instalaciones\\edit\\tabs",
+    "\\src\\app\\views\\instalaciones\\edit\\tabs\\datos",
+    "\\src\\app\\views\\instalaciones\\edit\\tabs\\deportivos",
+    "\\src\\app\\views\\instalaciones\\edit\\tabs\\geoposicion"
+  ],
+  "SelectedNode": "\\src\\app\\views\\instalaciones\\edit\\tabs\\geoposicion\\geoposicion.component.ts",
+  "PreviewInSolutionExplorer": false
+}

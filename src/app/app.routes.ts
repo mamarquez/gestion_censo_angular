@@ -21,14 +21,15 @@ import { NivelDotacionComponent } from './views/nivelesdotaciones/list/niveldota
 import { IluminacionComponent } from './views/iluminaciones/list/iluminacion.component';
 import { GestorComponent } from './views/gestores/list/gestor.component';
 import { EstadoUsoComponent } from './views/estadosusos/list/estadouso.component';
-import { EspacioDeportivoCompoment } from './views/espaciosdeportivos/list/espaciodeportivo.component';
-import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/list/espaciocomplementario.component';
 import { PropietarioComponent } from './views/propietarios/list/propietario.component';
 import { TiposGestoresPropiedadesComponent } from './views/tiposgestorespropiedades/list/tiposgestorespropiedades.component';
 import { ConfiguracionComponent } from './views/configuracion/list/configuraciones.component';
 import { EditUsuarioComponent } from './views/usuarios/edit/edit.component';
 import { ListComunidadesComponent } from './views/comunidades/list/comunidades.component';
 import { EditInstalacionComponent } from './views/instalaciones/edit/editInstalacion.component';
+import { ComplementarioComponent } from './views/instalaciones/edit/tabs/complementarios/complementario.component';
+import { EditInstalacionDeportivaComponent } from './views/instalaciones/edit/tabs/deportivos/edit-espacio-deportivo/edit-instalacion-deportiva.component';
+import { GeoPosicionComponent } from './views/instalaciones/edit/tabs/geoposicion/geoposicion.component';
 
 export const routes: Routes = [
   {
@@ -61,7 +62,7 @@ export const routes: Routes = [
       {
         path: 'municipios',
         children: [
-          { path: '', component: MunicipioComponent },
+          { path: '', component: MunicipioComponent }
           // { path: ':id', component: EditMunicipioComponent },
         ]
       },
@@ -69,20 +70,20 @@ export const routes: Routes = [
         path: 'usuarios',
         children: [
           { path: '', component: UsuarioComponent },
-          { path: ':id', component: EditUsuarioComponent },
+          { path: ':id', component: EditUsuarioComponent }
         ]
       },
       {
         path: 'menus',
         children: [
-          { path: '', component: MenuComponent },
+          { path: '', component: MenuComponent }
           // { path: ':id', component: EditMenuComponent },
         ]
       },
       {
         path: 'provincias',
         children: [
-          { path: '', component: ListProvinciaComponent },
+          { path: '', component: ListProvinciaComponent }
           // { path: ':id', component: EditProvinciaComponent },
         ]
 
@@ -90,21 +91,21 @@ export const routes: Routes = [
       {
         path: 'tiposgestorespropiedades',
         children: [
-          { path: '', component: TiposGestoresPropiedadesComponent },
+          { path: '', component: TiposGestoresPropiedadesComponent }
           // { path: ':id', component: EditTipoGestorPropiedadComponent },
         ]
       },
       {
         path: 'roles',
         children: [
-          { path: '', component: RolComponent },
+          { path: '', component: RolComponent }
           // { path: ':id', component: EditRolComponent },
         ]
       },
       {
         path: 'propietarios',
         children: [
-          { path: '', component: PropietarioComponent },
+          { path: '', component: PropietarioComponent }
           // { path: ':id', component: EditPropietarioComponent }
         ]
       },
@@ -118,14 +119,14 @@ export const routes: Routes = [
       {
         path: 'pavimentos',
         children: [
-          { path: '', component: PavimentoComponent },
+          { path: '', component: PavimentoComponent }
           // { path: ':id', component: EditPavimentoComponent }
         ]
       },
       {
         path: 'configuraciones',
         children: [
-          { path: '', component: ConfiguracionComponent },
+          { path: '', component: ConfiguracionComponent }
           // { path: ':id', component: EditConfiguracionComponent }
         ]
       },
@@ -144,7 +145,7 @@ export const routes: Routes = [
       {
         path: 'comunidades',
         children: [
-          { path: '', component: ListComunidadesComponent },
+          { path: '', component: ListComunidadesComponent }
           // { path: ':id', component: EditUsuarioComponent },
         ]
       },
@@ -181,12 +182,22 @@ export const routes: Routes = [
         component: EstadoUsoComponent
       },
       {
-        path: 'espaciosdeportivos',
-        component: EspacioDeportivoCompoment
+        path: 'caracteristicas',
+        component: CaracteristicaComponent
       },
       {
         path: 'espacioscomplementarios',
-        component: EspacioComplementarioCompoment
+        component: ComplementarioComponent
+      },
+      {
+        path: 'geoposiciones',
+        component: GeoPosicionComponent
+      },
+      {
+        path: 'instalacionesespacios',
+        children: [
+          { path: ':id', component: EditInstalacionDeportivaComponent }
+        ]
       }
     ]
   },

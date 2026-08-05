@@ -1,6 +1,7 @@
-import { Component, forwardRef, inject, OnInit } from '@angular/core';
+import { Component, forwardRef, inject, OnInit, DestroyRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { ComunidadAutonoma } from '../../models/comunidadautonoma';
@@ -26,55 +27,58 @@ import { Municipio } from '../../models/municipio';
 })
 export class SelectMunicipioComponent implements ControlValueAccessor, OnInit {
 
-  private service = inject(MunicipioService);
+  private readonly service = inject(MunicipioService);
+  private readonly destroyRef = inject(DestroyRef);
 
   municipios: Municipio[] = [];
   cargandoMunicipios = true;
-
+  disabled = signal<boolean>(false);
+  value: any = null;
   filtros = { activo: true };
 
-  // El valor interno del select
-  value: any = null;
-
-  // Funciones que Angular nos obliga a tener
-  onChange: any = () => {
-  };
-  onTouched: any = () => {
-  };
+  onChange: any = () => {};
+  onTouched: any = () => {};
 
   ngOnInit(): void {
     this.cargarProvincias();
   }
 
+	// Cuando el usuario elige una opción en el select
   private cargarProvincias(): void {
-    this.service.getAll(this.filtros).subscribe({
-      next: (response: any) => {
-        this.municipios = response.data || [];
-        this.cargandoMunicipios = false;
-      },
+    this.service.getAll(this.filtros)
+		.pipe(takeUntilDestroyed(this.destroyRef))
+		.subscribe({
+			next: (response: any) => {
+				this.municipios = response.data || [];
+				this.cargandoMunicipios = false;
+			},
       error: () => this.cargandoMunicipios = false
     });
   }
-
+  
   // Cuando el usuario elige una opción en el select
   seleccionar(event: any): void {
     this.value = event.value;
-    this.onChange(this.value); // Avisar al formulario del cambio
+    this.onChange(this.value);
     this.onTouched();
   }
 
-  // Cuando el formulario le dice al componente qué valor tener (ej. al hacer patchValue)
+   // Cuando el formulario le dice al componente qué valor tener (ej. al hacer patchValue)
   writeValue(value: any): void {
     this.value = value;
   }
 
   // Registrar el cambio
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: any) => void): void {
     this.onChange = fn;
   }
 
-  // Registrar el toque (para validaciones)
-  registerOnTouched(fn: any): void {
+  // Registrar el toque (para validaciones)																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											  
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled.set(isDisabled);
   }
 }

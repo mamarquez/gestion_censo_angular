@@ -4,11 +4,9 @@
       <li [class.active]="tabActiva === 'datos'">
         <a (click)="seleccionarTab('datos')">Datos</a>
       </li>
-      <!--
       <li [class.active]="tabActiva === 'geoposicion'">
         <a (click)="seleccionarTab('geoposicion')">Geoposición</a>
       </li>
-      -->
       <li [class.active]="tabActiva === 'telefonos'">
         <a (click)="seleccionarTab('telefonos')">Telefonos</a>
       </li>
@@ -16,9 +14,11 @@
       <li [class.active]="tabActiva === 'gestores'">
         <a (click)="seleccionarTab('gestores')">Gestores/Propietarios</a>
       </li>
+      -->
       <li [class.active]="tabActiva === 'caracteristicas'">
         <a (click)="seleccionarTab('caracteristicas')">Características</a>
       </li>
+      <!--
       <li [class.active]="tabActiva === 'energetica'">
         <a (click)="seleccionarTab('energetica')">Calf. Energetica</a>
       </li>
@@ -26,10 +26,10 @@
       <li [class.active]="tabActiva === 'deportivos'">
         <a (click)="seleccionarTab('deportivos')">E. Deportivos</a>
       </li>
-      <!--
       <li [class.active]="tabActiva === 'complementarios'">
-        <a (click)="seleccionarTab('complementarios')">E. Complementarios</a>
-      </li>
+          <a (click)="seleccionarTab('complementarios')">E. Complementarios</a>
+        </li>
+      <!--
       <li [class.active]="tabActiva === 'rutas'">
         <a (click)="seleccionarTab('rutas')">Rutas</a>
       </li>
@@ -48,14 +48,15 @@
         @if (tabActiva === 'datos') {
           <app-datos-instalaciones (cargandoChange)="onCargandoChange($event)" />
         } @else if (tabActiva === 'geoposicion') {
-          <div>
-            <!-- Poner mapa aquí -->
-            <p>Mapa aquí</p>
-          </div>
+          <app-instalacion-geoposicion />
         } @else if (tabActiva === 'telefonos') {
           <app-datos-telefonos (cargandoChange)="onCargandoChange($event)" />
         } @else if (tabActiva === 'deportivos') {
           <app-datos-espacios-deportivos (cargandoChange)="onCargandoChange($event)" />
+        } @else if (tabActiva === 'caracteristicas') {
+          <app-datos-caracteristicas (cargandoChange)="onCargandoChange($event)" />
+        } @else if (tabActiva === 'complementarios') {
+          <app-datos-complementarios (cargandoChange)="onCargandoChange($event)" />
         }
       </div>
     </div>

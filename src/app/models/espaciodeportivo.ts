@@ -1,6 +1,7 @@
 export class EspacioDeportivo {
   id!: number;
   nombre!: string;
+  descripcion?: string;
   valor!: string;
   activo!: boolean;
 
