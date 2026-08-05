@@ -3,7 +3,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { ListInstalacionesComponent } from './views/instalaciones/list/instalaciones.component';
 import { MunicipioComponent } from './views/municipios/list/municipio.component';
 import { UsuarioComponent } from './views/usuarios/list/usuario.component';
-import { ProvinciaComponent } from './views/provincias/list/provincia.component';
+import { ListProvinciaComponent } from './views/provincias/list/provincia.component';
 import { RolComponent } from './views/roles/list/rol.component';
 import { CaracteristicaComponent } from './views/caracteristicas/list/caracteristica.component';
 import { AuditoriaComponent } from './views/auditorias/list/auditoria.component';
@@ -49,7 +49,7 @@ export const routes: Routes = [
   {
     path: '',
     component: AdminLayoutComponent,
-    canMatch: [authGuard], // Protege la zona privada
+    canMatch: [authGuard],
     children: [
       {
         path: 'instalaciones',
@@ -62,7 +62,7 @@ export const routes: Routes = [
         path: 'municipios',
         children: [
           { path: '', component: MunicipioComponent },
-          // { path: ':id', component: EditUsuarioComponent },
+          // { path: ':id', component: EditMunicipioComponent },
         ]
       },
       {
@@ -74,39 +74,60 @@ export const routes: Routes = [
       },
       {
         path: 'menus',
-        component: MenuComponent
+        children: [
+          { path: '', component: MenuComponent },
+          // { path: ':id', component: EditMenuComponent },
+        ]
       },
       {
         path: 'provincias',
-        component: ProvinciaComponent
+        children: [
+          { path: '', component: ListProvinciaComponent },
+          // { path: ':id', component: EditProvinciaComponent },
+        ]
+
       },
       {
         path: 'tiposgestorespropiedades',
-        component: TiposGestoresPropiedadesComponent
+        children: [
+          { path: '', component: TiposGestoresPropiedadesComponent },
+          // { path: ':id', component: EditTipoGestorPropiedadComponent },
+        ]
       },
       {
         path: 'roles',
-        component: RolComponent
+        children: [
+          { path: '', component: RolComponent },
+          // { path: ':id', component: EditRolComponent },
+        ]
       },
       {
         path: 'propietarios',
-        component: PropietarioComponent
+        children: [
+          { path: '', component: PropietarioComponent },
+          // { path: ':id', component: EditPropietarioComponent }
+        ]
       },
       {
         path: 'caracteristicas',
         component: CaracteristicaComponent
       },
       {
-        path: 'auditorias',
-        component: AuditoriaComponent
+        path: 'auditorias', component: AuditoriaComponent
       },
       {
         path: 'pavimentos',
-        component: PavimentoComponent
+        children: [
+          { path: '', component: PavimentoComponent },
+          // { path: ':id', component: EditPavimentoComponent }
+        ]
       },
       {
         path: 'configuraciones',
-        component: ConfiguracionComponent
+        children: [
+          { path: '', component: ConfiguracionComponent },
+          // { path: ':id', component: EditConfiguracionComponent }
+        ]
       },
       {
         path: 'medidas',

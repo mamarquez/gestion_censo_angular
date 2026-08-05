@@ -22,11 +22,20 @@ export class EspacioDeportivoService {
   });
 
   /**
-   * Obtener todos los niveles educativos
+   * Obtener datos
    */
   getAll(filtros?: any): Observable<ApiResponse<EspacioDeportivo[]>> {
     return this.http.get<ApiResponseWrapper<EspacioDeportivo[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
+      headers: this.headers
+    });
+  }
+
+  /**
+   * Obtener dato
+   */
+  get(id: any): Observable<ApiResponse<EspacioDeportivo>> {
+    return this.http.get<ApiResponseWrapper<EspacioDeportivo>>(`${this.api}/${id}`, {
       headers: this.headers
     });
   }

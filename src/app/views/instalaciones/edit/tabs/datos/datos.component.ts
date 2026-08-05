@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InstalacionService } from '../../../../../services/instalacion.service';
@@ -44,11 +44,14 @@ export class DatosComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  @Output() cargandoChange = new EventEmitter<boolean>();
+
   private id: string | null = null;
   instalacion: Instalacion | null;
   provincias: Provincia[] | [];
   municipios: Municipio[] | [];
   cargando = false;
+  guardando = false;
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -60,7 +63,10 @@ export class DatosComponent implements OnInit {
     id_provincia: ['', Validators.required],
     id_municipio: ['', Validators.required],
     referencia_catastral: ['', Validators.maxLength(20)],
-    cp: ['', Validators.maxLength(5)]
+    cp: ['', Validators.maxLength(5)],
+    email: [''],
+    web: [''],
+    observaciones: ['']
   });
 
   ngOnInit() {
@@ -68,18 +74,16 @@ export class DatosComponent implements OnInit {
 
     if (this.id) {
       this.cargarDatos(this.id);
-    } else {
-      this.cargando = false;
-      this.cdr.detectChanges();
     }
   }
 
   private cargarDatos(id: string): void {
+    this.cargando = true;
+    this.cargandoChange.emit(true);
+
     this.service.get(id).subscribe({
       next: (response: ApiResponse<Instalacion>) => {
         this.instalacion = response.data ?? null;
-
-        console.log(this.instalacion);
 
         if (this.instalacion) {
           this.form.patchValue({
@@ -92,16 +96,21 @@ export class DatosComponent implements OnInit {
             id_provincia: this.instalacion.provincia.id,
             id_municipio: this.instalacion.municipio.id,
             referencia_catastral: this.instalacion.referencia_catastral,
-            cp: this.instalacion.cp
+            cp: this.instalacion.cp,
+            email: this.instalacion.email,
+            web: this.instalacion.web,
+            observaciones: this.instalacion.observaciones
           });
         }
         this.cargando = false;
+        this.cargandoChange.emit(false);
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cargar instalación', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar datos de instalaciones' });
         this.cargando = false;
+        this.cargandoChange.emit(false);
         this.cdr.detectChanges();
       }
     });

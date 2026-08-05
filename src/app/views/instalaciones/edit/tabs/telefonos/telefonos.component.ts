@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -45,6 +45,8 @@ export class DatosTelefonosComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  @Output() cargandoChange = new EventEmitter<boolean>();
+
   private id: string | null = null;
 
   telefonos: InstalacionTelefono[] = [];
@@ -64,30 +66,34 @@ export class DatosTelefonosComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
 
     if (this.id) {
-      this.cargarInstalacion(this.id);
+      this.cargarTelefonos(this.id);
       this.cargar();
     }
   }
 
-  private cargarInstalacion(id: string): void {
+  private cargarTelefonos(id: string): void {
     this.instalacionService.get(id).subscribe({
       next: (response: ApiResponse<Instalacion>) => {
-        const instalacion = response.data ?? null;
+        const telefonos = response.data ?? null;
 
-        if (instalacion) {
-          this.form.patchValue({ id: this.id , codigo: instalacion.codigo });
+        if (telefonos) {
+          this.form.patchValue({
+            id: this.id,
+            codigo: telefonos.codigo
+          });
         }
 
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar la instalación', err);
+        console.error('Error al cargar los teléfonos', err);
       }
     });
   }
 
   private cargar(): void {
     this.cargando = true;
+    this.cargandoChange.emit(true);
 
     this.service.get(this.id).subscribe({
       next: (response) => {
@@ -100,12 +106,14 @@ export class DatosTelefonosComponent implements OnInit {
         }
 
         this.cargando = false;
+        this.cargandoChange.emit(false);
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cargar teléfonos', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los teléfonos' });
         this.cargando = false;
+        this.cargandoChange.emit(false);
         this.cdr.detectChanges();
       }
     });

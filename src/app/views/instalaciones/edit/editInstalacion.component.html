@@ -22,9 +22,11 @@
       <li [class.active]="tabActiva === 'energetica'">
         <a (click)="seleccionarTab('energetica')">Calf. Energetica</a>
       </li>
+      -->
       <li [class.active]="tabActiva === 'deportivos'">
         <a (click)="seleccionarTab('deportivos')">E. Deportivos</a>
       </li>
+      <!--
       <li [class.active]="tabActiva === 'complementarios'">
         <a (click)="seleccionarTab('complementarios')">E. Complementarios</a>
       </li>
@@ -39,17 +41,23 @@
 
     <div class="tab-content">
       @if (cargando) {
-        <p>Cargando...</p>
-      } @else if (tabActiva === 'datos') {
-        <app-datos-instalaciones />
-      } @else if (tabActiva === 'geoposicion') {
-        <div>
-          <!-- Poner mapa aquí -->
-          <p>Mapa aquí</p>
-        </div>
-      } @else if (tabActiva === 'telefonos') {
-          <app-datos-telefonos />
+        <app-loader />
       }
+
+      <div [style.display]="cargando ? 'none' : 'block'">
+        @if (tabActiva === 'datos') {
+          <app-datos-instalaciones (cargandoChange)="onCargandoChange($event)" />
+        } @else if (tabActiva === 'geoposicion') {
+          <div>
+            <!-- Poner mapa aquí -->
+            <p>Mapa aquí</p>
+          </div>
+        } @else if (tabActiva === 'telefonos') {
+          <app-datos-telefonos (cargandoChange)="onCargandoChange($event)" />
+        } @else if (tabActiva === 'deportivos') {
+          <app-datos-espacios-deportivos (cargandoChange)="onCargandoChange($event)" />
+        }
+      </div>
     </div>
 
   </div>

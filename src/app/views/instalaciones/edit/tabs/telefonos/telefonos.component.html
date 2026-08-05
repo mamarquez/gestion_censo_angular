@@ -5,7 +5,6 @@
       <input id="id" type="text" pInputText formControlName="id" readonly />
     </div>
     <div class="field col-3">
-      <label for="codigo">Código de instalación</label>
       <input id="codigo" type="text" pInputText formControlName="codigo" readonly />
     </div>
   </div>
@@ -78,13 +77,13 @@
     <td>{{ telefono.contacto }}</td>
     <td>{{ telefono.notas }}</td>
     <td class="centrado">
-      <label class="switch-native {{ telefono.visible ? 'verde' : 'rojo' }}">
-        <input type="checkbox" [checked]="!telefono.visible" disabled />
+      <label for='telefono-{{ telefono.id }}' class="switch-native {{ telefono.visible ? 'verde' : 'rojo' }}">
+        <input id='telefono-{{ telefono.id }}' type="checkbox" [checked]="!telefono.visible" disabled />
         <span class="slider-native"></span>
       </label>
     </td>
     <app-acciones-tabla
-      [editarRoute]="['/instalacion', telefono.id]"
+      [editarRoute]="['/instalacionestelefonos', telefono.id]"
       [activo]="telefono.visible"
       (toggleEstado)="cambiarEstado(telefono.id)"
       (borrar)="confirmarBorrado(telefono)"

@@ -18,7 +18,7 @@ import { ProvinciaService } from '../../../services/provincia.service';
 import { DialogService } from '../../../services/dialog.service';
 
 @Component({
-  selector: 'app-provincia',
+  selector: 'app-list-provincia',
   standalone: true,
   imports: [
     CommonModule,
@@ -39,7 +39,7 @@ import { DialogService } from '../../../services/dialog.service';
   templateUrl: './provincia.component.html',
   styleUrl: './provincia.component.css'
 })
-export class ProvinciaComponent implements OnInit {
+export class ListProvinciaComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
   private readonly service = inject(ProvinciaService);

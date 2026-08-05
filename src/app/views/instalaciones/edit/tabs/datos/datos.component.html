@@ -54,4 +54,29 @@
 
   </div>
 
+  <div class='fields-row'>
+    <div class="field col-6">
+      <label for="email">Email</label>
+      <input id="email" type="text" pInputText formControlName="email" maxlength='5' />
+    </div>
+
+    <div class="field col-6">
+      <label for="web">Web</label>
+      <input id="web" type="text" pInputText formControlName="web" maxlength='5' />
+    </div>
+  </div>
+
+  <div class='fields-row'>
+    <div class='field col-12'>
+      <label for="observaciones">Observaciones</label>
+      <textarea id='observaciones' formControlName='observaciones'></textarea>
+    </div>
+  </div>
+
+  <div class='fields-row'>
+    <div class='field col-12'>
+      <p-button type="submit" label="Guardar" [loading]="guardando" [disabled]="form.invalid"></p-button>
+    </div>
+  </div>
+
 </form>
