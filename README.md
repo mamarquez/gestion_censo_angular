@@ -1,59 +1,45 @@
-# GestionCenso
+# Gestión Censo
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.0.
+Aplicación de gestión del censo de instalaciones deportivas municipales (provincias, municipios, instalaciones, espacios deportivos y complementarios, características, teléfonos, usuarios, roles, etc.), construida con Angular 20 (standalone, sin NgModules) y PrimeNG 19 (tema Aura).
 
-## Development server
+Consulta [CLAUDE.md](./CLAUDE.md) para el detalle de arquitectura, patrones de vista CRUD y utilidades transversales del proyecto.
 
-To start a local development server, run:
+## Requisitos
 
-```bash
-ng serve
-```
+- Node.js y npm (ver `packageManager` en `package.json`)
+- Backend Java disponible en `http://localhost:8080/api-instalaciones/v1` (definido en `src/app/auth/auth.constants.ts`, sin `environments/` para esta URL)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Servidor de desarrollo
 
 ```bash
-ng generate component component-name
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Abre `http://localhost:4200/`. Recarga automática al modificar los ficheros fuente.
+
+## Compilación
 
 ```bash
-ng generate --help
+npm run build      # producción por defecto, salida en dist/gestion-censo
+npm run watch      # build en modo watch, configuración development
 ```
 
-## Building
-
-To build the project run:
+## Tests
 
 ```bash
-ng build
+npm test           # ng test (Karma/Jasmine)
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Para ejecutar un único test, usa `fdescribe`/`fit` en el spec correspondiente, o `ng test -- --include='**/nombre.spec.ts'`.
 
-## Running unit tests
+No hay `ng lint` ni ESLint configurados. El análisis estático se realiza vía SonarQube (`sonar.bat`), que requiere `coverage/lcov.info` generado previamente con `ng test --code-coverage`.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Generación de componentes
 
 ```bash
-ng test
+ng generate component views/<nombre>
 ```
 
-## Running end-to-end tests
+## Recursos adicionales
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Para más información sobre Angular CLI, consulta la [documentación oficial](https://angular.dev/tools/cli).
