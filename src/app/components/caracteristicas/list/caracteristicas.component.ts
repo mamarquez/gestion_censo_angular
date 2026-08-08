@@ -118,7 +118,7 @@ export class ListCaracteristicasComponent implements OnChanges {
       mensaje: `¿Deseas eliminar "<strong>${caracteristica.medida.nombre}</strong>"?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(caracteristica.id!)
+      onAccept: () => this.borrarRegistro(caracteristica.id)
     });
   }
 
