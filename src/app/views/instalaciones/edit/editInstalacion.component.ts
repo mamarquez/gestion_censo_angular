@@ -40,6 +40,8 @@ export class EditInstalacionComponent {
   }
 
   onCargandoChange(cargando: boolean): void {
-    this.cargando = cargando;
+    Promise.resolve().then(() => {
+      this.cargando = cargando;
+    });
   }
 }

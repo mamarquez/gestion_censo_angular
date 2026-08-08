@@ -47,3 +47,80 @@
 </div>
 
 <br/>
+
+
+<form [formGroup]="form">
+  <div class="fields-row">
+      <div class="field col-3">
+        <input id="id" type="text" pInputText formControlName="id" readonly />
+      </div>
+  </div>
+</form>
+
+<p-table
+  size='small'
+  [value]='espaciosComplementarios'
+  [tableStyle]="{ 'min-width': '50rem' }"
+  [stripedRows]='true'
+  [paginator]='true'
+  [rows]='10'
+  [rowsPerPageOptions]='[10, 20, 50, 100]'
+  [showCurrentPageReport]='true'
+  currentPageReportTemplate='Mostrando {first} a {last} de {totalRecords} registros'
+  dataKey='id'
+  [loading]='cargando'
+  sortField='nombre'
+  [sortOrder]='1'
+>
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th id='espacio-deportivo.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+      <th id='espacio-deportivo.descripcion' pSortableColumn="descripcion">Descripción<p-sortIcon field="descripcion"></p-sortIcon></th>
+      <th id='espacio-deportivo.visible' pSortableColumn='visible' class='text-center' style='width: 10%'>Visible<p-sortIcon field='visible'></p-sortIcon></th>
+      <th id='espacio-deportivo.activo' pSortableColumn='activo' class='text-center' style='width: 10%'>Activo<p-sortIcon field='activo'></p-sortIcon></th>
+      <th id='espacio-deportivo.accion' class='text-right' style='width: 10%'></th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="5">
+        <div style="display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-off-icon lucide-circle-off"><path d="m2 2 20 20"/><path d="M8.35 2.69A10 10 0 0 1 21.3 15.65"/><path d="M19.08 19.08A10 10 0 1 1 4.92 4.92"/></svg>
+          <p style="margin-top: 1rem; color: #64748b; font-weight: 600;">No hay registros para mostrar</p>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-espacioComplementario>
+    <tr>
+      <td>{{ espacioComplementario.nombre }}</td>
+      <td>{{ espacioComplementario.descripcion }}</td>
+      <td class="centrado">
+        <label for='espacioComplementario-visible-{{ espacioComplementario.id }}' class="switch-native {{ espacioComplementario.visible ? 'verde' : 'rojo' }}">
+          <input id='espacioComplementario-visible-{{ espacioComplementario.id }}' type="checkbox" [checked]="espacioComplementario.visible" disabled />
+          <span class="slider-native"></span>
+        </label>
+      </td>
+      <td class="centrado">
+        <label for='espacioComplementario-activo-{{ espacioComplementario.id }}' class="switch-native {{ espacioComplementario.activo ? 'verde' : 'rojo' }}">
+          <input id='espacioComplementario-activo-{{ espacioComplementario.id }}' type="checkbox" [checked]="espacioComplementario.activo" disabled />
+          <span class="slider-native"></span>
+        </label>
+      </td>
+      <app-acciones-tabla
+        [editarRoute]="['/instalacionesespacios', espacioComplementario.id]"
+        [activo]="espacioComplementario.activo"
+        [visible]="espacioComplementario.visible"
+        (toggleEstado)="cambiarEstado(espacioComplementario.id)"
+        (toggleVisible)="cambiarVisible(espacioComplementario.id)"
+        (borrar)="confirmarBorrado(espacioComplementario)"
+      />
+    </tr>
+  </ng-template>
+
+</p-table>
+
+<p-toast />

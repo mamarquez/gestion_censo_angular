@@ -80,6 +80,7 @@ export class DatosComponent implements OnInit {
   private cargarDatos(id: string): void {
     this.cargando = true;
     this.cargandoChange.emit(true);
+    this.cdr.detectChanges();
 
     this.service.get(id).subscribe({
       next: (response: ApiResponse<Instalacion>) => {

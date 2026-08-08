@@ -14,7 +14,7 @@ import { InstalacionEspacioComplementario } from   '../models/instalacionEspacio
 export class InstalacionEspacioComplementarioService {
 
   private readonly http = inject(HttpClient);
-  private readonly api = `${AUTH.API}/instalacionesespaciosdeportivos`;
+  private readonly api = `${AUTH.API}/instalacionesespacioscomplementarios`;
   private readonly headers = new HttpHeaders({
     'Content-Type': 'application/json'
   });
@@ -44,6 +44,14 @@ export class InstalacionEspacioComplementarioService {
    */
   cambiarEstado(id: number): Observable<ApiResponse<InstalacionEspacioComplementario>> {
     return this.http.patch<ApiResponse<InstalacionEspacioComplementario>>(`${this.api}/${id}`, null, { headers: this.headers });
+  }
+
+  /**
+   * Cambia la visibilidad de un registro
+   * @param id Id del registro
+   */
+  cambiarVisible(id: number): Observable<ApiResponse<InstalacionEspacioComplementario>> {
+    return this.http.patch<ApiResponse<InstalacionEspacioComplementario>>(`${this.api}/visibilidad/${id}`, null, { headers: this.headers });
   }
 
   /**

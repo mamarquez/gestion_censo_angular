@@ -94,6 +94,7 @@ export class DatosTelefonosComponent implements OnInit {
   private cargar(): void {
     this.cargando = true;
     this.cargandoChange.emit(true);
+    this.cdr.detectChanges();
 
     this.service.get(this.id).subscribe({
       next: (response) => {

@@ -11,6 +11,7 @@ import { InstalacionEspacioComplementario } from '../../../../../models/instalac
 import { TableModule } from 'primeng/table';
 import { InputText } from 'primeng/inputtext';
 import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acciones-tabla.component';
+import { ApiResponseWrapper } from '../../../../../interface/api-response-wrapper.interface';
 
 @Component({
   standalone: true,
@@ -68,13 +69,15 @@ export class ComplementarioComponent implements OnInit {
   }
 
   private cargarDatos(id: string): void {
-    /*
     this.cargando = true;
     this.cargandoChange.emit(true);
+    this.cdr.detectChanges();
 
     this.service.getAll({ idInstalacion: id }).subscribe({
-      next: (response: ApiResponse<InstalacionEspacioDeportivo[]>) => {
-        this.espaciosDeportivos = response.data ?? [];
+      next: (response: ApiResponseWrapper<InstalacionEspacioComplementario[]>) => {
+        this.espaciosComplementarios = response.data ?? [];
+
+        console.log('Datos cargados:', this.espaciosComplementarios);
 
         this.form.patchValue({
           id: this.id
@@ -96,7 +99,6 @@ export class ComplementarioComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
-    */
   }
 
   limpiar() {
@@ -108,14 +110,13 @@ export class ComplementarioComponent implements OnInit {
   }
 
   cambiarEstado(id: number) {
-    /*
     this.cargando = true;
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const espacioDeportivo = this.espaciosDeportivos.find(p => p.id === id);
-        if (espacioDeportivo) {
-          espacioDeportivo.activo = !espacioDeportivo.activo;
+        const espacioComplementario = this.espaciosComplementarios.find(p => p.id === id);
+        if (espacioComplementario) {
+          espacioComplementario.activo = !espacioComplementario.activo;
         }
 
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
@@ -129,11 +130,29 @@ export class ComplementarioComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
-    */
   }
 
   cambiarVisible(id: number) {
+this.cargando = true;
 
+    this.service.cambiarVisible(id).subscribe({
+      next: () => {
+        const espacioComplementario = this.espaciosComplementarios.find(p => p.id === id);
+        if (espacioComplementario) {
+          espacioComplementario.visible = !espacioComplementario.visible;
+        }
+
+        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado la visibilidad' });
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cambiar la visibilidad del telefono', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar la visibilidad' });
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   confirmarBorrado(espacioComplementario: InstalacionEspacioComplementario) {

@@ -89,6 +89,7 @@ export class DatosCaracteristicaComponent implements OnInit {
   private cargarDatos(id: string): void {
     this.cargando = true;
     this.cargandoChange.emit(true);
+    this.cdr.detectChanges();
 
     this.service.getAll({ idInstalacion: id }).subscribe({
       next: (response: ApiResponse<InstalacionCaracteristica[]>) => {
