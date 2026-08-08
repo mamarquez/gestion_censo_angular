@@ -1,5 +1,4 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -8,15 +7,15 @@ import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
-
 import { Pavimento } from '../../../models/pavimento';
 import { PavimentoService } from '../../../services/pavimento.service';
 
 @Component({
+  standalone: true,
   selector: 'app-pavimento',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
   templateUrl: './pavimento.component.html',
-  styleUrl: './pavimento.component.css',
+  styleUrl: './pavimento.component.css'
 })
 export class PavimentoComponent implements OnInit {
 
@@ -125,7 +124,11 @@ export class PavimentoComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.pavimentos = this.pavimentos.filter(p => p.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Eliminado',
+          detail: 'Se ha borrado el registro correctamente'
+        });
         this.cargando = false;
         this.cdr.detectChanges();
       },

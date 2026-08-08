@@ -1,5 +1,4 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -8,15 +7,15 @@ import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
-
 import { Conservacion } from '../../../models/conservacion';
 import { ConservacionService } from '../../../services/conservacion.service';
 
 @Component({
+  standalone: true,
   selector: 'app-conservacion',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
   templateUrl: './conservacion.component.html',
-  styleUrl: './conservacion.component.css',
+  styleUrl: './conservacion.component.css'
 })
 export class ConservacionComponent implements OnInit {
 

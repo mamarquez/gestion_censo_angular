@@ -1,5 +1,4 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -8,7 +7,6 @@ import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
-
 import { Gestor } from '../../../models/gestor';
 import { GestorService } from '../../../services/gestor.service';
 
@@ -17,7 +15,7 @@ import { GestorService } from '../../../services/gestor.service';
   selector: 'app-gestor',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
   templateUrl: './gestor.component.html',
-  styleUrl: './gestor.component.css',
+  styleUrl: './gestor.component.css'
 })
 export class GestorComponent implements OnInit {
 

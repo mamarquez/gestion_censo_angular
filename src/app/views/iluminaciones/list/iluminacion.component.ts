@@ -1,7 +1,5 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-
 import { TableModule } from 'primeng/table';
-
 import { Iluminacion } from '../../../models/iluminacion';
 import { IluminacionService } from '../../../services/iluminacion.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';

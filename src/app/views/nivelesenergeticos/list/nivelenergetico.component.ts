@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 
 import { TableModule } from 'primeng/table';
 
@@ -128,7 +128,11 @@ export class NivelEnergeticoComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.nivelesEnergeticos = this.nivelesEnergeticos.filter(p => p.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Eliminado',
+          detail: 'Se ha borrado el registro correctamente'
+        });
         this.cargando = false;
         this.cdr.markForCheck();
       },

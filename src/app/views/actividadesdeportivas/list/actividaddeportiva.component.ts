@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -8,10 +7,10 @@ import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
-
 import { ActividadDeportiva } from '../../../models/actividaddeportiva';
 import { ActividadDeportivaService } from '../../../services/adtividaddeportiva.service';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+
 @Component({
   standalone: true,
   selector: 'app-actividad-deportiva',

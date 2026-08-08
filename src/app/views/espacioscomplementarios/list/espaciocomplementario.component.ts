@@ -1,5 +1,4 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -8,7 +7,6 @@ import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
-
 import { EspacioComplementario } from '../../../models/espaciocomplementario';
 import { EspacioComplementarioService } from '../../../services/espaciocomplementario.service';
 

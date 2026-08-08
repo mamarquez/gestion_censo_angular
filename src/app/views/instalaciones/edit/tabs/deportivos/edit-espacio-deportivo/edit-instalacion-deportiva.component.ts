@@ -7,7 +7,9 @@ import { ApiResponse } from '../../../../../../models/apiresponse';
 import { EspacioDeportivo } from '../../../../../../models/espaciodeportivo';
 import { EspacioDeportivoService } from '../../../../../../services/espaciodeportivo.service';
 import { MessageService } from 'primeng/api';
-import { ListCaracteristicasComponent } from '../../../../../../components/caracteristicas/list/caracteristicas.component';
+import {
+  ListCaracteristicasComponent
+} from '../../../../../../components/caracteristicas/list/caracteristicas.component';
 
 @Component({
   standalone: true,

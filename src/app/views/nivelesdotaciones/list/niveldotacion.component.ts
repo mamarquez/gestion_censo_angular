@@ -1,7 +1,5 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-
 import { TableModule } from 'primeng/table';
-
 import { NivelDotacion } from '../../../models/niveldotacion';
 import { NivelDotacionService } from '../../../services/niveldotacion.service';
 import { Button } from 'primeng/button';

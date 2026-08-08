@@ -86,11 +86,11 @@ export class ListInstalacionesComponent implements OnInit {
       }
     });
   }
-  
+
   /**
    * Cambia la visibilidad de un registro
    * @param id Id del registro
-  */
+   */
   cambiarVisible(id: number) {
 
   }

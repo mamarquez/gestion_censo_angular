@@ -1,16 +1,14 @@
 import { ChangeDetectorRef, Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { MessageService, PrimeTemplate } from 'primeng/api';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { DialogService } from '../../../services/dialog.service';
 import { InstalacionCaracteristicaService } from '../../../services/instalacionCaracteristica.service';
 import { InstalacionCaracteristica } from '../../../models/instalacionCaracteristica';
-import { ApiResponse } from '../../../models/apiresponse';
 
 @Component({
   standalone: true,
@@ -27,7 +25,7 @@ import { ApiResponse } from '../../../models/apiresponse';
   ],
   providers: [MessageService],
   templateUrl: './caracteristicas.component.html',
-  styleUrl: './caracteristicas.component.css',
+  styleUrl: './caracteristicas.component.css'
 })
 export class ListCaracteristicasComponent implements OnChanges {
 

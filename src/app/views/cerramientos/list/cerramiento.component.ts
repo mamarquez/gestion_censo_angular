@@ -1,7 +1,5 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-
 import { Cerramiento } from '../../../models/cerramiento';
 import { CerramientoService } from '../../../services/cerramiento.service';
 import { ActividadDeportiva } from '../../../models/actividaddeportiva';
@@ -18,7 +16,7 @@ import { TooltipModule } from 'primeng/tooltip';
   selector: 'app-cerramiento',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
   templateUrl: './cerramiento.component.html',
-  styleUrl: './cerramiento.component.css',
+  styleUrl: './cerramiento.component.css'
 })
 export class CerramientoComponent implements OnInit {
 
@@ -41,6 +39,7 @@ export class CerramientoComponent implements OnInit {
   ngOnInit(): void {
     this.cargar();
   }
+
   limpiar(): void {
     this.form.reset();
     this.buscar();

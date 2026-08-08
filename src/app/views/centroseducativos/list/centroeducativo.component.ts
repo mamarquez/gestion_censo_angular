@@ -1,5 +1,4 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -8,7 +7,6 @@ import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
-
 import { CentroEducativo } from '../../../models/centroeducativo';
 import { CentroEducativoService } from '../../../services/centroeducativo.service';
 import { ActividadDeportiva } from '../../../models/actividaddeportiva';
@@ -19,7 +17,7 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
   selector: 'app-list-centro-educativo',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
   templateUrl: './centroeducativo.component.html',
-  styleUrl: './centroeducativo.component.css',
+  styleUrl: './centroeducativo.component.css'
 })
 export class ListCentroEducativoComponent implements OnInit {
 

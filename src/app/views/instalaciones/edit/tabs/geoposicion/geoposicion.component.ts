@@ -17,7 +17,7 @@ export class GeoPosicionComponent implements OnInit {
 
   // Inputs/Outputs con señales
   codigoInstalacion = input<number | string>();
-  datosIniciales = input<any>(); // Recibe datos de geoposición si existen
+  datosIniciales = input<any>();
   
   guardar = output<any>();
   abrirMapaModal = output<void>();

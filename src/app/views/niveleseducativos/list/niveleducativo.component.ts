@@ -17,7 +17,7 @@ import { DialogService } from '../../../services/dialog.service';
   selector: 'app-nivel-educativo',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
   templateUrl: './niveleducativo.component.html',
-  styleUrl: './niveleducativo.component.css',
+  styleUrl: './niveleducativo.component.css'
 })
 export class NivelEducativoComponent implements OnInit {
 

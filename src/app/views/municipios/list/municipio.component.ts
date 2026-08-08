@@ -1,5 +1,4 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -7,7 +6,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
-
 import { Municipio } from '../../../models/municipio';
 import { MunicipioService } from '../../../services/municipio.service';
 
@@ -16,7 +14,7 @@ import { MunicipioService } from '../../../services/municipio.service';
   standalone: true,
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule],
   templateUrl: './municipio.component.html',
-  styleUrl: './municipio.component.css',
+  styleUrl: './municipio.component.css'
 })
 export class MunicipioComponent implements OnInit {
 

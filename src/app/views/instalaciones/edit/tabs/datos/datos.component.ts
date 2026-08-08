@@ -13,10 +13,8 @@ import { SelectModule } from 'primeng/select';
 import { Provincia } from '../../../../../models/provincia';
 import { Municipio } from '../../../../../models/municipio';
 import { SelectComunidadComponent } from '../../../../../components/select-comunidad/select-comunidad.component';
-import { SelectProvinciaComponent} from '../../../../../components/select-provincia/select-provincia.component';
-import {
-  SelectMunicipioComponent
-} from '../../../../../components/select-municipio/select-provincia.component';
+import { SelectProvinciaComponent } from '../../../../../components/select-provincia/select-provincia.component';
+import { SelectMunicipioComponent } from '../../../../../components/select-municipio/select-provincia.component';
 import { InputText } from 'primeng/inputtext';
 
 @Component({
@@ -110,7 +108,11 @@ export class DatosComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar instalación', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar datos de instalaciones' });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al cargar datos de instalaciones'
+        });
         this.cargando = false;
         this.cargandoChange.emit(false);
         this.cdr.detectChanges();
