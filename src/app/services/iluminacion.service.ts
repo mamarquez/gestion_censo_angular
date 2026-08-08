@@ -1,10 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { Iluminacion } from '../models/iluminacion';
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
@@ -22,7 +20,7 @@ export class IluminacionService {
   /**
    * Obtener iluminaciones
    */
-  getAll(filtros?: any): Observable<ApiResponse<Iluminacion[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<Iluminacion[]>> {
     return this.http.get<ApiResponseWrapper<Iluminacion[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
@@ -33,15 +31,15 @@ export class IluminacionService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<Iluminacion>> {
-    return this.http.patch<ApiResponse<Iluminacion>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<Iluminacion>> {
+    return this.http.patch<ApiResponseWrapper<Iluminacion>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<Iluminacion>> {
-    return this.http.delete<ApiResponse<Iluminacion>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<Iluminacion>> {
+    return this.http.delete<ApiResponseWrapper<Iluminacion>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

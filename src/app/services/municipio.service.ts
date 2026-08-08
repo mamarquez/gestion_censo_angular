@@ -1,10 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { Municipio } from '../models/municipio';
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
@@ -23,7 +21,7 @@ export class MunicipioService {
   /**
    * Obtener municipios
    */
-  getAll(filtros?: any): Observable<ApiResponse<Municipio[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<Municipio[]>> {
     return this.http.get<ApiResponseWrapper<Municipio[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
@@ -34,7 +32,7 @@ export class MunicipioService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<Municipio>> {
-    return this.http.patch<ApiResponse<Municipio>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<Municipio>> {
+    return this.http.patch<ApiResponseWrapper<Municipio>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 }

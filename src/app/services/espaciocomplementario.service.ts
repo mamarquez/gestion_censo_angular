@@ -22,7 +22,7 @@ export class EspacioComplementarioService {
   /**
    * Obtener espacios complementarios
    */
-  getAll(filtros?: any): Observable<ApiResponse<EspacioComplementario[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<EspacioComplementario[]>> {
     return this.http.get<ApiResponseWrapper<EspacioComplementario[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
@@ -33,7 +33,7 @@ export class EspacioComplementarioService {
    * Obtener registro
    * @param id Id del registro
    */
-  get(id: number): Observable<ApiResponse<EspacioComplementario[]>> {
+  get(id: number): Observable<ApiResponseWrapper<EspacioComplementario[]>> {
     return this.http.get<ApiResponseWrapper<EspacioComplementario[]>>(`${this.api}/${id}`, {
       headers: this.headers
     });
@@ -43,15 +43,15 @@ export class EspacioComplementarioService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<EspacioComplementario>> {
-    return this.http.patch<ApiResponse<EspacioComplementario>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<EspacioComplementario>> {
+    return this.http.patch<ApiResponseWrapper<EspacioComplementario>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<EspacioComplementario>> {
-    return this.http.delete<ApiResponse<EspacioComplementario>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<EspacioComplementario>> {
+    return this.http.delete<ApiResponseWrapper<EspacioComplementario>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

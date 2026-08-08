@@ -1,10 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { Usuario } from '../models/usuario';
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
@@ -44,23 +42,23 @@ export class UsuarioService {
    * @param id Id del registro
    * @param usuario Datos a actualizar
    */
-  update(id: string, usuario: Partial<Usuario>): Observable<ApiResponse<Usuario>> {
-    return this.http.put<ApiResponse<Usuario>>(`${this.api}/${id}`, usuario, { headers: this.headers });
+  update(id: string, usuario: Partial<Usuario>): Observable<ApiResponseWrapper<Usuario>> {
+    return this.http.put<ApiResponseWrapper<Usuario>>(`${this.api}/${id}`, usuario, { headers: this.headers });
   }
 
   /**
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: string): Observable<ApiResponse<Usuario>> {
-    return this.http.patch<ApiResponse<Usuario>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: string): Observable<ApiResponseWrapper<Usuario>> {
+    return this.http.patch<ApiResponseWrapper<Usuario>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: string): Observable<ApiResponse<Usuario>> {
-    return this.http.delete<ApiResponse<Usuario>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: string): Observable<ApiResponseWrapper<Usuario>> {
+    return this.http.delete<ApiResponseWrapper<Usuario>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

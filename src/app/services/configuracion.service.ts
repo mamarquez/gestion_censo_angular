@@ -22,7 +22,7 @@ export class ConfiguracionService {
   /**
    * Obtener menús
    */
-  getAll(filtros?: any): Observable<ApiResponse<Configuracion[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<Configuracion[]>> {
     return this.http.get<ApiResponseWrapper<Configuracion[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
@@ -33,16 +33,16 @@ export class ConfiguracionService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<Configuracion>> {
-    return this.http.patch<ApiResponse<Configuracion>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<Configuracion>> {
+    return this.http.patch<ApiResponseWrapper<Configuracion>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<Configuracion>> {
-    return this.http.delete<ApiResponse<Configuracion>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<Configuracion>> {
+    return this.http.delete<ApiResponseWrapper<Configuracion>>(`${this.api}/${id}`, { headers: this.headers });
   }
 
 }

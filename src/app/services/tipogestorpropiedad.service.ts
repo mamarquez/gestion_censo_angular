@@ -1,9 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { TipoGestorPropiedad } from '../models/tipogestorpropiedad';
 import { buildHttpParams } from '../utils/params.util';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
@@ -22,7 +20,7 @@ export class TipoGestorPropiedadService {
   /**
    * Obtener roles
    */
-  getAll(filtros?: any): Observable<ApiResponse<TipoGestorPropiedad[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<TipoGestorPropiedad[]>> {
     return this.http.get<ApiResponseWrapper<TipoGestorPropiedad[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
@@ -33,16 +31,16 @@ export class TipoGestorPropiedadService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<TipoGestorPropiedad>> {
-    return this.http.patch<ApiResponse<TipoGestorPropiedad>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<TipoGestorPropiedad>> {
+    return this.http.patch<ApiResponseWrapper<TipoGestorPropiedad>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<boolean>> {
-    return this.http.delete<ApiResponse<boolean>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.delete<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, { headers: this.headers });
   }
 
 }

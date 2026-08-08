@@ -1,10 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { Medida } from '../models/medida';
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
@@ -22,7 +20,7 @@ export class MedidaService {
   /**
    * Obtener medidas
    */
-  getAll(filtros?: any): Observable<ApiResponse<Medida[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<Medida[]>> {
     return this.http.get<ApiResponseWrapper<Medida[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
@@ -33,15 +31,15 @@ export class MedidaService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<Medida>> {
-    return this.http.patch<ApiResponse<Medida>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<Medida>> {
+    return this.http.patch<ApiResponseWrapper<Medida>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<Medida>> {
-    return this.http.delete<ApiResponse<Medida>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<Medida>> {
+    return this.http.delete<ApiResponseWrapper<Medida>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

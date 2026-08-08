@@ -23,7 +23,7 @@ export class CerramientoService {
   /**
    * Obtener cerramientos
    */
-  getAll(filtros?: any): Observable<ApiResponse<Cerramiento[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<Cerramiento[]>> {
     return this.http.get<ApiResponseWrapper<Cerramiento[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
@@ -34,15 +34,15 @@ export class CerramientoService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<Cerramiento>> {
-    return this.http.patch<ApiResponse<Cerramiento>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<Cerramiento>> {
+    return this.http.patch<ApiResponseWrapper<Cerramiento>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<Cerramiento>> {
-    return this.http.delete<ApiResponse<Cerramiento>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<Cerramiento>> {
+    return this.http.delete<ApiResponseWrapper<Cerramiento>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

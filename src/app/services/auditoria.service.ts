@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { Auditoria } from '../models/auditoria';
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
@@ -22,7 +21,7 @@ export class AuditoriaService {
   /**
    * Obtener registros
    */
-  getAll(filtros?: any): Observable<ApiResponse<Auditoria[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<Auditoria[]>> {
     return this.http.get<ApiResponseWrapper<Auditoria[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers

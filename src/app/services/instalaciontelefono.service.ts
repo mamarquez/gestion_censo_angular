@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { InstalacionTelefono } from '../models/instalaciontelefono';
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
@@ -42,23 +41,23 @@ export class InstalacionTelefonoService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<InstalacionTelefono>> {
-    return this.http.patch<ApiResponse<InstalacionTelefono>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<InstalacionTelefono>> {
+    return this.http.patch<ApiResponseWrapper<InstalacionTelefono>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Crea un nuevo teléfono
    * @param telefono Datos del teléfono
    */
-  crear(telefono: Partial<InstalacionTelefono>): Observable<ApiResponse<InstalacionTelefono>> {
-    return this.http.post<ApiResponse<InstalacionTelefono>>(`${this.api}`, telefono, { headers: this.headers });
+  crear(telefono: Partial<InstalacionTelefono>): Observable<ApiResponseWrapper<InstalacionTelefono>> {
+    return this.http.post<ApiResponseWrapper<InstalacionTelefono>>(`${this.api}`, telefono, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<InstalacionTelefono>> {
-    return this.http.delete<ApiResponse<InstalacionTelefono>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<InstalacionTelefono>> {
+    return this.http.delete<ApiResponseWrapper<InstalacionTelefono>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

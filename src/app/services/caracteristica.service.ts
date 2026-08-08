@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { Caracteristica } from '../models/caracteristica';
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
@@ -22,7 +21,7 @@ export class CaracteristicaService {
   /**
    * Obtener menús
    */
-  getAll(filtros?: any): Observable<ApiResponse<Caracteristica[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<Caracteristica[]>> {
     return this.http.get<ApiResponseWrapper<Caracteristica[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
@@ -33,15 +32,15 @@ export class CaracteristicaService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<Caracteristica>> {
-    return this.http.patch<ApiResponse<Caracteristica>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<Caracteristica>> {
+    return this.http.patch<ApiResponseWrapper<Caracteristica>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<Caracteristica>> {
-    return this.http.delete<ApiResponse<Caracteristica>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<Caracteristica>> {
+    return this.http.delete<ApiResponseWrapper<Caracteristica>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

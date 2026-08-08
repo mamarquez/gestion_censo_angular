@@ -1,10 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { Menu } from '../models/menu';
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
@@ -22,7 +20,7 @@ export class MenuService {
   /**
    * Obtener menús
    */
-  getAll(filtros?: any): Observable<ApiResponse<Menu[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<Menu[]>> {
     return this.http.get<ApiResponseWrapper<Menu[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
@@ -33,16 +31,16 @@ export class MenuService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<Menu>> {
-    return this.http.patch<ApiResponse<Menu>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<Menu>> {
+    return this.http.patch<ApiResponseWrapper<Menu>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<Menu>> {
-    return this.http.delete<ApiResponse<Menu>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<Menu>> {
+    return this.http.delete<ApiResponseWrapper<Menu>>(`${this.api}/${id}`, { headers: this.headers });
   }
 
 }

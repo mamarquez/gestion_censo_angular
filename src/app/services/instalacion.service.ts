@@ -1,10 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { Instalacion } from '../models/instalacion';
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 import { Pavimento } from '../models/pavimento';
@@ -24,7 +22,7 @@ export class InstalacionService {
   /**
    * Obtener todos las instalaciones
    */
-  getAll(filtros?: any): Observable<ApiResponse<Instalacion[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<Instalacion[]>> {
     return this.http.get<ApiResponseWrapper<Instalacion[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
@@ -34,7 +32,7 @@ export class InstalacionService {
   /**
    * Obtener instalación
    */
-  get(id: string): Observable<ApiResponse<Instalacion>> {
+  get(id: string): Observable<ApiResponseWrapper<Instalacion>> {
     return this.http.get<ApiResponseWrapper<Instalacion>>(`${this.api}/${id}`, {
       headers: this.headers
     });
@@ -44,15 +42,15 @@ export class InstalacionService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<Pavimento>> {
-    return this.http.patch<ApiResponse<Pavimento>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<Pavimento>> {
+    return this.http.patch<ApiResponseWrapper<Pavimento>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<Pavimento>> {
-    return this.http.delete<ApiResponse<Pavimento>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<Pavimento>> {
+    return this.http.delete<ApiResponseWrapper<Pavimento>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

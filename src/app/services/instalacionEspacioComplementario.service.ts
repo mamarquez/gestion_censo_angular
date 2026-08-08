@@ -1,9 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 import { InstalacionEspacioComplementario } from   '../models/instalacionEspacioComplementario';
@@ -42,31 +40,31 @@ export class InstalacionEspacioComplementarioService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<InstalacionEspacioComplementario>> {
-    return this.http.patch<ApiResponse<InstalacionEspacioComplementario>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<InstalacionEspacioComplementario>> {
+    return this.http.patch<ApiResponseWrapper<InstalacionEspacioComplementario>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Cambia la visibilidad de un registro
    * @param id Id del registro
    */
-  cambiarVisible(id: number): Observable<ApiResponse<InstalacionEspacioComplementario>> {
-    return this.http.patch<ApiResponse<InstalacionEspacioComplementario>>(`${this.api}/visibilidad/${id}`, null, { headers: this.headers });
+  cambiarVisible(id: number): Observable<ApiResponseWrapper<InstalacionEspacioComplementario>> {
+    return this.http.patch<ApiResponseWrapper<InstalacionEspacioComplementario>>(`${this.api}/visibilidad/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Crea un nuevo espacio deportivo
    * @param espacioDeportivo Datos del espacio deportivo
    */
-  crear(espacioDeportivo: Partial<InstalacionEspacioComplementario>): Observable<ApiResponse<InstalacionEspacioComplementario>> {
-    return this.http.post<ApiResponse<InstalacionEspacioComplementario>>(`${this.api}`, espacioDeportivo, { headers: this.headers });
+  crear(espacioDeportivo: Partial<InstalacionEspacioComplementario>): Observable<ApiResponseWrapper<InstalacionEspacioComplementario>> {
+    return this.http.post<ApiResponseWrapper<InstalacionEspacioComplementario>>(`${this.api}`, espacioDeportivo, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<InstalacionEspacioComplementario>> {
-    return this.http.delete<ApiResponse<InstalacionEspacioComplementario>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<InstalacionEspacioComplementario>> {
+    return this.http.delete<ApiResponseWrapper<InstalacionEspacioComplementario>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

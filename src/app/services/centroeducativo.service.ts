@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { CentroEducativo } from '../models/centroeducativo';
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
@@ -22,7 +21,7 @@ export class CentroEducativoService {
   /**
    * Obtener centros educativos
    */
-  getAll(filtros?: any): Observable<ApiResponse<CentroEducativo[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<CentroEducativo[]>> {
     return this.http.get<ApiResponseWrapper<CentroEducativo[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
@@ -33,16 +32,16 @@ export class CentroEducativoService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<CentroEducativo>> {
-    return this.http.patch<ApiResponse<CentroEducativo>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<CentroEducativo>> {
+    return this.http.patch<ApiResponseWrapper<CentroEducativo>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<CentroEducativo>> {
-    return this.http.delete<ApiResponse<CentroEducativo>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<CentroEducativo>> {
+    return this.http.delete<ApiResponseWrapper<CentroEducativo>>(`${this.api}/${id}`, { headers: this.headers });
   }
 
 }

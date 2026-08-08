@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { ActividadDeportiva } from '../models/actividaddeportiva';
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
@@ -22,7 +21,7 @@ export class ActividadDeportivaService {
   /**
    * Obtener actividades deportivas
    */
-  getAll(filtros?: any): Observable<ApiResponse<ActividadDeportiva[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<ActividadDeportiva[]>> {
     return this.http.get<ApiResponseWrapper<ActividadDeportiva[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
@@ -33,16 +32,16 @@ export class ActividadDeportivaService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<ActividadDeportiva>> {
-    return this.http.patch<ApiResponse<ActividadDeportiva>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<ActividadDeportiva>> {
+    return this.http.patch<ApiResponseWrapper<ActividadDeportiva>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<ActividadDeportiva>> {
-    return this.http.delete<ApiResponse<ActividadDeportiva>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<ActividadDeportiva>> {
+    return this.http.delete<ApiResponseWrapper<ActividadDeportiva>>(`${this.api}/${id}`, { headers: this.headers });
   }
 
 }
