@@ -1,7 +1,5 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-
 import { EstadoUso } from '../../../models/estadouso';
 import { EstadoUsoService } from '../../../services/estadouso.service';
 import { Button } from 'primeng/button';
@@ -11,14 +9,13 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../services/dialog.service';
-import { NivelEducativo } from '../../../models/niveleducativo';
 
 @Component({
   standalone: true,
   selector: 'app-estado-uso',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
   templateUrl: './estadouso.component.html',
-  styleUrl: './estadouso.component.css',
+  styleUrl: './estadouso.component.css'
 })
 export class EstadoUsoComponent implements OnInit {
 

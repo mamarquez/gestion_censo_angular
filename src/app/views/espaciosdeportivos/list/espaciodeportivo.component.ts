@@ -1,10 +1,7 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-
 import { EspacioDeportivo } from '../../../models/espaciodeportivo';
 import { EspacioDeportivoService } from '../../../services/espaciodeportivo.service';
-import { NivelEducativo } from '../../../models/niveleducativo';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -18,7 +15,7 @@ import { DialogService } from '../../../services/dialog.service';
   selector: 'app-espacio-deportivo',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
   templateUrl: './espaciodeportivo.component.html',
-  styleUrl: './espaciodeportivo.component.css',
+  styleUrl: './espaciodeportivo.component.css'
 })
 export class EspacioDeportivoCompoment implements OnInit {
 

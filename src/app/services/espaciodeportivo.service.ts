@@ -1,14 +1,10 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { EspacioDeportivo } from '../models/espaciodeportivo';
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
-import { NivelEducativo } from '../models/niveleducativo';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
-
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +20,7 @@ export class EspacioDeportivoService {
   /**
    * Obtener datos
    */
-  getAll(filtros?: any): Observable<ApiResponse<EspacioDeportivo[]>> {
+  getAll(filtros?: any): Observable<ApiResponseWrapper<EspacioDeportivo[]>> {
     return this.http.get<ApiResponseWrapper<EspacioDeportivo[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
@@ -34,7 +30,7 @@ export class EspacioDeportivoService {
   /**
    * Obtener dato
    */
-  get(id: any): Observable<ApiResponse<EspacioDeportivo>> {
+  get(id: any): Observable<ApiResponseWrapper<EspacioDeportivo>> {
     return this.http.get<ApiResponseWrapper<EspacioDeportivo>>(`${this.api}/${id}`, {
       headers: this.headers
     });
@@ -44,15 +40,15 @@ export class EspacioDeportivoService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponse<EspacioDeportivo>> {
-    return this.http.patch<ApiResponse<EspacioDeportivo>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<EspacioDeportivo>> {
+    return this.http.patch<ApiResponseWrapper<EspacioDeportivo>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponse<EspacioDeportivo>> {
-    return this.http.delete<ApiResponse<EspacioDeportivo>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<EspacioDeportivo>> {
+    return this.http.delete<ApiResponseWrapper<EspacioDeportivo>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

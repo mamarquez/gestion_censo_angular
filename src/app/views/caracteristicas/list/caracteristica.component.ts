@@ -1,5 +1,4 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -7,8 +6,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
-
-
 import { Caracteristica } from '../../../models/caracteristica';
 import { CaracteristicaService } from '../../../services/caracteristica.service';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
@@ -18,7 +15,7 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
   selector: 'app-caracteristica',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, AccionesTablaComponent],
   templateUrl: './caracteristica.component.html',
-  styleUrl: './caracteristica.component.css',
+  styleUrl: './caracteristica.component.css'
 })
 export class CaracteristicaComponent implements OnInit {
 
@@ -128,7 +125,11 @@ export class CaracteristicaComponent implements OnInit {
       next: () => {
         this.caracteristicas = this.caracteristicas.filter(p => p.id !== id);
 
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Eliminado',
+          detail: 'Se ha borrado el registro correctamente'
+        });
         this.cargando = false;
         this.cdr.detectChanges();
       },

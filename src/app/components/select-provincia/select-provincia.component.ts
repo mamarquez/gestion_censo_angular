@@ -1,6 +1,6 @@
-import { Component, forwardRef, inject, OnInit, DestroyRef, signal } from '@angular/core';
+import { Component, DestroyRef, forwardRef, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SelectModule } from 'primeng/select';
 import { Provincia } from '../../models/provincia';
@@ -30,8 +30,10 @@ export class SelectProvinciaComponent implements ControlValueAccessor, OnInit {
   value: any = null;
   filtros = { activo: true };
 
-  onChange: (value: any) => void = () => {};
-  onTouched: () => void = () => {};
+  onChange: (value: any) => void = () => {
+  };
+  onTouched: () => void = () => {
+  };
 
   ngOnInit(): void {
     this.cargarProvincias();
