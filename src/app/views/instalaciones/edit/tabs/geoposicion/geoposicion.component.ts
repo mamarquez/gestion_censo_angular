@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal, OnInit } from '@angular/core';
+import { Component, inject, EventEmitter, input, Output, output, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FieldsetModule } from 'primeng/fieldset';
@@ -19,8 +19,12 @@ export class GeoPosicionComponent implements OnInit {
   codigoInstalacion = input<number | string>();
   datosIniciales = input<any>();
   
-  guardar = output<any>();
+  cargando = false;
+  guardando = false;
   abrirMapaModal = output<void>();
+  
+  @Output()
+	guardar = new EventEmitter<any>();
 
   cargandoGeo = signal<boolean>(false);
 
@@ -55,10 +59,15 @@ export class GeoPosicionComponent implements OnInit {
   ngOnInit(): void {
     if (this.codigoInstalacion()) {
       this.geoForm.patchValue({ codigoInstalacion: String(this.codigoInstalacion()) });
+	  this.cargar();
     }
     if (this.datosIniciales()) {
       this.geoForm.patchValue(this.datosIniciales());
     }
+  }
+  
+  cargar() {
+	  
   }
 
   onSubmit(): void {

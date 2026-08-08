@@ -1,22 +1,44 @@
 import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { InstalacionService } from '../../../../../services/instalacion.service';
+import { ButtonModule } from 'primeng/button';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../../../services/dialog.service';
-import { EspacioDeportivo } from '../../../../../models/espaciodeportivo';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ToastModule } from 'primeng/toast';
+import { ActivatedRoute } from '@angular/router';
+import { InstalacionEspacioComplementarioService } from '../../../../../services/instalacionEspacioComplementario.service';
+import { InstalacionEspacioComplementario } from '../../../../../models/instalacionEspacioComplementario';
+import { TableModule } from 'primeng/table';
+import { InputText } from 'primeng/inputtext';
+import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   standalone: true,
   selector: 'app-datos-complementarios',
-  imports: [],
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    CheckboxModule,
+    ButtonModule,
+    ToastModule,
+    AccionesTablaComponent,
+    InputText,
+    TableModule
+    /*
+    SelectModule,
+    SelectComunidadComponent,
+    SelectProvinciaComponent,
+    SelectMunicipioComponent
+
+     */
+  ],
   templateUrl: './complementario.component.html'
 })
 export class ComplementarioComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(InstalacionService);
+  private readonly service = inject(InstalacionEspacioComplementarioService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
@@ -24,7 +46,7 @@ export class ComplementarioComponent implements OnInit {
   @Output() cargandoChange = new EventEmitter<boolean>();
 
   private id: string | null = null;
-  // espaciosDeportivos: InstalacionEspacioComplementario[] = [];
+  espaciosComplementarios: InstalacionEspacioComplementario[] = [];
   cargando = false;
   guardando = false;
 
@@ -114,12 +136,12 @@ export class ComplementarioComponent implements OnInit {
 
   }
 
-  confirmarBorrado(espacioDeportivo: EspacioDeportivo) {
+  confirmarBorrado(espacioComplementario: InstalacionEspacioComplementario) {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar el teléfono "<strong>${espacioDeportivo.nombre}</strong>"?`,
+      mensaje: `¿Deseas eliminar el teléfono "<strong>${espacioComplementario.activo}</strong>"?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(espacioDeportivo.id)
+      onAccept: () => this.borrarRegistro(espacioComplementario.id!)
     });
   }
 
@@ -127,7 +149,7 @@ export class ComplementarioComponent implements OnInit {
     /*
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.espaciosDeportivos = this.espaciosDeportivos.filter(t => t.id !== id);
+        this.espaciosComplementarios = this.espaciosComplementarios.filter(t => t.id !== id);
         this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado correctamente' });
         this.cdr.detectChanges();
       },

@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import {
   ListCaracteristicasComponent
 } from '../../../../../../components/caracteristicas/list/caracteristicas.component';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @Component({
   standalone: true,
@@ -18,6 +19,7 @@ import {
     Button,
     InputText,
     ReactiveFormsModule,
+	FieldsetModule,
     ListCaracteristicasComponent
   ],
   templateUrl: './edit-instalacion-deportiva.component.html'

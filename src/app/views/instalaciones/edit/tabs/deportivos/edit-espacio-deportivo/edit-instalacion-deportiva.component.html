@@ -14,14 +14,14 @@
       <input id="nombre" type="text" pInputText formControlName="nombre" />
     </div>
 
-    <!--
+	<!--
     <div class="field col-1">
       <label for='espacioDeportivo-visible-{{ id }}' class="switch-native {{ visible ? 'verde' : 'rojo' }}">
         <input id='espacioDeportivo-visible-{{ id }}' type="checkbox" [checked]="visible" disabled />
         <span class="slider-native"></span>
       </label>
     </div>
-    -->
+	-->
 
   </div>
 
@@ -32,7 +32,13 @@
     </div>
   </div>
 
-  <app-list-caracteristicas [idEspacioDeportivo]="espacioDeportivo?.id" />
+	<div class="fields-row">
+		<div class="field col-12">
+			<p-fieldset legend="Caracteristicas">
+				<app-list-caracteristicas [idEspacioDeportivo]="espacioDeportivo?.id" />
+			</p-fieldset>
+		</div>
+	</div>
 
   <div class='fields-row'>
     <div class='field col-12'>
