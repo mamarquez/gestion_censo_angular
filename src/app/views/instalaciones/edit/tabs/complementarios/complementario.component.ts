@@ -6,7 +6,9 @@ import { DialogService } from '../../../../../services/dialog.service';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
 import { ActivatedRoute } from '@angular/router';
-import { InstalacionEspacioComplementarioService } from '../../../../../services/instalacionEspacioComplementario.service';
+import {
+  InstalacionEspacioComplementarioService
+} from '../../../../../services/instalacionEspacioComplementario.service';
 import { InstalacionEspacioComplementario } from '../../../../../models/instalacionEspacioComplementario';
 import { TableModule } from 'primeng/table';
 import { InputText } from 'primeng/inputtext';
@@ -25,13 +27,6 @@ import { ApiResponseWrapper } from '../../../../../interface/api-response-wrappe
     AccionesTablaComponent,
     InputText,
     TableModule
-    /*
-    SelectModule,
-    SelectComunidadComponent,
-    SelectProvinciaComponent,
-    SelectMunicipioComponent
-
-     */
   ],
   templateUrl: './complementario.component.html'
 })
@@ -133,7 +128,7 @@ export class ComplementarioComponent implements OnInit {
   }
 
   cambiarVisible(id: number) {
-this.cargando = true;
+    this.cargando = true;
 
     this.service.cambiarVisible(id).subscribe({
       next: () => {
@@ -142,7 +137,11 @@ this.cargando = true;
           espacioComplementario.visible = !espacioComplementario.visible;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado la visibilidad' });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Actualizado',
+          detail: 'Se ha actualizado la visibilidad'
+        });
         this.cargando = false;
         this.cdr.detectChanges();
       },
@@ -157,7 +156,7 @@ this.cargando = true;
 
   confirmarBorrado(espacioComplementario: InstalacionEspacioComplementario) {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar el teléfono "<strong>${espacioComplementario.activo}</strong>"?`,
+      mensaje: `¿Deseas eliminar "<strong>${espacioComplementario.espacioComplementario.nombre}</strong>"?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
       onAccept: () => this.borrarRegistro(espacioComplementario.id!)
@@ -165,7 +164,6 @@ this.cargando = true;
   }
 
   private borrarRegistro(id: number): void {
-    /*
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.espaciosComplementarios = this.espaciosComplementarios.filter(t => t.id !== id);
@@ -178,7 +176,6 @@ this.cargando = true;
         this.cdr.detectChanges();
       }
     });
-    */
   }
 
 }

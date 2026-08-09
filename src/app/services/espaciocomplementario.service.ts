@@ -43,15 +43,16 @@ export class EspacioComplementarioService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponseWrapper<EspacioComplementario>> {
-    return this.http.patch<ApiResponseWrapper<EspacioComplementario>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.patch<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponseWrapper<EspacioComplementario>> {
-    return this.http.delete<ApiResponseWrapper<EspacioComplementario>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<boolean>> {
+    console.log(id);
+    return this.http.delete<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }
