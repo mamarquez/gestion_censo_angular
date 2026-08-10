@@ -1,6 +1,7 @@
-<!-- Contenedor principal del filtro -->
 <div class='bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-6' [formGroup]='form'>
   <div style='display: flex !important; flex-direction: row !important; align-items: flex-end !important; gap: 1rem !important; flex-wrap: wrap !important;'>
+
+    <input id="id" type="text" pInputText formControlName="id" readonly [hidden]='true' />
 
     <!-- Nombre -->
     <div style='display: flex; flex-direction: column; gap: 0.375rem; width: 250px;'>
@@ -48,16 +49,6 @@
 
 <br/>
 
-<form [formGroup]="form">
-
-  <div class="fields-row">
-    <div class="field col-3">
-      <input id="id" type="text" pInputText formControlName="id" readonly [hidden]='true' />
-    </div>
-  </div>
-
-</form>
-
 <div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
   <p-button
     type='button'
@@ -68,28 +59,25 @@
 </div>
 
 <p-table
-  size='small'
-  [value]='espaciosDeportivos'
+  [value]="rutas"
   [tableStyle]="{ 'min-width': '50rem' }"
-  [stripedRows]='true'
-  [paginator]='true'
-  [rows]='10'
-  [rowsPerPageOptions]='[10, 20, 50, 100]'
-  [showCurrentPageReport]='true'
-  currentPageReportTemplate='Mostrando {first} a {last} de {totalRecords} registros'
-  dataKey='id'
-  [loading]='cargando'
-  sortField='nombre'
-  [sortOrder]='1'
->
+  [size]="'small'"
+  [stripedRows]="true"
+  [paginator]="true"
+  [rows]="20"
+  [rowsPerPageOptions]="[20, 50, 100]"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+  dataKey="id"
+  [loading]="cargando">
 
   <ng-template pTemplate="header">
     <tr>
-      <th id='espacio-deportivo.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
-      <th id='espacio-deportivo.descripcion' pSortableColumn="descripcion">Descripción<p-sortIcon field="descripcion"></p-sortIcon></th>
-      <th id='espacio-deportivo.visible' pSortableColumn='visible' class='text-center' style='width: 10%'>Visible<p-sortIcon field='visible'></p-sortIcon></th>
-      <th id='espacio-deportivo.activo' pSortableColumn='activo' class='text-center' style='width: 10%'>Activo<p-sortIcon field='activo'></p-sortIcon></th>
-      <th id='espacio-deportivo.accion' class='text-right' style='width: 10%'></th>
+      <th id='ruta.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+      <th id='ruta.descripcion' pSortableColumn="descripcion">Descripción<p-sortIcon field="descripcion"></p-sortIcon></th>
+      <th id='ruta.visible' pSortableColumn='visible' class='text-center' style='width: 10%'>Visible<p-sortIcon field='visible'></p-sortIcon></th>
+      <th id='ruta.activo' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
+      <th id='ruta.accion' class='text-right' style='width: 10%'></th>
     </tr>
   </ng-template>
 
@@ -104,33 +92,32 @@
     </tr>
   </ng-template>
 
-  <ng-template pTemplate="body" let-espacioDeportivo>
+  <ng-template pTemplate="body" let-ruta>
     <tr>
-      <td>{{ espacioDeportivo.nombre }}</td>
-      <td>{{ espacioDeportivo.descripcion }}</td>
+      <td>{{ ruta.nombre }}</td>
+      <td>{{ ruta.descripcion | truncar:50 }}</td>
       <td class="centrado">
-        <label for='espacioDeportivo-visible-{{ espacioDeportivo.id }}' class="switch-native {{ espacioDeportivo.visible ? 'verde' : 'rojo' }}">
-          <input id='espacioDeportivo-visible-{{ espacioDeportivo.id }}' type="checkbox" [checked]="espacioDeportivo.visible" disabled />
+        <label class="switch-native {{ ruta.visible ? 'verde' : 'rojo' }}">
+          <input type="checkbox" [checked]="ruta.visible" disabled />
           <span class="slider-native"></span>
         </label>
       </td>
       <td class="centrado">
-        <label for='espacioDeportivo-activo-{{ espacioDeportivo.id }}' class="switch-native {{ espacioDeportivo.activo ? 'verde' : 'rojo' }}">
-          <input id='espacioDeportivo-activo-{{ espacioDeportivo.id }}' type="checkbox" [checked]="espacioDeportivo.activo" disabled />
+        <label class="switch-native {{ ruta.activo ? 'verde' : 'rojo' }}">
+          <input type="checkbox" [checked]="ruta.activo" disabled />
           <span class="slider-native"></span>
         </label>
       </td>
+
       <app-acciones-tabla
-        [editarRoute]="['/instalacionesespacios', espacioDeportivo.id]"
-        [activo]="espacioDeportivo.activo"
-        [visible]="espacioDeportivo.visible"
-        (toggleEstado)="cambiarEstado(espacioDeportivo.id)"
-        (toggleVisible)="cambiarVisible(espacioDeportivo.id)"
-        (borrar)="confirmarBorrado(espacioDeportivo)"
+        [editarRoute]="['/instalacionesespacios', ruta.id]"
+        [activo]="ruta.activo"
+        [visible]="ruta.visible"
+        (toggleEstado)="cambiarEstado(ruta.id)"
+        (toggleVisible)="cambiarVisible(ruta.id)"
+        (borrar)="confirmarBorrado(ruta)"
       />
+
     </tr>
   </ng-template>
-
 </p-table>
-
-<p-toast />

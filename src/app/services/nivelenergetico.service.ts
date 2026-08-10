@@ -19,7 +19,7 @@ export class NivelEnergeticoService {
   });
 
   /**
-   * Obtener nivel energetico
+   * Obtener registros
    */
   getAll(filtros?: any): Observable<ApiResponseWrapper<NivelEnergetico[]>> {
     return this.http.get<ApiResponseWrapper<NivelEnergetico[]>>(`${this.api}`, {
@@ -29,18 +29,27 @@ export class NivelEnergeticoService {
   }
 
   /**
+   * Obtener registro
+   */
+  get(id: string): Observable<ApiResponseWrapper<NivelEnergetico>> {
+    return this.http.get<ApiResponseWrapper<NivelEnergetico>>(`${this.api}/${id}`, {
+      headers: this.headers
+    });
+  }
+
+  /**
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponseWrapper<NivelEnergetico>> {
-    return this.http.patch<ApiResponseWrapper<NivelEnergetico>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.patch<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponseWrapper<NivelEnergetico>> {
-    return this.http.delete<ApiResponseWrapper<NivelEnergetico>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.delete<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

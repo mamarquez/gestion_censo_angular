@@ -1,8 +1,6 @@
-import { Instalacion } from './instalacion';
-
 export class InstalacionTelefono {
   id?: number;
-  id_instalacion!: Instalacion;
+  idInstalacion!: number;
   numero!: string;
   contacto?: string;
   notas?: string;

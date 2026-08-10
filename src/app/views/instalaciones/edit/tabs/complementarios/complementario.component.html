@@ -1,3 +1,5 @@
+<app-modal-complementario [(isVisible)]='isVisible' (guardar)='addRegistro($event)' />
+
 <!-- Contenedor principal del filtro -->
 <div class='bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-6' [formGroup]='form'>
   <div style='display: flex !important; flex-direction: row !important; align-items: flex-end !important; gap: 1rem !important; flex-wrap: wrap !important;'>
@@ -52,10 +54,21 @@
 <form [formGroup]="form">
   <div class="fields-row">
       <div class="field col-3">
-        <input id="id" type="text" pInputText formControlName="id" readonly />
+        <input id="id" type="text" pInputText formControlName="id" readonly [hidden]='true' />
       </div>
   </div>
 </form>
+
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (click)="addComplementario()"
+  >
+  </p-button>
+</div>
 
 <p-table
   size='small'

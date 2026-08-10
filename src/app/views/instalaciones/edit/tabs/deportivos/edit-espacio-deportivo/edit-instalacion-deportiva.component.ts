@@ -9,7 +9,7 @@ import { EspacioDeportivoService } from '../../../../../../services/espaciodepor
 import { MessageService } from 'primeng/api';
 import {
   ListCaracteristicasComponent
-} from '../../../../../../components/caracteristicas/list/caracteristicas.component';
+} from '../../../../../../components/caracteristica/list/caracteristicas.component';
 import { FieldsetModule } from 'primeng/fieldset';
 
 @Component({

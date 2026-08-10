@@ -9,7 +9,7 @@ import { InstalacionEspacioDeportivo } from '../models/instalacionEspacioDeporti
 @Injectable({
   providedIn: 'root'
 })
-export class InstalacionespaciodeportivoService {
+export class InstalacionEspacioDeportivoService {
 
   private readonly http = inject(HttpClient);
   private readonly api = `${AUTH.API}/instalacionesespaciosdeportivos`;

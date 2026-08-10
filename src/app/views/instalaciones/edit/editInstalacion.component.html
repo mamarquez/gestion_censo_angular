@@ -29,10 +29,10 @@
       <li [class.active]="tabActiva === 'complementarios'">
           <a (click)="seleccionarTab('complementarios')">E. Complementarios</a>
         </li>
-      <!--
       <li [class.active]="tabActiva === 'rutas'">
         <a (click)="seleccionarTab('rutas')">Rutas</a>
       </li>
+      <!--
       <li [class.active]="tabActiva === 'fotos'">
         <a (click)="seleccionarTab('fotos')">Fotos/Archivos</a>
       </li>
@@ -46,17 +46,19 @@
 
       <div [style.display]="cargando ? 'none' : 'block'">
         @if (tabActiva === 'datos') {
-          <app-datos-instalaciones (cargandoChange)="onCargandoChange($event)" />
+          <app-datos-instalaciones (cargandoChange)="onCargandoChange($event)" [(idInstalacion)]="idInstalacion" />
         } @else if (tabActiva === 'geoposicion') {
-          <app-instalacion-geoposicion />
+          <app-instalacion-geoposicion (cargandoChange)="onCargandoChange($event)" [(idInstalacion)]="idInstalacion" />
         } @else if (tabActiva === 'telefonos') {
-          <app-datos-telefonos (cargandoChange)="onCargandoChange($event)" />
+          <app-datos-telefonos (cargandoChange)="onCargandoChange($event)" [(idInstalacion)]="idInstalacion" />
         } @else if (tabActiva === 'deportivos') {
-          <app-datos-espacios-deportivos (cargandoChange)="onCargandoChange($event)" />
+          <app-datos-espacios-deportivos (cargandoChange)="onCargandoChange($event)" [(idInstalacion)]="idInstalacion" />
         } @else if (tabActiva === 'caracteristicas') {
-          <app-datos-caracteristicas (cargandoChange)="onCargandoChange($event)" />
+          <app-datos-caracteristicas (cargandoChange)="onCargandoChange($event)" [(idInstalacion)]="idInstalacion" />
         } @else if (tabActiva === 'complementarios') {
-          <app-datos-complementarios (cargandoChange)="onCargandoChange($event)" />
+          <app-datos-complementarios (cargandoChange)="onCargandoChange($event)" [(idInstalacion)]="idInstalacion" />
+        } @else if (tabActiva === 'rutas') {
+          <app-datos-rutas (cargandoChange)="onCargandoChange($event)" [(idInstalacion)]="idInstalacion" />
         }
       </div>
     </div>

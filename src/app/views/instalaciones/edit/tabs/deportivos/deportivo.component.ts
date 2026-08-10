@@ -7,7 +7,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
 import { ActivatedRoute } from '@angular/router';
 import { ApiResponse } from '../../../../../models/apiresponse';
-import { InstalacionespaciodeportivoService } from '../../../../../services/instalacionespaciodeportivo.service';
+import { InstalacionEspacioDeportivoService } from '../../../../../services/instalacionEspacioDeportivo.service';
 import { InstalacionEspacioDeportivo } from '../../../../../models/instalacionEspacioDeportivo';
 import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acciones-tabla.component';
 import { InputText } from 'primeng/inputtext';
@@ -41,7 +41,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(InstalacionespaciodeportivoService);
+  private readonly service = inject(InstalacionEspacioDeportivoService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);

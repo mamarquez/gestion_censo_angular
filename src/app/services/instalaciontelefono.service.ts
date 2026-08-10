@@ -31,8 +31,8 @@ export class InstalacionTelefonoService {
   /**
    * Obtener teléfonos de una instalación
    */
-  get(id?: any): Observable<ApiResponseWrapper<InstalacionTelefono[]>> {
-    return this.http.get<ApiResponseWrapper<InstalacionTelefono[]>>(`${this.api}/${id}`, {
+  get(id?: any): Observable<ApiResponseWrapper<InstalacionTelefono>> {
+    return this.http.get<ApiResponseWrapper<InstalacionTelefono>>(`${this.api}/${id}`, {
       headers: this.headers
     });
   }

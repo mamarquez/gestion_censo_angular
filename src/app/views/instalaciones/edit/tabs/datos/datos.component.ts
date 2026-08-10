@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, model, OnInit, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InstalacionService } from '../../../../../services/instalacion.service';
@@ -44,6 +44,7 @@ export class DatosComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  idInstalacion = model.required<string>();
   @Output() cargandoChange = new EventEmitter<boolean>();
 
   private id: string | null = null;
@@ -71,6 +72,10 @@ export class DatosComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
+
+    this.idInstalacion.set(this.id);
+
+    console.log('Editando la instalacion: ', this.idInstalacion());
 
     if (this.id) {
       this.cargarDatos(this.id);

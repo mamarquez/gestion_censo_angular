@@ -1,38 +1,18 @@
-<form [formGroup]="form" (ngSubmit)="guardar()">
+<app-modal-telefono
+  [idInstalacion]='idInstalacion()'
+  [(modalVisible)]='modalVisible'
+  (guardado)='cargar()'
+/>
 
-  <div class="fields-row">
-    <div class="field col-3">
-      <input id="id" type="text" pInputText formControlName="id" readonly />
-    </div>
-    <div class="field col-3">
-      <input id="codigo" type="text" pInputText formControlName="codigo" readonly />
-    </div>
-  </div>
-
-  <div class="fields-row">
-    <div class="field col-3">
-      <label for="numero">Número</label>
-      <input id="numero" type="text" pInputText formControlName="numero" />
-    </div>
-
-    <div class="field col-4">
-      <label for="contacto">Contacto</label>
-      <input id="contacto" type="text" pInputText formControlName="contacto" />
-    </div>
-
-    <div class="field col-5">
-      <label for="notas">Notas</label>
-      <input id="notas" type="text" pInputText formControlName="notas" />
-    </div>
-  </div>
-
-  <div class="actions">
-    <p-button type="submit" label="Añadir" [loading]="guardando" [disabled]="form.invalid"></p-button>
-  </div>
-
-  <br />
-
-</form>
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (onClick)='abrirModal()'>
+  </p-button>
+</div>
 
 <p-table
   size='small'

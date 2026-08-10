@@ -1,110 +1,65 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, EventEmitter, inject, model, OnInit, Output } from '@angular/core';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { SelectModule } from 'primeng/select';
 import { MessageService } from 'primeng/api';
-
 import { InstalacionTelefono } from '../../../../../models/instalaciontelefono';
-import { Instalacion } from '../../../../../models/instalacion';
-import { ApiResponse } from '../../../../../models/apiresponse';
 import { InstalacionTelefonoService } from '../../../../../services/instalaciontelefono.service';
-import { InstalacionService } from '../../../../../services/instalacion.service';
 import { DialogService } from '../../../../../services/dialog.service';
-import { InputText } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acciones-tabla.component';
+import { ModalTelefonoComponent } from '../../../../../components/telefonos/modal-telefono/modal-telefono.component';
 
 @Component({
   standalone: true,
   selector: 'app-datos-telefonos',
   imports: [
-    ReactiveFormsModule,
-    FormsModule,
     CheckboxModule,
     ButtonModule,
     ToastModule,
     SelectModule,
-    InputText,
     TableModule,
-    AccionesTablaComponent
+    AccionesTablaComponent,
+    ModalTelefonoComponent
   ],
   providers: [MessageService],
   templateUrl: './telefonos.component.html',
-  styleUrl: './telefonos.component.css',
+  styleUrl: './telefonos.component.css'
 })
 export class DatosTelefonosComponent implements OnInit {
 
-  private readonly route = inject(ActivatedRoute);
-  private readonly fb = inject(FormBuilder);
   private readonly service = inject(InstalacionTelefonoService);
-  private readonly instalacionService = inject(InstalacionService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  idInstalacion = model.required<string>();
   @Output() cargandoChange = new EventEmitter<boolean>();
 
-  private id: string | null = null;
+  modalVisible = false;
 
   telefonos: InstalacionTelefono[] = [];
   cargando = false;
-  guardando = false;
-
-  form: FormGroup = this.fb.group({
-    id: [''],
-    codigo: ['', Validators.required],
-    numero: ['', Validators.required],
-    contacto: [''],
-    notas: [''],
-    visible: [true, Validators.required]
-  });
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.paramMap.get('id');
-
-    if (this.id) {
-      this.cargarTelefonos(this.id);
+    if (this.idInstalacion()) {
       this.cargar();
     }
   }
 
-  private cargarTelefonos(id: string): void {
-    this.instalacionService.get(id).subscribe({
-      next: (response: ApiResponse<Instalacion>) => {
-        const telefonos = response.data ?? null;
-
-        if (telefonos) {
-          this.form.patchValue({
-            id: this.id,
-            codigo: telefonos.codigo
-          });
-        }
-
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al cargar los teléfonos', err);
-      }
-    });
+  abrirModal(): void {
+    this.modalVisible = true;
   }
 
-  private cargar(): void {
+  cargar(): void {
     this.cargando = true;
     this.cargandoChange.emit(true);
     this.cdr.detectChanges();
 
-    this.service.get(this.id).subscribe({
+    this.service.getAll({ idInstalacion: this.idInstalacion() }).subscribe({
       next: (response) => {
-        if (Array.isArray(response.data)) {
-          this.telefonos = response.data;
-        } else if (response.data) {
-          this.telefonos = [response.data];
-        } else {
-          this.telefonos = [];
-        }
+        this.telefonos = response.data ?? [];
 
         this.cargando = false;
         this.cargandoChange.emit(false);
@@ -115,42 +70,6 @@ export class DatosTelefonosComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los teléfonos' });
         this.cargando = false;
         this.cargandoChange.emit(false);
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
-  guardar(): void {
-    if (this.form.invalid || !this.id) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    this.guardando = true;
-
-    const datos = {
-      ...this.form.value
-    };
-
-    this.service.crear(datos).subscribe({
-      next: (response: ApiResponse<InstalacionTelefono>) => {
-        if (Array.isArray(response.data)) {
-          this.telefonos = response.data;
-        } else if (response.data) {
-          this.telefonos = [response.data];
-        } else {
-          this.telefonos = [];
-        }
-
-        this.form.reset();
-        this.messageService.add({ severity: 'success', summary: 'Añadido', detail: 'Teléfono añadido correctamente' });
-        this.guardando = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al guardar teléfono', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al guardar el teléfono' });
-        this.guardando = false;
         this.cdr.detectChanges();
       }
     });
@@ -196,7 +115,11 @@ export class DatosTelefonosComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.telefonos = this.telefonos.filter(t => t.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el teléfono correctamente' });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Eliminado',
+          detail: 'Se ha borrado el teléfono correctamente'
+        });
         this.cdr.detectChanges();
       },
       error: (err) => {

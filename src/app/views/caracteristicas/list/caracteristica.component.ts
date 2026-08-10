@@ -35,6 +35,7 @@ export class CaracteristicaComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    console.log('Cargando');
     this.cargar();
   }
 
@@ -72,6 +73,7 @@ export class CaracteristicaComponent implements OnInit {
       next: (response) => {
         this.caracteristicas = response.data;
         this.cargando = false;
+        console.log(this.caracteristicas);
         this.cdr.detectChanges();
       },
       error: (err) => {

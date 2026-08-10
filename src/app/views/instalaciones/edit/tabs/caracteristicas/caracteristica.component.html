@@ -1,3 +1,9 @@
+<app-modal-caracteristica
+  [idInstalacion]='id'
+  [(modalVisible)]='modalVisible'
+  (guardado)='cargarDatos(id)'
+/>
+
 <!-- Contenedor principal del filtro -->
 <div class='bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-6' [formGroup]='form'>
   <div style='display: flex !important; flex-direction: row !important; align-items: flex-end !important; gap: 1rem !important; flex-wrap: wrap !important;'>
@@ -38,11 +44,11 @@
 
 <div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
   <p-button
-    type='button'
-    label='Añadir'
-    icon='pi pi-plus'
-    styleClass='p-button-primary p-button-sm'
-    (onClick)='abrirModal()'>
+    type="button"
+    icon="pi pi-plus"
+    label="Añadir"
+    styleClass="p-button-success p-button-sm"
+    (onClick)="abrirModal()">
   </p-button>
 </div>
 

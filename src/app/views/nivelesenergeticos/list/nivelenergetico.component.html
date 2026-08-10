@@ -1,3 +1,9 @@
+<app-edit-modal
+  [titulo] = '"Nivel energético"'
+  [(isVisible)]="modalVisible"
+  [datos]='nivelEnergetico'
+/>
+
 <div class="row">
     <h1>Niveles energéticos</h1>
 </div>
@@ -55,6 +61,18 @@
 
 <br />
 
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (onClick)='abrirModal()'>
+  </p-button>
+</div>
+
+<br />
+
 <p-table
   size='small'
   [value]='nivelesEnergeticos'
@@ -106,7 +124,9 @@
             <p-button
               severity='secondary'
               [rounded]='true'
-              [text]='true'>
+              [text]='true'
+              (onClick)='editar(nivelEnergetico.id)'
+            >
               <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
                    stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
                 <path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'></path>

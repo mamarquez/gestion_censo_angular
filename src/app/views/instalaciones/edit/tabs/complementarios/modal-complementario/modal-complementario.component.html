@@ -1,0 +1,23 @@
+<p-dialog
+  header="...."
+  [(visible)]='isVisible'
+  [draggable]="false"
+  [resizable]="false">
+
+  <app-select-complementarios [(ngModel)]='seleccionado' />
+
+  <ng-template pTemplate="footer">
+    <p-button
+      [disabled]='!seleccionado'
+      (click)="cerrar()"
+      label="Aceptar"
+      styleClass="p-button-success">
+    </p-button>
+
+    <p-button
+      (click)="cerrar()"
+      label="Cancelar"
+      styleClass="p-button-danger">
+    </p-button>
+  </ng-template>
+</p-dialog>

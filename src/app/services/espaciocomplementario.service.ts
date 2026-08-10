@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { EspacioComplementario } from '../models/espaciocomplementario';
 import { AUTH } from '../auth/auth.constants';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
@@ -45,6 +44,10 @@ export class EspacioComplementarioService {
    */
   cambiarEstado(id: number): Observable<ApiResponseWrapper<boolean>> {
     return this.http.patch<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, null, { headers: this.headers });
+  }
+
+  addRegistro(datos: EspacioComplementario): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, EspacioComplementario, { headers: this.headers });
   }
 
   /**

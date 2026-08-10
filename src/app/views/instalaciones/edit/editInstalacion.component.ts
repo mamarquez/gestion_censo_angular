@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -10,6 +11,7 @@ import { DatosEspaciosDeportivosComponent } from './tabs/deportivos/deportivo.co
 import { DatosCaracteristicaComponent} from './tabs/caracteristicas/caracteristica.component';
 import { GeoPosicionComponent} from './tabs/geoposicion/geoposicion.component';
 import { ComplementarioComponent } from './tabs/complementarios/complementario.component';
+import { RutasComponent} from './tabs/rutas/rutas.component';
 
 @Component({
   standalone: true,
@@ -25,17 +27,26 @@ import { ComplementarioComponent } from './tabs/complementarios/complementario.c
     DatosEspaciosDeportivosComponent,
     DatosCaracteristicaComponent,
     ComplementarioComponent,
-	GeoPosicionComponent
+	  GeoPosicionComponent,
+    RutasComponent
   ],
   templateUrl: './editInstalacion.component.html',
   styleUrl: './editInstalacion.component.css'
 })
-export class EditInstalacionComponent {
+export class EditInstalacionComponent implements OnInit {
 
-  tabActiva: 'datos' | 'geoposicion' | 'caracteristicas' | 'complementarios' | 'telefonos' | 'deportivos' | 'fotos' = 'datos';
+  private readonly route = inject(ActivatedRoute);
+
+  tabActiva: 'datos' | 'geoposicion' | 'caracteristicas' | 'complementarios' | 'rutas' | 'telefonos' | 'deportivos' | 'fotos' = 'datos';
   cargando: boolean = false;
 
-  seleccionarTab(tab: 'datos' | 'geoposicion' | 'caracteristicas' | 'complementarios' | 'telefonos' | 'deportivos' | 'fotos'): void {
+  idInstalacion = signal<string>('');
+
+  ngOnInit(): void {
+    this.idInstalacion.set(this.route.snapshot.paramMap.get('id') ?? '');
+  }
+
+  seleccionarTab(tab: 'datos' | 'geoposicion' | 'caracteristicas' | 'complementarios' | 'rutas' | 'telefonos' | 'deportivos' | 'fotos'): void {
     this.tabActiva = tab;
   }
 

@@ -1,7 +1,5 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-
 import { TableModule } from 'primeng/table';
-
 import { NivelEnergetico } from '../../../models/nivelenergetico';
 import { NivelEnergeticoService } from '../../../services/nivelenergetico.service';
 import { Conservacion } from '../../../models/conservacion';
@@ -12,11 +10,13 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../services/dialog.service';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 
 @Component({
   standalone: true,
   selector: 'app-nivel-energetico',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, EditModalComponent],
   templateUrl: './nivelenergetico.component.html',
   styleUrl: './nivelenergetico.component.css'
 })
@@ -28,8 +28,10 @@ export class NivelEnergeticoComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  nivelesEnergeticos: NivelEnergetico [] = [];
+  nivelEnergetico: NivelEnergetico | any = null;
+  nivelesEnergeticos: NivelEnergetico[] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -122,6 +124,27 @@ export class NivelEnergeticoComponent implements OnInit {
     });
   }
 
+  editar(id: string) {
+    console.log(id);
+
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<NivelEnergetico>) => {
+        console.log(response);
+        this.nivelEnergetico = response.data || [];
+
+        if (this.nivelEnergetico) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al editar' });
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   private borrarRegistro(id: number): void {
     this.cargando = true;
 
@@ -143,6 +166,11 @@ export class NivelEnergeticoComponent implements OnInit {
         this.cdr.markForCheck();
       }
     });
+  }
+
+  abrirModal(): void {
+    this.nivelEnergetico = null;
+    this.modalVisible = true;
   }
 
 }

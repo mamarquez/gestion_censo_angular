@@ -1,24 +1,18 @@
 import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../../../services/dialog.service';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
 import { ActivatedRoute } from '@angular/router';
 import { ApiResponse } from '../../../../../models/apiresponse';
-import { SelectModule } from 'primeng/select';
 import { InputText } from 'primeng/inputtext';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { DialogModule } from 'primeng/dialog';
 import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acciones-tabla.component';
 import { TableModule } from 'primeng/table';
 import { InstalacionCaracteristicaService } from '../../../../../services/instalacionCaracteristica.service';
 import { InstalacionCaracteristica } from '../../../../../models/instalacionCaracteristica';
-import { CaracteristicaService } from '../../../../../services/caracteristica.service';
-import { MedidaService } from '../../../../../services/medida.service';
-import { Caracteristica } from '../../../../../models/caracteristica';
-import { Medida } from '../../../../../models/medida';
+import { ModalCaracteristicaComponent } from '../../../../../components/caracteristica/modal-caracteristica/modal-caracteristica.component';
 
 @Component({
   standalone: true,
@@ -29,12 +23,10 @@ import { Medida } from '../../../../../models/medida';
     CheckboxModule,
     ButtonModule,
     ToastModule,
-    SelectModule,
     InputText,
-    InputNumberModule,
-    DialogModule,
     AccionesTablaComponent,
-    TableModule
+    TableModule,
+    ModalCaracteristicaComponent
   ],
   providers: [MessageService],
   templateUrl: './caracteristica.component.html'
@@ -43,50 +35,33 @@ export class DatosCaracteristicaComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly fb = inject(FormBuilder);
   private readonly service = inject(InstalacionCaracteristicaService);
-  private readonly caracteristicaService = inject(CaracteristicaService);
-  private readonly medidaService = inject(MedidaService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
   @Output() cargandoChange = new EventEmitter<boolean>();
 
-  private id: string = '';
+  id: string = '';
   cargando: boolean = false;
-  guardando: boolean = false;
 
   caracteristicas: InstalacionCaracteristica[] | [];
 
   modalVisible = false;
-  caracteristicasDisponibles: Caracteristica[] = [];
-  medidasDisponibles: Medida[] = [];
-  cargandoCaracteristicas = true;
-  cargandoMedidas = true;
 
   form: FormGroup = this.fb.group({
     id: [''],
     nombre: ['']
   });
 
-  modalForm: FormGroup = this.fb.group({
-    caracteristica: [null, Validators.required],
-    medida: [null, Validators.required],
-    valor: [null, Validators.required],
-    visible: [true, Validators.required]
-  });
-
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
-
-    this.cargarCaracteristicasDisponibles();
-    this.cargarMedidasDisponibles();
 
     if (this.id) {
       this.cargarDatos(this.id);
     }
   }
 
-  private cargarDatos(id: string): void {
+  cargarDatos(id: string): void {
     this.cargando = true;
     this.cargandoChange.emit(true);
     this.cdr.detectChanges();
@@ -126,51 +101,7 @@ export class DatosCaracteristicaComponent implements OnInit {
   }
 
   abrirModal(): void {
-    this.modalForm.setValue({
-      caracteristica: null,
-      medida: null,
-      valor: null,
-      visible: true
-    });
     this.modalVisible = true;
-  }
-
-  cerrarModal(): void {
-    this.modalVisible = false;
-  }
-
-  private cargarCaracteristicasDisponibles(): void {
-    this.cargandoCaracteristicas = true;
-
-    this.caracteristicaService.getAll({ activo: true }).subscribe({
-      next: (response) => {
-        this.caracteristicasDisponibles = response.data || [];
-        this.cargandoCaracteristicas = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al cargar características', err);
-        this.cargandoCaracteristicas = false;
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
-  private cargarMedidasDisponibles(): void {
-    this.cargandoMedidas = true;
-
-    this.medidaService.getAll({ activo: true }).subscribe({
-      next: (response) => {
-        this.medidasDisponibles = response.data || [];
-        this.cargandoMedidas = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al cargar medidas', err);
-        this.cargandoMedidas = false;
-        this.cdr.detectChanges();
-      }
-    });
   }
 
   cambiarEstado(id: number) {

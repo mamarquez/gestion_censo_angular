@@ -29,18 +29,26 @@ export class CaracteristicaService {
   }
 
   /**
+   * Añade un registro
+   * @param id Id del registro
+   */
+  addRegistro(datos: Caracteristica): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos , { headers: this.headers });
+  }
+
+  /**
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponseWrapper<Caracteristica>> {
-    return this.http.patch<ApiResponseWrapper<Caracteristica>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.patch<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponseWrapper<Caracteristica>> {
-    return this.http.delete<ApiResponseWrapper<Caracteristica>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.delete<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }
