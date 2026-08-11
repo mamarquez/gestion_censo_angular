@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
@@ -12,6 +12,8 @@ import { PropietarioService } from '../../../services/propietario.service';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { NivelEnergetico } from '../../../models/nivelenergetico';
 
 /**
  * @version 1.0.0
@@ -46,10 +48,10 @@ export class PropietarioComponent implements OnInit {
   modalVisible = false;
 
   form: FormGroup = this.fb.group({
-    id: [''],
-    nombre: [''],
-    descripcion: [''],
-    activo: ['']
+    id: [null],
+    nombre: [null, Validators.required],
+    descripcion: [null],
+    activo: [null]
   });
 
   ngOnInit(): void {
@@ -161,6 +163,24 @@ export class PropietarioComponent implements OnInit {
   abrirModal(): void {
     this.propietario = null;
     this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<NivelEnergetico>) => {
+        this.propietario = response.data || [];
+
+        if (this.propietario) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'errpr', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   guardar(propietario: Propietario) {
