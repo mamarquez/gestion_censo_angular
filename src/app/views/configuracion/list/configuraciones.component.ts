@@ -15,6 +15,7 @@ import { Truncar } from '../../../pipe/trucar.pipe';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { mensajesUtil } from '../../../utils/mensajes.util';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 /**
  * @version 1.0.0
@@ -31,7 +32,8 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
     ConfirmDialogModule,
     TooltipModule,
     Truncar,
-    EditModalComponent
+    EditModalComponent,
+    AccionesTablaComponent
   ],
   templateUrl: './configuraciones.component.html'
 })

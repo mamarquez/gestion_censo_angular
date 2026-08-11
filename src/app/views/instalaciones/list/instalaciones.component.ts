@@ -17,8 +17,7 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
   standalone: true,
   selector: 'app-instalaciones',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
-  templateUrl: './instalaciones.component.html',
-  styleUrl: './instalaciones.component.css'
+  templateUrl: './instalaciones.component.html'
 })
 export class ListInstalacionesComponent implements OnInit {
 

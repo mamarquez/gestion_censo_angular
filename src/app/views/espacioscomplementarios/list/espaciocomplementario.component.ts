@@ -9,13 +9,13 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { EspacioComplementario } from '../../../models/espaciocomplementario';
 import { EspacioComplementarioService } from '../../../services/espaciocomplementario.service';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   standalone: true,
   selector: 'app-espacio-complementario',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './espaciocomplementario.component.html',
-  styleUrl: './espaciocomplementario.component.css'
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  templateUrl: './espaciocomplementario.component.html'
 })
 export class EspacioComplementarioCompoment implements OnInit {
 

@@ -13,6 +13,7 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { NivelEnergetico } from '../../../models/nivelenergetico';
 import { mensajesUtil } from '../../../utils/mensajes.util';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 /**
  * @version 1.0.0
@@ -28,7 +29,8 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
     ReactiveFormsModule,
     ConfirmDialogModule,
     TooltipModule,
-    EditModalComponent
+    EditModalComponent,
+    AccionesTablaComponent
   ],
   templateUrl: './niveleducativo.component.html'
 })

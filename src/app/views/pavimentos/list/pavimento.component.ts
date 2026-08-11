@@ -9,13 +9,13 @@ import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { Pavimento } from '../../../models/pavimento';
 import { PavimentoService } from '../../../services/pavimento.service';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   standalone: true,
   selector: 'app-pavimento',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './pavimento.component.html',
-  styleUrl: './pavimento.component.css'
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  templateUrl: './pavimento.component.html'
 })
 export class PavimentoComponent implements OnInit {
 

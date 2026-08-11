@@ -102,7 +102,7 @@
             </label>
           </td>
           <app-acciones-tabla
-            [editarRoute]="['/centroseducativos', centroEducativo.id]"
+            (editar)="editar(centroEducativo.id)"
             [activo]="centroEducativo.activo"
             (toggleEstado)="cambiarEstado(centroEducativo.id)"
             (borrar)="confirmarBorrado(centroEducativo)"

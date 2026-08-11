@@ -10,13 +10,13 @@ import { DialogService } from '../../../services/dialog.service';
 
 import { Rol } from '../../../models/rol';
 import { RolService } from '../../../services/rol.service';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   standalone: true,
   selector: 'app-rol',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule],
-  templateUrl: './rol.component.html',
-  styleUrl: './rol.component.css',
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, AccionesTablaComponent],
+  templateUrl: './rol.component.html'
 })
 export class RolComponent implements OnInit {
 

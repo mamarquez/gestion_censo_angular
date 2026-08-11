@@ -8,13 +8,13 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
 import { Municipio } from '../../../models/municipio';
 import { MunicipioService } from '../../../services/municipio.service';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   selector: 'app-municipio',
   standalone: true,
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule],
-  templateUrl: './municipio.component.html',
-  styleUrl: './municipio.component.css'
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, AccionesTablaComponent],
+  templateUrl: './municipio.component.html'
 })
 export class MunicipioComponent implements OnInit {
 

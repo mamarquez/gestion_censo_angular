@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../services/dialog.service';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   standalone: true,
@@ -23,7 +24,8 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
     ReactiveFormsModule,
     ConfirmDialogModule,
     TooltipModule,
-    EditModalComponent
+    EditModalComponent,
+    AccionesTablaComponent
   ],
   templateUrl: './nivelenergetico.component.html'
 })

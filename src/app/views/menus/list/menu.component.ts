@@ -9,13 +9,13 @@ import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { Menu } from '../../../models/menu';
 import { MenuService } from '../../../services/menu.service';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   standalone: true,
   selector: 'app-menu',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './menu.component.html',
-  styleUrl: './menu.component.css'
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  templateUrl: './menu.component.html'
 })
 export class MenuComponent implements OnInit {
 

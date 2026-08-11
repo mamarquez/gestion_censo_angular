@@ -9,13 +9,13 @@ import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { Medida } from '../../../models/medida';
 import { MedidaService } from '../../../services/medida.service';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   standalone: true,
   selector: 'app-medida',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './medida.component.html',
-  styleUrl: './medida.component.css'
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  templateUrl: './medida.component.html'
 })
 export class MedidaComponent implements OnInit {
 

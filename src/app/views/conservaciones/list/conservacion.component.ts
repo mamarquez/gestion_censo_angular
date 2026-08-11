@@ -9,13 +9,13 @@ import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { Conservacion } from '../../../models/conservacion';
 import { ConservacionService } from '../../../services/conservacion.service';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   standalone: true,
   selector: 'app-conservacion',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './conservacion.component.html',
-  styleUrl: './conservacion.component.css'
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  templateUrl: './conservacion.component.html'
 })
 export class ConservacionComponent implements OnInit {
 

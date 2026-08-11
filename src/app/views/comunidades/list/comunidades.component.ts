@@ -15,8 +15,7 @@ import { ComunidadautonomaService } from '../../../services/comunidadautonoma.se
   standalone: true,
   selector: 'app-list-comunidades',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
-  templateUrl: 'comunidades.component.html',
-  styleUrl: 'comunidades.component.css'
+  templateUrl: 'comunidades.component.html'
 })
 export class ListComunidadesComponent implements OnInit {
 

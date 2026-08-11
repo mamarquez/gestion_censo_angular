@@ -124,7 +124,7 @@
               </label>
             </td>
           <app-acciones-tabla
-            [editarRoute]="['/usuarios', usuario.id]"
+            (editar)="editar(usuario.id)"
             [activo]="usuario.activo"
             (toggleEstado)="cambiarEstado(usuario.id)"
             (borrar)="confirmarBorrado(usuario)"

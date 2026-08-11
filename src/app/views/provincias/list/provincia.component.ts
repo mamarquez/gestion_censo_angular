@@ -16,6 +16,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Provincia } from '../../../models/provincia';
 import { ProvinciaService } from '../../../services/provincia.service';
 import { DialogService } from '../../../services/dialog.service';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   selector: 'app-list-provincia',
@@ -30,14 +31,14 @@ import { DialogService } from '../../../services/dialog.service';
     DropdownModule,
     InputTextModule,
     ToastModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    AccionesTablaComponent
   ],
   providers: [
     MessageService,
     ConfirmationService
   ],
-  templateUrl: './provincia.component.html',
-  styleUrl: './provincia.component.css'
+  templateUrl: './provincia.component.html'
 })
 export class ListProvinciaComponent implements OnInit {
 

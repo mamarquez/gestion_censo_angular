@@ -12,13 +12,11 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Tag } from 'primeng/tag';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
-
 @Component({
   standalone: true,
   selector: 'app-usuario',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, Tag, AccionesTablaComponent],
-  templateUrl: './usuario.component.html',
-  styleUrl: './usuario.component.css'
+  templateUrl: './usuario.component.html'
 })
 export class UsuarioComponent implements OnInit {
 

@@ -16,8 +16,7 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
   standalone: true,
   selector: 'app-list-centro-educativo',
   imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
-  templateUrl: './centroeducativo.component.html',
-  styleUrl: './centroeducativo.component.css'
+  templateUrl: './centroeducativo.component.html'
 })
 export class ListCentroEducativoComponent implements OnInit {
 

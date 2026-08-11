@@ -108,12 +108,10 @@
             </label>
           </td>
           <app-acciones-tabla
-            [editarRoute]="['/instalaciones', instalacion.id]"
-            [activo]="instalacion.baja"
-			[visible]="instalacion.visible"
-			(toggleEstado)="cambiarEstado(instalacion.id)"
-			(toggleVisible)="cambiarVisible(instalacion)"
-			(borrar)="confirmarBorrado(instalacion)"
+            (editar)="editar(instalacion.id)"
+            [activo]="instalacion.activo"
+            (toggleEstado)="cambiarEstado(instalacion.id)"
+            (borrar)="confirmarBorrado(instalacion)"
           />
         </tr>
     </ng-template>

@@ -102,11 +102,11 @@
         </label>
       </td>
       <app-acciones-tabla
-        [editarRoute]="['/comunidades', comunidad.id]"
-        [activo]="comunidad.activo" />
-        <!-- (toggleEstado)="cambiarEstado(comunidad.id)"
+        (editar)="editar(comunidad.id)"
+        [activo]="comunidad.activo"
+        (toggleEstado)="cambiarEstado(comunidad.id)"
         (borrar)="confirmarBorrado(comunidad)"
-        -->
+      />
     </tr>
   </ng-template>
 </p-table>

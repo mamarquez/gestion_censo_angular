@@ -9,13 +9,13 @@ import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { Propietario } from '../../../models/propietario';
 import { PropietarioService } from '../../../services/propietario.service';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 @Component({
   standalone: true,
   selector: 'app-propietario',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './propietario.component.html',
-  styleUrl: './propietario.component.css'
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  templateUrl: './propietario.component.html'
 })
 export class PropietarioComponent implements OnInit {
 
