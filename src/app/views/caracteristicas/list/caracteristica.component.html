@@ -1,3 +1,13 @@
+<app-edit-modal
+  [titulo] = '"Característica"'
+  [(isVisible)]="modalVisible"
+  [datos]='caracteristica'
+  [maxValores]='{
+    nombre: 255
+  }'
+  (guardar)="guardar($event)"
+/>
+
 <div class='row'>
   <h1>Gestión de características</h1>
 </div>
@@ -56,6 +66,16 @@
 
 <br />
 
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (onClick)='abrirModal()'>
+  </p-button>
+</div>
+
 <p-table
   size='small'
   [value]='caracteristicas'
@@ -75,7 +95,6 @@
   <ng-template pTemplate='header'>
     <tr>
       <th id='caracteristica.nombre' pSortableColumn='nombre'>Nombre<p-sortIcon field='nombre'></p-sortIcon></th>
-      <th id='caracteristica.valor' pSortableColumn='valor'>Valor<p-sortIcon field='valor'></p-sortIcon></th>
       <th id='caracteristica.descripcion' pSortableColumn='descripcion'>Descripción<p-sortIcon field='descripcion'></p-sortIcon></th>
       <th id='caracteristica.estado' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
       <th id='caracteristica.accion' class='text-right' style='width: 10%'></th>
@@ -84,7 +103,7 @@
 
   <ng-template pTemplate='emptymessage'>
     <tr>
-      <td colspan='5'>
+      <td colspan='4'>
         <div style='display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;'>
           <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'
                stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
@@ -103,7 +122,6 @@
     <tr>
       <td>{{ caracteristica.nombre }}</td>
       <td>{{ caracteristica.descripcion }}</td>
-      <td>{{ caracteristica.valor }}</td>
       <td class='centrado'>
         <label class="switch-native {{ caracteristica.activo ? 'verde' : 'rojo' }}">
           <input type='checkbox' [checked]='caracteristica.activo' disabled />
@@ -111,7 +129,7 @@
         </label>
       </td>
       <app-acciones-tabla
-        [editarRoute]="['/caracteristicas', caracteristica.id]"
+        (editar)="editar(caracteristica.id)"
         [activo]="caracteristica.activo"
         (toggleEstado)="cambiarEstado(caracteristica.id)"
         (borrar)="confirmarBorrado(caracteristica)"

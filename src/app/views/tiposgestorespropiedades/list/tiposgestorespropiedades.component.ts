@@ -1,22 +1,26 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
-
 import { TipoGestorPropiedadService } from '../../../services/tipogestorpropiedad.service';
 import { TipoGestorPropiedad } from '../../../models/tipogestorpropiedad';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+
+/**
+ * @version 1.0.0
+ */
 
 @Component({
   standalone: true,
   selector: 'app-tipos-gestores-propiedades',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule],
-  templateUrl: './tiposgestorespropiedades.component.html',
-  styleUrl: './tiposgestorespropiedades.component.css',
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, EditModalComponent],
+  templateUrl: './tiposgestorespropiedades.component.html'
 })
 export class TiposGestoresPropiedadesComponent implements OnInit {
 
@@ -26,13 +30,16 @@ export class TiposGestoresPropiedadesComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  tipoGestorPropiedad: TipoGestorPropiedad | any = null;
   tiposGestoresPropiedades: TipoGestorPropiedad [] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
-    nombre: [''],
-    mostrar: [''],
-    activo: ['']
+    id: [null],
+    nombre: ['', Validators.required],
+    mostrar: ['', Validators.required],
+    activo: [true]
   });
 
   ngOnInit(): void {
@@ -61,7 +68,7 @@ export class TiposGestoresPropiedadesComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando tipos gestores propiedades:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los tipos gestores propiedades' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.tiposGestoresPropiedades = [];
       }
@@ -77,6 +84,7 @@ export class TiposGestoresPropiedadesComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar tipos de gestores de propiedades', err);
+        mensajesUtil(this.messageService, 'error', 'cargar');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -97,13 +105,13 @@ export class TiposGestoresPropiedadesComponent implements OnInit {
           tipoGestorPropiedad.activo = !tipoGestorPropiedad.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado de los tipos gestores propiedades', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -125,19 +133,83 @@ export class TiposGestoresPropiedadesComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.tiposGestoresPropiedades = this.tiposGestoresPropiedades.filter(p => p.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
 
     this.cargando = false;
+  }
+
+  abrirModal(): void {
+    this.tipoGestorPropiedad = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<TipoGestorPropiedad>) => {
+        this.tipoGestorPropiedad = response.data || [];
+
+        if (this.tipoGestorPropiedad) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'errpr', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(tipoGestorPropiedad: TipoGestorPropiedad) {
+    this.cargando = true;
+
+    const datos: TipoGestorPropiedad = {
+      id: tipoGestorPropiedad.id,
+      nombre: tipoGestorPropiedad.nombre,
+      mostrar: tipoGestorPropiedad.mostrar,
+      activo: tipoGestorPropiedad.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al actualizar nivel educativo', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    }
   }
 
 }

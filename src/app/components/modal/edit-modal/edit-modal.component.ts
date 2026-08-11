@@ -33,12 +33,38 @@ export class EditModalComponent {
   private readonly fb = inject(FormBuilder);
 
   titulo = input<string>('');
-  max_nombre = input<number>(50);
-  max_valor = input<number>(255);
   datos = input<any | null>(null);
   idInstalacion = input<string>('');
   isVisible = model<boolean>(false);
-  mostrarValor = input<boolean>(false);
+
+  maxValores = input<{
+    nombre?: number;
+    valor?: number;
+    mostrar?: number;
+  }>({
+    nombre: 50,
+    valor: 255,
+    mostrar: 50
+  })
+
+  camposMostrar = input<{
+    nombre?: boolean;
+    descripcion?: boolean;
+    valor?: boolean;
+    mostrar?: boolean;
+    tipoGestor?: boolean;
+    activo?: boolean;
+    visible?: boolean;
+  }>({
+    nombre: true,
+    descripcion: true,
+    valor: false,
+    mostrar: false,
+    tipoGestor: false,
+    activo: true,
+    visible: false
+  });
+
   guardar = output<any>();
   guardando = false;
 
@@ -47,6 +73,7 @@ export class EditModalComponent {
     nombre: ['', Validators.required],
     descripcion: [''],
     valor: [null],
+    mostrar: [null],
     activo: [true],
     visible: [null]
   });

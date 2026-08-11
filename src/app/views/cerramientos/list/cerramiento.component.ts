@@ -10,13 +10,20 @@ import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { NivelDotacion } from '../../../models/niveldotacion';
+
+/**
+ * @version 1.0.0
+ */
 
 @Component({
   standalone: true,
   selector: 'app-cerramiento',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './cerramiento.component.html',
-  styleUrl: './cerramiento.component.css'
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, EditModalComponent],
+  templateUrl: './cerramiento.component.html'
 })
 export class CerramientoComponent implements OnInit {
 
@@ -26,8 +33,10 @@ export class CerramientoComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  cerramiento: Cerramiento | any = null;
   cerramientos: Cerramiento [] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -62,11 +71,7 @@ export class CerramientoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando cerramientos:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar cerramientos'
-        });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cerramientos = [];
       }
@@ -82,6 +87,7 @@ export class CerramientoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar menús', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -102,13 +108,13 @@ export class CerramientoComponent implements OnInit {
           cerramiento.activo = !cerramiento.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado cerramiento', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -130,23 +136,83 @@ export class CerramientoComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.cerramientos = this.cerramientos.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
 
     this.cargando = false;
+  }
+
+  abrirModal(): void {
+    this.cerramiento = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<NivelDotacion>) => {
+        this.cerramiento = response.data || [];
+
+        if (this.cerramiento) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(cerramiento: Cerramiento) {
+    this.cargando = true;
+
+    const datos: Cerramiento = {
+      id: cerramiento.id,
+      nombre: cerramiento.nombre,
+      descripcion: cerramiento.descripcion,
+      activo: cerramiento.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al actualizar nivel energético', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    }
   }
 
 }

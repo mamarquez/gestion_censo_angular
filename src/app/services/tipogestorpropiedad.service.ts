@@ -28,6 +28,29 @@ export class TipoGestorPropiedadService {
   }
 
   /**
+   * Obtener nivel educativo
+   */
+  get(id: string): Observable<ApiResponseWrapper<TipoGestorPropiedad>> {
+    return this.http.get<ApiResponseWrapper<TipoGestorPropiedad>>(`${this.api}/${id}`, { headers: this.headers });
+  }
+
+  /**
+   * Añade el registro
+   * @param datos
+   */
+  addRegistro(datos: TipoGestorPropiedad): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualiza el registro
+   * @param datos
+   */
+  updateRegistro(datos: TipoGestorPropiedad): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
+  }
+
+  /**
    * Cambia el estado de un registro
    * @param id Id del registro
    */

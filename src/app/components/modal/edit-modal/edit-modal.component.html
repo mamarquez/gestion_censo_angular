@@ -14,7 +14,7 @@
     <div class='fields-row'>
       <div class='field col-12'>
         <label for='nombre'>Nombre</label>
-        <input id='nombre' type='text' pInputText formControlName='nombre' [maxlength]='max_nombre()' />
+        <input id='nombre' type='text' pInputText formControlName='nombre' [maxlength]='maxValores().nombre' />
       </div>
     </div>
 
@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    @if (mostrarValor()) {
+    @if (camposMostrar().valor) {
       <div class='fields-row'>
         <div class='field col-12'>
           <label for='valor'>Valor</label>
@@ -70,6 +70,15 @@
           } @else {
             <input id='valor' type='text' pInputText formControlName='valor' />
           }
+        </div>
+      </div>
+    }
+
+    @if (camposMostrar().mostrar) {
+      <div class='fields-row'>
+          <div class='field col-12'>
+            <label for='mostrar'>Texto en web</label>
+            <input id='mostrar' type='text' pInputText formControlName='mostrar' [maxlength]='max_mostrar()' />
         </div>
       </div>
     }

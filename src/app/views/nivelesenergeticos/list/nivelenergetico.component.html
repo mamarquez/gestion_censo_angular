@@ -2,7 +2,9 @@
   [titulo] = '"Nivel energético"'
   [(isVisible)]="modalVisible"
   [datos]='nivelEnergetico'
-  [max_nombre]='1'
+  [maxValores]='{
+    nombre: 1
+  }'
   (guardar)="guardar($event)"
 />
 

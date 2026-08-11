@@ -9,13 +9,20 @@ import { DialogService } from '../../../services/dialog.service';
 import { Caracteristica } from '../../../models/caracteristica';
 import { CaracteristicaService } from '../../../services/caracteristica.service';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { NivelDotacion } from '../../../models/niveldotacion';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+
+/**
+ * @version 1.0.0
+ */
 
 @Component({
   standalone: true,
   selector: 'app-caracteristica',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, AccionesTablaComponent],
-  templateUrl: './caracteristica.component.html',
-  styleUrl: './caracteristica.component.css'
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, AccionesTablaComponent, EditModalComponent],
+  templateUrl: './caracteristica.component.html'
 })
 export class CaracteristicaComponent implements OnInit {
 
@@ -25,8 +32,10 @@ export class CaracteristicaComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  caracteristica: Caracteristica | any = null;
   caracteristicas: Caracteristica [] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
     nombre: [''],
@@ -35,7 +44,6 @@ export class CaracteristicaComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    console.log('Cargando');
     this.cargar();
   }
 
@@ -61,7 +69,7 @@ export class CaracteristicaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando provincias:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los municipios' });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.caracteristicas = [];
       }
@@ -78,6 +86,7 @@ export class CaracteristicaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar municipios', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -98,13 +107,13 @@ export class CaracteristicaComponent implements OnInit {
           caracteristica.activo = !caracteristica.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado de la caracteristica', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -126,24 +135,83 @@ export class CaracteristicaComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.caracteristicas = this.caracteristicas.filter(p => p.id !== id);
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
 
     this.cargando = false;
+  }
+
+  abrirModal(): void {
+    this.caracteristica = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<NivelDotacion>) => {
+        this.caracteristica = response.data || [];
+
+        if (this.caracteristica) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(caracteristica: Caracteristica) {
+    this.cargando = true;
+
+    const datos: Caracteristica = {
+      id: caracteristica.id,
+      nombre: caracteristica.nombre,
+      descripcion: caracteristica.descripcion,
+      activo: caracteristica.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al actualizar nivel energético', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    }
   }
 
 }

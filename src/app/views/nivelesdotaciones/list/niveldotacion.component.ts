@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { NivelDotacion } from '../../../models/niveldotacion';
-import { NivelDotacionService } from '../../../services/niveldotacion.service';
+import { NivelDotacionService } from '../../../services/nivelDotacion.service';
 import { Button } from 'primeng/button';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -17,7 +17,15 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 @Component({
   standalone: true,
   selector: 'app-nivel-dotacion',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, EditModalComponent],
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    EditModalComponent
+  ],
   templateUrl: './niveldotacion.component.html'
 })
 export class NivelDotacionComponent implements OnInit {

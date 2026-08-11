@@ -2,7 +2,9 @@
   [titulo] = '"Nivel educativo"'
   [(isVisible)]="modalVisible"
   [datos]='nivelEducativo'
-  [max_nombre]='255'
+  [maxValores]='{
+    nombre: 255
+  }'
   (guardar)="guardar($event)"
 />
 

@@ -2,10 +2,17 @@
   [titulo]="'Configuración'"
   [(isVisible)]="modalVisible"
   [datos]='configuracion'
-  [max_nombre]='255'
+  [maxValores]='{
+    nombre: 255,
+    valor: 255
+  }'
   (guardar)="guardar($event)"
-  [max_valor]='255',
-  [mostrarValor]='true'
+  [camposMostrar]="{
+    nombre: true,
+    descripcio: true,
+    valor: true,
+    activo: true
+  }"
 />
 
 <div class="row">

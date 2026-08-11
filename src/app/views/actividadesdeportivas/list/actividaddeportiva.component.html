@@ -1,3 +1,13 @@
+<app-edit-modal
+  [titulo] = '"Actividad deportiva"'
+  [(isVisible)]="modalVisible"
+  [datos]='actividadDeportiva'
+  [maxValores]='{
+    nombre: 255
+  }'
+  (guardar)="guardar($event)"
+/>
+
 <div class='row'>
   <h1>Tipos de actividades deportivas</h1>
 </div>
@@ -55,6 +65,16 @@
 
 <br />
 
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (onClick)='abrirModal()'>
+  </p-button>
+</div>
+
 <p-table
   size='small'
   [value]='actividadesDeportivas'
@@ -108,7 +128,7 @@
         </label>
       </td>
       <app-acciones-tabla
-        [editarRoute]="['/actividades', actividadDeportiva.id]"
+        (editar)="editar(actividadDeportiva.id)"
         [activo]="actividadDeportiva.activo"
         (toggleEstado)="cambiarEstado(actividadDeportiva.id)"
         (borrar)="confirmarBorrado(actividadDeportiva)"

@@ -1,7 +1,5 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-
 import { TableModule } from 'primeng/table';
-
 import { NivelEducativo } from '../../../models/niveleducativo';
 import { NivelEducativoService } from '../../../services/niveleducativo.service';
 import { Button } from 'primeng/button';
@@ -14,6 +12,7 @@ import { DialogService } from '../../../services/dialog.service';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { NivelEnergetico } from '../../../models/nivelenergetico';
+import { mensajesUtil } from '../../../utils/mensajes.util';
 
 /**
  * @version 1.0.0
@@ -79,11 +78,7 @@ export class NivelEducativoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando provincias:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar los gestores'
-        });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.nivelesEducativos = [];
       }
@@ -99,6 +94,7 @@ export class NivelEducativoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar niveles educativos', err);
+        mensajesUtil(this.messageService, 'error', 'cargar');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -119,13 +115,13 @@ export class NivelEducativoComponent implements OnInit {
           niveleEducativo.activo = !niveleEducativo.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado de nivel energético', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -147,17 +143,13 @@ export class NivelEducativoComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.nivelesEducativos = this.nivelesEducativos.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -182,7 +174,7 @@ export class NivelEducativoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al editar: ', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al editar' });
+        mensajesUtil(this.messageService, 'errpr', 'carga');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -202,53 +194,28 @@ export class NivelEducativoComponent implements OnInit {
     if (datos.id) {
       this.service.updateRegistro(datos).subscribe({
         next: () => {
-
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Actualizado',
-            detail: 'Registro actualizado correctamente'
-          });
-
+          mensajesUtil(this.messageService, 'success', 'update');
           this.modalVisible = false;
           this.cargando = false;
-
           this.cargar();
         },
-
         error: (err) => {
-          console.error('Error al actualizar nivel energético', err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No se pudo actualizar el nivel energético'
-          });
-
+          console.error('Error al actualizar nivel educativo', err);
+          mensajesUtil(this.messageService, 'error', 'error');
           this.cargando = false;
         }
       });
     } else {
       this.service.addRegistro(datos).subscribe({
         next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Añadido',
-            detail: 'Registro añadido correctamente'
-          });
-
+          mensajesUtil(this.messageService, 'success', 'add');
           this.modalVisible = false;
           this.cargando = false;
-
           this.cargar();
         },
-
         error: (err) => {
           console.error('Error al añadir registro', err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No se pudo actualizar el registro'
-          });
-
+          mensajesUtil(this.messageService, 'error', 'error');
           this.cargando = false;
         }
       });

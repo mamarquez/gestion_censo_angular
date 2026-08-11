@@ -8,6 +8,9 @@ import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
+/**
+ * @version 1.0.0
+ */
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +31,29 @@ export class CerramientoService {
       params: buildHttpParams(filtros),
       headers: this.headers
     });
+  }
+
+  /**
+   * Obtener registro
+   */
+  get(id: string): Observable<ApiResponseWrapper<Cerramiento>> {
+    return this.http.get<ApiResponseWrapper<Cerramiento>>(`${this.api}/${id}`, { headers: this.headers });
+  }
+
+  /**
+   * Añadir registro
+   * @param datos
+   */
+  addRegistro(datos: Cerramiento): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   * @param datos
+   */
+  updateRegistro(datos: Cerramiento): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
   }
 
   /**

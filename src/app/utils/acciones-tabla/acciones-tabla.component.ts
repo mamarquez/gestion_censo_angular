@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, output, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { RouterLink } from '@angular/router';
 
@@ -10,6 +10,7 @@ import { RouterLink } from '@angular/router';
 })
 export class AccionesTablaComponent {
   @Input() editarRoute: any[] = [];
+  editar = output<void>();
   @Input() activo?: boolean;
   @Input() visible?: boolean;
   @Output() toggleEstado = new EventEmitter<void>();

@@ -2,20 +2,30 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { Gestor } from '../../../models/gestor';
 import { GestorService } from '../../../services/gestor.service';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 
 @Component({
   standalone: true,
   selector: 'app-gestor',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './gestor.component.html',
-  styleUrl: './gestor.component.css'
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    EditModalComponent
+  ],
+  templateUrl: './gestor.component.html'
 })
 export class GestorComponent implements OnInit {
 
@@ -25,14 +35,16 @@ export class GestorComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  gestor: Gestor | any = null;
   gestores: Gestor [] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
-    id: [''],
-    nombre: [''],
-    descripcion: [''],
-    activo: ['']
+    id: [null],
+    nombre: [null, Validators.required],
+    descripcion: [null],
+    activo: [true]
   });
 
   ngOnInit(): void {
@@ -61,11 +73,7 @@ export class GestorComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando provincias:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar los gestores'
-        });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.gestores = [];
       }
@@ -81,6 +89,7 @@ export class GestorComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar gestores', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -101,13 +110,13 @@ export class GestorComponent implements OnInit {
           gestor.activo = !gestor.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado de gestor', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -129,23 +138,83 @@ export class GestorComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.gestores = this.gestores.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
 
     this.cargando = false;
+  }
+
+  abrirModal(): void {
+    this.gestor = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<Gestor>) => {
+        this.gestor = response.data || [];
+
+        if (this.gestor) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'errpr', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(gestor: Gestor) {
+    this.cargando = true;
+
+    const datos: Gestor = {
+      id: gestor.id,
+      nombre: gestor.nombre,
+      descripcion: gestor.descripcion,
+      activo: gestor.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al actualizar', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    }
   }
 
 }

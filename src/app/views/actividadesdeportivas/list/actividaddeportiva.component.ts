@@ -10,13 +10,26 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ActividadDeportiva } from '../../../models/actividaddeportiva';
 import { ActividadDeportivaService } from '../../../services/adtividaddeportiva.service';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { NivelDotacion } from '../../../models/niveldotacion';
+import { NivelEducativo } from '../../../models/niveleducativo';
 
 @Component({
   standalone: true,
   selector: 'app-actividad-deportiva',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
-  templateUrl: './actividaddeportiva.component.html',
-  styleUrl: './actividaddeportiva.component.css'
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    AccionesTablaComponent,
+    EditModalComponent
+  ],
+  templateUrl: './actividaddeportiva.component.html'
 })
 export class ActividadDeportivaComponent implements OnInit {
 
@@ -26,8 +39,10 @@ export class ActividadDeportivaComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  actividadDeportiva: ActividadDeportiva | any = null;
   actividadesDeportivas: ActividadDeportiva [] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -62,11 +77,7 @@ export class ActividadDeportivaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando provincias:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar las actividades deportivas'
-        });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.actividadesDeportivas = [];
       }
@@ -82,6 +93,7 @@ export class ActividadDeportivaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar menús', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -102,13 +114,13 @@ export class ActividadDeportivaComponent implements OnInit {
           actividadDeportiva.activo = !actividadDeportiva.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado de la actividad deportiva', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -130,17 +142,13 @@ export class ActividadDeportivaComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.actividadesDeportivas = this.actividadesDeportivas.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -149,4 +157,67 @@ export class ActividadDeportivaComponent implements OnInit {
     this.cargando = false;
   }
 
+  abrirModal(): void {
+    this.actividadDeportiva = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<NivelDotacion>) => {
+        this.actividadDeportiva = response.data || [];
+
+        if (this.actividadDeportiva) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(actividadDeportiva: ActividadDeportiva) {
+    this.cargando = true;
+
+    const datos: ActividadDeportiva = {
+      id: actividadDeportiva.id,
+      nombre: actividadDeportiva.nombre,
+      descripcion: actividadDeportiva.descripcion,
+      activo: actividadDeportiva.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al actualizar nivel energético', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    }
+  }
 }
