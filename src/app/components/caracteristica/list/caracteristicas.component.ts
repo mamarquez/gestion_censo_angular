@@ -24,8 +24,7 @@ import { InstalacionCaracteristica } from '../../../models/instalacionCaracteris
     ToastModule
   ],
   providers: [MessageService],
-  templateUrl: './caracteristicas.component.html',
-  styleUrl: './caracteristicas.component.css'
+  templateUrl: './caracteristicas.component.html'
 })
 export class ListCaracteristicasComponent implements OnChanges {
 

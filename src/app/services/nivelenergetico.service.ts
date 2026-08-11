@@ -46,6 +46,22 @@ export class NivelEnergeticoService {
   }
 
   /**
+   * Añadir registro
+   * @param datos
+   */
+  addRegistro(datos: NivelEnergetico): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   * @param datos
+   */
+  updateRegistro(datos: NivelEnergetico): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
+  }
+
+  /**
    * Borra un registro
    * @param id Id del registro
    */

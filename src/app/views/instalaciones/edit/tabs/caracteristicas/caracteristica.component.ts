@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, model, OnInit, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -41,7 +41,7 @@ export class DatosCaracteristicaComponent implements OnInit {
 
   @Output() cargandoChange = new EventEmitter<boolean>();
 
-  id: string = '';
+  idInstalacion = model.required<string>();
   cargando: boolean = false;
 
   caracteristicas: InstalacionCaracteristica[] | [];
@@ -54,25 +54,19 @@ export class DatosCaracteristicaComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-
-    if (this.id) {
-      this.cargarDatos(this.id);
+    if (this.idInstalacion()) {
+      this.cargarDatos();
     }
   }
 
-  cargarDatos(id: string): void {
+  cargarDatos(): void {
     this.cargando = true;
     this.cargandoChange.emit(true);
     this.cdr.detectChanges();
 
-    this.service.getAll({ idInstalacion: id }).subscribe({
+    this.service.getAll({ idInstalacion: this.idInstalacion }).subscribe({
       next: (response: ApiResponse<InstalacionCaracteristica[]>) => {
         this.caracteristicas = response.data ?? [];
-
-        this.form.patchValue({
-          id: this.id
-        });
 
         this.cargando = false;
         this.cargandoChange.emit(false);

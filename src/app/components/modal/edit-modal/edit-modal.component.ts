@@ -9,14 +9,13 @@ import {
 
 import {
   FormBuilder,
-  FormGroup,
+  FormGroup, FormsModule,
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
 
 import { Button } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
-import { InputText } from 'primeng/inputtext';
 
 @Component({
   standalone: true,
@@ -24,17 +23,17 @@ import { InputText } from 'primeng/inputtext';
   imports: [
     Button,
     Dialog,
+    FormsModule,
     ReactiveFormsModule,
-    InputText
   ],
-  templateUrl: './edit-modal.component.html',
-  styleUrl: './edit-modal.component.css'
+  templateUrl: './edit-modal.component.html'
 })
 export class EditModalComponent {
 
   private readonly fb = inject(FormBuilder);
 
   titulo = input<string>('');
+  max_nombre = input<string>('50');
   datos = input<any | null>(null);
   idInstalacion = input<string>('');
   isVisible = model<boolean>(false);
@@ -80,7 +79,7 @@ export class EditModalComponent {
       return;
     }
 
-    this.guardando = true;
+    console.log(this.form.getRawValue());
 
     this.guardar.emit(this.form.getRawValue());
   }

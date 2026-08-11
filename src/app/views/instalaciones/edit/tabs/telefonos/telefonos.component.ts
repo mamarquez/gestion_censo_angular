@@ -24,8 +24,7 @@ import { ModalTelefonoComponent } from '../../../../../components/telefonos/moda
     ModalTelefonoComponent
   ],
   providers: [MessageService],
-  templateUrl: './telefonos.component.html',
-  styleUrl: './telefonos.component.css'
+  templateUrl: './telefonos.component.html'
 })
 export class DatosTelefonosComponent implements OnInit {
 

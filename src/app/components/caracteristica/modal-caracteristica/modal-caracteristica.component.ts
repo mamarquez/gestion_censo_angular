@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, effect, EventEmitter, inject, Input, model, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, EventEmitter, inject, input, model, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { PrimeTemplate, MessageService } from 'primeng/api';
+import { MessageService, PrimeTemplate } from 'primeng/api';
 import { InstalacionCaracteristicaService } from '../../../services/instalacionCaracteristica.service';
 import { CaracteristicaService } from '../../../services/caracteristica.service';
 import { MedidaService } from '../../../services/medida.service';
@@ -26,7 +26,7 @@ import { InstalacionCaracteristica } from '../../../models/instalacionCaracteris
   ],
   providers: [MessageService],
   templateUrl: './modal-caracteristica.component.html',
-  styleUrl: './modal-caracteristica.component.css',
+  styleUrl: './modal-caracteristica.component.css'
 })
 export class ModalCaracteristicaComponent {
   private readonly fb = inject(FormBuilder);
@@ -36,7 +36,7 @@ export class ModalCaracteristicaComponent {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
 
-  @Input() idInstalacion: string = '';
+  idInstalacion = input<string>('');
   modalVisible = model<boolean>(false);
   @Output() guardado = new EventEmitter<void>();
 
@@ -47,8 +47,9 @@ export class ModalCaracteristicaComponent {
   cargandoMedidas = true;
 
   modalForm: FormGroup = this.fb.group({
+    id: [null],
     caracteristica: [null, Validators.required],
-    medida: [null, Validators.required],
+    medida: [null],
     valor: [null, Validators.required],
     visible: [true, Validators.required]
   });
@@ -57,6 +58,7 @@ export class ModalCaracteristicaComponent {
     effect(() => {
       if (this.modalVisible()) {
         this.modalForm.setValue({
+          id: null,
           caracteristica: null,
           medida: null,
           valor: null,
@@ -130,7 +132,11 @@ export class ModalCaracteristicaComponent {
 
     this.service.crear(datos).subscribe({
       next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Añadido', detail: 'Característica añadida correctamente' });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Añadido',
+          detail: 'Característica añadida correctamente'
+        });
         this.guardando = false;
         this.cerrarModal();
         this.guardado.emit();

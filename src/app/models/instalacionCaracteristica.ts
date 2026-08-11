@@ -6,7 +6,7 @@ export class InstalacionCaracteristica {
   idInstalacion?: number | null;
   idEspacioDeportivo?: number | null;
   caracteristica!: Caracteristica;
-  medida!: Medida;
+  medida?: Medida;
   valor: number;
   visible: boolean;
 }

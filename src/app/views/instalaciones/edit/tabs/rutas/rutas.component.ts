@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService, PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { InstalacionRuta } from '../../../../../models/instalacionRuta';
@@ -44,9 +44,9 @@ export class RutasComponent implements OnInit {
 
   form: FormGroup = this.fb.group({
     id: [''],
-    nombre: [''],
+    nombre: ['', Validators.required],
     descripcion: [''],
-    activo: ['']
+    activo: [true]
   });
 
   ngOnInit() {

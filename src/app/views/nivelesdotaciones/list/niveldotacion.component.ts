@@ -9,13 +9,16 @@ import { DialogService } from '../../../services/dialog.service';
 import { InputText } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
+import { NivelEducativo } from '../../../models/niveleducativo';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 
 @Component({
   standalone: true,
   selector: 'app-nivel-dotacion',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './niveldotacion.component.html',
-  styleUrl: './niveldotacion.component.css'
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, EditModalComponent],
+  templateUrl: './niveldotacion.component.html'
 })
 export class NivelDotacionComponent implements OnInit {
 
@@ -25,8 +28,10 @@ export class NivelDotacionComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  nivelDotacion: NivelEducativo | any = null;
   nivelesDotaciones: NivelDotacion [] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -61,11 +66,7 @@ export class NivelDotacionComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando niveles dotaciones', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar los gestores'
-        });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.nivelesDotaciones = [];
       }
@@ -81,6 +82,7 @@ export class NivelDotacionComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar niveles educativos', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -101,13 +103,13 @@ export class NivelDotacionComponent implements OnInit {
           nivelDotacion.activo = !nivelDotacion.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado de nivel energético', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -129,17 +131,13 @@ export class NivelDotacionComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.nivelesDotaciones = this.nivelesDotaciones.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -148,4 +146,75 @@ export class NivelDotacionComponent implements OnInit {
     this.cargando = false;
   }
 
+  abrirModal(): void {
+    this.nivelDotacion = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<NivelDotacion>) => {
+        this.nivelDotacion = response.data || [];
+
+        if (this.nivelDotacion) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(nivelDotacion: NivelDotacion) {
+    this.cargando = true;
+
+    const datos: NivelEducativo = {
+      id: nivelDotacion.id,
+      nombre: nivelDotacion.nombre,
+      descripcion: nivelDotacion.descripcion,
+      activo: nivelDotacion.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+
+          this.modalVisible = false;
+          this.cargando = false;
+
+          this.cargar();
+        },
+
+        error: (err) => {
+          console.error('Error al actualizar nivel energético', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+
+          this.modalVisible = false;
+          this.cargando = false;
+
+          this.cargar();
+        },
+
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+
+          this.cargando = false;
+        }
+      });
+    }
+  }
 }

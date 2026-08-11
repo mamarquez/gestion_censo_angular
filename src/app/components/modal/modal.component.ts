@@ -20,13 +20,9 @@ import { Opcion } from '../../interface/opcion.interface';
 export class ModalComponent {
 
   titulo = input<string>('');
-
   opciones = input<Opcion[]>([]);
-
   isVisible = model<boolean>(false);
-
   guardar = output<number>();
-
   seleccionado: number | null = null;
 
   seleccionar(valor: number | null): void {

@@ -6,22 +6,43 @@
 
 <form [formGroup]="form">
 
-  <input id="id" type="text" pInputText formControlName="id" readonly />
+  <input id="id" type="text" formControlName="id" readonly='readonly' hidden='hidden' />
 
   <div class="fields-row">
-    <div class="field col-10">
+    <div class="field col-8">
       <label for="nombre">Nombre</label>
       <input id="nombre" type="text" pInputText formControlName="nombre" />
     </div>
 
-	<!--
-    <div class="field col-1">
-      <label for='espacioDeportivo-visible-{{ id }}' class="switch-native {{ visible ? 'verde' : 'rojo' }}">
-        <input id='espacioDeportivo-visible-{{ id }}' type="checkbox" [checked]="visible" disabled />
-        <span class="slider-native"></span>
-      </label>
+    <div class='field col-2'>
+      <div class='field field-checkbox'>
+        <label
+          class="switch-native"
+          [class.verde]="form.get('visible')?.value"
+          [class.rojo]="!form.get('visible')?.value"
+        >
+          <input id='modal-visible' type='checkbox' formControlName='visible' />
+          <span class='slider-native'></span>
+          <span class='sr-only'>Visible</span>
+        </label>
+        <label for='modal-visible'>Visible</label>
+      </div>
     </div>
-	-->
+
+    <div class='field col-2'>
+      <div class='field field-checkbox'>
+        <label
+          class="switch-native"
+          [class.verde]="form.get('activo')?.value"
+          [class.rojo]="!form.get('activo')?.value"
+        >
+          <input id='modal-activo' type='checkbox' formControlName='visible' />
+          <span class='slider-native'></span>
+          <span class='sr-only'>Activo</span>
+        </label>
+        <label for='modal-visible'>Activo</label>
+      </div>
+    </div>
 
   </div>
 

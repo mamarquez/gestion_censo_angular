@@ -16,9 +16,16 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
 @Component({
   standalone: true,
   selector: 'app-nivel-energetico',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, EditModalComponent],
-  templateUrl: './nivelenergetico.component.html',
-  styleUrl: './nivelenergetico.component.css'
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    EditModalComponent
+  ],
+  templateUrl: './nivelenergetico.component.html'
 })
 export class NivelEnergeticoComponent implements OnInit {
 
@@ -171,6 +178,76 @@ export class NivelEnergeticoComponent implements OnInit {
   abrirModal(): void {
     this.nivelEnergetico = null;
     this.modalVisible = true;
+  }
+
+  guardar(nivelEnergetico: NivelEnergetico) {
+    this.cargando = true;
+
+    const datos: NivelEnergetico = {
+      id: nivelEnergetico.id,
+      nombre: nivelEnergetico.nombre,
+      descripcion: nivelEnergetico.descripcion,
+      activo: nivelEnergetico.activo
+    };
+
+    if (datos.id) {
+
+      console.log(datos);
+
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Actualizado',
+            detail: 'Registro actualizado correctamente'
+          });
+
+          this.modalVisible = false;
+          this.cargando = false;
+
+          this.cargar();
+        },
+
+        error: (err) => {
+          console.error('Error al actualizar nivel energético', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'No se pudo actualizar el nivel energético'
+          });
+
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Añadido',
+            detail: 'Registro añadido correctamente'
+          });
+
+          this.modalVisible = false;
+          this.cargando = false;
+
+          this.cargar();
+        },
+
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'No se pudo actualizar el registro'
+          });
+
+          this.cargando = false;
+        }
+      });
+    }
   }
 
 }

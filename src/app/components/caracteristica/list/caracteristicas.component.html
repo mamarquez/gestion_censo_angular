@@ -85,7 +85,7 @@
   <ng-template pTemplate="body" let-caracteristica>
     <tr>
       <td>{{ caracteristica.medida.nombre }}</td>
-      <td>{{ caracteristica.medida.valor }}</td>
+      <td>{{ caracteristica.valor }} {{ caracteristica.medida.valor }}</td>
       <td class="centrado">
         <label class="switch-native {{ caracteristica.visible ? 'verde' : 'rojo' }}">
           <input type="checkbox" [checked]="caracteristica.visible" disabled />

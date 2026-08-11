@@ -8,10 +8,13 @@
 >
 
   <form [formGroup]='form'>
+
+    <input id='id' formControlName='id' hidden='hidden' readonly='readonly' />
+
     <div class='fields-row'>
       <div class='field col-12'>
         <label for='nombre'>Nombre</label>
-        <input id='nombre' type='text' pInputText formControlName='nombre' />
+        <input id='nombre' type='text' pInputText formControlName='nombre' maxlength='max_nombre' />
       </div>
     </div>
 
@@ -60,19 +63,23 @@
 
   </form>
 
-  <ng-template pTemplate='footer'>
+  <ng-template #footer>
+
     <p-button
       label='Cancelar'
       severity='secondary'
       [text]='true'
-      (onClick)='cerrarModal()'
-    ></p-button>
+      (onClick)='cerrarModal()'>
+    </p-button>
+
     <p-button
       label='Guardar'
       [loading]='guardando'
       [disabled]='form.invalid'
-      (onClick)='guardarModal()'
-    ></p-button>
+      (onClick)='guardarModal()'>
+    </p-button>
+
   </ng-template>
 
 </p-dialog>
+

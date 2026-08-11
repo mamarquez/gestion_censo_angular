@@ -4,13 +4,13 @@ import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ApiResponse } from '../../../../../../models/apiresponse';
-import { EspacioDeportivo } from '../../../../../../models/espaciodeportivo';
-import { EspacioDeportivoService } from '../../../../../../services/espaciodeportivo.service';
 import { MessageService } from 'primeng/api';
 import {
   ListCaracteristicasComponent
 } from '../../../../../../components/caracteristica/list/caracteristicas.component';
 import { FieldsetModule } from 'primeng/fieldset';
+import { InstalacionEspacioDeportivo } from '../../../../../../models/instalacionEspacioDeportivo';
+import { InstalacionEspacioDeportivoService } from '../../../../../../services/instalacionEspacioDeportivo.service';
 
 @Component({
   standalone: true,
@@ -19,7 +19,7 @@ import { FieldsetModule } from 'primeng/fieldset';
     Button,
     InputText,
     ReactiveFormsModule,
-	FieldsetModule,
+    FieldsetModule,
     ListCaracteristicasComponent
   ],
   templateUrl: './edit-instalacion-deportiva.component.html'
@@ -28,14 +28,14 @@ export class EditInstalacionDeportivaComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
   private readonly fb = inject(FormBuilder);
-  private readonly service = inject(EspacioDeportivoService);
+  private readonly service = inject(InstalacionEspacioDeportivoService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
 
   @Output() cargandoChange = new EventEmitter<boolean>();
 
   private id: string | null = null;
-  espacioDeportivo: EspacioDeportivo;
+  espacioDeportivo: InstalacionEspacioDeportivo = null;
   cargando = false;
   guardando = false;
 
@@ -43,8 +43,8 @@ export class EditInstalacionDeportivaComponent implements OnInit {
     id: [''],
     nombre: ['', Validators.required],
     descripcion: [''],
-    visible: [''],
-    activo: ['']
+    visible: [true, Validators.required],
+    activo: [true, Validators.required]
   });
 
   ngOnInit() {
@@ -60,7 +60,7 @@ export class EditInstalacionDeportivaComponent implements OnInit {
     this.cargandoChange.emit(true);
 
     this.service.get(id).subscribe({
-      next: (response: ApiResponse<EspacioDeportivo>) => {
+      next: (response: ApiResponse<InstalacionEspacioDeportivo>) => {
         this.espacioDeportivo = response.data ?? null;
 
         console.log(this.espacioDeportivo);

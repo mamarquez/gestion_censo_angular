@@ -30,8 +30,8 @@ export class InstalacionEspacioDeportivoService {
   /**
    * Obtener espacios deportivos de una instalación
    */
-  get(id?: any): Observable<ApiResponseWrapper<InstalacionEspacioDeportivo[]>> {
-    return this.http.get<ApiResponseWrapper<InstalacionEspacioDeportivo[]>>(`${this.api}/${id}`, {
+  get(id?: any): Observable<ApiResponseWrapper<InstalacionEspacioDeportivo>> {
+    return this.http.get<ApiResponseWrapper<InstalacionEspacioDeportivo>>(`${this.api}/${id}`, {
       headers: this.headers
     });
   }

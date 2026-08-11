@@ -18,13 +18,36 @@ export class NivelDotacionService {
   });
 
   /**
-   * Obtener todos los niveles educativos
+   * Obtener todos registros
    */
   getAll(filtros?: any): Observable<ApiResponseWrapper<NivelDotacion[]>> {
     return this.http.get<ApiResponseWrapper<NivelDotacion[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
     });
+  }
+
+  /**
+   * Obtener registro
+   */
+  get(id: string): Observable<ApiResponseWrapper<NivelDotacion>> {
+    return this.http.get<ApiResponseWrapper<NivelDotacion>>(`${this.api}/${id}`, { headers: this.headers });
+  }
+
+  /**
+   * Añadir registro
+   * @param datos
+   */
+  addRegistro(datos: NivelDotacion): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   * @param datos
+   */
+  updateRegistro(datos: NivelDotacion): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
   }
 
   /**
