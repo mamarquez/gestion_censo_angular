@@ -1,3 +1,13 @@
+<app-edit-modal
+  [titulo] = "'Iluminación'"
+  [(isVisible)]="modalVisible"
+  [datos]='iluminacion'
+  [maxValores]='{
+    nombre: 255
+  }'
+  (guardar)="guardar($event)"
+/>
+
 <div class="row">
     <h1>Iluminaciones</h1>
 </div>
@@ -55,6 +65,16 @@
 
 <br />
 
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (onClick)='abrirModal()'>
+  </p-button>
+</div>
+
 <p-table
   size='small'
   [value]='iluminaciones'
@@ -95,6 +115,12 @@
         <tr>
           <td>{{ iluminacion.nombre }}</td>
           <td>{{ iluminacion.descripcion }}</td>
+          <td class='centrado'>
+            <label class="switch-native {{ iluminacion.activo ? 'verde' : 'rojo' }}">
+              <input type='checkbox' [checked]='iluminacion.activo' disabled />
+              <span class='slider-native'></span>
+            </label>
+          </td>
           <app-acciones-tabla
             (editar)="editar(iluminacion.id)"
             [activo]="iluminacion.activo"

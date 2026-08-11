@@ -10,11 +10,19 @@ import { InputText } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { EstadoUso } from '../../../models/estadouso';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+
+/**
+ * @version 1.0.0
+ */
 
 @Component({
   standalone: true,
   selector: 'app-iluminacion',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent, EditModalComponent],
   templateUrl: './iluminacion.component.html'
 })
 export class IluminacionComponent implements OnInit {
@@ -25,8 +33,10 @@ export class IluminacionComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  iluminacion: Iluminacion | any = null;
   iluminaciones: Iluminacion [] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -61,7 +71,7 @@ export class IluminacionComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando iluminaciones:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar las iluminaciones' });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.iluminaciones = [];
       }
@@ -77,6 +87,7 @@ export class IluminacionComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar iluminaciones', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -97,13 +108,13 @@ export class IluminacionComponent implements OnInit {
           iluminacion.activo = !iluminacion.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -125,23 +136,83 @@ export class IluminacionComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.iluminaciones = this.iluminaciones.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
 
     this.cargando = false;
+  }
+
+  abrirModal(): void {
+    this.iluminacion = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<EstadoUso>) => {
+        this.iluminacion = response.data || [];
+
+        if (this.iluminacion) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(iluminacion: Iluminacion) {
+    this.cargando = true;
+
+    const datos: Iluminacion = {
+      id: iluminacion.id,
+      nombre: iluminacion.nombre,
+      descripcion: iluminacion.descripcion,
+      activo: iluminacion.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al actualizar nivel energético', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    }
   }
 
 }

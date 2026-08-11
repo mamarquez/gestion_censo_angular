@@ -28,6 +28,29 @@ export class PropietarioService {
   }
 
   /**
+   * Obtener registro
+   */
+  get(id: string): Observable<ApiResponseWrapper<Propietario>> {
+    return this.http.get<ApiResponseWrapper<Propietario>>(`${this.api}/${id}`, { headers: this.headers });
+  }
+
+  /**
+   * Añadir registro
+   * @param datos
+   */
+  addRegistro(datos: Propietario): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   * @param datos
+   */
+  updateRegistro(datos: Propietario): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
+  }
+
+  /**
    * Cambia el estado de un registro
    * @param id Id del registro
    */

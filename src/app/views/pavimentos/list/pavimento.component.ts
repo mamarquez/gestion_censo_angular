@@ -10,6 +10,11 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Pavimento } from '../../../models/pavimento';
 import { PavimentoService } from '../../../services/pavimento.service';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+
+/**
+ * @version 1.0.0
+ */
 
 @Component({
   standalone: true,
@@ -60,7 +65,7 @@ export class PavimentoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando pavimentos:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los pavimentos' });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.pavimentos = [];
       }
@@ -76,6 +81,7 @@ export class PavimentoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar pavimentos', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -96,13 +102,13 @@ export class PavimentoComponent implements OnInit {
           pavimento.activo = !pavimento.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'sucess', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado del pavimento', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -124,17 +130,13 @@ export class PavimentoComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.pavimentos = this.pavimentos.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       }

@@ -123,12 +123,12 @@
                 <span class="slider-native"></span>
               </label>
             </td>
-          <app-acciones-tabla
-            (editar)="editar(usuario.id)"
-            [activo]="usuario.activo"
-            (toggleEstado)="cambiarEstado(usuario.id)"
-            (borrar)="confirmarBorrado(usuario)"
-          />
+            <app-acciones-tabla
+              (editar)="editar(usuario.id)"
+              [activo]="usuario.activo"
+              (toggleEstado)="cambiarEstado(usuario.id)"
+              (borrar)="confirmarBorrado(usuario)"
+            />
         </tr>
     </ng-template>
 </p-table>

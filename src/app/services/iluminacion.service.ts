@@ -28,6 +28,29 @@ export class IluminacionService {
   }
 
   /**
+   * Obtener registro
+   */
+  get(id: string): Observable<ApiResponseWrapper<Iluminacion>> {
+    return this.http.get<ApiResponseWrapper<Iluminacion>>(`${this.api}/${id}`, { headers: this.headers });
+  }
+
+  /**
+   * Añadir registro
+   * @param datos
+   */
+  addRegistro(datos: Iluminacion): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   * @param datos
+   */
+  updateRegistro(datos: Iluminacion): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
+  }
+
+  /**
    * Cambia el estado de un registro
    * @param id Id del registro
    */
