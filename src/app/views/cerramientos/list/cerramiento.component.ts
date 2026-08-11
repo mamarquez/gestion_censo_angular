@@ -14,6 +14,7 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { NivelDotacion } from '../../../models/niveldotacion';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 /**
  * @version 1.0.0
@@ -22,7 +23,7 @@ import { NivelDotacion } from '../../../models/niveldotacion';
 @Component({
   standalone: true,
   selector: 'app-cerramiento',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, EditModalComponent],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, EditModalComponent, AccionesTablaComponent],
   templateUrl: './cerramiento.component.html'
 })
 export class CerramientoComponent implements OnInit {

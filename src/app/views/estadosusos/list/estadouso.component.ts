@@ -9,13 +9,29 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../services/dialog.service';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+
+/**
+ * @version 1.0.0
+ */
 
 @Component({
   standalone: true,
   selector: 'app-estado-uso',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule],
-  templateUrl: './estadouso.component.html',
-  styleUrl: './estadouso.component.css'
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    EditModalComponent,
+    AccionesTablaComponent
+  ],
+  templateUrl: './estadouso.component.html'
 })
 export class EstadoUsoComponent implements OnInit {
 
@@ -25,8 +41,10 @@ export class EstadoUsoComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  estadosusos: EstadoUso [] = [];
+  estadoUso: EstadoUso | any = null;
+  estadosUsos: EstadoUso [] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -51,9 +69,9 @@ export class EstadoUsoComponent implements OnInit {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
-          this.estadosusos = response.data;
+          this.estadosUsos = response.data;
         } else {
-          this.estadosusos = [];
+          this.estadosUsos = [];
         }
 
         this.cargando = false;
@@ -61,13 +79,9 @@ export class EstadoUsoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando provincias:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar los gestores'
-        });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
-        this.estadosusos = [];
+        this.estadosUsos = [];
       }
     });
   }
@@ -75,12 +89,13 @@ export class EstadoUsoComponent implements OnInit {
   cargar(): void {
     this.service.getAll().subscribe({
       next: (response) => {
-        this.estadosusos = response.data || [];
+        this.estadosUsos = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cargar niveles educativos', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -96,18 +111,18 @@ export class EstadoUsoComponent implements OnInit {
 
     this.service.cambiarEstado(id).subscribe({
       next: () => {
-        const estadouso = this.estadosusos.find(p => p.id === id);
+        const estadouso = this.estadosUsos.find(p => p.id === id);
         if (estadouso) {
           estadouso.activo = !estadouso.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado de estado uso', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -128,24 +143,84 @@ export class EstadoUsoComponent implements OnInit {
 
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.estadosusos = this.estadosusos.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        this.estadosUsos = this.estadosUsos.filter(p => p.id !== id);
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
 
     this.cargando = false;
+  }
+
+  abrirModal(): void {
+    this.estadoUso = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<EstadoUso>) => {
+        this.estadoUso = response.data || [];
+
+        if (this.estadoUso) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(estadoUso: EstadoUso) {
+    this.cargando = true;
+
+    const datos: EstadoUso = {
+      id: estadoUso.id,
+      nombre: estadoUso.nombre,
+      descripcion: estadoUso.descripcion,
+      activo: estadoUso.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al actualizar nivel energético', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    }
   }
 
 }
