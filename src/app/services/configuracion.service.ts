@@ -20,13 +20,34 @@ export class ConfiguracionService {
   });
 
   /**
-   * Obtener menús
+   * Obtener registros
    */
   getAll(filtros?: any): Observable<ApiResponseWrapper<Configuracion[]>> {
     return this.http.get<ApiResponseWrapper<Configuracion[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers
     });
+  }
+
+  /**
+   * Obtener registro
+   */
+  get(id: string): Observable<ApiResponseWrapper<Configuracion>> {
+    return this.http.get<ApiResponseWrapper<Configuracion>>(`${this.api}/${id}`, { headers: this.headers });
+  }
+
+  /**
+   * Añadir registro
+   */
+  addRegistro(datos: Configuracion): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   */
+  updateRegistro(datos: Configuracion): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
   }
 
   /**

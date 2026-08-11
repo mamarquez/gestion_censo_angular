@@ -14,7 +14,7 @@
     <div class='fields-row'>
       <div class='field col-12'>
         <label for='nombre'>Nombre</label>
-        <input id='nombre' type='text' pInputText formControlName='nombre' maxlength='max_nombre' />
+        <input id='nombre' type='text' pInputText formControlName='nombre' [maxlength]='max_nombre()' />
       </div>
     </div>
 
@@ -60,6 +60,19 @@
         <textarea id='descripcion' type='text' pInputText formControlName='descripcion'></textarea>
       </div>
     </div>
+
+    @if (mostrarValor()) {
+      <div class='fields-row'>
+        <div class='field col-12'>
+          <label for='valor'>Valor</label>
+          @if ( max_valor() >= 255) {
+            <textarea id='valor' type='text' pInputText formControlName='valor'></textarea>
+          } @else {
+            <input id='valor' type='text' pInputText formControlName='valor' />
+          }
+        </div>
+      </div>
+    }
 
   </form>
 
