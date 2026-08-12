@@ -96,6 +96,7 @@
         <tr>
           <th id='propietario.nombre' pSortableColumn='nombre'>Nombre<p-sortIcon field='nombre'></p-sortIcon></th>
           <th id='propietario.descripcion' pSortableColumn='descripcion'>Descripción<p-sortIcon field='descripcion'></p-sortIcon></th>
+          <th id='propietario.visible' pSortableColumn='visible' class='text-center' style='width: 10%'>Visible<p-sortIcon field='visible'></p-sortIcon></th>
           <th id='propietario.estado' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
           <th id='propietario.accion' class='text-right' style='width: 10%'></th>
         </tr>
@@ -103,7 +104,7 @@
 
     <ng-template pTemplate="emptymessage">
         <tr>
-            <td colspan="4">
+            <td colspan="5">
                 <div style="display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-off-icon lucide-circle-off"><path d="m2 2 20 20"/><path d="M8.35 2.69A10 10 0 0 1 21.3 15.65"/><path d="M19.08 19.08A10 10 0 1 1 4.92 4.92"/></svg>
                     <p style="margin-top: 1rem; color: #64748b; font-weight: 600;">No hay registros para mostrar</p>
@@ -117,6 +118,12 @@
           <td>{{ propietario.nombre }}</td>
           <td>{{ propietario.descripcion }}</td>
           <td class='centrado'>
+            <label class="switch-native {{ propietario.visible ? 'verde' : 'rojo' }}">
+              <input type='checkbox' [checked]='propietario.visible' disabled />
+              <span class='slider-native'></span>
+            </label>
+          </td>
+          <td class='centrado'>
             <label class="switch-native {{ propietario.activo ? 'verde' : 'rojo' }}">
               <input type='checkbox' [checked]='propietario.activo' disabled />
               <span class='slider-native'></span>
@@ -125,6 +132,7 @@
           <app-acciones-tabla
             (editar)="editar(propietario.id)"
             [activo]="propietario.activo"
+            (toggleVisible)='cambiarVisible(propietario.id)'
             (toggleEstado)="cambiarEstado(propietario.id)"
             (borrar)="confirmarBorrado(propietario)"
           />

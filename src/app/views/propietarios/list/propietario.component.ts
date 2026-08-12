@@ -130,6 +130,29 @@ export class PropietarioComponent implements OnInit {
     });
   }
 
+  cambiarVisible(id: number): void {
+    this.cargando = true;
+
+    this.service.cambiarEstado(id).subscribe({
+      next: () => {
+        const propietario = this.propietario.find(c => c.id === id);
+        if (propietario) {
+          propietario.visible = !propietario.visible;
+        }
+
+        mensajesUtil(this.messageService, 'success', 'update');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cambiar el estado', err);
+        mensajesUtil(this.messageService, 'error', 'error');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
   confirmarBorrado(propietario: Propietario): void {
     this.dialog.confirmar({
       mensaje: `¿Deseas eliminar "<strong>${propietario.nombre}"</strong>?`,

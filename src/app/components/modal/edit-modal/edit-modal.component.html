@@ -54,12 +54,14 @@
 
     </div>
 
-    <div class='fields-row'>
-      <div class='field col-12'>
-        <label for='descripcion'>Descripción</label>
-        <textarea id='descripcion' type='text' pInputText formControlName='descripcion'></textarea>
+    @if (camposMostrar().descripcion) {
+      <div class='fields-row'>
+        <div class='field col-12'>
+          <label for='descripcion'>Descripción</label>
+          <textarea id='descripcion' type='text' pInputText formControlName='descripcion'></textarea>
+        </div>
       </div>
-    </div>
+    }
 
     @if (camposMostrar().valor) {
       <div class='fields-row'>
@@ -78,7 +80,7 @@
       <div class='fields-row'>
           <div class='field col-12'>
             <label for='mostrar'>Texto en web</label>
-            <input id='mostrar' type='text' pInputText formControlName='mostrar' [maxlength]='max_mostrar()' />
+            <input id='mostrar' type='text' pInputText formControlName='mostrar' [maxlength]='maxValores().mostrar' />
         </div>
       </div>
     }

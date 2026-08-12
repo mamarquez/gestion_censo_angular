@@ -11,6 +11,7 @@ import { TipoGestorPropiedad } from '../../../models/tipogestorpropiedad';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 
 /**
  * @version 1.0.0
@@ -19,7 +20,7 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 @Component({
   standalone: true,
   selector: 'app-tipos-gestores-propiedades',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, EditModalComponent],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, EditModalComponent, AccionesTablaComponent],
   templateUrl: './tiposgestorespropiedades.component.html'
 })
 export class TiposGestoresPropiedadesComponent implements OnInit {
