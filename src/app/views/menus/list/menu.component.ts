@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
@@ -10,11 +10,23 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Menu } from '../../../models/menu';
 import { MenuService } from '../../../services/menu.service';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 
 @Component({
   standalone: true,
   selector: 'app-menu',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    AccionesTablaComponent,
+    EditModalComponent
+  ],
   templateUrl: './menu.component.html'
 })
 export class MenuComponent implements OnInit {
@@ -25,13 +37,17 @@ export class MenuComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  menu: Menu | null = null;
   menus: Menu [] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
-    nombre: [''],
-    descripcion: [''],
-    activo: ['']
+    id: [null],
+    nombre: [null, Validators.required],
+    descripcion: [null],
+    enlace: [null, Validators.required],
+    activo: [true]
   });
 
   ngOnInit(): void {
@@ -55,12 +71,14 @@ export class MenuComponent implements OnInit {
           this.menus = [];
         }
 
+        console.log(this.menus);
+
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error cargando provincias:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los roles' });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.menus = [];
       }
@@ -68,6 +86,8 @@ export class MenuComponent implements OnInit {
   }
 
   cargar(): void {
+    console.log("cargando...");
+
     this.service.getAll().subscribe({
       next: (response) => {
         this.menus = response.data || [];
@@ -76,6 +96,7 @@ export class MenuComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar menús', err);
+        mensajesUtil(this.messageService, 'error', 'cargar');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -96,13 +117,13 @@ export class MenuComponent implements OnInit {
           menu.activo = !menu.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado del menu', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -124,23 +145,84 @@ export class MenuComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.menus = this.menus.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
 
     this.cargando = false;
+  }
+
+  abrirModal(): void {
+    this.menu = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<Menu>) => {
+        this.menu = response.data ?? null;
+
+        if (this.menu !== null) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(menu: Menu) {
+    this.cargando = true;
+
+    const datos: Menu = {
+      id: menu.id,
+      nombre: menu.nombre,
+      descripcion: menu.descripcion,
+      enlace: menu.enlace,
+      activo: menu.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al actualizar menu', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    }
   }
 
 }

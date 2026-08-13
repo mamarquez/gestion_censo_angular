@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
@@ -10,11 +10,14 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Medida } from '../../../models/medida';
 import { MedidaService } from '../../../services/medida.service';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 
 @Component({
   standalone: true,
   selector: 'app-medida',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent, EditModalComponent],
   templateUrl: './medida.component.html'
 })
 export class MedidaComponent implements OnInit {
@@ -25,19 +28,21 @@ export class MedidaComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  medida: Medida | any = null;
   medidas: Medida [] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   ngOnInit(): void {
     this.cargar();
   }
 
   form: FormGroup = this.fb.group({
-    id: [''],
-    nombre: [''],
-    descripcion: [''],
-    valor: [''],
-    activo: ['']
+    id: [null],
+    nombre: ['', Validators.required],
+    descripcion: [null],
+    valor: [null],
+    activo: [true]
   });
 
   limpiar(): void {
@@ -62,7 +67,7 @@ export class MedidaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando provincias:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los roles' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.medidas = [];
       }
@@ -78,6 +83,7 @@ export class MedidaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar menús', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -98,13 +104,13 @@ export class MedidaComponent implements OnInit {
           medida.activo = !medida.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado del menu', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -126,23 +132,96 @@ export class MedidaComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.medidas = this.medidas.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
 
     this.cargando = false;
+  }
+
+  abrirModal(): void {
+    this.medida = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<Medida>) => {
+        this.medida = response.data ?? null;
+
+        if (this.medida !== null) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', {
+          id,
+          error: err
+        });
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(medida: Medida) {
+    this.cargando = true;
+
+    const datos: Medida = {
+      id: medida.id,
+      nombre: medida.nombre,
+      descripcion: medida.descripcion,
+      valor: medida.valor,
+      activo: medida.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al actualizar: ', {
+            datos,
+            error: err
+          });
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error(err.status);
+          console.error(`Error HTTP ${err.status} al añadir registro`, {
+            datos,
+            statusText: err.statusText,
+            url: err.url,
+            error: err.error
+          });
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    }
   }
 
 }

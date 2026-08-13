@@ -53,6 +53,7 @@ export class EditModalComponent {
     valor?: boolean;
     mostrar?: boolean;
     tipoGestor?: boolean;
+    enlace?: boolean;
     activo?: boolean;
     visible?: boolean;
   }>({
@@ -61,6 +62,7 @@ export class EditModalComponent {
     valor: false,
     mostrar: false,
     tipoGestor: false,
+    enlace: false,
     activo: true,
     visible: false
   });
@@ -74,6 +76,7 @@ export class EditModalComponent {
     descripcion: [''],
     valor: [null],
     mostrar: [null],
+    enlace: [null],
     activo: [true],
     visible: [null]
   });
@@ -96,6 +99,7 @@ export class EditModalComponent {
           nombre: '',
           descripcion: '',
           valor: '',
+          enlace: '',
           activo: true,
           visible: true
         });
@@ -109,8 +113,6 @@ export class EditModalComponent {
       this.form.markAllAsTouched();
       return;
     }
-
-    console.log(this.form.getRawValue());
 
     this.guardar.emit(this.form.getRawValue());
   }

@@ -84,7 +84,7 @@ export class ConfiguracionComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando configuración:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar configuración' });
+        mensajesUtil(this.messageService, 'error','cargas');
         this.cargando = false;
         this.configuraciones = [];
       }
@@ -100,6 +100,7 @@ export class ConfiguracionComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar configuración', err);
+        mensajesUtil(this.messageService, 'error','carga');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -120,13 +121,13 @@ export class ConfiguracionComponent implements OnInit {
           configuracion.activo = !configuracion.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success','update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error','error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -148,17 +149,13 @@ export class ConfiguracionComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.configuraciones = this.configuraciones.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success','delete');
         this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error','error');
         this.cargando = false;
         this.cdr.markForCheck();
       }
@@ -174,8 +171,6 @@ export class ConfiguracionComponent implements OnInit {
     this.service.get(id).subscribe({
       next: (response: ApiResponseWrapper<Configuracion>) => {
         this.configuracion = response.data || [];
-
-        console.log(this.configuracion);
 
         if (this.configuracion) {
           this.modalVisible = true;
@@ -204,53 +199,28 @@ export class ConfiguracionComponent implements OnInit {
     if (datos.id) {
       this.service.updateRegistro(datos).subscribe({
         next: () => {
-
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Actualizado',
-            detail: 'Registro actualizado correctamente'
-          });
-
+          mensajesUtil(this.messageService, 'success', 'update');
           this.modalVisible = false;
           this.cargando = false;
-
           this.cargar();
         },
-
         error: (err) => {
           console.error('Error al actualizar nivel energético', err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No se pudo actualizar el nivel energético'
-          });
-
+          mensajesUtil(this.messageService, 'error', 'error');
           this.cargando = false;
         }
       });
     } else {
       this.service.addRegistro(datos).subscribe({
         next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Añadido',
-            detail: 'Registro añadido correctamente'
-          });
-
+          mensajesUtil(this.messageService, 'success', 'add');
           this.modalVisible = false;
           this.cargando = false;
-
           this.cargar();
         },
-
         error: (err) => {
           console.error('Error al añadir registro', err);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'No se pudo actualizar el registro'
-          });
-
+          mensajesUtil(this.messageService, 'error', 'error');
           this.cargando = false;
         }
       });

@@ -6,6 +6,9 @@ import { Conservacion } from '../models/conservacion';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
+/**
+ * @version 1.0.1
+ */
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +29,30 @@ export class ConservacionService {
       params: buildHttpParams(filtros),
       headers: this.headers
     });
+  }
+
+  /**
+   * Obtener registro
+   * @param id Id del registro
+   */
+  get(id: string): Observable<ApiResponseWrapper<Conservacion>> {
+    return this.http.get<ApiResponseWrapper<Conservacion>>(`${this.api}/${id}`, {
+      headers: this.headers
+    });
+  }
+
+  /**
+   * Añadir registro
+   */
+  addRegistro(datos: Conservacion): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   */
+  updateRegistro(datos: Conservacion): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
   }
 
   /**

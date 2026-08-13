@@ -67,7 +67,7 @@
       <div class='fields-row'>
         <div class='field col-12'>
           <label for='valor'>Valor</label>
-          @if ( max_valor() >= 255) {
+          @if ( maxValores().valor >= 255) {
             <textarea id='valor' type='text' pInputText formControlName='valor'></textarea>
           } @else {
             <input id='valor' type='text' pInputText formControlName='valor' />
@@ -81,6 +81,15 @@
           <div class='field col-12'>
             <label for='mostrar'>Texto en web</label>
             <input id='mostrar' type='text' pInputText formControlName='mostrar' [maxlength]='maxValores().mostrar' />
+        </div>
+      </div>
+    }
+
+    @if (camposMostrar().enlace) {
+      <div class='fields-row'>
+          <div class='field col-12'>
+            <label for='enlace'>Enlace</label>
+            <input id='enlace' type='text' pInputText formControlName='enlace' [maxlength]='maxValores().enlace' />
         </div>
       </div>
     }

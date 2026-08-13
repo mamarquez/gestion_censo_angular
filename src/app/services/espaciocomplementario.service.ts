@@ -32,10 +32,24 @@ export class EspacioComplementarioService {
    * Obtener registro
    * @param id Id del registro
    */
-  get(id: number): Observable<ApiResponseWrapper<EspacioComplementario[]>> {
-    return this.http.get<ApiResponseWrapper<EspacioComplementario[]>>(`${this.api}/${id}`, {
+  get(id: string): Observable<ApiResponseWrapper<EspacioComplementario>> {
+    return this.http.get<ApiResponseWrapper<EspacioComplementario>>(`${this.api}/${id}`, {
       headers: this.headers
     });
+  }
+
+  /**
+   * Añadir registro
+   */
+  addRegistro(datos: EspacioComplementario): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   */
+  updateRegistro(datos: EspacioComplementario): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
   }
 
   /**
@@ -44,10 +58,6 @@ export class EspacioComplementarioService {
    */
   cambiarEstado(id: number): Observable<ApiResponseWrapper<boolean>> {
     return this.http.patch<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, null, { headers: this.headers });
-  }
-
-  addRegistro(datos: EspacioComplementario): Observable<ApiResponseWrapper<boolean>> {
-    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, EspacioComplementario, { headers: this.headers });
   }
 
   /**

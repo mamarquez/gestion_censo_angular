@@ -1,3 +1,13 @@
+<app-edit-modal
+  [titulo] = "'Pavimento'"
+  [(isVisible)]="modalVisible"
+  [datos]='pavimento'
+  [maxValores]='{
+    nombre: 255
+  }'
+  (guardar)="guardar($event)"
+/>
+
 <div class="row">
     <h1>Pavimentos</h1>
 </div>
@@ -54,6 +64,16 @@
 </div>
 
 <br />
+
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (onClick)='abrirModal()'>
+  </p-button>
+</div>
 
 <p-table
   size='small'

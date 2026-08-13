@@ -1,3 +1,21 @@
+<app-edit-modal
+  [titulo] = "'Medida'"
+  [(isVisible)]="modalVisible"
+  [datos]='medida'
+  [maxValores]='{
+    nombre: 255,
+    valor: 15
+  }'
+  (guardar)="guardar($event)"
+  [camposMostrar]="{
+    nombre: true,
+    descripcion: true,
+    valor: true,
+    activo: true
+  }"
+/>
+
+
 <div class='row'>
   <h1>Medidas</h1>
 </div>
@@ -67,6 +85,16 @@
 </div>
 
 <br />
+
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (onClick)='abrirModal()'>
+  </p-button>
+</div>
 
 <p-table
   size='small'

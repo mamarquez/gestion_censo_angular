@@ -28,6 +28,30 @@ export class MedidaService {
   }
 
   /**
+   * Obtener registro
+   * @param id Id del registro
+   */
+  get(id: string): Observable<ApiResponseWrapper<Medida>> {
+    return this.http.get<ApiResponseWrapper<Medida>>(`${this.api}/${id}`, {
+      headers: this.headers
+    });
+  }
+
+  /**
+   * Añadir registro
+   */
+  addRegistro(datos: Medida): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   */
+  updateRegistro(datos: Medida): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
+  }
+
+  /**
    * Cambia el estado de un registro
    * @param id Id del registro
    */

@@ -1,12 +1,12 @@
 export class EspacioComplementario {
   id!: number;
   nombre!: string;
-  valor!: string;
+  descripcion!: string;
   activo!: boolean;
 
   // Configuración de validaciones
   public static readonly campos = {
-    nombre: { maxLength: 100 },
-    valor: { maxLength: 15 }
+    id: { type: 'number' },
+    nombre: { maxLength: 100 }
   };
 }

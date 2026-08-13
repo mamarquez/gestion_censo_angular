@@ -29,6 +29,30 @@ export class PavimentoService {
   }
 
   /**
+   * Obtener registro
+   * @param id Id del registro
+   */
+  get(id: string): Observable<ApiResponseWrapper<Pavimento>> {
+    return this.http.get<ApiResponseWrapper<Pavimento>>(`${this.api}/${id}`, {
+      headers: this.headers
+    });
+  }
+
+  /**
+   * Añadir registro
+   */
+  addRegistro(datos: Pavimento): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   */
+  updateRegistro(datos: Pavimento): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
+  }
+
+  /**
    * Cambia el estado de un registro
    * @param id Id del registro
    */

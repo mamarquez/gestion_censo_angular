@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, model, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -13,7 +13,8 @@ import { TableModule } from 'primeng/table';
 import { InputText } from 'primeng/inputtext';
 import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acciones-tabla.component';
 import { ApiResponseWrapper } from '../../../../../interface/api-response-wrapper.interface';
-import { ModalComplementarioComponent } from './modal-complementario/modal-complementario.component';
+import { EditModalComponent } from '../../../../../components/modal/edit-modal/edit-modal.component';
+import { mensajesUtil } from '../../../../../utils/mensajes.util';
 
 @Component({
   standalone: true,
@@ -27,7 +28,7 @@ import { ModalComplementarioComponent } from './modal-complementario/modal-compl
     AccionesTablaComponent,
     InputText,
     TableModule,
-    ModalComplementarioComponent
+    EditModalComponent
   ],
   templateUrl: './complementario.component.html'
 })
@@ -41,24 +42,24 @@ export class ComplementarioComponent implements OnInit {
 
   @Output() cargandoChange = new EventEmitter<boolean>();
 
-  idInstalacion = model.required<string>();
+  idInstalacion = input<string>('');
 
+  espacioComplementario: InstalacionEspacioComplementario | any = null;
   espaciosComplementarios: InstalacionEspacioComplementario[] = [];
   cargando = false;
   guardando = false;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
-    id: [''],
-    idInstalacion: ['', Validators.required],
-    nombre: ['', Validators.required],
-    descripcion: [''],
-    visible: ['', Validators.required],
-    activo: ['', Validators.required]
+    id: [null],
+    idInstalacion: [null, Validators.required],
+    nombre: [null, Validators.required],
+    descripcion: [null],
+    visible: [true],
+    activo: [true]
   });
 
   ngOnInit() {
-    console.log('Cargando: ', this.idInstalacion());
-
     if (this.idInstalacion()) {
       this.cargarDatos(this.idInstalacion());
     }
@@ -147,13 +148,21 @@ export class ComplementarioComponent implements OnInit {
 
     this.service.crear(datos).subscribe({
       next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Añadido', detail: 'Espacio complementario añadido correctamente' });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Añadido',
+          detail: 'Espacio complementario añadido correctamente'
+        });
         this.guardando = false;
         this.cargarDatos(this.idInstalacion());
       },
       error: (err) => {
         console.error('Error al guardar espacio complementario', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al guardar el espacio complementario' });
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Error al guardar el espacio complementario'
+        });
         this.guardando = false;
         this.cdr.detectChanges();
       }
@@ -234,10 +243,32 @@ export class ComplementarioComponent implements OnInit {
     });
   }
 
-  isVisible: boolean = false;
-
-  addComplementario() {
-    this.isVisible = true;
+  abrirModal(): void {
+    this.espacioComplementario = null;
+    this.modalVisible = true;
   }
+
+  /*
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<InstalacionEspacioComplementario>) => {
+        this.espacioComplementario = response.data ?? null;
+
+        if (this.espacioComplementario !== null) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', {
+          id,
+          error: err
+        });
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+  */
 
 }
