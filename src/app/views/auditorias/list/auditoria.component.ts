@@ -1,11 +1,10 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-
 import { Auditoria } from '../../../models/auditoria';
 import { AuditoriaService } from '../../../services/auditoria.service';
 import { Button } from 'primeng/button';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -16,13 +15,30 @@ import { Tooltip } from 'primeng/tooltip';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { DialogModule } from 'primeng/dialog';
 import { SafeHtmlPipe } from 'primeng/menu';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+
+/**
+ * @version 1.0.1
+ */
 
 @Component({
   standalone: true,
   selector: 'app-auditoria',
-  imports: [TableModule, DatePipe, Button, InputText, ReactiveFormsModule, DatePickerModule, InputMaskModule, TagModule, SelectModule, Tooltip, DialogModule, SafeHtmlPipe],
-  templateUrl: 'auditoria.component.html',
-  styleUrl: 'auditoria.component.css'
+  imports: [
+    TableModule,
+    DatePipe,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    DatePickerModule,
+    InputMaskModule,
+    TagModule,
+    SelectModule,
+    Tooltip,
+    DialogModule,
+    SafeHtmlPipe
+  ],
+  templateUrl: 'auditoria.component.html'
 })
 export class AuditoriaComponent implements OnInit {
 
@@ -31,25 +47,27 @@ export class AuditoriaComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
 
-  auditorias: Auditoria[] = [];
   auditoria: Auditoria = null;
+  auditorias: Auditoria[] = [];
   cargando: boolean = true;
   mostrarModal: boolean = false;
 
   form: FormGroup = this.fb.group({
-    id: [''],
-    fecha: [''],
-    tabla: [''],
-    operacion: [''],
-    usuario: [''],
-    activo: ['']
+    id: [null],
+    tabla: ['', Validators.required],
+    idRegistro: ['', Validators.required],
+    operacion: ['', Validators.required],
+    idUsuario: ['', Validators.required],
+    fecha: ['', Validators.required],
+    valor_anterior: ['', Validators.required],
+    valor_nuevo: ['', Validators.required],
   });
 
   operacionesOptions = [
     { label: 'Todos', value: null },
-    { label: 'INSERT', value: 'INSERT' },
-    { label: 'UPDATE', value: 'UPDATE' },
-    { label: 'DELETE', value: 'DELETE' }
+    { label: 'NUEVO', value: 'INSERT' },
+    { label: 'ACTUALIZADO', value: 'UPDATE' },
+    { label: 'BORRADO', value: 'DELETE' }
   ];
 
   ngOnInit(): void {
@@ -80,7 +98,7 @@ export class AuditoriaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando auditorias:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar auditorias' });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.auditorias = [];
       }
@@ -96,6 +114,7 @@ export class AuditoriaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar auditorias', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -108,17 +127,12 @@ export class AuditoriaComponent implements OnInit {
     this.service.get(id).subscribe({
       next: (response: ApiResponseWrapper<Auditoria>) => {
         this.auditoria = response.data ?? null;
-
-        if (this.auditoria) {
-          console.log('Auditoría cargada:', this.auditoria);
-        }
-
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cargar auditoria', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar auditoria' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }

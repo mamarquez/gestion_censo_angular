@@ -6,6 +6,10 @@ import { AUTH } from '../auth/auth.constants';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
+/**
+ * @version 1.0.1
+ */
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,9 +35,21 @@ export class EspacioDeportivoService {
    * Obtener dato
    */
   get(id: any): Observable<ApiResponseWrapper<EspacioDeportivo>> {
-    return this.http.get<ApiResponseWrapper<EspacioDeportivo>>(`${this.api}/${id}`, {
-      headers: this.headers
-    });
+    return this.http.get<ApiResponseWrapper<EspacioDeportivo>>(`${this.api}/${id}`, { headers: this.headers });
+  }
+
+  /**
+   * Añadir registro
+   */
+  addRegistro(datos: EspacioDeportivo): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   */
+  updateRegistro(datos: EspacioDeportivo): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
   }
 
   /**

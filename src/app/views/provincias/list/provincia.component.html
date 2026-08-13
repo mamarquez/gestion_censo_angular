@@ -1,3 +1,17 @@
+<app-edit-modal
+  [titulo] = '"Provincia"'
+  [(isVisible)]="modalVisible"
+  [datos]='provincia'
+  [maxValores]='{
+    ine: 2,
+    nombre: 255
+  }'
+  (guardar)="guardar($event)"
+  [camposMostrar]='{
+    ine: true,
+  }'
+/>
+
 <div class='mb-4'>
   <h1 class='text-2xl font-bold text-slate-800'>Provincias</h1>
 </div>
@@ -56,6 +70,16 @@
 </div>
 
 <br />
+
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (onClick)='abrirModal()'>
+  </p-button>
+</div>
 
 <p-table
   size='small'

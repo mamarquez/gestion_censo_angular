@@ -1,3 +1,13 @@
+<app-edit-modal
+  [titulo] = '"Espacio complementario"'
+  [(isVisible)]="modalVisible"
+  [datos]='espacioComplementario'
+  [maxValores]='{
+    nombre: 255
+  }'
+  (guardar)="guardar($event)"
+/>
+
 <div class="row">
     <h1>Tipos de espacios complementarios</h1>
 </div>
@@ -51,6 +61,18 @@
 
   </div>
 
+</div>
+
+<br />
+
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (onClick)='abrirModal()'>
+  </p-button>
 </div>
 
 <p-table

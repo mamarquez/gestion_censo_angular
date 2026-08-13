@@ -37,4 +37,33 @@ export class ComunidadautonomaService {
     });
   }
 
+  /**
+   * Añadir registro
+   */
+  addRegistro(datos: ComunidadAutonoma): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   */
+  updateRegistro(datos: ComunidadAutonoma): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Cambia el estado de un registro
+   * @param id Id del registro
+   */
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<ComunidadAutonoma>> {
+    return this.http.patch<ApiResponseWrapper<ComunidadAutonoma>>(`${this.api}/${id}`, null, { headers: this.headers });
+  }
+
+  /**
+   * Borra un registro
+   * @param id Id del registro
+   */
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<ComunidadAutonoma>> {
+    return this.http.delete<ApiResponseWrapper<ComunidadAutonoma>>(`${this.api}/${id}`, { headers: this.headers });
+  }
 }

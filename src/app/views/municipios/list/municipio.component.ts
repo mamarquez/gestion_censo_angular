@@ -2,18 +2,34 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
 import { Municipio } from '../../../models/municipio';
 import { MunicipioService } from '../../../services/municipio.service';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { CentroEducativo } from '../../../models/centroeducativo';
+
+/**
+ * @version 1.0.1
+ */
 
 @Component({
   selector: 'app-municipio',
   standalone: true,
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, AccionesTablaComponent],
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    AccionesTablaComponent,
+    EditModalComponent
+  ],
   templateUrl: './municipio.component.html'
 })
 export class MunicipioComponent implements OnInit {
@@ -24,15 +40,18 @@ export class MunicipioComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  municipio: Municipio | any = null;
   municipios: Municipio[] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
-    cpro: [''],
-    cmun: [''],
-    dc: [''],
-    nombre: [''],
-    activo: ['']
+    id: [null],
+    cpro: ['', [Validators.required, Validators.maxLength(2)]],
+    cmun: ['', [Validators.required, Validators.maxLength(3)]],
+    dc: ['', [Validators.required, Validators.maxLength(1)]],
+    nombre: ['', [Validators.required, Validators.maxLength(255)]],
+    activo: [true]
   });
 
   ngOnInit(): void {
@@ -60,8 +79,8 @@ export class MunicipioComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando provincias:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los municipios' });
+        console.error('Error', { codigo: err.status, error: err });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.municipios = [];
       }
@@ -76,7 +95,8 @@ export class MunicipioComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar municipios', err);
+        console.error('Error', { codigo: err.status, error: err });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -97,13 +117,13 @@ export class MunicipioComponent implements OnInit {
           provincia.activo = !provincia.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado de la provincia', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        console.error('Error', { codigo: err.status, error: err });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -122,23 +142,88 @@ export class MunicipioComponent implements OnInit {
   private borrarRegistro(id: number) {
     this.cargando = true;
 
-    /*
     this.service.borrarRegistro(id).subscribe({
       next: () => {
-        this.provincias = this.provincias.filter(p => p.id !== id);
-
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
+        this.municipios = this.municipios.filter(p => p.id !== id);
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        console.error('Error', { codigo: err.status, error: err });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
-    */
+
     this.cargando = false;
   }
+
+  abrirModal(): void {
+    this.municipio = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<CentroEducativo>) => {
+        this.municipio = response.data || [];
+
+        if (this.municipio) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error', { codigo: err.status, error: err });
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(municipio: Municipio) {
+    this.cargando = true;
+
+    const datos: Municipio = {
+      id: municipio.id,
+      cpro: municipio.cpro,
+      cmun: municipio.cmun,
+      dc: municipio.dc,
+      nombre: municipio.nombre,
+      activo: municipio.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error', { codigo: err.status, error: err });
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error', { codigo: err.status, error: err });
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    }
+  }
+
 }

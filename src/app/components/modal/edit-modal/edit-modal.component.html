@@ -11,6 +11,51 @@
 
     <input id='id' formControlName='id' hidden='hidden' readonly='readonly' />
 
+    @if(camposMostrar().cpro) {
+      <div class='fields-row'>
+        <div class='field col-12'>
+          <label for='cpro'>Código</label>
+          <input id='cpro' type='text' pInputText formControlName='cpro' [maxlength]='maxValores().codigo' />
+        </div>
+      </div>
+    }
+
+    @if(camposMostrar().cmun) {
+      <div class='fields-row'>
+        <div class='field col-12'>
+          <label for='cmun'>Código</label>
+          <input id='cmun' type='text' pInputText formControlName='cmun' [maxlength]='maxValores().codigo' />
+        </div>
+      </div>
+    }
+
+    @if(camposMostrar().dc) {
+      <div class='fields-row'>
+        <div class='field col-12'>
+          <label for='dc'>Código</label>
+          <input id='dc' type='text' pInputText formControlName='dc' readOnly />
+        </div>
+      </div>
+    }
+
+    @if(camposMostrar().codigo) {
+      <div class='fields-row'>
+       <div class='field col-12'>
+         <label for='codigo'>Código</label>
+         <input id='codigo' type='text' pInputText formControlName='codigo' [maxlength]='maxValores().codigo' />
+       </div>
+     </div>
+    }
+
+    @if(camposMostrar().ine) {
+    <div class='fields-row'>
+     <div class='field col-12'>
+       <label for='ine'>INE</label>
+       <input id='ine' type='text' pInputText formControlName='ine' [maxlength]='maxValores().ine' />
+     </div>
+   </div>
+    }
+
     <div class='fields-row'>
       <div class='field col-12'>
         <label for='nombre'>Nombre</label>

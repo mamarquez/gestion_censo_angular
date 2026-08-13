@@ -38,16 +38,24 @@ export class EditModalComponent {
   isVisible = model<boolean>(false);
 
   maxValores = input<{
+    ine?: number;
+    codigo?: number;
     nombre?: number;
     valor?: number;
     mostrar?: number;
   }>({
+    codigo: 3,
     nombre: 50,
     valor: 255,
     mostrar: 50
   })
 
   camposMostrar = input<{
+    ine?: boolean;
+    codigo?: boolean;
+    cpro?: boolean;
+    cmun?: boolean;
+    dc?: boolean;
     nombre?: boolean;
     descripcion?: boolean;
     valor?: boolean;
@@ -57,6 +65,11 @@ export class EditModalComponent {
     activo?: boolean;
     visible?: boolean;
   }>({
+    ine: false,
+    codigo: false,
+    cpro: false,
+    cmun: false,
+    dc: false,
     nombre: true,
     descripcion: true,
     valor: false,
@@ -72,8 +85,13 @@ export class EditModalComponent {
 
   form: FormGroup = this.fb.group({
     id: [null],
+    cpro: [null],
+    cmun: [null],
+    dc: [null],
+    ine: [null],
+    codigo: [null],
     nombre: ['', Validators.required],
-    descripcion: [''],
+    descripcion: [null],
     valor: [null],
     mostrar: [null],
     enlace: [null],
@@ -96,6 +114,11 @@ export class EditModalComponent {
       } else {
         this.form.reset({
           id: null,
+          ine: '',
+          cpro: '',
+          cmun: '',
+          dc: '',
+          codigo: '',
           nombre: '',
           descripcion: '',
           valor: '',

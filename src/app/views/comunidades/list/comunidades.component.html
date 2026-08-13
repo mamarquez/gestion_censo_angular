@@ -1,3 +1,20 @@
+<app-edit-modal
+  [titulo] = '"Comunidad autonoma"'
+  [(isVisible)]="modalVisible"
+  [datos]='comunidad'
+  [maxValores]='{
+    codigo: 3,
+    nombre: 255
+  }'
+  (guardar)="guardar($event)"
+  [camposMostrar]="{
+    codigo: true,
+    nombre: true,
+    activo: true
+  }"
+/>
+
+
 <div class="row">
   <h1>Comunidades autonomas</h1>
 </div>
@@ -54,6 +71,16 @@
 </div>
 
 <br />
+
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (onClick)='abrirModal()'>
+  </p-button>
+</div>
 
 <p-table
   size='small'

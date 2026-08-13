@@ -1,3 +1,13 @@
+<app-edit-modal
+  [titulo] = '"Espacio deportivo"'
+  [(isVisible)]="modalVisible"
+  [datos]='espacioDeportivo'
+  [maxValores]='{
+    nombre: 255
+  }'
+  (guardar)="guardar($event)"
+/>
+
 <div class="row">
     <h1>Espacios deportivos</h1>
 </div>
@@ -55,6 +65,16 @@
 
 <br/>
 
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (onClick)='abrirModal()'>
+  </p-button>
+</div>
+
 <p-table
     [value]="espaciosDeportivos"
     [tableStyle]="{ 'min-width': '50rem' }"
@@ -71,7 +91,8 @@
     <ng-template pTemplate="header">
         <tr>
             <th id='espaciodeportivo.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
-            <th id='espaciodeportivo.estado'>Estado</th>
+            <th id='espaciodeportivo.descripcion' pSortableColumn="descripcion">Descripción<p-sortIcon field="descripcion"></p-sortIcon></th>
+            <th id='espaciodeportivo.estado' pSortableColumn="estado">Estado<p-sortIcon field="estado"></p-sortIcon></th>
             <th id='espaciodeportivo.accion'></th>
         </tr>
     </ng-template>

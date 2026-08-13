@@ -1,18 +1,20 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-
 import { Usuario } from '../../../models/usuario';
 import { Rol } from '../../../models/rol';
 import { ApiResponse } from '../../../models/apiresponse';
 import { UsuarioService } from '../../../services/usuario.service';
 import { RolService } from '../../../services/rol.service';
+
+/**
+ * @version 1.0.1
+ */
 
 @Component({
   standalone: true,
@@ -27,7 +29,7 @@ import { RolService } from '../../../services/rol.service';
   ],
   providers: [MessageService],
   templateUrl: './edit.component.html',
-  styleUrl: 'edit.component.css'
+  styleUrl: './edit.component.css'
 })
 export class EditUsuarioComponent implements OnInit {
 

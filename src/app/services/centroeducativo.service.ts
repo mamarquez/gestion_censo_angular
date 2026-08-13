@@ -1,11 +1,14 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 import { CentroEducativo } from '../models/centroeducativo';
 import { AUTH } from '../auth/auth.constants';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
+
+/**
+ * @version 1.0.0
+ */
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +29,27 @@ export class CentroEducativoService {
       params: buildHttpParams(filtros),
       headers: this.headers
     });
+  }
+
+  /**
+   * Obtener dato
+   */
+  get(id: any): Observable<ApiResponseWrapper<CentroEducativo>> {
+    return this.http.get<ApiResponseWrapper<CentroEducativo>>(`${this.api}/${id}`, { headers: this.headers });
+  }
+
+  /**
+   * Añadir registro
+   */
+  addRegistro(datos: CentroEducativo): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   */
+  updateRegistro(datos: CentroEducativo): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
   }
 
   /**

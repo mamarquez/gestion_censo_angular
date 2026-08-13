@@ -29,10 +29,43 @@ export class MunicipioService {
   }
 
   /**
+   * Obtiene el registro
+   * @param id Id del registro
+   */
+  get(id: String): Observable<ApiResponseWrapper<Municipio>> {
+    return this.http.get<ApiResponseWrapper<Municipio>>(`${this.api}/${id}`, {
+      headers: this.headers
+    });
+  }
+
+  /**
+   * Añadir registro
+   */
+  addRegistro(datos: Municipio): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   */
+  updateRegistro(datos: Municipio): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
+  }
+
+  /**
    * Cambia el estado de un registro
    * @param id Id del registro
    */
   cambiarEstado(id: number): Observable<ApiResponseWrapper<Municipio>> {
     return this.http.patch<ApiResponseWrapper<Municipio>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
+
+  /**
+   * Borra un registro
+   * @param id Id del registro
+   */
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.delete<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, { headers: this.headers });
+  }
+
 }

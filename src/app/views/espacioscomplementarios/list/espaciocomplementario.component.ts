@@ -12,6 +12,7 @@ import { EspacioComplementarioService } from '../../../services/espaciocomplemen
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 
 /**
  * @version 1.0.1
@@ -20,7 +21,7 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
 @Component({
   standalone: true,
   selector: 'app-espacio-complementario',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent, EditModalComponent],
   templateUrl: './espaciocomplementario.component.html'
 })
 export class EspacioComplementarioCompoment implements OnInit {

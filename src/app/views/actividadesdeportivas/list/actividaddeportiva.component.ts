@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
@@ -14,7 +14,10 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { NivelDotacion } from '../../../models/niveldotacion';
-import { NivelEducativo } from '../../../models/niveleducativo';
+
+/**
+ * @version 1.0.1
+ */
 
 @Component({
   standalone: true,
@@ -45,10 +48,10 @@ export class ActividadDeportivaComponent implements OnInit {
   modalVisible = false;
 
   form: FormGroup = this.fb.group({
-    id: [''],
-    nombre: [''],
-    descripcion: [''],
-    activo: ['']
+    id: [null],
+    nombre: ['', [Validators.required, Validators.maxLength(255)]],
+    descripcion: [null],
+    activo: [true]
   });
 
   ngOnInit(): void {
@@ -93,7 +96,7 @@ export class ActividadDeportivaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar menús', err);
-        mensajesUtil(this.messageService, 'error', 'carga');
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -199,7 +202,7 @@ export class ActividadDeportivaComponent implements OnInit {
           this.cargar();
         },
         error: (err) => {
-          console.error('Error al actualizar nivel energético', err);
+          console.error('Error al actualizar', err);
           mensajesUtil(this.messageService, 'error', 'error');
           this.cargando = false;
         }

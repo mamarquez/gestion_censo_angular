@@ -30,6 +30,10 @@ import { EditInstalacionComponent } from './views/instalaciones/edit/editInstala
 import { ComplementarioComponent } from './views/instalaciones/edit/tabs/complementarios/complementario.component';
 import { EditInstalacionDeportivaComponent } from './views/instalaciones/edit/tabs/deportivos/edit-espacio-deportivo/edit-instalacion-deportiva.component';
 import { GeoPosicionComponent } from './views/instalaciones/edit/tabs/geoposicion/geoposicion.component';
+import { EspacioComplementario } from './models/espaciocomplementario';
+import { EspacioDeportivo } from './models/espaciodeportivo';
+import { EspacioDeportivoComponent } from './views/espaciosdeportivos/list/espaciodeportivo.component';
+import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/list/espaciocomplementario.component';
 
 export const routes: Routes = [
   {
@@ -187,7 +191,11 @@ export const routes: Routes = [
       },
       {
         path: 'espacioscomplementarios',
-        component: ComplementarioComponent
+        component: EspacioComplementarioCompoment
+      },
+      {
+        path: 'espaciosdeportivos',
+        component: EspacioDeportivoComponent
       },
       {
         path: 'geoposiciones',

@@ -11,11 +11,27 @@ import { CentroEducativo } from '../../../models/centroeducativo';
 import { CentroEducativoService } from '../../../services/centroeducativo.service';
 import { ActividadDeportiva } from '../../../models/actividaddeportiva';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+
+/**
+ * @version 1.0.1
+ */
 
 @Component({
   standalone: true,
   selector: 'app-list-centro-educativo',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    AccionesTablaComponent,
+    EditModalComponent
+  ],
   templateUrl: './centroeducativo.component.html'
 })
 export class ListCentroEducativoComponent implements OnInit {
@@ -26,8 +42,10 @@ export class ListCentroEducativoComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  centroEducativo: CentroEducativo | any = null;
   centrosEducativos: CentroEducativo [] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -62,11 +80,7 @@ export class ListCentroEducativoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando centro educativo:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar las centro educativo'
-        });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.centrosEducativos = [];
       }
@@ -82,6 +96,7 @@ export class ListCentroEducativoComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar centros educativos', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -102,13 +117,13 @@ export class ListCentroEducativoComponent implements OnInit {
           centroEducativo.activo = !centroEducativo.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado de la centro educativo', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -130,23 +145,83 @@ export class ListCentroEducativoComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.centrosEducativos = this.centrosEducativos.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
 
     this.cargando = false;
+  }
+
+  abrirModal(): void {
+    this.centroEducativo = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<CentroEducativo>) => {
+        this.centroEducativo = response.data || [];
+
+        if (this.centroEducativo) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(centroEducativo: CentroEducativo) {
+    this.cargando = true;
+
+    const datos: CentroEducativo = {
+      id: centroEducativo.id,
+      nombre: centroEducativo.nombre,
+      descripcion: centroEducativo.descripcion,
+      activo: centroEducativo.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al actualizar nivel energético', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    }
   }
 
 }

@@ -5,7 +5,7 @@ import { NivelEnergeticoService } from '../../../services/nivelenergetico.servic
 import { Conservacion } from '../../../models/conservacion';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
@@ -43,10 +43,10 @@ export class NivelEnergeticoComponent implements OnInit {
   modalVisible = false;
 
   form: FormGroup = this.fb.group({
-    id: [''],
-    nombre: [''],
-    descripcion: [''],
-    activo: ['']
+    id: [null],
+    nombre: ['', [Validators.required, Validators.maxLength(1)]],
+    descripcion: [null],
+    activo: [true]
   });
 
   ngOnInit(): void {

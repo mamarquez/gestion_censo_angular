@@ -10,14 +10,32 @@ import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../services/dialog.service';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { NivelDotacion } from '../../../models/niveldotacion';
+import { Caracteristica } from '../../../models/caracteristica';
+
+/**
+ * @version 1.0.1
+ */
 
 @Component({
   standalone: true,
   selector: 'app-espacio-deportivo',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    AccionesTablaComponent,
+    EditModalComponent
+  ],
   templateUrl: './espaciodeportivo.component.html'
 })
-export class EspacioDeportivoCompoment implements OnInit {
+export class EspacioDeportivoComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
   private readonly service = inject(EspacioDeportivoService);
@@ -25,8 +43,10 @@ export class EspacioDeportivoCompoment implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  espacioDeportivo: EspacioDeportivo | any = null;
   espaciosDeportivos: EspacioDeportivo [] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -60,12 +80,8 @@ export class EspacioDeportivoCompoment implements OnInit {
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando provincias:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar los gestores'
-        });
+        console.error('Error cargando:', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.espaciosDeportivos = [];
       }
@@ -80,7 +96,8 @@ export class EspacioDeportivoCompoment implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar espacios deportivos', err);
+        console.error('Error al cargar', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -101,13 +118,13 @@ export class EspacioDeportivoCompoment implements OnInit {
           espacioDeportivo.activo = !espacioDeportivo.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado de espacio deportivo', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        console.error('Error al cambiar el estado', err);
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -129,23 +146,84 @@ export class EspacioDeportivoCompoment implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.espaciosDeportivos = this.espaciosDeportivos.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
 
     this.cargando = false;
+  }
+
+  abrirModal(): void {
+    this.espacioDeportivo = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<EspacioDeportivo>) => {
+        this.espacioDeportivo = response.data || [];
+
+        if (this.espacioDeportivo) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(espacioDeportivo: EspacioDeportivo) {
+    this.cargando = true;
+
+    const datos: EspacioDeportivo = {
+      id: espacioDeportivo.id,
+      nombre: espacioDeportivo.nombre,
+      descripcion: espacioDeportivo.descripcion,
+      valor: espacioDeportivo.valor,
+      activo: espacioDeportivo.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al actualizar nivel energético', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    }
   }
 
 }

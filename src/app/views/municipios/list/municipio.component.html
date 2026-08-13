@@ -1,3 +1,20 @@
+<app-edit-modal
+  [titulo] = '"Municipio"'
+  [(isVisible)]="modalVisible"
+  [datos]='municipio'
+  [maxValores]='{
+    cpro: 2,
+    cmun: 3,
+    nombre: 255
+  }'
+  (guardar)="guardar($event)"
+  [camposMostrar]='{
+    cpro: true,
+    cmun: true,
+    dc: true
+  }'
+/>
+
 <div class='row'>
   <h1>Municipios</h1>
 </div>
@@ -69,6 +86,16 @@
 </div>
 
 <br />
+
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (onClick)='abrirModal()'>
+  </p-button>
+</div>
 
 <p-table
   size='small'

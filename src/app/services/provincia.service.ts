@@ -30,6 +30,30 @@ export class ProvinciaService {
   }
 
   /**
+   * Obtiene el registro
+   * @param id Id del registro
+   */
+  get(id: String): Observable<ApiResponseWrapper<Provincia>> {
+    return this.http.get<ApiResponseWrapper<Provincia>>(`${this.api}/${id}`, {
+      headers: this.headers
+    });
+  }
+
+  /**
+   * Añadir registro
+   */
+  addRegistro(datos: Provincia): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, datos, { headers: this.headers });
+  }
+
+  /**
+   * Actualizar registro
+   */
+  updateRegistro(datos: Provincia): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${datos.id}`, datos, { headers: this.headers });
+  }
+
+  /**
    * Cambia el estado de un registro
    * @param id Id del registro
    */

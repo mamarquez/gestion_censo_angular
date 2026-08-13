@@ -1,8 +1,6 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-
-// PrimeNG
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RadioButtonModule } from 'primeng/radiobutton';
@@ -12,11 +10,19 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-
 import { Provincia } from '../../../models/provincia';
 import { ProvinciaService } from '../../../services/provincia.service';
 import { DialogService } from '../../../services/dialog.service';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { CentroEducativo } from '../../../models/centroeducativo';
+import { ComunidadAutonoma } from '../../../models/comunidadautonoma';
+import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+
+/**
+ * @version 1.0.1
+ */
 
 @Component({
   selector: 'app-list-provincia',
@@ -32,7 +38,8 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
     InputTextModule,
     ToastModule,
     ConfirmDialogModule,
-    AccionesTablaComponent
+    AccionesTablaComponent,
+    EditModalComponent
   ],
   providers: [
     MessageService,
@@ -48,13 +55,16 @@ export class ListProvinciaComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
+  provincia: Provincia | any = null;
   provincias: Provincia[] = [];
   cargando: boolean = true;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
-    nombre: [''],
-    ine: [''],
-    activo: ['']
+    id: [null],
+    ine: ['', [Validators.required, Validators.maxLength(2)]],
+    nombre: ['', [Validators.required, Validators.maxLength(75)]],
+    activo: [true]
   });
 
   ngOnInit(): void {
@@ -83,7 +93,7 @@ export class ListProvinciaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando provincias:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar las provincias' });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.provincias = [];
       }
@@ -99,15 +109,11 @@ export class ListProvinciaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar provincias', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
-  }
-
-  editarRegistro(provincia: any) {
-    console.log('Editando:', provincia);
-    // Tu lógica de edición aquí
   }
 
   cambiarEstado(id: number): void {
@@ -120,13 +126,13 @@ export class ListProvinciaComponent implements OnInit {
           provincia.activo = !provincia.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado de la provincia', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -145,44 +151,89 @@ export class ListProvinciaComponent implements OnInit {
   private borrarRegistro(id: number) {
     this.cargando = true;
 
-    /*
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.provincias = this.provincias.filter(p => p.id !== id);
-
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
-    */
+
     this.cargando = false;
   }
 
-  /*
-    showInfo() {
-        this.messageService.add({ severity: 'info', summary: 'Heads up', detail: 'There’s something you might want to check.' });
+  abrirModal(): void {
+    this.provincia = null;
+    this.modalVisible = true;
+  }
+
+  editar(id: string) {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<Provincia>) => {
+        this.provincia = response.data || [];
+
+        if (this.provincia) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  guardar(provincia: Provincia) {
+    this.cargando = true;
+
+    const datos: Provincia = {
+      id: provincia.id,
+      ine: provincia.ine,
+      nombre: provincia.nombre,
+      activo: provincia.activo
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al actualizar', {
+            codigo: err.status,
+            error: err
+          });
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
     }
-    showSuccess() {
-        this.messageService.add({ severity: 'success', summary: 'Saved successfully', detail: 'Your changes have been saved.' });
-    }
-    showWarn() {
-        this.messageService.add({ severity: 'warn', summary: 'Check this', detail: 'Some fields may need your attention.' });
-    }
-    showError() {
-        this.messageService.add({ severity: 'error', summary: 'Something went wrong', detail: 'We couldn’t complete the action. Please try again.' });
-    }
-    showSecondary() {
-        this.messageService.add({ severity: 'secondary', summary: 'For your information', detail: 'This is acciones-tabla.component.html secondary toast message.' });
-    }
-    showContrast() {
-        this.messageService.add({ severity: 'contrast', summary: 'High contrast', detail: 'This is acciones-tabla.component.html contrast toast message.' });
-    }
-   */
+  }
+
 }
