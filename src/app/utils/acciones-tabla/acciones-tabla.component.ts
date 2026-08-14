@@ -1,5 +1,9 @@
-import { Component, EventEmitter, Input, output, Output } from '@angular/core';
+import { Component, EventEmitter, input, Input, output, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+
+/**
+ * @version 1.0.1
+ */
 
 @Component({
   standalone: true,
@@ -10,11 +14,11 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: 'acciones-tabla.component.html'
 })
 export class AccionesTablaComponent {
-  @Input() editarRoute: any[] = [];
+  editarRoute = input<any[]>([]);
   editar = output<void>();
-  @Input() activo?: boolean;
-  @Input() visible?: boolean;
-  @Output() toggleEstado = new EventEmitter<void>();
-  @Output() toggleVisible = new EventEmitter<void>();
-  @Output() borrar = new EventEmitter<void>();
+  activo = input<boolean | undefined>();
+  visible = input<boolean | undefined>();
+  toggleEstado = output<void>();
+  toggleVisible = output<void>();
+  borrar = output<void>();
 }

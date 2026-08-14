@@ -5,7 +5,7 @@ import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../../../services/dialog.service';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiResponse } from '../../../../../models/apiresponse';
 import { InstalacionEspacioDeportivoService } from '../../../../../services/instalacionEspacioDeportivo.service';
 import { InstalacionEspacioDeportivo } from '../../../../../models/instalacionEspacioDeportivo';
@@ -13,6 +13,8 @@ import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acci
 import { InputText } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { EspacioDeportivo } from '../../../../../models/espaciodeportivo';
+import { mensajesUtil } from '../../../../../utils/mensajes.util';
+import { ApiResponseWrapper } from '../../../../../interface/api-response-wrapper.interface';
 
 @Component({
   standalone: true,
@@ -39,6 +41,7 @@ import { EspacioDeportivo } from '../../../../../models/espaciodeportivo';
 })
 export class DatosEspaciosDeportivosComponent implements OnInit {
 
+  private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly fb = inject(FormBuilder);
   private readonly service = inject(InstalacionEspacioDeportivoService);
@@ -54,12 +57,12 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   guardando = false;
 
   form: FormGroup = this.fb.group({
-    id: [''],
+    id: [null],
     idInstalacion: ['', Validators.required],
     nombre: ['', Validators.required],
-    descripcion: [''],
-    visible: ['', Validators.required],
-    activo: ['', Validators.required]
+    descripcion: [null],
+    visible: [true],
+    activo: [true]
   });
 
   ngOnInit() {
@@ -89,11 +92,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar datos', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar datos de instalaciones'
-        });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cargandoChange.emit(false);
         this.cdr.detectChanges();
@@ -113,19 +112,19 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
     this.cargando = true;
 
     this.service.cambiarEstado(id).subscribe({
-      next: () => {
+      next: (response: ApiResponseWrapper<InstalacionEspacioDeportivo>) => {
         const espacioDeportivo = this.espaciosDeportivos.find(p => p.id === id);
         if (espacioDeportivo) {
           espacioDeportivo.activo = !espacioDeportivo.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado del telefono', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -133,7 +132,26 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   }
 
   cambiarVisible(id: number) {
+    this.cargando = true;
 
+    this.service.cambiarEstado(id).subscribe({
+      next: (response: ApiResponseWrapper<InstalacionEspacioDeportivo>) => {
+        const espacioDeportivo = this.espaciosDeportivos.find(c => c.id === id);
+        if (espacioDeportivo) {
+          espacioDeportivo.visible = !espacioDeportivo.visible;
+        }
+
+        mensajesUtil(this.messageService, 'success', 'update');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cambiar el estado', err);
+        mensajesUtil(this.messageService, 'error', 'error');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   confirmarBorrado(espacioDeportivo: EspacioDeportivo) {
@@ -147,17 +165,21 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
 
   private borrarRegistro(id: number): void {
     this.service.borrarRegistro(id).subscribe({
-      next: () => {
+      next: (response: ApiResponseWrapper<InstalacionEspacioDeportivo>) => {
         this.espaciosDeportivos = this.espaciosDeportivos.filter(t => t.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado correctamente' });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cdr.detectChanges();
       }
     });
+  }
+
+  editar(id: number) {
+    this.router.navigate(['/espaciosdeportivos', id]);
   }
 
 }

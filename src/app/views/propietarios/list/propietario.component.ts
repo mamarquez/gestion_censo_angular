@@ -51,6 +51,7 @@ export class PropietarioComponent implements OnInit {
     id: [null],
     nombre: [null, Validators.required],
     descripcion: [null],
+    visible: [null],
     activo: [null]
   });
 
@@ -107,6 +108,34 @@ export class PropietarioComponent implements OnInit {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
+  cambiarVisible(id: number): void {
+    this.cargando = true;
+
+    this.service.cambiarVisible(id).subscribe({
+      next: () => {
+        const propietario = this.propietarios.find(p => p.id === id);
+
+        if (propietario) {
+          propietario.visible = !propietario.visible;
+        }
+
+        mensajesUtil(this.messageService, 'success', 'update');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cambiar la visibilidad', err);
+        mensajesUtil(this.messageService, 'error', 'error');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  /**
+   * Cambia el estado de un registro
+   * @param id Id del registro
+   */
   cambiarEstado(id: number): void {
     this.cargando = true;
 
@@ -122,36 +151,14 @@ export class PropietarioComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
-        this.cargando = false;
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
-  cambiarVisible(id: number): void {
-    this.cargando = true;
-
-    this.service.cambiarEstado(id).subscribe({
-      next: () => {
-        const propietario = this.propietario.find(c => c.id === id);
-        if (propietario) {
-          propietario.visible = !propietario.visible;
-        }
-
-        mensajesUtil(this.messageService, 'success', 'update');
-        this.cargando = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al cambiar el estado', err);
+        console.error('Error al cambiar el estado de la actividad deportiva', err);
         mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
   }
+
 
   confirmarBorrado(propietario: Propietario): void {
     this.dialog.confirmar({
@@ -213,6 +220,7 @@ export class PropietarioComponent implements OnInit {
       id: propietario.id,
       nombre: propietario.nombre,
       descripcion: propietario.descripcion,
+      visible: propietario.visible,
       activo: propietario.activo
     };
 

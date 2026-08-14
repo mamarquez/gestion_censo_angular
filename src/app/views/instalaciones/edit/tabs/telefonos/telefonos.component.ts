@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, model, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, input, OnInit } from '@angular/core';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
@@ -9,7 +9,13 @@ import { InstalacionTelefonoService } from '../../../../../services/instalaciont
 import { DialogService } from '../../../../../services/dialog.service';
 import { TableModule } from 'primeng/table';
 import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acciones-tabla.component';
-import { ModalTelefonoComponent } from '../../../../../components/telefonos/modal-telefono/modal-telefono.component';
+import { ApiResponseWrapper } from '../../../../../interface/api-response-wrapper.interface';
+import { mensajesUtil } from '../../../../../utils/mensajes.util';
+import { EditModalComponent } from '../../../../../components/modal/edit-modal/edit-modal.component';
+
+/**
+ * @version 1.0.1
+ */
 
 @Component({
   standalone: true,
@@ -21,7 +27,7 @@ import { ModalTelefonoComponent } from '../../../../../components/telefonos/moda
     SelectModule,
     TableModule,
     AccionesTablaComponent,
-    ModalTelefonoComponent
+    EditModalComponent
   ],
   providers: [MessageService],
   templateUrl: './telefonos.component.html'
@@ -33,13 +39,12 @@ export class DatosTelefonosComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  idInstalacion = model.required<string>();
-  @Output() cargandoChange = new EventEmitter<boolean>();
+  idInstalacion = input<string>();
 
-  modalVisible = false;
-
+  telefono: InstalacionTelefono | any = null;
   telefonos: InstalacionTelefono[] = [];
   cargando = false;
+  modalVisible = false;
 
   ngOnInit(): void {
     if (this.idInstalacion()) {
@@ -53,22 +58,19 @@ export class DatosTelefonosComponent implements OnInit {
 
   cargar(): void {
     this.cargando = true;
-    this.cargandoChange.emit(true);
     this.cdr.detectChanges();
 
     this.service.getAll({ idInstalacion: this.idInstalacion() }).subscribe({
-      next: (response) => {
+      next: (response: ApiResponseWrapper<InstalacionTelefono[]>) => {
         this.telefonos = response.data ?? [];
 
         this.cargando = false;
-        this.cargandoChange.emit(false);
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cargar teléfonos', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los teléfonos' });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
-        this.cargandoChange.emit(false);
         this.cdr.detectChanges();
       }
     });
@@ -88,13 +90,13 @@ export class DatosTelefonosComponent implements OnInit {
           telefono.visible = !telefono.visible;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado del telefono', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -114,18 +116,83 @@ export class DatosTelefonosComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.telefonos = this.telefonos.filter(t => t.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el teléfono correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el teléfono', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el teléfono' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cdr.detectChanges();
       }
     });
   }
+
+  /**
+   * Editar registro
+   * @param id Id del registro
+   */
+  editar(id: string): void {
+    this.service.get(id).subscribe({
+      next: (response: ApiResponseWrapper<InstalacionTelefono>) => {
+        this.telefono = response.data || [];
+
+        if (this.telefono) {
+          this.modalVisible = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error al editar: ', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  /**
+   * Guarda/actualiza registro
+   * @param instalacionTelefono Datos del teléfono
+   */
+  guardar(instalacionTelefono: InstalacionTelefono) {
+    this.cargando = true;
+
+    const datos: InstalacionTelefono = {
+      id: instalacionTelefono.id,
+      idInstalacion: instalacionTelefono.idInstalacion,
+      numero: instalacionTelefono.numero,
+      contacto: instalacionTelefono.contacto,
+      visible: instalacionTelefono.visible
+    };
+
+    if (datos.id) {
+      this.service.updateRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al actualizar', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    } else {
+      this.service.addRegistro(datos).subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.modalVisible = false;
+          this.cargando = false;
+          this.cargar();
+        },
+        error: (err) => {
+          console.error('Error al añadir registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+        }
+      });
+    }
+  }
+
 }

@@ -25,8 +25,7 @@ import { InstalacionCaracteristica } from '../../../models/instalacionCaracteris
     PrimeTemplate
   ],
   providers: [MessageService],
-  templateUrl: './modal-caracteristica.component.html',
-  styleUrl: './modal-caracteristica.component.css'
+  templateUrl: './modal-caracteristica.component.html'
 })
 export class ModalCaracteristicaComponent {
   private readonly fb = inject(FormBuilder);
@@ -45,6 +44,8 @@ export class ModalCaracteristicaComponent {
   medidasDisponibles: Medida[] = [];
   cargandoCaracteristicas = true;
   cargandoMedidas = true;
+  caracteristicaSeleccionada: number | null = null;
+  medidaSeleccionada: number | null = null;
 
   modalForm: FormGroup = this.fb.group({
     id: [null],
@@ -64,6 +65,8 @@ export class ModalCaracteristicaComponent {
           valor: null,
           visible: true
         });
+        this.caracteristicaSeleccionada = null;
+        this.medidaSeleccionada = null;
 
         if (this.caracteristicasDisponibles.length === 0) {
           this.cargarCaracteristicasDisponibles();
@@ -110,12 +113,22 @@ export class ModalCaracteristicaComponent {
     });
   }
 
+  seleccionarCaracteristica(event: any): void {
+    this.caracteristicaSeleccionada = event.value;
+    this.modalForm.get('caracteristica')?.setValue(event.value);
+  }
+
+  seleccionarMedida(event: any): void {
+    this.medidaSeleccionada = event.value;
+    this.modalForm.get('medida')?.setValue(event.value);
+  }
+
   cerrarModal(): void {
     this.modalVisible.set(false);
   }
 
   guardarModal(): void {
-    if (this.modalForm.invalid || !this.idInstalacion) {
+    if (this.modalForm.invalid || !this.idInstalacion()) {
       this.modalForm.markAllAsTouched();
       return;
     }
@@ -123,9 +136,11 @@ export class ModalCaracteristicaComponent {
     this.guardando = true;
 
     const datos: InstalacionCaracteristica = {
-      idInstalacion: Number(this.idInstalacion),
+      idInstalacion: Number(this.idInstalacion()),
       caracteristica: { id: this.modalForm.value.caracteristica } as Caracteristica,
-      medida: { id: this.modalForm.value.medida } as Medida,
+      medida: this.modalForm.value.medida
+        ? { id: this.modalForm.value.medida } as Medida
+        : null,
       valor: this.modalForm.value.valor,
       visible: this.modalForm.value.visible
     };

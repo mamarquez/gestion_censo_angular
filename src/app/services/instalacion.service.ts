@@ -47,6 +47,14 @@ export class InstalacionService {
   }
 
   /**
+   * Cambia visibilidad de un registro
+   * @param id Id del registro
+   */
+  cambiarVisible(id: number): Observable<ApiResponseWrapper<Instalacion>> {
+    return this.http.patch<ApiResponseWrapper<Instalacion>>(`${this.api}/visibilidad/${id}`, null, { headers: this.headers });
+  }
+
+  /**
    * Borra un registro
    * @param id Id del registro
    */

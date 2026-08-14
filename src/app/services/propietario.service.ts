@@ -6,6 +6,10 @@ import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface'
 import { buildHttpParams } from '../utils/params.util';
 import { Propietario } from '../models/propietario';
 
+/**
+ * @version 1.0.1
+ */
+
 @Injectable({
   providedIn: 'root'
 })
@@ -56,6 +60,14 @@ export class PropietarioService {
    */
   cambiarEstado(id: number): Observable<ApiResponseWrapper<Propietario>> {
     return this.http.patch<ApiResponseWrapper<Propietario>>(`${this.api}/${id}`, null, { headers: this.headers });
+  }
+
+  /**
+   * Cambia visibilidad de un registro
+   * @param id Id del registro
+   */
+  cambiarVisible(id: number): Observable<ApiResponseWrapper<Propietario>> {
+    return this.http.patch<ApiResponseWrapper<Propietario>>(`${this.api}/visibilidad/${id}`, null, { headers: this.headers });
   }
 
   /**

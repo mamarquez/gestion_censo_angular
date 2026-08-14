@@ -1,4 +1,5 @@
 <app-modal-caracteristica
+  [idInstalacion]='idInstalacion()'
   [(modalVisible)]='modalVisible'
   (guardado)='cargarDatos()'
 />
@@ -69,8 +70,8 @@
 
   <ng-template pTemplate="header">
     <tr>
-      <th id='instalacion-caracteristica.medida.nombre' pSortableColumn="medida.nombre">Nombre<p-sortIcon field="medida.nombre"></p-sortIcon></th>
-      <th id='instalacion-caracteristica.valor' pSortableColumn="valor"><p-sortIcon field="valor"></p-sortIcon></th>
+      <th id='instalacion-caracteristica.caracteristica.nombre' pSortableColumn="caracteristica.nombre">Nombre<p-sortIcon field="caracteristica.nombre"></p-sortIcon></th>
+      <th id='instalacion-caracteristica.valor' pSortableColumn="valor">Cantidad<p-sortIcon field="valor"></p-sortIcon></th>
       <th id='instalacion-caracteristica.visible' pSortableColumn='visible' class='text-center' style='width: 10%'>Visible<p-sortIcon field='visible'></p-sortIcon></th>
       <th id='instalacion-caracteristica.accion' class='text-right' style='width: 10%'></th>
     </tr>
@@ -89,8 +90,8 @@
 
   <ng-template pTemplate="body" let-caracteristica>
     <tr>
-      <td>{{ caracteristica.medida.nombre }}</td>
-      <td>{{ caracteristica.valor }} {{ caracteristica.medida.valor }}</td>
+      <td>{{ caracteristica.caracteristica?.nombre }}</td>
+      <td>{{ caracteristica.valor }} {{ caracteristica.medida?.valor }}</td>
       <td class="centrado">
         <label class="switch-native {{ caracteristica.visible ? 'verde' : 'rojo' }}">
           <input type="checkbox" [checked]="caracteristica.visible" disabled />
@@ -99,7 +100,6 @@
         </label>
       </td>
       <app-acciones-tabla
-        [editarRoute]="['/instalacionestelefonos', caracteristica.id]"
         [visible]="caracteristica.visible"
         (toggleVisible)="cambiarVisible(caracteristica.id)"
         (borrar)="confirmarBorrado(caracteristica)"

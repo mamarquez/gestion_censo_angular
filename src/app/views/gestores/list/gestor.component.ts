@@ -42,6 +42,7 @@ export class GestorComponent implements OnInit {
 
   form: FormGroup = this.fb.group({
     id: [null],
+    tipoGestor: [null],
     nombre: [null, Validators.required],
     descripcion: [null],
     activo: [true]

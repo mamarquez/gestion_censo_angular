@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
-
 import { Instalacion } from '../../../models/instalacion';
 import { InstalacionService } from '../../../services/instalacion.service';
 import { Button } from 'primeng/button';
@@ -12,11 +11,24 @@ import { DialogService } from '../../../services/dialog.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+
+/**
+ * @version 1.0.1
+ */
 
 @Component({
   standalone: true,
   selector: 'app-instalaciones',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent],
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    AccionesTablaComponent
+  ],
   templateUrl: './instalaciones.component.html'
 })
 export class ListInstalacionesComponent implements OnInit {
@@ -26,15 +38,16 @@ export class ListInstalacionesComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
+  private readonly router = inject(Router);
 
   instalaciones: Instalacion [] = [];
   cargando: boolean = true;
 
   form: FormGroup = this.fb.group({
-    id: [''],
+    id: [null],
     codigo: [''],
     nombre: [''],
-    activo: ['']
+    activo: [true]
   });
 
   ngOnInit(): void {
@@ -62,8 +75,8 @@ export class ListInstalacionesComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando instalación:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar las instalaciones' });
+        console.error('Error cargando', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.instalaciones = [];
       }
@@ -74,24 +87,47 @@ export class ListInstalacionesComponent implements OnInit {
     this.service.getAll().subscribe({
       next: (response) => {
         this.instalaciones = response.data || [];
-        console.log(this.instalaciones);
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar instalaciones', err);
+        console.error('Error al cargar', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
   }
 
+  editar(id: string): void {
+    this.router.navigate(['/instalaciones', id]);
+  }
+
   /**
    * Cambia la visibilidad de un registro
    * @param id Id del registro
    */
-  cambiarVisible(id: number) {
+  cambiarVisible(id: number): void {
+    this.cargando = true;
 
+    this.service.cambiarVisible(id).subscribe({
+      next: () => {
+        const instalacion = this.instalaciones.find(p => p.id === id);
+        if (instalacion) {
+          instalacion.visible = !instalacion.visible;
+        }
+
+        mensajesUtil(this.messageService, 'success', 'update');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cambiar la visibilidad', err);
+        mensajesUtil(this.messageService, 'error', 'error');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   /**
@@ -105,16 +141,16 @@ export class ListInstalacionesComponent implements OnInit {
       next: () => {
         const instalacion = this.instalaciones.find(p => p.id === id);
         if (instalacion) {
-          instalacion.visible = !instalacion.visible;
+          instalacion.baja = !instalacion.baja;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar el estado de la instalaciones', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        console.error('Error al cambiar el estado', err);
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -136,11 +172,7 @@ export class ListInstalacionesComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.instalaciones = this.instalaciones.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },

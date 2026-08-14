@@ -5,6 +5,12 @@
   [maxValores]='{
     nombre: 255
   }'
+  [camposMostrar]="{
+    nombre: true,
+    descripcion: true,
+    activo: true,
+    visible: true
+  }"
   (guardar)="guardar($event)"
 />
 
@@ -131,6 +137,7 @@
           <app-acciones-tabla
             (editar)="editar(propietario.id)"
             [activo]="propietario.activo"
+            [visible]="propietario.visible"
             (toggleVisible)='cambiarVisible(propietario.id)'
             (toggleEstado)="cambiarEstado(propietario.id)"
             (borrar)="confirmarBorrado(propietario)"

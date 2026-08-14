@@ -1,18 +1,21 @@
 <app-edit-modal
-  [titulo]="'Configuración'"
-  [(isVisible)]="modalVisible"
+  [titulo]='"Configuración"'
+  [(isVisible)]='modalVisible'
   [datos]='configuracion'
   [maxValores]='{
     nombre: 255,
     valor: 255
   }'
-  (guardar)="guardar($event)"
-  [camposMostrar]="{
+  (guardar)='guardar($event)'
+  [camposMostrar]='{
     nombre: true,
     descripcio: true,
     valor: true,
     activo: true
-  }"
+  }'
+  [camposReadOnly]='{
+    nombre: true
+  }'
 />
 
 <div class="row">

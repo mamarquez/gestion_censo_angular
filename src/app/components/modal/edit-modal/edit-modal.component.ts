@@ -1,21 +1,10 @@
-import {
-  Component,
-  effect,
-  inject,
-  input,
-  model,
-  output
-} from '@angular/core';
+import { Component, effect, inject, input, model, output } from '@angular/core';
 
-import {
-  FormBuilder,
-  FormGroup, FormsModule,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { Button } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
+import { InputText } from 'primeng/inputtext';
 
 @Component({
   standalone: true,
@@ -25,6 +14,7 @@ import { Dialog } from 'primeng/dialog';
     Dialog,
     FormsModule,
     ReactiveFormsModule,
+    InputText
   ],
   templateUrl: './edit-modal.component.html'
 })
@@ -48,9 +38,11 @@ export class EditModalComponent {
     nombre: 50,
     valor: 255,
     mostrar: 50
-  })
+  });
 
   camposMostrar = input<{
+    id?: boolean;
+    idInstalacion?: boolean;
     ine?: boolean;
     codigo?: boolean;
     cpro?: boolean;
@@ -64,20 +56,34 @@ export class EditModalComponent {
     enlace?: boolean;
     activo?: boolean;
     visible?: boolean;
+    numero?: boolean;
+    contacto?: boolean;
+    notas?: boolean;
   }>({
+    id: false,
+    idInstalacion: false,
     ine: false,
     codigo: false,
     cpro: false,
     cmun: false,
     dc: false,
     nombre: true,
-    descripcion: true,
+    descripcion: false,
     valor: false,
     mostrar: false,
     tipoGestor: false,
     enlace: false,
     activo: true,
-    visible: false
+    visible: false,
+    numero: false,
+    contacto: false,
+    notas: false
+  });
+
+  camposReadOnly = input<{
+    nombre?: boolean,
+  }>({
+    nombre: false,
   });
 
   guardar = output<any>();
@@ -85,18 +91,22 @@ export class EditModalComponent {
 
   form: FormGroup = this.fb.group({
     id: [null],
+    idInstalacion: [null],
     cpro: [null],
     cmun: [null],
     dc: [null],
     ine: [null],
     codigo: [null],
-    nombre: ['', Validators.required],
+    nombre: [null],
     descripcion: [null],
     valor: [null],
     mostrar: [null],
     enlace: [null],
     activo: [true],
-    visible: [null]
+    visible: [null],
+    numero: [null],
+    contacto: [null],
+    notas: [null]
   });
 
   constructor() {

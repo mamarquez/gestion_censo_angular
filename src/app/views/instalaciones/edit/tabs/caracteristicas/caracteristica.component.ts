@@ -64,7 +64,7 @@ export class DatosCaracteristicaComponent implements OnInit {
     this.cargandoChange.emit(true);
     this.cdr.detectChanges();
 
-    this.service.getAll({ idInstalacion: this.idInstalacion }).subscribe({
+    this.service.getAll({ idInstalacion: this.idInstalacion() }).subscribe({
       next: (response: ApiResponse<InstalacionCaracteristica[]>) => {
         this.caracteristicas = response.data ?? [];
 
@@ -124,7 +124,7 @@ export class DatosCaracteristicaComponent implements OnInit {
   cambiarVisible(id: number) {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarVisible(id).subscribe({
       next: () => {
         const caracteristica = this.caracteristicas.find(p => p.id === id);
         if (caracteristica) {
@@ -146,7 +146,7 @@ export class DatosCaracteristicaComponent implements OnInit {
 
   confirmarBorrado(caracteristica: InstalacionCaracteristica) {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${caracteristica.medida.nombre}</strong>"?`,
+      mensaje: `¿Deseas eliminar "<strong>${caracteristica.caracteristica?.nombre}</strong>"?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
       onAccept: () => this.borrarRegistro(caracteristica.id)

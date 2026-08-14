@@ -6,9 +6,9 @@
     </svg>
   </p-button>
 
-  @if (visible !== undefined) {
+  @if (visible() !== undefined) {
     <p-button severity='secondary' [rounded]='true' [text]='true' (onClick)='toggleVisible.emit()'>
-      @if (visible) {
+      @if (visible()) {
         <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
              stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
              style='color: green'>
@@ -28,9 +28,9 @@
     </p-button>
   }
 
-  @if (activo !== undefined) {
+  @if (activo() !== undefined) {
     <p-button severity='secondary' [rounded]='true' [text]='true' (onClick)='toggleEstado.emit()'>
-      @if (activo) {
+      @if (activo()) {
         <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
              stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
              style='color: blue'>

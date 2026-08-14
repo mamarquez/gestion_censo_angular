@@ -74,8 +74,8 @@
         <tr>
           <th pSortableColumn="codigo">Código<p-sortIcon field="codigo"></p-sortIcon></th>
           <th pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
-          <th id='instalacion.baja' pSortableColumn='baja' class='text-center' style='width: 10%'>Estado<p-sortIcon field='baja'></p-sortIcon></th>
           <th id='instalacion.visible' pSortableColumn='visible' class='text-center' style='width: 10%'>Visible<p-sortIcon field='visible'></p-sortIcon></th>
+          <th id='instalacion.baja' pSortableColumn='baja' class='text-center' style='width: 10%'>Estado<p-sortIcon field='baja'></p-sortIcon></th>
           <th id='instalacion.accion' class='text-right' style='width: 10%'></th>
         </tr>
     </ng-template>
@@ -96,23 +96,25 @@
             <td>{{ instalacion.codigo }}</td>
             <td>{{ instalacion.nombre }}</td>
             <td class="centrado">
-              <label class="switch-native {{ instalacion.baja ? 'verde' : 'rojo' }}">
+              <label class="switch-native {{ instalacion.visible ? 'verde' : 'rojo' }}">
+                <input type="checkbox" [checked]="instalacion.visible" disabled />
+                <span class="slider-native"></span>
+              </label>
+            </td>
+            <td class="centrado">
+              <label class="switch-native {{ !instalacion.baja ? 'verde' : 'rojo' }}">
                 <input type="checkbox" [checked]="!instalacion.baja" disabled />
                 <span class="slider-native"></span>
               </label>
             </td>
-          <td class="centrado">
-            <label class="switch-native {{ instalacion.visible ? 'verde' : 'rojo' }}">
-              <input type="checkbox" [checked]="instalacion.visible" disabled />
-              <span class="slider-native"></span>
-            </label>
-          </td>
-          <app-acciones-tabla
-            (editar)="editar(instalacion.id)"
-            [activo]="instalacion.activo"
-            (toggleEstado)="cambiarEstado(instalacion.id)"
-            (borrar)="confirmarBorrado(instalacion)"
-          />
+            <app-acciones-tabla
+              (editar)="editar(instalacion.id)"
+              [activo]="!instalacion.baja"
+              [visible]="instalacion.visible"
+              (toggleVisible)="cambiarVisible(instalacion.id)"
+              (toggleEstado)="cambiarEstado(instalacion.id)"
+              (borrar)="confirmarBorrado(instalacion)"
+            />
         </tr>
     </ng-template>
 </p-table>

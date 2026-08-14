@@ -48,6 +48,14 @@ export class InstalacionCaracteristicaService {
   }
 
   /**
+   * Cambia la visibilidad de un registro
+   * @param id Id del registro
+   */
+  cambiarVisible(id: number): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.patch<ApiResponseWrapper<boolean>>(`${this.api}/visibilidad/${id}`, null, { headers: this.headers });
+  }
+
+  /**
    * Crea una nueva característica de instalación
    * @param caracteristica Datos de la característica
    */

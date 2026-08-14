@@ -1,7 +1,17 @@
-<app-modal-telefono
-  [idInstalacion]='idInstalacion()'
-  [(modalVisible)]='modalVisible'
-  (guardado)='cargar()'
+<app-edit-modal
+  [titulo]='"Telefono"'
+  [(isVisible)]="modalVisible"
+  [datos]='telefono'
+  [camposMostrar]='{
+    idInstalacion: true,
+    numero: true,
+    contacto: true,
+    notas: true,
+    nombre: false,
+    visible: true,
+    activo: false
+  }'
+  (guardar)="guardar($event)"
 />
 
 <div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
@@ -33,8 +43,8 @@
 <ng-template pTemplate="header">
   <tr>
     <th id='instalacion-telefono.numero' style='width: 10%' pSortableColumn="numero">Teléfono<p-sortIcon field="numero"></p-sortIcon></th>
-    <th id='instalacion-telefono.contacto' pSortableColumn="contacto">Nombre<p-sortIcon field="contacto"></p-sortIcon></th>
-    <th id='instalacion-telefono.nota' pSortableColumn='notas' class='text-center' style='width: 10%'>Notas<p-sortIcon field='notas'></p-sortIcon></th>
+    <th id='instalacion-telefono.contacto' pSortableColumn="contacto">Contacto<p-sortIcon field="contacto"></p-sortIcon></th>
+    <th id='instalacion-telefono.nota' pSortableColumn='notas' class='text-center' style='width: 30%'>Notas<p-sortIcon field='notas'></p-sortIcon></th>
     <th id='instalacion-telefono.visible' pSortableColumn='visible' class='text-center' style='width: 10%'>Visible<p-sortIcon field='visible'></p-sortIcon></th>
     <th id='instalacion-telefono.accion' class='text-right' style='width: 10%'></th>
   </tr>
@@ -63,9 +73,10 @@
       </label>
     </td>
     <app-acciones-tabla
-      [editarRoute]="['/instalacionestelefonos', telefono.id]"
+      (editar)="editar(telefono.id)"
+      [activo]="telefono.activo"
       [visible]="telefono.visible"
-      (toggleEstado)="cambiarEstado(telefono.id)"
+      (toggleVisible)="cambiarEstado(telefono.id)"
       (borrar)="confirmarBorrado(telefono)"
     />
   </tr>

@@ -7,9 +7,44 @@
   [style]="{ width: '30rem' }"
 >
 
+  <ng-template #header>
+    <h1>{{ titulo() }}</h1>
+  </ng-template>
+
   <form [formGroup]='form'>
 
     <input id='id' formControlName='id' hidden='hidden' readonly='readonly' />
+
+    @if (camposMostrar().idInstalacion) {
+      <input id='idInstalacion' formControlName='idInstalacion' hidden='hidden' readonly='readonly' />
+    }
+
+    @if (camposMostrar().numero) {
+      <div class='fields-row'>
+        <div class='field col-12'>
+          <label for='numero'>Número</label>
+          <input id="numero" type="text" pInputText formControlName="numero" />
+        </div>
+      </div>
+    }
+
+    @if (camposMostrar().contacto) {
+      <div class='fields-row'>
+        <div class='field col-12'>
+          <label for='contacto'>Contacto</label>
+          <input id="contacto" type="text" pInputText formControlName="contacto" />
+        </div>
+      </div>
+    }
+
+    @if (camposMostrar().notas) {
+      <div class='fields-row'>
+        <div class='field col-12'>
+          <label for='notas'>Notas</label>
+          <textarea id="notas" type="text" pInputText formControlName="notas"></textarea>
+        </div>
+      </div>
+    }
 
     @if(camposMostrar().cpro) {
       <div class='fields-row'>
@@ -56,16 +91,18 @@
    </div>
     }
 
-    <div class='fields-row'>
-      <div class='field col-12'>
-        <label for='nombre'>Nombre</label>
-        <input id='nombre' type='text' pInputText formControlName='nombre' [maxlength]='maxValores().nombre' />
+    @if (camposMostrar().nombre) {
+      <div class='fields-row'>
+        <div class='field col-12'>
+          <label for='nombre'>Nombre</label>
+          <input id='nombre' type='text' pInputText formControlName='nombre' [maxlength]='maxValores().nombre' [readonly]='camposReadOnly().nombre' />
+        </div>
       </div>
-    </div>
+    }
 
     <div class='fields-row'>
 
-      @if (datos() !== null && datos()?.visible !== undefined) {
+      @if (datos() !== null && datos()?.visible !== undefined && camposMostrar().visible) {
         <div class='field col-6'>
           <div class='field field-checkbox'>
             <label
@@ -82,20 +119,22 @@
         </div>
       }
 
-      <div class='field col-6'>
-        <div class='field field-checkbox'>
-          <label
-            class='switch-native'
-            [class.verde]="form.get('activo')?.value"
-            [class.rojo]="!form.get('activo')?.value"
-          >
-            <input id='modal-activo' type='checkbox' formControlName='activo' />
-            <span class='slider-native'></span>
-            <span class='sr-only'>Activo</span>
-          </label>
-          <label for='modal-activo'>Activo</label>
+      @if (camposMostrar().activo) {
+        <div class='field col-6'>
+          <div class='field field-checkbox'>
+            <label
+              class='switch-native'
+              [class.verde]="form.get('activo')?.value"
+              [class.rojo]="!form.get('activo')?.value"
+            >
+              <input id='modal-activo' type='checkbox' formControlName='activo' />
+              <span class='slider-native'></span>
+              <span class='sr-only'>Activo</span>
+            </label>
+            <label for='modal-activo'>Activo</label>
+          </div>
         </div>
-      </div>
+      }
 
     </div>
 

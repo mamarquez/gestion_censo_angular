@@ -7,6 +7,10 @@ import { AUTH } from '../auth/auth.constants';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 
+/**
+ * @version 1.0.1
+ */
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,9 +36,11 @@ export class InstalacionTelefonoService {
    * Obtener teléfonos de una instalación
    */
   get(id?: any): Observable<ApiResponseWrapper<InstalacionTelefono>> {
-    return this.http.get<ApiResponseWrapper<InstalacionTelefono>>(`${this.api}/${id}`, {
-      headers: this.headers
-    });
+    return this.http.get<ApiResponseWrapper<InstalacionTelefono>>(`${this.api}/${id}`, { headers: this.headers });
+  }
+
+  getTelefonos(id?: any): Observable<ApiResponseWrapper<InstalacionTelefono[]>> {
+    return this.http.get<ApiResponseWrapper<InstalacionTelefono[]>>(`${this.api}/${id}`, { headers: this.headers });
   }
 
   /**
@@ -49,8 +55,16 @@ export class InstalacionTelefonoService {
    * Crea un nuevo teléfono
    * @param telefono Datos del teléfono
    */
-  crear(telefono: Partial<InstalacionTelefono>): Observable<ApiResponseWrapper<InstalacionTelefono>> {
+  addRegistro(telefono: Partial<InstalacionTelefono>): Observable<ApiResponseWrapper<InstalacionTelefono>> {
     return this.http.post<ApiResponseWrapper<InstalacionTelefono>>(`${this.api}`, telefono, { headers: this.headers });
+  }
+
+  /**
+   * Actualiza un teléfono existente
+   * @param telefono Datos del teléfono
+   */
+  updateRegistro(telefono: Partial<InstalacionTelefono>): Observable<ApiResponseWrapper<InstalacionTelefono>> {
+    return this.http.put<ApiResponseWrapper<InstalacionTelefono>>(`${this.api}/${telefono.id}`, telefono, { headers: this.headers });
   }
 
   /**

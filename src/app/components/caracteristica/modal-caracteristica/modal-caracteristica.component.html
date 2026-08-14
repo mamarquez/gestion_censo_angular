@@ -4,41 +4,45 @@
   [modal]='true'
   [style]="{ width: '30rem' }"
 >
+  <div class='fields-row'>
+    <div class='field col-12'>
+      <label for='modal-caracteristica'>Característica</label>
+      <p-select
+        id='modal-caracteristica'
+        [ngModel]='caracteristicaSeleccionada'
+        [ngModelOptions]="{ standalone: true }"
+        (onChange)='seleccionarCaracteristica($event)'
+        [options]='caracteristicasDisponibles'
+        optionLabel='nombre'
+        optionValue='id'
+        placeholder='Selecciona una característica'
+        styleClass='w-full'
+        appendTo='body'
+        [panelStyle]="{ width: '26rem' }"
+      ></p-select>
+    </div>
+  </div>
+
+  <div class='fields-row'>
+    <div class='field col-12'>
+      <label for='modal-medida'>Medida</label>
+      <p-select
+        id='modal-medida'
+        [ngModel]='medidaSeleccionada'
+        [ngModelOptions]="{ standalone: true }"
+        (onChange)='seleccionarMedida($event)'
+        [options]='medidasDisponibles'
+        optionLabel='nombre'
+        optionValue='id'
+        placeholder='Selecciona una medida'
+        styleClass='w-full'
+        appendTo='body'
+        [panelStyle]="{ width: '26rem' }"
+      ></p-select>
+    </div>
+  </div>
+
   <form [formGroup]='modalForm'>
-    <div class='fields-row'>
-      <div class='field col-12'>
-        <label for='modal-caracteristica'>Característica</label>
-        <p-select
-          id='modal-caracteristica'
-          [ngModel]="modalForm.get('caracteristica')?.value"
-          [ngModelOptions]="{ standalone: true }"
-          (onChange)="modalForm.get('caracteristica')?.setValue($event.value)"
-          [options]='caracteristicasDisponibles'
-          optionLabel='nombre'
-          optionValue='id'
-          placeholder='Selecciona una característica'
-          styleClass='w-full'
-        ></p-select>
-      </div>
-    </div>
-
-    <div class='fields-row'>
-      <div class='field col-12'>
-        <label for='modal-medida'>Medida</label>
-        <p-select
-          id='modal-medida'
-          [ngModel]="modalForm.get('medida')?.value"
-          [ngModelOptions]="{ standalone: true }"
-          (onChange)="modalForm.get('medida')?.setValue($event.value)"
-          [options]='medidasDisponibles'
-          optionLabel='nombre'
-          optionValue='id'
-          placeholder='Selecciona una medida'
-          styleClass='w-full'
-        ></p-select>
-      </div>
-    </div>
-
     <div class='fields-row'>
       <div class='field col-6'>
         <label for='modal-valor'>Valor</label>

@@ -22,16 +22,17 @@ import { IluminacionComponent } from './views/iluminaciones/list/iluminacion.com
 import { GestorComponent } from './views/gestores/list/gestor.component';
 import { EstadoUsoComponent } from './views/estadosusos/list/estadouso.component';
 import { PropietarioComponent } from './views/propietarios/list/propietario.component';
-import { TiposGestoresPropiedadesComponent } from './views/tiposgestorespropiedades/list/tiposgestorespropiedades.component';
+import {
+  TiposGestoresPropiedadesComponent
+} from './views/tiposgestorespropiedades/list/tiposgestorespropiedades.component';
 import { ConfiguracionComponent } from './views/configuracion/list/configuraciones.component';
 import { EditUsuarioComponent } from './views/usuarios/edit/edit.component';
 import { ListComunidadesComponent } from './views/comunidades/list/comunidades.component';
 import { EditInstalacionComponent } from './views/instalaciones/edit/editInstalacion.component';
-import { ComplementarioComponent } from './views/instalaciones/edit/tabs/complementarios/complementario.component';
-import { EditInstalacionDeportivaComponent } from './views/instalaciones/edit/tabs/deportivos/edit-espacio-deportivo/edit-instalacion-deportiva.component';
+import {
+  EditInstalacionDeportivaComponent
+} from './views/instalaciones/edit/tabs/deportivos/edit-espacio-deportivo/edit-instalacion-deportiva.component';
 import { GeoPosicionComponent } from './views/instalaciones/edit/tabs/geoposicion/geoposicion.component';
-import { EspacioComplementario } from './models/espaciocomplementario';
-import { EspacioDeportivo } from './models/espaciodeportivo';
 import { EspacioDeportivoComponent } from './views/espaciosdeportivos/list/espaciodeportivo.component';
 import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/list/espaciocomplementario.component';
 
@@ -195,7 +196,10 @@ export const routes: Routes = [
       },
       {
         path: 'espaciosdeportivos',
-        component: EspacioDeportivoComponent
+        children: [
+          { path: '', component: EspacioDeportivoComponent },
+          { path: ':id', component: EspacioDeportivoComponent }
+        ]
       },
       {
         path: 'geoposiciones',

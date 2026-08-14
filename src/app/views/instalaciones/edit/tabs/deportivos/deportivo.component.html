@@ -121,7 +121,7 @@
         </label>
       </td>
       <app-acciones-tabla
-        [editarRoute]="['/instalacionesespacios', espacioDeportivo.id]"
+        (editar)="editar(espacioDeportivo.id)"
         [activo]="espacioDeportivo.activo"
         [visible]="espacioDeportivo.visible"
         (toggleEstado)="cambiarEstado(espacioDeportivo.id)"

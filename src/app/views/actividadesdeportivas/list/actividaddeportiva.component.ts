@@ -168,9 +168,9 @@ export class ActividadDeportivaComponent implements OnInit {
   editar(id: string) {
     this.service.get(id).subscribe({
       next: (response: ApiResponseWrapper<NivelDotacion>) => {
-        this.actividadDeportiva = response.data || [];
+        this.actividadDeportiva = response.data ?? null;
 
-        if (this.actividadDeportiva) {
+        if (this.actividadDeportiva != null) {
           this.modalVisible = true;
         }
       },
