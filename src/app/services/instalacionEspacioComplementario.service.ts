@@ -21,8 +21,6 @@ export class InstalacionEspacioComplementarioService {
    * Obtener todos los espacios deportivos de instalaciones
    */
   getAll(filtros?: any): Observable<ApiResponseWrapper<InstalacionEspacioComplementario[]>> {
-    console.log(filtros);
-
     return this.http.get<ApiResponseWrapper<InstalacionEspacioComplementario[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers

@@ -69,8 +69,6 @@ export class RutasComponent implements OnInit {
     const filtros = this.form.value;
     this.cargando = true;
 
-    console.log(filtros);
-
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
@@ -103,8 +101,6 @@ export class RutasComponent implements OnInit {
     this.service.getAll({ idInstalacion: id }).subscribe({
       next: (response: ApiResponseWrapper<InstalacionRuta[]>) => {
         this.rutas = response.data ?? [];
-
-        console.log('Datos cargados:', this.rutas);
 
         this.form.patchValue({
           id: this.id

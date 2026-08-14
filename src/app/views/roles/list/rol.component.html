@@ -19,7 +19,7 @@
         pInputText
         type='text'
         formControlName='nombre'
-        placeholder='Ej. Usuario...'
+        placeholder='Ej. UsuarioModel...'
         class='p-inputtext-sm w-full'
       />
     </div>
@@ -44,6 +44,14 @@
 
 <br />
 
+@if (rolSeleccionado) {
+  <app-modal-rol-permiso
+    [idRol]='rolSeleccionado.id'
+    [(modalVisible)]='modalVisible'
+    (guardado)='permisoGuardado(rolSeleccionado.id)'
+  />
+}
+
 <p-table
   size='small'
   [value]='roles'
@@ -58,10 +66,12 @@
   [loading]='cargando'
   sortField='nombre'
   [sortOrder]='1'
+  [expandedRowKeys]='filasExpandidas'
 >
 
     <ng-template pTemplate="header">
         <tr>
+          <th style='width: 3rem'></th>
           <th id='rol.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
           <th id='rol.estado' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
           <th id='rol.accion' class='text-right' style='width: 10%'></th>
@@ -79,8 +89,17 @@
         </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-rol>
+    <ng-template pTemplate="body" let-rol let-expanded="expanded">
         <tr>
+          <td>
+            <p-button
+              type='button'
+              [text]='true'
+              [rounded]='true'
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+              (onClick)='toggleFila(rol)'
+            ></p-button>
+          </td>
           <td>{{ rol.nombre }}</td>
           <td class='centrado'>
             <label class="switch-native {{ rol.activo ? 'verde' : 'rojo' }}">
@@ -89,11 +108,58 @@
             </label>
           </td>
           <app-acciones-tabla
-            (editar)="editar(rol.id)"
             [activo]="rol.activo"
             (toggleEstado)="cambiarEstado(rol.id)"
             (borrar)="confirmarBorrado(rol)"
           />
         </tr>
+    </ng-template>
+
+    <ng-template pTemplate="expandedrow" let-rol>
+      <tr>
+        <td colspan="4">
+          <div style='padding: 1rem; background: #f8fafc;'>
+            <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;'>
+              <strong>Permisos de "{{ rol.nombre }}"</strong>
+              <p-button
+                type='button'
+                icon='pi pi-plus'
+                label='Añadir permiso'
+                styleClass='p-button-success p-button-sm'
+                (onClick)='abrirModalPermiso(rol)'
+              ></p-button>
+            </div>
+
+            <p-table
+              size='small'
+              [value]='permisosPorRol[rol.id] || []'
+              [loading]='cargandoPermisos[rol.id]'
+              dataKey='id'
+            >
+              <ng-template pTemplate='header'>
+                <tr>
+                  <th>Permiso</th>
+                  <th style='width: 10%'></th>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate='emptymessage'>
+                <tr>
+                  <td colspan='2'>Este rol no tiene permisos asignados</td>
+                </tr>
+              </ng-template>
+
+              <ng-template pTemplate='body' let-permiso>
+                <tr>
+                  <td>{{ permiso.tipoRol?.nombre }}</td>
+                  <app-acciones-tabla
+                    (borrar)="confirmarBorradoPermiso(rol.id, permiso)"
+                  />
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </td>
+      </tr>
     </ng-template>
 </p-table>

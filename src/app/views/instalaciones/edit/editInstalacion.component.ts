@@ -8,10 +8,14 @@ import { LoaderComponent } from '../../../layouts/loader/loader.component';
 import { DatosComponent } from './tabs/datos/datos.component';
 import { DatosTelefonosComponent } from './tabs/telefonos/telefonos.component';
 import { DatosEspaciosDeportivosComponent } from './tabs/deportivos/deportivo.component';
-import { DatosCaracteristicaComponent} from './tabs/caracteristicas/caracteristica.component';
-import { GeoPosicionComponent} from './tabs/geoposicion/geoposicion.component';
+import { DatosCaracteristicaComponent } from './tabs/caracteristicas/caracteristica.component';
+import { GeoPosicionComponent } from './tabs/geoposicion/geoposicion.component';
 import { ComplementarioComponent } from './tabs/complementarios/complementario.component';
-import { RutasComponent} from './tabs/rutas/rutas.component';
+import { RutasComponent } from './tabs/rutas/rutas.component';
+
+/**
+ * @version 1.0.1
+ */
 
 @Component({
   standalone: true,
@@ -27,7 +31,7 @@ import { RutasComponent} from './tabs/rutas/rutas.component';
     DatosEspaciosDeportivosComponent,
     DatosCaracteristicaComponent,
     ComplementarioComponent,
-	  GeoPosicionComponent,
+    GeoPosicionComponent,
     RutasComponent
   ],
   templateUrl: './editInstalacion.component.html',

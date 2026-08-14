@@ -65,7 +65,6 @@ export class EspacioComplementarioService {
    * @param id Id del registro
    */
   borrarRegistro(id: number): Observable<ApiResponseWrapper<boolean>> {
-    console.log(id);
     return this.http.delete<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

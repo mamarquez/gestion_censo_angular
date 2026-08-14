@@ -21,9 +21,6 @@ export class InstalacionCaracteristicaService {
    * Obtener todos los registros
    */
   getAll(filtros?: any): Observable<ApiResponseWrapper<InstalacionCaracteristica[]>> {
-
-    console.log(filtros);
-
     return this.http.get<ApiResponseWrapper<InstalacionCaracteristica[]>>(`${this.api}`, {
       params: buildHttpParams(filtros),
       headers: this.headers

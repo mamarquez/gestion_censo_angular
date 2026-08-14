@@ -78,8 +78,6 @@ export class EspacioComplementarioCompoment implements OnInit {
   }
 
   cargar(): void {
-    console.log('Cargade...');
-
     this.service.getAll().subscribe({
       next: (response) => {
         this.espaciosComplementarios = response.data || [];

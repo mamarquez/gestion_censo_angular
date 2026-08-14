@@ -63,8 +63,6 @@ export class EditInstalacionDeportivaComponent implements OnInit {
       next: (response: ApiResponse<InstalacionEspacioDeportivo>) => {
         this.espacioDeportivo = response.data ?? null;
 
-        console.log(this.espacioDeportivo);
-
         if (this.espacioDeportivo) {
           this.form.patchValue({
             id: this.espacioDeportivo.id,

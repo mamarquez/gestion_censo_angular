@@ -100,6 +100,14 @@
       </div>
     }
 
+    @if (camposMostrar().tiposGestores) {
+      <div class='fields-row'>
+        <div class='field col-12'>
+          <app-select-tipo-gestor formControlName='tipoGestor' />
+        </div>
+      </div>
+    }
+
     <div class='fields-row'>
 
       @if (datos() !== null && datos()?.visible !== undefined && camposMostrar().visible) {

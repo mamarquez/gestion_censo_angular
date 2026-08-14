@@ -82,7 +82,6 @@ export class CaracteristicaComponent implements OnInit {
       next: (response) => {
         this.caracteristicas = response.data;
         this.cargando = false;
-        console.log(this.caracteristicas);
         this.cdr.detectChanges();
       },
       error: (err) => {

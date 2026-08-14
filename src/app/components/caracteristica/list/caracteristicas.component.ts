@@ -62,9 +62,6 @@ export class ListCaracteristicasComponent implements OnChanges {
     this.service.getAll(filtros).subscribe({
       next: (response) => {
         this.caracteristicas = response.data || [];
-
-        console.log(this.caracteristicas);
-
         this.cargando = false;
         this.cdr.detectChanges();
       },

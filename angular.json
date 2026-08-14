@@ -30,7 +30,9 @@
               "src/styles.css",
               "src/formularios.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/app/assets/js/editar-usuario.js"
+            ]
           },
           "configurations": {
             "production": {

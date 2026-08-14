@@ -1,0 +1,13 @@
+<p-select
+  inputId="complementario-select"
+  [options]="tiposGestores()"
+  optionLabel="nombre"
+  optionValue="id"
+  placeholder="Selecciona un tipo de gestor"
+  [ngModel]="value"
+  (onChange)="seleccionar($event)"
+  [loading]="cargando()"
+  styleClass="w-full"
+  [style]="{'width': '100%'}"
+  appendTo="body"
+></p-select>

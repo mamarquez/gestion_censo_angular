@@ -134,11 +134,8 @@ export class NivelEnergeticoComponent implements OnInit {
   }
 
   editar(id: string) {
-    console.log(id);
-
     this.service.get(id).subscribe({
       next: (response: ApiResponseWrapper<NivelEnergetico>) => {
-        console.log(response);
         this.nivelEnergetico = response.data || [];
 
         if (this.nivelEnergetico) {

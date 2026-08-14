@@ -35,6 +35,7 @@ import {
 import { GeoPosicionComponent } from './views/instalaciones/edit/tabs/geoposicion/geoposicion.component';
 import { EspacioDeportivoComponent } from './views/espaciosdeportivos/list/espaciodeportivo.component';
 import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/list/espaciocomplementario.component';
+import { EditRolComponent } from './views/roles/edit-rol/edit-rol.component';
 
 export const routes: Routes = [
   {

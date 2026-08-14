@@ -72,10 +72,7 @@ export class DatosComponent implements OnInit {
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
-
     this.idInstalacion.set(this.id);
-
-    console.log('Editando la instalacion: ', this.idInstalacion());
 
     if (this.id) {
       this.cargarDatos(this.id);

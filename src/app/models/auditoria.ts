@@ -1,11 +1,11 @@
-import { Usuario } from './usuario';
+import { UsuarioModel } from './usuario-model';
 
 export class Auditoria {
   id!: number;
   tabla!: string;
   registroId!: number;
   operacion!: string;
-  usuario!: Usuario;
+  usuario!: UsuarioModel;
   fecha!: Date;
   valorAnterior!: JSON;
   valorNuevo!: JSON;

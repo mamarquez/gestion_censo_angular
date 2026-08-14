@@ -1,0 +1,40 @@
+<p-dialog
+  header='Añadir permiso'
+  [(visible)]='modalVisible'
+  [modal]='true'
+  [style]="{ width: '30rem' }"
+>
+  <div class='fields-row'>
+    <div class='field col-12'>
+      <label for='modal-tipo-rol'>Permiso</label>
+      <p-select
+        id='modal-tipo-rol'
+        [ngModel]='tipoSeleccionado'
+        [ngModelOptions]="{ standalone: true }"
+        (onChange)='seleccionarTipo($event)'
+        [options]='tiposDisponibles'
+        optionLabel='nombre'
+        optionValue='id'
+        [loading]='cargandoTipos'
+        placeholder='Selecciona un permiso'
+        styleClass='w-full'
+        appendTo='body'
+      ></p-select>
+    </div>
+  </div>
+
+  <ng-template pTemplate='footer'>
+    <p-button
+      label='Cancelar'
+      severity='secondary'
+      [text]='true'
+      (onClick)='cerrarModal()'
+    ></p-button>
+    <p-button
+      label='Guardar'
+      [loading]='guardando'
+      [disabled]='modalForm.invalid'
+      (onClick)='guardarModal()'
+    ></p-button>
+  </ng-template>
+</p-dialog>

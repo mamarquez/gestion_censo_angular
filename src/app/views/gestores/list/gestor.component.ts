@@ -184,7 +184,8 @@ export class GestorComponent implements OnInit {
       id: gestor.id,
       nombre: gestor.nombre,
       descripcion: gestor.descripcion,
-      activo: gestor.activo
+      activo: gestor.activo,
+      tipoGestor: gestor.tipoGestor ? ({ id: gestor.tipoGestor } as any) : undefined
     };
 
     if (datos.id) {

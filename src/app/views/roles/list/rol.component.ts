@@ -1,5 +1,4 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
-
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -7,27 +6,36 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
-
 import { Rol } from '../../../models/rol';
 import { RolService } from '../../../services/rol.service';
+import { RolPermisoService } from '../../../services/rol-permiso.service';
+import { RolPermisoModel } from '../../../models/rol-permiso-model';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { ModalRolPermisoComponent } from '../../../components/rol/modal-rol-permiso/modal-rol-permiso.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
 
 @Component({
   standalone: true,
   selector: 'app-rol',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, AccionesTablaComponent],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, AccionesTablaComponent, ModalRolPermisoComponent],
   templateUrl: './rol.component.html'
 })
 export class RolComponent implements OnInit {
 
   private readonly fb = inject(FormBuilder);
   private readonly service = inject(RolService);
+  private readonly rolPermisoService = inject(RolPermisoService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
   roles: Rol [] = [];
   cargando: boolean = true;
+  filasExpandidas: Record<number, boolean> = {};
+  permisosPorRol: Record<number, RolPermisoModel[]> = {};
+  cargandoPermisos: Record<number, boolean> = {};
+  modalVisible = false;
+  rolSeleccionado: Rol | null = null;
 
   form: FormGroup = this.fb.group({
     nombre: [''],
@@ -59,7 +67,7 @@ export class RolComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: (err) => {
-        console.error('Error cargando provincias:', err);
+        console.error('Error cargando roles:', err);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los roles' });
         this.cargando = false;
         this.roles = [];
@@ -124,7 +132,11 @@ export class RolComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.roles = this.roles.filter(p => p.id !== id);
-        this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado el registro correctamente' });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Eliminado',
+          detail: 'Se ha borrado el registro correctamente'
+        });
         this.cargando = false;
         this.cdr.detectChanges();
       },
@@ -137,6 +149,73 @@ export class RolComponent implements OnInit {
     });
 
     this.cargando = false;
+  }
+
+  toggleFila(rol: Rol): void {
+    const yaExpandida = !!this.filasExpandidas[rol.id];
+
+    this.filasExpandidas = {
+      ...this.filasExpandidas,
+      [rol.id]: !yaExpandida
+    };
+
+    if (!yaExpandida && !this.permisosPorRol[rol.id]) {
+      this.cargarPermisos(rol.id);
+    }
+
+    this.cdr.detectChanges();
+  }
+
+  private cargarPermisos(idRol: number): void {
+    this.cargandoPermisos[idRol] = true;
+
+    this.rolPermisoService.getAll({ idRol }).subscribe({
+      next: (response) => {
+        this.permisosPorRol[idRol] = response.data || [];
+        this.cargandoPermisos[idRol] = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cargar los permisos del rol', err);
+        mensajesUtil(this.messageService, 'error', 'error');
+        this.permisosPorRol[idRol] = [];
+        this.cargandoPermisos[idRol] = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  abrirModalPermiso(rol: Rol): void {
+    this.rolSeleccionado = rol;
+    this.modalVisible = true;
+  }
+
+  permisoGuardado(idRol: number): void {
+    this.cargarPermisos(idRol);
+  }
+
+  confirmarBorradoPermiso(idRol: number, permiso: RolPermisoModel): void {
+    this.dialog.confirmar({
+      mensaje: `¿Deseas eliminar el permiso "<strong>${permiso.tipoRol?.nombre}</strong>"?`,
+      titulo: 'Confirmar eliminación',
+      labelAceptar: 'Sí, eliminar',
+      onAccept: () => this.borrarPermiso(idRol, permiso.id)
+    });
+  }
+
+  private borrarPermiso(idRol: number, idPermiso: number): void {
+    this.rolPermisoService.borrarRegistro(idPermiso).subscribe({
+      next: () => {
+        this.permisosPorRol[idRol] = (this.permisosPorRol[idRol] || []).filter(p => p.id !== idPermiso);
+        mensajesUtil(this.messageService, 'success', 'delete');
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al borrar el permiso', err);
+        mensajesUtil(this.messageService, 'error', 'error');
+        this.cdr.detectChanges();
+      }
+    });
   }
 
 }

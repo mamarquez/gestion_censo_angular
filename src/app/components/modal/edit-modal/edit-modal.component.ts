@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { Button } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
 import { InputText } from 'primeng/inputtext';
+import { SelectTiposGestoresComponent } from '../../select-tipo-gestor/select-complementarios.component';
 
 @Component({
   standalone: true,
@@ -14,7 +15,8 @@ import { InputText } from 'primeng/inputtext';
     Dialog,
     FormsModule,
     ReactiveFormsModule,
-    InputText
+    InputText,
+    SelectTiposGestoresComponent
   ],
   templateUrl: './edit-modal.component.html'
 })
@@ -59,6 +61,7 @@ export class EditModalComponent {
     numero?: boolean;
     contacto?: boolean;
     notas?: boolean;
+    tiposGestores?: boolean;
   }>({
     id: false,
     idInstalacion: false,
@@ -77,7 +80,8 @@ export class EditModalComponent {
     visible: false,
     numero: false,
     contacto: false,
-    notas: false
+    notas: false,
+    tiposGestores: false
   });
 
   camposReadOnly = input<{
@@ -106,7 +110,8 @@ export class EditModalComponent {
     visible: [null],
     numero: [null],
     contacto: [null],
-    notas: [null]
+    notas: [null],
+    tipoGestor: [null]
   });
 
   constructor() {
@@ -120,19 +125,22 @@ export class EditModalComponent {
       this.form.reset();
 
       if (datos) {
-        this.form.patchValue(datos);
+        this.form.patchValue({
+          ...datos,
+          tipoGestor: datos.tipoGestor?.id ?? null
+        });
       } else {
         this.form.reset({
           id: null,
-          ine: '',
-          cpro: '',
-          cmun: '',
-          dc: '',
-          codigo: '',
-          nombre: '',
-          descripcion: '',
-          valor: '',
-          enlace: '',
+          ine: null,
+          cpro: null,
+          cmun: null,
+          dc: null,
+          codigo: null,
+          nombre: null,
+          descripcion: null,
+          valor: null,
+          enlace: null,
           activo: true,
           visible: true
         });
@@ -147,7 +155,15 @@ export class EditModalComponent {
       return;
     }
 
-    this.guardar.emit(this.form.getRawValue());
+    const valores = this.form.getRawValue();
+
+    for (const campo of Object.keys(valores)) {
+      if (valores[campo] === '') {
+        valores[campo] = null;
+      }
+    }
+
+    this.guardar.emit(valores);
   }
 
   cerrarModal(): void {

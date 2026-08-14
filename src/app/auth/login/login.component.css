@@ -184,24 +184,6 @@
    SWITCH
 ========================= */
 
-.login-options {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.switch {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-  position: relative;
-}
-
-.switch input {
-  position: absolute;
-  opacity: 0;
-}
-
 .slider {
   width: 44px;
   height: 24px;

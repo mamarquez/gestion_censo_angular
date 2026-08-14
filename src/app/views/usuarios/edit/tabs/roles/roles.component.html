@@ -1,0 +1,89 @@
+@if (cargandoRoles || cargandoProvincias) {
+  <app-loader />
+} @else {
+<form [formGroup]='form' (ngSubmit)='guardar()'>
+
+  <p-fieldset legend="Permisos">
+    <p-fluid>
+
+      <div class='fields-row'>
+        @for (rol of roles; track rol.id) {
+          <div class="field field-checkbox">
+            <label class="switch-native {{ tieneRol(rol.id) ? 'verde' : 'rojo' }}">
+              <input
+                [id]="'rol-' + rol.id"
+                type="checkbox"
+                [disabled]="tieneRol(1) && rol.id !== 1"
+                [checked]="tieneRol(rol.id)"
+                (change)="toggleRol(rol.id)"
+              />
+            <span class="slider-native"></span>
+            <span class="sr-only">{{ rol.nombre }}</span>
+          </label>
+          <label [for]="'rol-' + rol.id">{{ rol.nombre }}</label>
+        </div>
+      } @empty {
+        <p>No hay roles disponibles</p>
+      }
+      </div>
+
+      <div style="display: flex; align-items: stretch; width: 100%;">
+        <!-- Disponibles -->
+        <div style="flex: 1;">
+          <label for="provincias">Provincias disponibles</label>
+
+          <p-listbox
+            id='provincias'
+            [options]="provincias"
+            optionLabel="nombre"
+            optionValue="id"
+            [multiple]="true"
+            [metaKeySelection]="false"
+            styleClass="provincias-listbox"
+            [style]="{ width: '100%', height: '225px' }"
+          />
+        </div>
+
+        <!-- Botones -->
+        <div style="width: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.5rem;">
+          <p-button label="<<" size="small" />
+          <p-button label="<" size="small" />
+          <p-button label=">" size="small" />
+          <p-button label=">>" size="small" />
+        </div>
+
+        <!-- Seleccionadas -->
+        <div style="flex: 1;">
+          <label for="provinciasSeleccionadas">Provincias seleccionadas</label>
+
+          <p-listbox
+            id='provinciasSeleccionadas'
+            [options]="provinciasUsuario"
+            optionLabel="nombre"
+            optionValue="id"
+            [multiple]="true"
+            [metaKeySelection]="false"
+            formControlName="provinciasUsuario"
+            styleClass="provincias-listbox"
+            [style]="{ width: '100%', height: '225px' }"
+          />
+        </div>
+      </div>
+
+    </p-fluid>
+
+  </p-fieldset>
+
+  <br />
+
+  <div style="width: 100%; display: flex; justify-content: flex-end; align-items: center; padding-top: 1rem;">
+    <p-button
+    type="submit"
+    label="Guardar"
+    [loading]="guardando"
+    [disabled]="form.invalid"
+    ></p-button>
+  </div>
+
+</form>
+}

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { Usuario } from '../../../models/usuario';
+import { UsuarioModel } from '../../../models/usuario-model';
 import { UsuarioService } from '../../../services/usuario.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -11,11 +11,25 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { Tag } from 'primeng/tag';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { mensajesUtil } from '../../../utils/mensajes.util';
+
+/**
+ * @version 1.0.1
+ */
 
 @Component({
   standalone: true,
   selector: 'app-usuario',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, Tag, AccionesTablaComponent],
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    Tag,
+    AccionesTablaComponent
+  ],
   templateUrl: './usuario.component.html'
 })
 export class UsuarioComponent implements OnInit {
@@ -26,7 +40,7 @@ export class UsuarioComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
 
-  usuarios: Usuario [] = [];
+  usuarios: UsuarioModel [] = [];
   cargando: boolean = true;
 
   ngOnInit(): void {
@@ -34,12 +48,11 @@ export class UsuarioComponent implements OnInit {
   }
 
   form: FormGroup = this.fb.group({
-    id: [''],
+    id: [null],
     nombre: [''],
     apellido1: [''],
     apellido2: [''],
-    valor: [''],
-    activo: ['']
+    activo: [true]
   });
 
   limpiar(): void {
@@ -64,7 +77,7 @@ export class UsuarioComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando provincias:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los roles' });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.usuarios = [];
       }
@@ -81,6 +94,7 @@ export class UsuarioComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar menús', err);
+        mensajesUtil(this.messageService, 'error', 'carga');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -101,20 +115,20 @@ export class UsuarioComponent implements OnInit {
           usuario.activo = !usuario.activo;
         }
 
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar el estado del menu', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
     });
   }
 
-  confirmarBorrado(registro: Usuario): void {
+  confirmarBorrado(registro: UsuarioModel): void {
     this.dialog.confirmar({
       mensaje: `¿Deseas eliminar "<strong>${registro.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
@@ -129,17 +143,13 @@ export class UsuarioComponent implements OnInit {
     this.service.borrarRegistro(id).subscribe({
       next: () => {
         this.usuarios = this.usuarios.filter(p => p.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado el registro correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }

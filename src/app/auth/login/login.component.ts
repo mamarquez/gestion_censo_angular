@@ -134,7 +134,7 @@ export class LoginComponent {
 
       // 7. Pintamos el mensaje de error del backend o el genérico
       this.loginError = true;
-      this.errorMessage = error?.error?.message ?? 'Usuario o contraseña incorrectos.';
+      this.errorMessage = error?.error?.message ?? 'UsuarioModel o contraseña incorrectos.';
       this.cdr.markForCheck(); // Fuerza el redibujado para mostrar el alert
 
       // 8. Enfoque secuencial nativo: Espera 3 segundos exactos en este hilo

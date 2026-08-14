@@ -13,6 +13,7 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 @Component({
   standalone: true,
@@ -25,7 +26,8 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
     ConfirmDialogModule,
     TooltipModule,
     AccionesTablaComponent,
-    EditModalComponent
+    EditModalComponent,
+    Truncar
   ],
   templateUrl: './menu.component.html'
 })
@@ -71,8 +73,6 @@ export class MenuComponent implements OnInit {
           this.menus = [];
         }
 
-        console.log(this.menus);
-
         this.cargando = false;
         this.cdr.markForCheck();
       },
@@ -86,8 +86,6 @@ export class MenuComponent implements OnInit {
   }
 
   cargar(): void {
-    console.log("cargando...");
-
     this.service.getAll().subscribe({
       next: (response) => {
         this.menus = response.data || [];

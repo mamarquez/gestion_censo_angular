@@ -1,6 +1,6 @@
 import { Rol } from './rol';
 
-export interface Usuario {
+export interface UsuarioModel {
   id?: string;
   nombreUsuario: string;
   password?: string;

@@ -1,10 +1,14 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Rol } from '../models/rol';
 import { AUTH } from '../auth/auth.constants';
 import { buildHttpParams } from '../utils/params.util';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
+
+/**
+ * @version 1.0.1
+ */
 
 @Injectable({
   providedIn: 'root'
