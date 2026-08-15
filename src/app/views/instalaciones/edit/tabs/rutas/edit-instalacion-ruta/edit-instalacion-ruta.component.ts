@@ -92,7 +92,7 @@ export class EditInstalacionRutaComponent implements OnInit {
           const ruta = response.data;
 
           if (ruta) {
-            this.idInstalacion = ruta.instalacion?.id ?? null;
+            this.idInstalacion = ruta.idInstalacion ?? null;
             this.form.patchValue(ruta);
           }
 
@@ -199,8 +199,6 @@ export class EditInstalacionRutaComponent implements OnInit {
         next: () => {
           mensajesUtil(this.messageService, 'success', 'add');
 
-          // Solo se refresca la tabla; el mapa ya tiene el punto pintado localmente
-          // (recargarlo desde el backend aquí provocaría que se borre y repinte entero).
           if (this.idRuta) {
             this.cargarCoordenadasTabla(this.idRuta, true);
           }
@@ -263,7 +261,13 @@ export class EditInstalacionRutaComponent implements OnInit {
   }
 
   cancelar(): void {
-    this.router.navigate(['/instalaciones']);
+    console.log(this.idInstalacion);
+
+    if (this.idInstalacion === null) {
+      return;
+    }
+
+    this.router.navigate(['/instalaciones', this.idInstalacion]);
   }
 
 }

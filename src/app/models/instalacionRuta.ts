@@ -2,7 +2,7 @@ import { Instalacion } from './instalacion';
 
 export class InstalacionRuta {
   id?: number;
-  instalacion!: Instalacion;
+  idInstalacion!: number;
   nombre!: string;
   descripcion?: string;
   visible!: boolean;
