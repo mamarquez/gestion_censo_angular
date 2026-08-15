@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
@@ -42,8 +42,8 @@ export class RolComponent implements OnInit {
   rolSeleccionado: Rol | null = null;
 
   form: FormGroup = this.fb.group({
-    nombre: [''],
-    activo: ['']
+    nombre: ['', [Validators.required, Validators.maxLength(Rol.campos.nombre.maxLength)]],
+    activo: [null]
   });
 
   ngOnInit(): void {
@@ -74,7 +74,7 @@ export class RolComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando roles:', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los roles' });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.roles = [];
       }
@@ -92,6 +92,7 @@ export class RolComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar roles', err);
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -191,7 +192,7 @@ export class RolComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar los permisos del rol', err);
-        mensajesUtil(this.messageService, 'error', 'error');
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.permisosPorRol[idRol] = [];
         this.cargandoPermisos[idRol] = false;
         this.cdr.detectChanges();

@@ -6,7 +6,7 @@ import {
   EventEmitter,
   inject,
   input,
-  model,
+  model, output,
   Output
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -45,7 +45,7 @@ export class ModalRolPermisoComponent {
   idRol = input.required<number>();
   idsTipoRolAsignados = input<number[]>([]);
   modalVisible = model<boolean>(false);
-  @Output() guardado = new EventEmitter<void>();
+  guardado = output<void>();
 
   guardando = false;
   tiposDisponibles: TipoRolModel[] = [];

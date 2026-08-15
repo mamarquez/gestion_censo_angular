@@ -3,7 +3,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
-import { Checkbox } from 'primeng/checkbox';
 import { Button } from 'primeng/button';
 import { Listbox } from 'primeng/listbox';
 import { Fieldset } from 'primeng/fieldset';
@@ -29,7 +28,6 @@ import { LoaderComponent } from '../../../layouts/loader/loader.component';
     ReactiveFormsModule,
     FormsModule,
     InputText,
-    Checkbox,
     Button,
     Listbox,
     Fieldset,

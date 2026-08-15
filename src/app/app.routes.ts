@@ -36,6 +36,10 @@ import { GeoPosicionComponent } from './views/instalaciones/edit/tabs/geoposicio
 import { EspacioDeportivoComponent } from './views/espaciosdeportivos/list/espaciodeportivo.component';
 import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/list/espaciocomplementario.component';
 import { RolFormComponent } from './views/roles/form/rol-form.component';
+import {
+  EditInstalacionRutaComponent
+} from './views/instalaciones/edit/tabs/rutas/edit-instalacion-ruta/edit-instalacion-ruta.component';
+import { MapaRutaComponent } from './components/mapa-ruta/mapa-ruta.component';
 
 export const routes: Routes = [
   {
@@ -211,6 +215,18 @@ export const routes: Routes = [
         path: 'instalacionesespacios',
         children: [
           { path: ':id', component: EditInstalacionDeportivaComponent }
+        ]
+      },
+      {
+        path: 'instalacionesrutas',
+        children: [
+          { path: ':id', component: EditInstalacionRutaComponent }
+        ]
+      },
+      {
+        path: 'mapa',
+        children: [
+          { path: '', component: MapaRutaComponent }
         ]
       }
     ]

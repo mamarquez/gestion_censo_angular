@@ -1,0 +1,49 @@
+<p-dialog
+  [header]="esEdicion ? 'Editar coordenada' : 'Añadir coordenada'"
+  [(visible)]='modalVisible'
+  [modal]='true'
+  [style]="{ width: '25rem' }"
+>
+  <form [formGroup]='modalForm'>
+    <div class='fields-row'>
+      <div class='field col-6'>
+        <label for='modal-coordenada-x'>X</label>
+        <p-inputNumber
+          inputId='modal-coordenada-x'
+          formControlName='x'
+          mode='decimal'
+          [minFractionDigits]='0'
+          [maxFractionDigits]='6'
+          styleClass='w-full'
+        />
+      </div>
+
+      <div class='field col-6'>
+        <label for='modal-coordenada-y'>Y</label>
+        <p-inputNumber
+          inputId='modal-coordenada-y'
+          formControlName='y'
+          mode='decimal'
+          [minFractionDigits]='0'
+          [maxFractionDigits]='6'
+          styleClass='w-full'
+        />
+      </div>
+    </div>
+  </form>
+
+  <ng-template pTemplate='footer'>
+    <p-button
+      label='Cancelar'
+      severity='secondary'
+      [text]='true'
+      (onClick)='cerrarModal()'
+    ></p-button>
+    <p-button
+      label='Guardar'
+      [loading]='guardando'
+      [disabled]='modalForm.invalid'
+      (onClick)='guardarModal()'
+    ></p-button>
+  </ng-template>
+</p-dialog>

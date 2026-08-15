@@ -1,0 +1,14 @@
+::ng-deep .mapa-ruta-tooltip-punto {
+  background: #e11d48;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 11px;
+  font-weight: 600;
+  box-shadow: none;
+}
+
+::ng-deep .mapa-ruta-tooltip-punto::before {
+  display: none;
+}

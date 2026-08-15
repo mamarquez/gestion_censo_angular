@@ -1,0 +1,148 @@
+@if (cargando) {
+  <app-loader />
+} @else {
+<div class='row'>
+  <h1 class='text-2xl font-bold text-slate-800'>Editar ruta</h1>
+</div>
+
+<br />
+
+<form [formGroup]='form' (ngSubmit)='guardar()' class='bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-6'>
+
+  <div class='fields-row'>
+    <div class='field col-5'>
+      <label for='ruta-nombre'>Nombre</label>
+      <input
+        id='ruta-nombre'
+        pInputText
+        type='text'
+        formControlName='nombre'
+        placeholder='Ej. Ruta perimetral...'
+        class='w-full'
+      />
+    </div>
+
+    <div class='field col-5'>
+      <label for='ruta-descripcion'>Descripción</label>
+      <input
+        id='ruta-descripcion'
+        pInputText
+        type='text'
+        formControlName='descripcion'
+        placeholder='Ej. Descripción de la ruta...'
+        class='w-full'
+      />
+    </div>
+
+    <div class='field field-checkbox col-1'>
+      <label for='ruta-visible' class="switch-native {{ form.get('visible')?.value ? 'verde' : 'rojo' }}">
+        <input id='ruta-visible' type='checkbox' formControlName='visible' />
+        <span class='slider-native'></span>
+      </label>
+      <label for='ruta-visible'>Visible</label>
+    </div>
+
+    <div class='field field-checkbox col-1'>
+      <label for='ruta-activo' class="switch-native {{ form.get('activo')?.value ? 'verde' : 'rojo' }}">
+        <input id='ruta-activo' type='checkbox' formControlName='activo' />
+        <span class='slider-native'></span>
+      </label>
+      <label for='ruta-activo'>Activo</label>
+    </div>
+  </div>
+
+  <div style='display: flex; justify-content: flex-end; gap: 0.5rem; padding-top: 1rem;'>
+    <p-button
+      type='button'
+      label='Cancelar'
+      severity='secondary'
+      [text]='true'
+      (onClick)='cancelar()'
+    ></p-button>
+    <p-button
+      type='submit'
+      label='Guardar'
+      [loading]='guardando'
+      [disabled]='form.invalid'
+    ></p-button>
+  </div>
+
+</form>
+
+<br />
+
+<p-fieldset legend='Coordenadas'>
+  @if (coordenadaSeleccionada !== undefined && idRuta) {
+    <app-modal-coordenada
+      [idRuta]='idRuta'
+      [coordenada]='coordenadaSeleccionada'
+      [(modalVisible)]='modalVisible'
+      (guardado)='coordenadaGuardada()'
+    />
+  }
+
+  <p class='text-xs' style='color: #64748b; margin-bottom: 0.5rem;'>
+    Haz clic en el mapa para añadir una coordenada a la ruta, o usa el botón "Añadir coordenada" para introducir los valores manualmente.
+  </p>
+
+  @if (!cargandoCoordenadas) {
+    <app-mapa-ruta
+      #mapaRuta
+      [puntosIniciales]='puntosMapa'
+      (rutaCambiada)='agregarCoordenadaDesdeMapa($event)'
+    />
+  }
+
+  <br />
+
+  <div style='display: flex; justify-content: flex-end; align-items: center; margin-bottom: 0.75rem;'>
+    <p-button
+      type='button'
+      icon='pi pi-plus'
+      label='Añadir coordenada'
+      styleClass='p-button-success p-button-sm'
+      (onClick)='abrirModalNuevaCoordenada()'
+    ></p-button>
+  </div>
+
+  <p-table
+    sortField="id"
+    [sortOrder]="-1"
+    size='small'
+    [value]='coordenadas'
+    [loading]='cargandoCoordenadas'
+    dataKey='id'
+    [paginator]="true"
+    [rows]="5"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [rowsPerPageOptions]="[5, 10, 20]"
+  >
+    <ng-template pTemplate='header'>
+      <tr>
+        <th>Punto</th>
+        <th>X</th>
+        <th>Y</th>
+        <th style='width: 10%'></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate='emptymessage'>
+      <tr>
+        <td colspan='3' style='text-align: center;'><strong>Esta ruta no tiene coordenadas</strong></td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate='body' let-coordenada>
+      <tr>
+        <td>{{ coordenada.id }}</td>
+        <td>{{ coordenada.x }}</td>
+        <td>{{ coordenada.y }}</td>
+        <app-acciones-tabla
+          (editar)='abrirModalEditarCoordenada(coordenada)'
+          (borrar)='confirmarBorradoCoordenada(coordenada)'
+        />
+      </tr>
+    </ng-template>
+  </p-table>
+</p-fieldset>
+}

@@ -1,7 +1,7 @@
 <div class='bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-6' [formGroup]='form'>
   <div style='display: flex !important; flex-direction: row !important; align-items: flex-end !important; gap: 1rem !important; flex-wrap: wrap !important;'>
 
-    <input id="id" type="text" pInputText formControlName="id" readonly [hidden]='true' />
+    <input id="idInstalacion" type="text" pInputText formControlName="idInstalacion" readonly [hidden]='true' />
 
     <!-- Nombre -->
     <div style='display: flex; flex-direction: column; gap: 0.375rem; width: 250px;'>
@@ -110,7 +110,7 @@
       </td>
 
       <app-acciones-tabla
-        [editarRoute]="['/instalacionesespacios', ruta.id]"
+        (editar)="editar(ruta.id)"
         [activo]="ruta.activo"
         [visible]="ruta.visible"
         (toggleEstado)="cambiarEstado(ruta.id)"

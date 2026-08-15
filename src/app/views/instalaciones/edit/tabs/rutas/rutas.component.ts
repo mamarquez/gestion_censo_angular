@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, DestroyRef, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, EventEmitter, inject, model, OnInit, Output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MessageService, PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { InstalacionRuta } from '../../../../../models/instalacionRuta';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { InstalacionRutaService } from '../../../../../services/instalacionRuta.service';
 import { DialogService } from '../../../../../services/dialog.service';
 import { ApiResponseWrapper } from '../../../../../interface/api-response-wrapper.interface';
@@ -29,7 +29,7 @@ import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acci
 })
 export class RutasComponent implements OnInit {
 
-  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
   private readonly service = inject(InstalacionRutaService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -37,32 +37,30 @@ export class RutasComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
+  idInstalacion = model.required<string>();
   @Output() cargandoChange = new EventEmitter<boolean>();
 
-  private id: string | null = null;
   rutas: InstalacionRuta [] = [];
   cargando = false;
   guardando = false;
 
   form: FormGroup = this.fb.group({
-    id: [''],
+    idInstalacion: [''],
     nombre: ['', Validators.required],
     descripcion: [''],
     activo: [true]
   });
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-
-    if (this.id) {
-      this.cargarDatos(this.id);
+    if (this.idInstalacion()) {
+      this.cargarDatos(this.idInstalacion());
     }
   }
 
   limpiar() {
     this.form.reset();
     this.form.patchValue({
-      id: this.id
+      idInstalacion: this.idInstalacion()
     });
     this.buscar();
   }
@@ -109,7 +107,7 @@ export class RutasComponent implements OnInit {
         this.rutas = response.data ?? [];
 
         this.form.patchValue({
-          id: this.id
+          idInstalacion: this.idInstalacion()
         });
 
         this.cargando = false;
@@ -128,6 +126,10 @@ export class RutasComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  editar(id: number): void {
+    this.router.navigate(['/instalacionesrutas', id]);
   }
 
   cambiarEstado(id: number) {

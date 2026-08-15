@@ -6,7 +6,6 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
-import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -17,8 +16,6 @@ import { DialogService } from '../../../services/dialog.service';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
-import { CentroEducativo } from '../../../models/centroeducativo';
-import { ComunidadAutonoma } from '../../../models/comunidadautonoma';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 
 /**
@@ -35,7 +32,6 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
     ButtonModule,
     RadioButtonModule,
     CheckboxModule,
-    DropdownModule,
     InputTextModule,
     ToastModule,
     ConfirmDialogModule,
@@ -85,41 +81,41 @@ export class ListProvinciaComponent implements OnInit {
     this.service.getAll(filtros)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response) => {
-        if (response && Array.isArray(response.data)) {
-          this.provincias = response.data;
-        } else {
+        next: (response) => {
+          if (response && Array.isArray(response.data)) {
+            this.provincias = response.data;
+          } else {
+            this.provincias = [];
+          }
+
+          this.cargando = false;
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          console.error('Error cargando provincias:', err);
+          mensajesUtil(this.messageService, 'error', 'cargas');
+          this.cargando = false;
           this.provincias = [];
         }
-
-        this.cargando = false;
-        this.cdr.markForCheck();
-      },
-      error: (err) => {
-        console.error('Error cargando provincias:', err);
-        mensajesUtil(this.messageService, 'error', 'cargas');
-        this.cargando = false;
-        this.provincias = [];
-      }
-    });
+      });
   }
 
   cargar(): void {
     this.service.getAll()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response) => {
-        this.provincias = response.data || [];
-        this.cargando = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al cargar provincias', err);
-        mensajesUtil(this.messageService, 'error', 'cargas');
-        this.cargando = false;
-        this.cdr.detectChanges();
-      }
-    });
+        next: (response) => {
+          this.provincias = response.data || [];
+          this.cargando = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error al cargar provincias', err);
+          mensajesUtil(this.messageService, 'error', 'cargas');
+          this.cargando = false;
+          this.cdr.detectChanges();
+        }
+      });
   }
 
   cambiarEstado(id: number): void {
@@ -128,23 +124,23 @@ export class ListProvinciaComponent implements OnInit {
     this.service.cambiarEstado(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: () => {
-        const provincia = this.provincias.find(p => p.id === id);
-        if (provincia) {
-          provincia.activo = !provincia.activo;
-        }
+        next: () => {
+          const provincia = this.provincias.find(p => p.id === id);
+          if (provincia) {
+            provincia.activo = !provincia.activo;
+          }
 
-        mensajesUtil(this.messageService, 'success', 'update');
-        this.cargando = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al cambiar el estado de la provincia', err);
-        mensajesUtil(this.messageService, 'error', 'error');
-        this.cargando = false;
-        this.cdr.detectChanges();
-      }
-    });
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.cargando = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error al cambiar el estado de la provincia', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+          this.cdr.detectChanges();
+        }
+      });
   }
 
   confirmarBorrado(provincia: Provincia): void {
@@ -162,19 +158,19 @@ export class ListProvinciaComponent implements OnInit {
     this.service.borrarRegistro(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: () => {
-        this.provincias = this.provincias.filter(p => p.id !== id);
-        mensajesUtil(this.messageService, 'success', 'delete');
-        this.cargando = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al borrar el registro', err);
-        mensajesUtil(this.messageService, 'error', 'error');
-        this.cargando = false;
-        this.cdr.detectChanges();
-      }
-    });
+        next: () => {
+          this.provincias = this.provincias.filter(p => p.id !== id);
+          mensajesUtil(this.messageService, 'success', 'delete');
+          this.cargando = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error al borrar el registro', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.cargando = false;
+          this.cdr.detectChanges();
+        }
+      });
 
     this.cargando = false;
   }
@@ -188,20 +184,20 @@ export class ListProvinciaComponent implements OnInit {
     this.service.get(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response: ApiResponseWrapper<Provincia>) => {
-        this.provincia = response.data || [];
+        next: (response: ApiResponseWrapper<Provincia>) => {
+          this.provincia = response.data || [];
 
-        if (this.provincia) {
-          this.modalVisible = true;
+          if (this.provincia) {
+            this.modalVisible = true;
+          }
+        },
+        error: (err) => {
+          console.error('Error al editar: ', err);
+          mensajesUtil(this.messageService, 'error', 'carga');
+          this.cargando = false;
+          this.cdr.detectChanges();
         }
-      },
-      error: (err) => {
-        console.error('Error al editar: ', err);
-        mensajesUtil(this.messageService, 'error', 'carga');
-        this.cargando = false;
-        this.cdr.detectChanges();
-      }
-    });
+      });
   }
 
   guardar(provincia: Provincia) {
@@ -218,37 +214,37 @@ export class ListProvinciaComponent implements OnInit {
       this.service.updateRegistro(datos)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
-        next: () => {
-          mensajesUtil(this.messageService, 'success', 'update');
-          this.modalVisible = false;
-          this.cargando = false;
-          this.cargar();
-        },
-        error: (err) => {
-          console.error('Error al actualizar', {
-            codigo: err.status,
-            error: err
-          });
-          mensajesUtil(this.messageService, 'error', 'error');
-          this.cargando = false;
-        }
-      });
+          next: () => {
+            mensajesUtil(this.messageService, 'success', 'update');
+            this.modalVisible = false;
+            this.cargando = false;
+            this.cargar();
+          },
+          error: (err) => {
+            console.error('Error al actualizar', {
+              codigo: err.status,
+              error: err
+            });
+            mensajesUtil(this.messageService, 'error', 'error');
+            this.cargando = false;
+          }
+        });
     } else {
       this.service.addRegistro(datos)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
-        next: () => {
-          mensajesUtil(this.messageService, 'success', 'add');
-          this.modalVisible = false;
-          this.cargando = false;
-          this.cargar();
-        },
-        error: (err) => {
-          console.error('Error al añadir registro', err);
-          mensajesUtil(this.messageService, 'error', 'error');
-          this.cargando = false;
-        }
-      });
+          next: () => {
+            mensajesUtil(this.messageService, 'success', 'add');
+            this.modalVisible = false;
+            this.cargando = false;
+            this.cargar();
+          },
+          error: (err) => {
+            console.error('Error al añadir registro', err);
+            mensajesUtil(this.messageService, 'error', 'error');
+            this.cargando = false;
+          }
+        });
     }
   }
 

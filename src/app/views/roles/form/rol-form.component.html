@@ -22,7 +22,7 @@
       />
     </div>
 
-    <div class='field col-6'>
+    <div class='field col-7'>
       <label for='rol-descripcion'>Descripción</label>
       <input
         id='rol-descripcion'
@@ -34,13 +34,14 @@
       />
     </div>
 
-    <div class='field field-checkbox col-2'>
-      <p-checkbox
-        inputId='rol-activo'
-        formControlName='activo'
-        [binary]='true'
-      />
+    <div class='field col-2'>
       <label for='rol-activo'>Activo</label>
+      <div style='display: flex; align-items: center; height: 36px;'>
+        <label for='rol-activo' class="switch-native {{ form.get('activo')?.value ? 'verde' : 'rojo' }}" style='margin: 0;'>
+          <input id='rol-activo' type='checkbox' formControlName='activo' />
+          <span class='slider-native'></span>
+        </label>
+      </div>
     </div>
   </div>
 
@@ -62,7 +63,7 @@
             [multiple]='true'
             [metaKeySelection]='false'
             (onDblClick)='moverAseleccionados()'
-            [style]="{ width: '100%', height: '225px' }"
+            [style]="{ width: '100%', height: '225px', 'font-size': 'x-small' }"
           />
         </div>
 
@@ -87,7 +88,7 @@
             [multiple]='true'
             [metaKeySelection]='false'
             (onDblClick)='moverADisponibles()'
-            [style]="{ width: '100%', height: '225px' }"
+            [style]="{ width: '100%', height: '225px', 'font-size': 'x-small' }"
           />
         </div>
       </div>

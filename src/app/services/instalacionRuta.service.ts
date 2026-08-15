@@ -28,10 +28,10 @@ export class InstalacionRutaService {
   }
 
   /**
-   * Obtener espacios deportivos de una instalación
+   * Obtener una ruta por su id
    */
-  get(id?: any): Observable<ApiResponseWrapper<InstalacionRuta[]>> {
-    return this.http.get<ApiResponseWrapper<InstalacionRuta[]>>(`${this.api}/${id}`, {
+  get(id: number): Observable<ApiResponseWrapper<InstalacionRuta>> {
+    return this.http.get<ApiResponseWrapper<InstalacionRuta>>(`${this.api}/${id}`, {
       headers: this.headers
     });
   }
@@ -53,11 +53,21 @@ export class InstalacionRutaService {
   }
 
   /**
-   * Crea un nuevo espacio deportivo
-   * @param espacioDeportivo Datos del espacio deportivo
+   * Crea una nueva ruta
+   * @param ruta Datos de la ruta
    */
-  crear(espacioDeportivo: Partial<boolean>): Observable<ApiResponseWrapper<boolean>> {
-    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, espacioDeportivo, { headers: this.headers });
+  crear(ruta: Partial<InstalacionRuta>): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, ruta, { headers: this.headers });
+  }
+
+  /**
+   * Actualiza una ruta existente
+   * @param id Id de la ruta
+   * @param idInstalacion Id de la instalación propietaria de la ruta
+   * @param ruta Datos actualizados de la ruta (nombre, descripción, visible, activo)
+   */
+  actualizar(id: number, idInstalacion: number, ruta: { nombre: string; descripcion?: string | null; visible: boolean; activo: boolean }): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, { id, idInstalacion, ...ruta }, { headers: this.headers });
   }
 
   /**
