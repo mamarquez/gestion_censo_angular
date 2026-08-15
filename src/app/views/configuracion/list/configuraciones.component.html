@@ -139,7 +139,7 @@
     <tr>
       <td>{{ configuracion.nombre }}</td>
       <td>{{ configuracion.descripcion }}</td>
-      <td>{{ configuracion.valor | truncar:100 }}</td>
+      <td>{{ configuracion.valor | truncar:150 }}</td>
       <td class='centrado'>
         <label class="switch-native {{ configuracion.activo ? 'verde' : 'rojo' }}">
           <input type='checkbox' [checked]='configuracion.activo' disabled />

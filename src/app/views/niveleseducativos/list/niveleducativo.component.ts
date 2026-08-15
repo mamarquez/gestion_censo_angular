@@ -15,6 +15,7 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
 import { NivelEnergetico } from '../../../models/nivelenergetico';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 /**
  * @version 1.0.0
@@ -31,7 +32,8 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
     ConfirmDialogModule,
     TooltipModule,
     EditModalComponent,
-    AccionesTablaComponent
+    AccionesTablaComponent,
+    Truncar
   ],
   templateUrl: './niveleducativo.component.html'
 })

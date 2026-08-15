@@ -16,6 +16,7 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { NivelDotacion } from '../../../models/niveldotacion';
 import { Caracteristica } from '../../../models/caracteristica';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 /**
  * @version 1.0.1
@@ -32,7 +33,8 @@ import { Caracteristica } from '../../../models/caracteristica';
     ConfirmDialogModule,
     TooltipModule,
     AccionesTablaComponent,
-    EditModalComponent
+    EditModalComponent,
+    Truncar
   ],
   templateUrl: './espaciodeportivo.component.html'
 })

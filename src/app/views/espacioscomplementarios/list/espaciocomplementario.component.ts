@@ -14,6 +14,7 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 /**
  * @version 1.0.1
@@ -22,7 +23,7 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 @Component({
   standalone: true,
   selector: 'app-espacio-complementario',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent, EditModalComponent],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent, EditModalComponent, Truncar],
   templateUrl: './espaciocomplementario.component.html'
 })
 export class EspacioComplementarioCompoment implements OnInit {

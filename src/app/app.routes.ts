@@ -41,6 +41,10 @@ import {
 } from './views/instalaciones/edit/tabs/rutas/edit-instalacion-ruta/edit-instalacion-ruta.component';
 import { MapaRutaComponent } from './components/mapa-ruta/mapa-ruta.component';
 
+/**
+ * @version 2.0.0
+ */
+
 export const routes: Routes = [
   {
     path: '',
@@ -80,6 +84,7 @@ export const routes: Routes = [
         path: 'usuarios',
         children: [
           { path: '', component: UsuarioComponent },
+          { path: 'nuevo', component: EditUsuarioComponent },
           { path: ':id', component: EditUsuarioComponent }
         ]
       },

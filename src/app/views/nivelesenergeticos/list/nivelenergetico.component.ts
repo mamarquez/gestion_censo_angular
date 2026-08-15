@@ -14,6 +14,7 @@ import { DialogService } from '../../../services/dialog.service';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 @Component({
   standalone: true,
@@ -26,7 +27,8 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
     ConfirmDialogModule,
     TooltipModule,
     EditModalComponent,
-    AccionesTablaComponent
+    AccionesTablaComponent,
+    Truncar
   ],
   templateUrl: './nivelenergetico.component.html'
 })

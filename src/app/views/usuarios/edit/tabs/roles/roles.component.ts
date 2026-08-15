@@ -14,14 +14,14 @@ import { MessageService } from 'primeng/api';
 import { Rol } from '../../../../../models/rol';
 import { Provincia } from '../../../../../models/provincia';
 import { ApiResponseWrapper } from '../../../../../interface/api-response-wrapper.interface';
-import { ApiResponse } from '../../../../../models/apiresponse';
 import { UsuarioModel } from '../../../../../models/usuario-model';
 import { mensajesUtil } from '../../../../../utils/mensajes.util';
 import { LoaderComponent } from '../../../../../layouts/loader/loader.component';
 import { forkJoin } from 'rxjs';
+import { Router } from '@angular/router';
 
 /**
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 @Component({
@@ -40,6 +40,7 @@ import { forkJoin } from 'rxjs';
 })
 export class RolesComponent implements OnInit {
 
+  private readonly router = inject(Router);
   private readonly rolService = inject(RolService);
   private readonly provinciaService = inject(ProvinciaService);
   private readonly usuarioService = inject(UsuarioService);
@@ -76,7 +77,7 @@ export class RolesComponent implements OnInit {
     this.usuarioService.get(this.idUsuario())
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response: ApiResponse<UsuarioModel>) => {
+      next: (response: ApiResponseWrapper<UsuarioModel>) => {
         const usuario = response.data ?? null;
         this.rolesUsuario = (usuario?.roles ?? []).map(rol => rol.id);
         this.cdr.detectChanges();
@@ -217,6 +218,10 @@ export class RolesComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  cancelar() {
+    this.router.navigate(['/usuarios']);
   }
 
 }

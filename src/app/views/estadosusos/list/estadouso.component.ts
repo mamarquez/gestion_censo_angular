@@ -14,6 +14,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 /**
  * @version 1.0.0
@@ -30,7 +31,8 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
     ConfirmDialogModule,
     TooltipModule,
     EditModalComponent,
-    AccionesTablaComponent
+    AccionesTablaComponent,
+    Truncar
   ],
   templateUrl: './estadouso.component.html'
 })

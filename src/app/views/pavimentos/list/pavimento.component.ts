@@ -16,6 +16,7 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { Configuracion } from '../../../models/configuracion';
 import { EspacioComplementario } from '../../../models/espaciocomplementario';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 /**
  * @version 1.0.1
@@ -32,7 +33,8 @@ import { EspacioComplementario } from '../../../models/espaciocomplementario';
     ConfirmDialogModule,
     TooltipModule,
     AccionesTablaComponent,
-    EditModalComponent
+    EditModalComponent,
+    Truncar
   ],
   templateUrl: './pavimento.component.html'
 })

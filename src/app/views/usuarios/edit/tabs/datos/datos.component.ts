@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, DestroyRef, inject, model, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, model, OnInit, output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Button } from 'primeng/button';
 import { Fieldset } from 'primeng/fieldset';
@@ -9,6 +9,8 @@ import { UsuarioService } from '../../../../../services/usuario.service';
 import { MessageService } from 'primeng/api';
 import { ApiResponse } from '../../../../../models/apiresponse';
 import { UsuarioModel } from '../../../../../models/usuario-model';
+import { mensajesUtil } from '../../../../../utils/mensajes.util';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -25,13 +27,19 @@ import { UsuarioModel } from '../../../../../models/usuario-model';
 })
 export class DatosComponent implements OnInit {
 
+  private readonly router = inject(Router);
   private readonly service = inject(UsuarioService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly fb = inject(FormBuilder);
   private readonly messageService = inject(MessageService);
   private readonly destroyRef = inject(DestroyRef);
 
-  idUsuario = model.required<string>();
+  idUsuario = model<string>('');
+  usuarioCreado = output<string>();
+
+  get esEdicion(): boolean {
+    return !!this.idUsuario();
+  }
 
   cargando = true;
   guardando = false;
@@ -39,6 +47,7 @@ export class DatosComponent implements OnInit {
   form: FormGroup = this.fb.group({
     id: [null],
     nombreUsuario: ['', Validators.required],
+    password: [null],
     nombre: [null, Validators.required],
     apellido1: [null, Validators.required],
     apellido2: [null],
@@ -48,10 +57,12 @@ export class DatosComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    if (this.idUsuario()) {
-      this.idUsuario.set(this.idUsuario());
+    if (this.esEdicion) {
+      this.form.get('password')?.clearValidators();
       this.cargarDatos(this.idUsuario());
     } else {
+      this.form.get('password')?.setValidators(Validators.required);
+      this.form.get('password')?.updateValueAndValidity();
       this.cargando = false;
       this.cdr.detectChanges();
     }
@@ -66,11 +77,7 @@ export class DatosComponent implements OnInit {
 
         if (usuario) {
           this.form.patchValue(usuario);
-          // this.rolesUsuario = (usuario.roles ?? []).map(r => r.id);
         }
-
-        // this.cargarRoles();
-        // this.cargarProvincias();
 
         this.cargando = false;
         this.cdr.detectChanges();
@@ -85,33 +92,76 @@ export class DatosComponent implements OnInit {
   }
 
   guardar(): void {
-    if (this.form.invalid || !this.idUsuario()) {
+    if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
     this.guardando = true;
 
-    const datos = {
-      ...this.form.value
-      // roles: this.rolesUsuario.map(id => ({ id }))
-    };
+    const datos = { ...this.form.value };
+
+    for (const campo in datos) {
+      if (typeof datos[campo] === 'string' && !datos[campo].trim()) {
+        datos[campo] = null;
+      }
+    }
+
+    if (this.esEdicion) {
+      this.actualizar(datos);
+    } else {
+      this.crear(datos);
+    }
+
+    this.router.navigate(['/usuarios']);
+  }
+
+  private crear(datos: Partial<UsuarioModel>): void {
+    this.service.add(datos)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+      next: (response: ApiResponse<UsuarioModel>) => {
+        mensajesUtil(this.messageService, 'success', 'add');
+        this.guardando = false;
+
+        const id = response.data?.id;
+        if (id) {
+          this.usuarioCreado.emit(id);
+        }
+
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al crear usuario', err);
+        mensajesUtil(this.messageService, 'error', 'error');
+        this.guardando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  private actualizar(datos: Partial<UsuarioModel>): void {
+    delete datos.password;
 
     this.service.update(this.idUsuario(), datos)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se han guardado los cambios' });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.guardando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al guardar usuario', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al guardar los cambios' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.guardando = false;
         this.cdr.detectChanges();
       }
     });
+  }
+
+  cancelar() {
+    this.router.navigate(['/usuarios']);
   }
 
 }

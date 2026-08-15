@@ -38,12 +38,20 @@ export class EditUsuarioComponent implements OnInit {
 
   idUsuario = signal<string>('');
 
+  get esEdicion(): boolean {
+    return !!this.idUsuario();
+  }
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
       this.idUsuario.set(id);
     }
+  }
+
+  usuarioCreado(id: string): void {
+    this.idUsuario.set(id);
   }
 
   seleccionarTab(tab: 'datos' | 'roles'): void {

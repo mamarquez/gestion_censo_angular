@@ -1,6 +1,6 @@
 import { Component, effect, inject, input, model, output } from '@angular/core';
 
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { Button } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
@@ -101,7 +101,7 @@ export class EditModalComponent {
     dc: [null],
     ine: [null],
     codigo: [null],
-    nombre: [null],
+    nombre: [null, Validators.required],
     descripcion: [null],
     valor: [null],
     mostrar: [null],
@@ -123,6 +123,12 @@ export class EditModalComponent {
       const datos = this.datos();
 
       this.form.reset();
+
+      this.form.get('nombre')?.setValidators([
+        Validators.required,
+        Validators.maxLength(this.maxValores().nombre ?? 255)
+      ]);
+      this.form.get('nombre')?.updateValueAndValidity();
 
       if (datos) {
         this.form.patchValue({

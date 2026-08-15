@@ -4,15 +4,17 @@
       <li [class.active]="tabActiva === 'datos'">
         <a (click)="seleccionarTab('datos')">Datos</a>
       </li>
-      <li [class.active]="tabActiva === 'roles'">
-        <a (click)="seleccionarTab('roles')">Roles</a>
-      </li>
+      @if (esEdicion) {
+        <li [class.active]="tabActiva === 'roles'">
+          <a (click)="seleccionarTab('roles')">Roles</a>
+        </li>
+      }
     </ul>
 
     <div class="tab-content">
       @if (tabActiva === 'datos') {
-        <app-datos [(idUsuario)]="idUsuario" />
-      } @else if (tabActiva === 'roles') {
+        <app-datos [(idUsuario)]="idUsuario" (usuarioCreado)="usuarioCreado($event)" />
+      } @else if (tabActiva === 'roles' && esEdicion) {
         <app-roles [(idUsuario)]="idUsuario" />
       }
     </div>

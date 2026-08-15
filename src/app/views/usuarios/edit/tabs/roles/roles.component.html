@@ -83,12 +83,17 @@
 
   <br />
 
-  <div style="width: 100%; display: flex; justify-content: flex-end; align-items: center; padding-top: 1rem;">
+  <div style='display: flex; justify-content: flex-end; gap: 0.5rem; padding-top: 1rem;'>
     <p-button
-    type="submit"
-    label="Guardar"
-    [loading]="guardando"
-    [disabled]="!provinciasSeleccionadas.length"
+      label='Cancelar'
+      severity='secondary'
+      (onClick)='cancelar()'
+    ></p-button>
+    <p-button
+      type="submit"
+      label="Guardar"
+      [loading]="guardando"
+      [disabled]="!provinciasSeleccionadas.length"
     ></p-button>
   </div>
 

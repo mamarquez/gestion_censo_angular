@@ -38,6 +38,14 @@ export class UsuarioService {
   }
 
   /**
+   * Crea un nuevo usuario
+   * @param usuario Datos del nuevo usuario
+   */
+  add(usuario: Partial<UsuarioModel>): Observable<ApiResponseWrapper<UsuarioModel>> {
+    return this.http.post<ApiResponseWrapper<UsuarioModel>>(`${this.api}`, usuario, { headers: this.headers });
+  }
+
+  /**
    * Actualiza los datos de un usuario
    * @param id Id del registro
    * @param usuario Datos a actualizar

@@ -134,8 +134,8 @@
     <ng-template pTemplate="body" let-menu>
         <tr>
             <td>{{ menu.nombre }}</td>
-            <td>{{ menu.descripcion | truncar: 50 }}</td>
-            <td>{{ menu.enlace | truncar: 50 }}</td>
+            <td>{{ menu.descripcion | truncar: 150 }}</td>
+            <td>{{ menu.enlace | truncar: 150 }}</td>
             <td class="centrado">
                 <label class="switch-native {{ menu.activo ? 'verde' : 'rojo' }}">
                     <input type="checkbox" [checked]="menu.activo" disabled />

@@ -3,7 +3,7 @@ import { Rol } from './rol';
 export interface UsuarioModel {
   id?: string;
   nombreUsuario: string;
-  password?: string;
+  password?: string | null;
   nombre: string;
   apellido1: string;
   apellido2?: string;

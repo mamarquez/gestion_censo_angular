@@ -1,5 +1,3 @@
-import { Instalacion } from './instalacion';
-
 export class InstalacionRuta {
   id?: number;
   idInstalacion!: number;

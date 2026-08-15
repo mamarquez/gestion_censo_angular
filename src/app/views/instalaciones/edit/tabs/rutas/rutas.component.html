@@ -95,7 +95,7 @@
   <ng-template pTemplate="body" let-ruta>
     <tr>
       <td>{{ ruta.nombre }}</td>
-      <td>{{ ruta.descripcion | truncar:50 }}</td>
+      <td>{{ ruta.descripcion | truncar:150 }}</td>
       <td class="centrado">
         <label class="switch-native {{ ruta.visible ? 'verde' : 'rojo' }}">
           <input type="checkbox" [checked]="ruta.visible" disabled />

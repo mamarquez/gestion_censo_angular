@@ -95,7 +95,18 @@
       <div class='fields-row'>
         <div class='field col-12'>
           <label for='nombre'>Nombre</label>
-          <input id='nombre' type='text' pInputText formControlName='nombre' [maxlength]='maxValores().nombre' [readonly]='camposReadOnly().nombre' />
+          <input
+            id='nombre'
+            type='text'
+            pInputText
+            formControlName='nombre'
+            [maxlength]='maxValores().nombre'
+            [readonly]='camposReadOnly().nombre'
+            [class.ng-invalid]="form.get('nombre')?.invalid && form.get('nombre')?.touched"
+          />
+          @if (form.get('nombre')?.invalid && form.get('nombre')?.touched) {
+            <small class='p-error'>El nombre es obligatorio</small>
+          }
         </div>
       </div>
     }

@@ -15,6 +15,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { EstadoUso } from '../../../models/estadouso';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 /**
  * @version 1.0.0
@@ -23,7 +24,7 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 @Component({
   standalone: true,
   selector: 'app-iluminacion',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent, EditModalComponent],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent, EditModalComponent, Truncar],
   templateUrl: './iluminacion.component.html'
 })
 export class IluminacionComponent implements OnInit {

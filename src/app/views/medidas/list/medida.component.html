@@ -142,7 +142,7 @@
   <ng-template pTemplate='body' let-medida>
     <tr>
       <td>{{ medida.nombre }}</td>
-      <td>{{ medida.descripcion }}</td>
+      <td>{{ medida.descripcion | truncar: 150 }}</td>
       <td>{{ medida.valor }}</td>
       <td class="centrado">
         <label for="medida-{{ medida.id }}" class="switch-native {{ medida.activo ? 'verde' : 'rojo' }}">

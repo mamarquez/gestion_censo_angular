@@ -14,6 +14,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { NivelDotacion } from '../../../models/niveldotacion';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 /**
  * @version 1.0.0
@@ -22,7 +23,7 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 @Component({
   standalone: true,
   selector: 'app-caracteristica',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, AccionesTablaComponent, EditModalComponent],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, AccionesTablaComponent, EditModalComponent, Truncar],
   templateUrl: './caracteristica.component.html'
 })
 export class CaracteristicaComponent implements OnInit {

@@ -138,6 +138,10 @@ export class UsuarioComponent implements OnInit {
     });
   }
 
+  nuevo(): void {
+    this.router.navigate(['/usuarios', 'nuevo']);
+  }
+
   editar(id: string): void {
     this.router.navigate(['/usuarios', id]);
   }

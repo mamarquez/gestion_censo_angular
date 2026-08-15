@@ -15,6 +15,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { NivelDotacion } from '../../../models/niveldotacion';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 /**
  * @version 1.0.1
@@ -31,7 +32,8 @@ import { NivelDotacion } from '../../../models/niveldotacion';
     ConfirmDialogModule,
     TooltipModule,
     AccionesTablaComponent,
-    EditModalComponent
+    EditModalComponent,
+    Truncar
   ],
   templateUrl: './actividaddeportiva.component.html'
 })

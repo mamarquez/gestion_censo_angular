@@ -14,7 +14,9 @@ import { InstalacionRutaCoordenada } from '../../../../../../models/instalacionR
 import { DialogService } from '../../../../../../services/dialog.service';
 import { ApiResponseWrapper } from '../../../../../../interface/api-response-wrapper.interface';
 import { AccionesTablaComponent } from '../../../../../../utils/acciones-tabla/acciones-tabla.component';
-import { ModalCoordenadaComponent } from '../../../../../../components/ruta/modal-coordenada/modal-coordenada.component';
+import {
+  ModalCoordenadaComponent
+} from '../../../../../../components/ruta/modal-coordenada/modal-coordenada.component';
 import { LoaderComponent } from '../../../../../../layouts/loader/loader.component';
 import { MapaRutaComponent, PuntoRuta } from '../../../../../../components/mapa-ruta/mapa-ruta.component';
 import { mensajesUtil } from '../../../../../../utils/mensajes.util';
@@ -73,10 +75,9 @@ export class EditInstalacionRutaComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    this.idRuta = Number(this.route.snapshot.paramMap.get('id'));
 
-    if (id) {
-      this.idRuta = Number(id);
+    if (this.idRuta) {
       this.cargar(this.idRuta);
       this.cargarCoordenadas(this.idRuta);
     }
@@ -261,8 +262,6 @@ export class EditInstalacionRutaComponent implements OnInit {
   }
 
   cancelar(): void {
-    console.log(this.idInstalacion);
-
     if (this.idInstalacion === null) {
       return;
     }

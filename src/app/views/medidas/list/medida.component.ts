@@ -14,11 +14,12 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 @Component({
   standalone: true,
   selector: 'app-medida',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent, EditModalComponent],
+  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent, EditModalComponent, Truncar],
   templateUrl: './medida.component.html'
 })
 export class MedidaComponent implements OnInit {

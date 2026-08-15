@@ -11,7 +11,7 @@
 
           <div class='fields-row'>
             <div class='field col-4'>
-              <label for='username'>UsuarioModel</label>
+              <label for='username'>Usuario</label>
               <input id='username' type='text' pInputText formControlName='nombreUsuario' />
             </div>
 
@@ -29,6 +29,15 @@
               <label for='activo'>Activo</label>
             </div>
           </div>
+
+          @if (!esEdicion) {
+            <div class='fields-row'>
+              <div class='field col-4'>
+                <label for='password'>Contraseña</label>
+                <input id='password' type='password' pInputText formControlName='password' />
+              </div>
+            </div>
+          }
 
           <div class='fields-row'>
             <div class='field col-4'>
@@ -59,7 +68,12 @@
 
       <br />
 
-      <div style="width: 100%; display: flex; justify-content: flex-end; align-items: center; padding-top: 1rem;">
+      <div style='display: flex; justify-content: flex-end; gap: 0.5rem; padding-top: 1rem;'>
+        <p-button
+          label='Cancelar'
+          severity='secondary'
+          (onClick)='cancelar()'
+        ></p-button>
         <p-button
           type="submit"
           label="Guardar"

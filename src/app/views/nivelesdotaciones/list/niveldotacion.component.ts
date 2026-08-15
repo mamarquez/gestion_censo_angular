@@ -4,7 +4,7 @@ import { TableModule } from 'primeng/table';
 import { NivelDotacion } from '../../../models/niveldotacion';
 import { NivelDotacionService } from '../../../services/nivelDotacion.service';
 import { Button } from 'primeng/button';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../services/dialog.service';
 import { InputText } from 'primeng/inputtext';
@@ -14,6 +14,7 @@ import { NivelEducativo } from '../../../models/niveleducativo';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 @Component({
   standalone: true,
@@ -25,7 +26,8 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
     ReactiveFormsModule,
     ConfirmDialogModule,
     TooltipModule,
-    EditModalComponent
+    EditModalComponent,
+    Truncar
   ],
   templateUrl: './niveldotacion.component.html'
 })
@@ -44,10 +46,10 @@ export class NivelDotacionComponent implements OnInit {
   modalVisible = false;
 
   form: FormGroup = this.fb.group({
-    id: [''],
-    nombre: [''],
-    descripcion: [''],
-    activo: ['']
+    id: [null],
+    nombre: ['', [Validators.required, Validators.maxLength(NivelDotacion.campos.nombre.maxLength)]],
+    descripcion: [null],
+    activo: [true]
   });
 
   ngOnInit(): void {
