@@ -112,8 +112,6 @@ export class DatosComponent implements OnInit {
     } else {
       this.crear(datos);
     }
-
-    this.router.navigate(['/usuarios']);
   }
 
   private crear(datos: Partial<UsuarioModel>): void {

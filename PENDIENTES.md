@@ -25,8 +25,41 @@ contra los nombres válidos en PrimeNG 19).
   Angular 20. Adoptar signals de forma más consistente (especialmente para estado de
   loading/tablas) sería una mejora de mantenibilidad, no una urgencia.
 
+## 🟡 Pendiente de confirmar (última sesión)
+
+- [ ] **Alta de usuario sin validación de longitud de `nombreUsuario` en el frontend.** El backend
+  exige 5-50 caracteres a nivel de entidad JPA; el formulario (`datos.component.ts`, tab de
+  `usuarios/edit`) solo tiene `Validators.required`. Un nombre corto llega a enviarse y falla con un
+  error interno del backend en vez de marcarse en el formulario. Añadir
+  `Validators.minLength(5)`/`maxLength(50)`.
+- [ ] **Decisión pendiente: asignación de roles al crear usuario.** Flujo actual: crear usuario primero
+  (tab Datos) → se habilita la tab Roles con el id ya real. Alternativa no implementada: permitir
+  seleccionar roles en el propio formulario de alta y enviarlos en el mismo `POST`. Requiere cambios
+  también en el backend (`UsuarioImpl.add()` no procesa `dto.roles()` todavía).
+- [ ] Confirmar en navegador (no verificado tras el último cambio):
+  - Punto nuevo añadido al mapa de una ruta muestra su id real tras guardarse (antes se quedaba en
+    "?" indefinidamente).
+  - "Características" de una instalación devuelve resultados tras el rename a `idInstalacion`
+    (camelCase) del filtro.
+  - Modal genérico `EditModalComponent` marca "Nombre" en rojo si se deja vacío (usado por Nivel
+    dotación, entre otras entidades).
+
 ## Resuelto en esta sesión (referencia)
 
+- [x] **No existía pantalla de alta de usuario**, solo edición (`idUsuario = model.required<string>()`
+  sin variante de creación). Adaptada `edit.component`/`datos.component` para soportar ambos modos:
+  campo password (obligatorio solo en alta, oculto en edición), tab "Roles" oculta hasta que el
+  usuario exista (no se puede asignar roles sin un id real persistido), ruta `usuarios/nuevo`
+  añadida, botón "Añadir" del listado conectado.
+- [x] **Bug de navegación prematura en `DatosComponent.guardar()` (usuarios).** Tras separar
+  crear/actualizar en métodos async, quedó un `this.router.navigate(['/usuarios'])` síncrono
+  ejecutándose inmediatamente después de disparar la petición HTTP, en vez de dentro de su callback
+  — navegaba a la lista antes de que la creación/actualización terminara. Eliminado.
+- [x] **Mapa de rutas: punto recién creado no mostraba su id** (se quedaba en "?" permanentemente).
+  Primer intento (comparar x/y del punto clicado contra la lista recargada) no funcionaba por
+  imprecisión de punto flotante entre `number` (JS) y `Float` (Java) tras el roundtrip JSON.
+  Sustituido por selección del id máximo entre las coordenadas de la ruta (asume ids
+  autoincrementales, así que el más alto es siempre el recién creado).
 - [x] **`EditRolComponent` era código huérfano.** Sustituido por
   [`src/app/views/roles/form/rol-form.component.ts`](src/app/views/roles/form/rol-form.component.ts),
   una pantalla nueva de alta/edición de rol (nombre, descripción, activo) reutilizada para crear
