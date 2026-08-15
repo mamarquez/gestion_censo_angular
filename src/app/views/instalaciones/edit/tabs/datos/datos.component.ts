@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, model, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, EventEmitter, inject, model, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InstalacionService } from '../../../../../services/instalacion.service';
@@ -43,6 +44,7 @@ export class DatosComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
 
   idInstalacion = model.required<string>();
   @Output() cargandoChange = new EventEmitter<boolean>();
@@ -84,7 +86,9 @@ export class DatosComponent implements OnInit {
     this.cargandoChange.emit(true);
     this.cdr.detectChanges();
 
-    this.service.get(id).subscribe({
+    this.service.get(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponse<Instalacion>) => {
         this.instalacion = response.data ?? null;
 

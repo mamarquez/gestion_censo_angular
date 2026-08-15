@@ -44,9 +44,21 @@
 
 <br />
 
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Añadir'
+    icon='pi pi-plus'
+    styleClass='p-button-primary p-button-sm'
+    (onClick)='nuevoRol()'
+  >
+  </p-button>
+</div>
+
 @if (rolSeleccionado) {
   <app-modal-rol-permiso
     [idRol]='rolSeleccionado.id'
+    [idsTipoRolAsignados]='idsTipoRolAsignados(rolSeleccionado.id)'
     [(modalVisible)]='modalVisible'
     (guardado)='permisoGuardado(rolSeleccionado.id)'
   />
@@ -66,12 +78,11 @@
   [loading]='cargando'
   sortField='nombre'
   [sortOrder]='1'
-  [expandedRowKeys]='filasExpandidas'
 >
 
     <ng-template pTemplate="header">
         <tr>
-          <th style='width: 3rem'></th>
+          <!-- <th style='width: 3rem'></th> -->
           <th id='rol.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
           <th id='rol.estado' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
           <th id='rol.accion' class='text-right' style='width: 10%'></th>
@@ -91,6 +102,7 @@
 
     <ng-template pTemplate="body" let-rol let-expanded="expanded">
         <tr>
+          <!--
           <td>
             <p-button
               type='button'
@@ -100,7 +112,8 @@
               (onClick)='toggleFila(rol)'
             ></p-button>
           </td>
-          <td>{{ rol.nombre }}</td>
+          -->
+          <td><strong>{{ rol.nombre }}</strong></td>
           <td class='centrado'>
             <label class="switch-native {{ rol.activo ? 'verde' : 'rojo' }}">
               <input type='checkbox' [checked]='rol.activo' disabled />
@@ -108,6 +121,7 @@
             </label>
           </td>
           <app-acciones-tabla
+            (editar)="editar(rol.id)"
             [activo]="rol.activo"
             (toggleEstado)="cambiarEstado(rol.id)"
             (borrar)="confirmarBorrado(rol)"
@@ -115,12 +129,12 @@
         </tr>
     </ng-template>
 
+    <!--
     <ng-template pTemplate="expandedrow" let-rol>
       <tr>
         <td colspan="4">
           <div style='padding: 1rem; background: #f8fafc;'>
-            <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;'>
-              <strong>Permisos de "{{ rol.nombre }}"</strong>
+            <div style='display: flex; justify-content: flex-end; align-items: center; margin-bottom: 0.75rem;'>
               <p-button
                 type='button'
                 icon='pi pi-plus'
@@ -136,16 +150,9 @@
               [loading]='cargandoPermisos[rol.id]'
               dataKey='id'
             >
-              <ng-template pTemplate='header'>
-                <tr>
-                  <th>Permiso</th>
-                  <th style='width: 10%'></th>
-                </tr>
-              </ng-template>
-
               <ng-template pTemplate='emptymessage'>
                 <tr>
-                  <td colspan='2'>Este rol no tiene permisos asignados</td>
+                  <td colspan='2' style="text-align: center;"><strong>Este rol no tiene permisos asignados</strong></td>
                 </tr>
               </ng-template>
 
@@ -162,4 +169,5 @@
         </td>
       </tr>
     </ng-template>
+    -->
 </p-table>

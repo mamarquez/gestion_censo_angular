@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService, PrimeTemplate } from 'primeng/api';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
@@ -33,6 +34,7 @@ export class ListCaracteristicasComponent implements OnChanges {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
 
   @Input() idEspacioDeportivo: number | null = null;
 
@@ -59,7 +61,9 @@ export class ListCaracteristicasComponent implements OnChanges {
       instalacionEspacioDeportivo: this.idEspacioDeportivo
     };
 
-    this.service.getAll(filtros).subscribe({
+    this.service.getAll(filtros)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         this.caracteristicas = response.data || [];
         this.cargando = false;
@@ -90,7 +94,9 @@ export class ListCaracteristicasComponent implements OnChanges {
   cambiarVisible(id: number): void {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarEstado(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const caracteristica = this.caracteristicas.find(c => c.id === id);
         if (caracteristica) {
@@ -120,7 +126,9 @@ export class ListCaracteristicasComponent implements OnChanges {
   }
 
   private borrarRegistro(id: number): void {
-    this.service.borrarRegistro(id).subscribe({
+    this.service.borrarRegistro(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.caracteristicas = this.caracteristicas.filter(c => c.id !== id);
         this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado correctamente' });

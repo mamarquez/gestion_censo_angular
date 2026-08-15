@@ -1,0 +1,114 @@
+@if (cargando) {
+  <app-loader />
+} @else {
+<div class='row'>
+  <h1 class='text-2xl font-bold text-slate-800'>{{ esEdicion ? 'Editar rol' : 'Nuevo rol' }}</h1>
+</div>
+
+<br />
+
+<form [formGroup]='form' (ngSubmit)='guardar()' class='bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-6'>
+
+  <div class='fields-row'>
+    <div class='field col-4'>
+      <label for='rol-nombre'>Nombre</label>
+      <input
+        id='rol-nombre'
+        pInputText
+        type='text'
+        formControlName='nombre'
+        placeholder='Ej. Administrador...'
+        class='w-full'
+      />
+    </div>
+
+    <div class='field col-6'>
+      <label for='rol-descripcion'>Descripción</label>
+      <input
+        id='rol-descripcion'
+        pInputText
+        type='text'
+        formControlName='descripcion'
+        placeholder='Ej. Descripción del rol...'
+        class='w-full'
+      />
+    </div>
+
+    <div class='field field-checkbox col-2'>
+      <p-checkbox
+        inputId='rol-activo'
+        formControlName='activo'
+        [binary]='true'
+      />
+      <label for='rol-activo'>Activo</label>
+    </div>
+  </div>
+
+  @if (esEdicion) {
+    <br />
+
+    <p-fieldset legend='Permisos'>
+      <div style='display: flex; align-items: stretch; width: 100%;'>
+        <!-- Disponibles -->
+        <div style='flex: 1;'>
+          <label for='permisos-disponibles'>Permisos disponibles</label>
+
+          <p-listbox
+            id='permisos-disponibles'
+            [options]='permisosDisponibles'
+            optionLabel='nombre'
+            [(ngModel)]='permisosDisponiblesElegidos'
+            [ngModelOptions]="{ standalone: true }"
+            [multiple]='true'
+            [metaKeySelection]='false'
+            (onDblClick)='moverAseleccionados()'
+            [style]="{ width: '100%', height: '225px' }"
+          />
+        </div>
+
+        <!-- Botones -->
+        <div style='width: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.5rem;'>
+          <p-button label='<<' size='small' type='button' (onClick)='moverTodosADisponibles()' />
+          <p-button label='<' size='small' type='button' [disabled]='!permisosSeleccionadosElegidos.length' (onClick)='moverADisponibles()' />
+          <p-button label='>' size='small' type='button' [disabled]='!permisosDisponiblesElegidos.length' (onClick)='moverAseleccionados()' />
+          <p-button label='>>' size='small' type='button' (onClick)='moverTodosASeleccionados()' />
+        </div>
+
+        <!-- Seleccionados -->
+        <div style='flex: 1;'>
+          <label for='permisos-seleccionados'>Permisos seleccionados</label>
+
+          <p-listbox
+            id='permisos-seleccionados'
+            [options]='permisosSeleccionados'
+            optionLabel='nombre'
+            [(ngModel)]='permisosSeleccionadosElegidos'
+            [ngModelOptions]="{ standalone: true }"
+            [multiple]='true'
+            [metaKeySelection]='false'
+            (onDblClick)='moverADisponibles()'
+            [style]="{ width: '100%', height: '225px' }"
+          />
+        </div>
+      </div>
+    </p-fieldset>
+  }
+
+  <div style='display: flex; justify-content: flex-end; gap: 0.5rem; padding-top: 1rem;'>
+    <p-button
+      type='button'
+      label='Cancelar'
+      severity='secondary'
+      [text]='true'
+      (onClick)='cancelar()'
+    ></p-button>
+    <p-button
+      type='submit'
+      label='Guardar'
+      [loading]='guardando'
+      [disabled]='form.invalid'
+    ></p-button>
+  </div>
+
+</form>
+}

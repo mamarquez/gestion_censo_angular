@@ -15,11 +15,11 @@ export class Instalacion {
   provincia!: Provincia;
   municipio!: Municipio;
   cp!: string;
-  telefonos?: InstalacionTelefono[] | [];
+  telefonos?: InstalacionTelefono[];
   fax?: string;
   email?: string;
   web?: string;
-  gestor?: Gestor | [];
+  gestor?: Gestor;
   visible?: boolean = false;
   observaciones?: string;
   baja!: boolean;

@@ -36,7 +36,10 @@ export const appConfig: ApplicationConfig = {
         today: 'Hoy',
         clear: 'Limpiar',
         dateFormat: 'dd/mm/yy',
-        weekHeader: 'Sm'
+        weekHeader: 'Sm',
+        emptyMessage: 'No se han encontrado resultados',
+        emptySearchMessage: 'No se han encontrado resultados',
+        emptyFilterMessage: 'No se han encontrado resultados'
       }
     }),
     ConfirmationService,

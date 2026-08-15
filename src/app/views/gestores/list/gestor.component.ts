@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -34,6 +35,7 @@ export class GestorComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
 
   gestor: Gestor | any = null;
   gestores: Gestor [] = [];
@@ -61,7 +63,9 @@ export class GestorComponent implements OnInit {
     const filtros = this.form.value;
     this.cargando = true;
 
-    this.service.getAll(filtros).subscribe({
+    this.service.getAll(filtros)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
           this.gestores = response.data;
@@ -82,7 +86,9 @@ export class GestorComponent implements OnInit {
   }
 
   cargar(): void {
-    this.service.getAll().subscribe({
+    this.service.getAll()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         this.gestores = response.data || [];
         this.cargando = false;
@@ -104,7 +110,9 @@ export class GestorComponent implements OnInit {
   cambiarEstado(id: number): void {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarEstado(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const gestor = this.gestores.find(p => p.id === id);
         if (gestor) {
@@ -136,7 +144,9 @@ export class GestorComponent implements OnInit {
   private borrarRegistro(id: number) {
     this.cargando = true;
 
-    this.service.borrarRegistro(id).subscribe({
+    this.service.borrarRegistro(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.gestores = this.gestores.filter(p => p.id !== id);
         mensajesUtil(this.messageService, 'success', 'delete');
@@ -160,7 +170,9 @@ export class GestorComponent implements OnInit {
   }
 
   editar(id: string) {
-    this.service.get(id).subscribe({
+    this.service.get(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponseWrapper<Gestor>) => {
         this.gestor = response.data || [];
 
@@ -189,7 +201,9 @@ export class GestorComponent implements OnInit {
     };
 
     if (datos.id) {
-      this.service.updateRegistro(datos).subscribe({
+      this.service.updateRegistro(datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
         next: () => {
           mensajesUtil(this.messageService, 'success', 'update');
           this.modalVisible = false;
@@ -203,7 +217,9 @@ export class GestorComponent implements OnInit {
         }
       });
     } else {
-      this.service.addRegistro(datos).subscribe({
+      this.service.addRegistro(datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
         next: () => {
           mensajesUtil(this.messageService, 'success', 'add');
           this.modalVisible = false;

@@ -1,4 +1,6 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { UsuarioModel } from '../../../models/usuario-model';
 import { UsuarioService } from '../../../services/usuario.service';
@@ -39,6 +41,8 @@ export class UsuarioComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
 
   usuarios: UsuarioModel [] = [];
   cargando: boolean = true;
@@ -64,7 +68,9 @@ export class UsuarioComponent implements OnInit {
     const filtros = this.form.value;
     this.cargando = true;
 
-    this.service.getAll(filtros).subscribe({
+    this.service.getAll(filtros)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
           this.usuarios = response.data;
@@ -85,7 +91,9 @@ export class UsuarioComponent implements OnInit {
   }
 
   cargar(): void {
-    this.service.getAll().subscribe({
+    this.service.getAll()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         this.usuarios = response.data || [];
         console.log(this.usuarios);
@@ -108,7 +116,9 @@ export class UsuarioComponent implements OnInit {
   cambiarEstado(id: string): void {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarEstado(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const usuario = this.usuarios.find(p => p.id === id);
         if (usuario) {
@@ -128,6 +138,10 @@ export class UsuarioComponent implements OnInit {
     });
   }
 
+  editar(id: string): void {
+    this.router.navigate(['/usuarios', id]);
+  }
+
   confirmarBorrado(registro: UsuarioModel): void {
     this.dialog.confirmar({
       mensaje: `¿Deseas eliminar "<strong>${registro.nombre}"</strong>?`,
@@ -140,7 +154,9 @@ export class UsuarioComponent implements OnInit {
   private borrarRegistro(id: string): void {
     this.cargando = true;
 
-    this.service.borrarRegistro(id).subscribe({
+    this.service.borrarRegistro(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.usuarios = this.usuarios.filter(p => p.id !== id);
         mensajesUtil(this.messageService, 'success', 'delete');

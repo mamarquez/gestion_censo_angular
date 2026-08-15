@@ -5,6 +5,8 @@ import { AUTH } from '../auth/auth.constants';
 import { buildHttpParams } from '../utils/params.util';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { RolPermisoModel } from '../models/rol-permiso-model';
+import { Rol } from '../models/rol';
+import { TipoRolModel } from '../models/tipo-rol-model';
 
 /**
  * @version 1.0.1
@@ -38,8 +40,9 @@ export class RolPermisoService {
    */
   crear(idRol: number, idTipoRol: number): Observable<ApiResponseWrapper<boolean>> {
     return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, {
-      idRol,
-      idTipoRol
+      id: null,
+      rol: { id: idRol } as Rol,
+      tipoRol: { id: idTipoRol } as TipoRolModel
     }, { headers: this.headers });
   }
 

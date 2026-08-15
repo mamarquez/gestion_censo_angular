@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -41,6 +42,7 @@ export class PropietarioComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
 
   propietario: Propietario | any = null;
   propietarios: Propietario [] = [];
@@ -68,7 +70,9 @@ export class PropietarioComponent implements OnInit {
     const filtros = this.form.value;
     this.cargando = true;
 
-    this.service.getAll(filtros).subscribe({
+    this.service.getAll(filtros)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
           this.propietarios = response.data;
@@ -89,7 +93,9 @@ export class PropietarioComponent implements OnInit {
   }
 
   cargar(): void {
-    this.service.getAll().subscribe({
+    this.service.getAll()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         this.propietarios = response.data || [];
         this.cargando = false;
@@ -111,7 +117,9 @@ export class PropietarioComponent implements OnInit {
   cambiarVisible(id: number): void {
     this.cargando = true;
 
-    this.service.cambiarVisible(id).subscribe({
+    this.service.cambiarVisible(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const propietario = this.propietarios.find(p => p.id === id);
 
@@ -139,7 +147,9 @@ export class PropietarioComponent implements OnInit {
   cambiarEstado(id: number): void {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarEstado(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const propietario = this.propietarios.find(p => p.id === id);
         if (propietario) {
@@ -172,7 +182,9 @@ export class PropietarioComponent implements OnInit {
   private borrarRegistro(id: number) {
     this.cargando = true;
 
-    this.service.borrarRegistro(id).subscribe({
+    this.service.borrarRegistro(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.propietarios = this.propietarios.filter(p => p.id !== id);
         mensajesUtil(this.messageService, 'success', 'delete');
@@ -196,7 +208,9 @@ export class PropietarioComponent implements OnInit {
   }
 
   editar(id: string) {
-    this.service.get(id).subscribe({
+    this.service.get(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponseWrapper<NivelEnergetico>) => {
         this.propietario = response.data || [];
 
@@ -225,7 +239,9 @@ export class PropietarioComponent implements OnInit {
     };
 
     if (datos.id) {
-      this.service.updateRegistro(datos).subscribe({
+      this.service.updateRegistro(datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
         next: () => {
           mensajesUtil(this.messageService, 'success', 'update');
           this.modalVisible = false;
@@ -245,7 +261,9 @@ export class PropietarioComponent implements OnInit {
         }
       });
     } else {
-      this.service.addRegistro(datos).subscribe({
+      this.service.addRegistro(datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
         next: () => {
           mensajesUtil(this.messageService, 'success', 'add');
           this.modalVisible = false;

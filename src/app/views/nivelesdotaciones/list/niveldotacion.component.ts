@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TableModule } from 'primeng/table';
 import { NivelDotacion } from '../../../models/niveldotacion';
 import { NivelDotacionService } from '../../../services/nivelDotacion.service';
@@ -35,6 +36,7 @@ export class NivelDotacionComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
 
   nivelDotacion: NivelEducativo | any = null;
   nivelesDotaciones: NivelDotacion [] = [];
@@ -61,7 +63,9 @@ export class NivelDotacionComponent implements OnInit {
     const filtros = this.form.value;
     this.cargando = true;
 
-    this.service.getAll(filtros).subscribe({
+    this.service.getAll(filtros)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
           this.nivelesDotaciones = response.data;
@@ -82,7 +86,9 @@ export class NivelDotacionComponent implements OnInit {
   }
 
   cargar(): void {
-    this.service.getAll().subscribe({
+    this.service.getAll()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         this.nivelesDotaciones = response.data || [];
         this.cargando = false;
@@ -104,7 +110,9 @@ export class NivelDotacionComponent implements OnInit {
   cambiarEstado(id: number): void {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarEstado(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const nivelDotacion = this.nivelesDotaciones.find(p => p.id === id);
         if (nivelDotacion) {
@@ -136,7 +144,9 @@ export class NivelDotacionComponent implements OnInit {
   private borrarRegistro(id: number) {
     this.cargando = true;
 
-    this.service.borrarRegistro(id).subscribe({
+    this.service.borrarRegistro(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.nivelesDotaciones = this.nivelesDotaciones.filter(p => p.id !== id);
         mensajesUtil(this.messageService, 'success', 'delete');
@@ -160,7 +170,9 @@ export class NivelDotacionComponent implements OnInit {
   }
 
   editar(id: string) {
-    this.service.get(id).subscribe({
+    this.service.get(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponseWrapper<NivelDotacion>) => {
         this.nivelDotacion = response.data || [];
 
@@ -188,7 +200,9 @@ export class NivelDotacionComponent implements OnInit {
     };
 
     if (datos.id) {
-      this.service.updateRegistro(datos).subscribe({
+      this.service.updateRegistro(datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
         next: () => {
           mensajesUtil(this.messageService, 'success', 'update');
 
@@ -206,7 +220,9 @@ export class NivelDotacionComponent implements OnInit {
         }
       });
     } else {
-      this.service.addRegistro(datos).subscribe({
+      this.service.addRegistro(datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
         next: () => {
           mensajesUtil(this.messageService, 'success', 'add');
 

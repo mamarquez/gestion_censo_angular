@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, inject, input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, input, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
@@ -38,6 +39,7 @@ export class DatosTelefonosComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
 
   idInstalacion = input<string>();
 
@@ -60,7 +62,9 @@ export class DatosTelefonosComponent implements OnInit {
     this.cargando = true;
     this.cdr.detectChanges();
 
-    this.service.getAll({ idInstalacion: this.idInstalacion() }).subscribe({
+    this.service.getAll({ idInstalacion: this.idInstalacion() })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponseWrapper<InstalacionTelefono[]>) => {
         this.telefonos = response.data ?? [];
 
@@ -83,7 +87,9 @@ export class DatosTelefonosComponent implements OnInit {
   cambiarEstado(id: number): void {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarEstado(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const telefono = this.telefonos.find(p => p.id === id);
         if (telefono) {
@@ -113,7 +119,9 @@ export class DatosTelefonosComponent implements OnInit {
   }
 
   private borrarRegistro(id: number): void {
-    this.service.borrarRegistro(id).subscribe({
+    this.service.borrarRegistro(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.telefonos = this.telefonos.filter(t => t.id !== id);
         mensajesUtil(this.messageService, 'success', 'delete');
@@ -132,7 +140,9 @@ export class DatosTelefonosComponent implements OnInit {
    * @param id Id del registro
    */
   editar(id: string): void {
-    this.service.get(id).subscribe({
+    this.service.get(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponseWrapper<InstalacionTelefono>) => {
         this.telefono = response.data || [];
 
@@ -165,7 +175,9 @@ export class DatosTelefonosComponent implements OnInit {
     };
 
     if (datos.id) {
-      this.service.updateRegistro(datos).subscribe({
+      this.service.updateRegistro(datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
         next: () => {
           mensajesUtil(this.messageService, 'success', 'update');
           this.modalVisible = false;
@@ -179,7 +191,9 @@ export class DatosTelefonosComponent implements OnInit {
         }
       });
     } else {
-      this.service.addRegistro(datos).subscribe({
+      this.service.addRegistro(datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
         next: () => {
           mensajesUtil(this.messageService, 'success', 'add');
           this.modalVisible = false;

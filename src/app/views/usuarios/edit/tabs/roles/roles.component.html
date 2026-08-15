@@ -34,11 +34,13 @@
 
           <p-listbox
             id='provincias'
-            [options]="provincias"
+            [options]="provinciasDisponibles"
             optionLabel="nombre"
-            optionValue="id"
+            [(ngModel)]="provinciasDisponiblesElegidas"
+            [ngModelOptions]="{ standalone: true }"
             [multiple]="true"
             [metaKeySelection]="false"
+            (onDblClick)="moverAseleccionadas()"
             styleClass="provincias-listbox"
             [style]="{ width: '100%', height: '225px' }"
           />
@@ -46,10 +48,10 @@
 
         <!-- Botones -->
         <div style="width: 80px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.5rem;">
-          <p-button label="<<" size="small" />
-          <p-button label="<" size="small" />
-          <p-button label=">" size="small" />
-          <p-button label=">>" size="small" />
+          <p-button label="<<" size="small" type="button" (onClick)="moverTodasADisponibles()" />
+          <p-button label="<" size="small" type="button" [disabled]="!provinciasSeleccionadasElegidas.length" (onClick)="moverADisponibles()" />
+          <p-button label=">" size="small" type="button" [disabled]="!provinciasDisponiblesElegidas.length" (onClick)="moverAseleccionadas()" />
+          <p-button label=">>" size="small" type="button" (onClick)="moverTodasASeleccionadas()" />
         </div>
 
         <!-- Seleccionadas -->
@@ -58,17 +60,22 @@
 
           <p-listbox
             id='provinciasSeleccionadas'
-            [options]="provinciasUsuario"
+            [options]="provinciasSeleccionadas"
             optionLabel="nombre"
-            optionValue="id"
+            [(ngModel)]="provinciasSeleccionadasElegidas"
+            [ngModelOptions]="{ standalone: true }"
             [multiple]="true"
             [metaKeySelection]="false"
-            formControlName="provinciasUsuario"
+            (onDblClick)="moverADisponibles()"
             styleClass="provincias-listbox"
             [style]="{ width: '100%', height: '225px' }"
           />
         </div>
       </div>
+
+      @if (provinciasCargadas && provinciasSeleccionadas.length === 0) {
+        <small class="p-error">Debe asignar al menos una provincia.</small>
+      }
 
     </p-fluid>
 
@@ -81,7 +88,7 @@
     type="submit"
     label="Guardar"
     [loading]="guardando"
-    [disabled]="form.invalid"
+    [disabled]="!provinciasSeleccionadas.length"
     ></p-button>
   </div>
 

@@ -6,10 +6,6 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { Listbox } from 'primeng/listbox';
-import { Fieldset } from 'primeng/fieldset';
-import { Fluid } from 'primeng/fluid';
-import { LoaderComponent } from '../../../layouts/loader/loader.component';
 import { RolesComponent } from './tabs/roles/roles.component';
 import { DatosComponent } from './tabs/datos/datos.component';
 
@@ -27,10 +23,6 @@ import { DatosComponent } from './tabs/datos/datos.component';
     CheckboxModule,
     ButtonModule,
     ToastModule,
-    Listbox,
-    Fieldset,
-    Fluid,
-    LoaderComponent,
     DatosComponent,
     RolesComponent
   ],

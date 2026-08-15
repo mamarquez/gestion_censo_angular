@@ -35,7 +35,7 @@ import {
 import { GeoPosicionComponent } from './views/instalaciones/edit/tabs/geoposicion/geoposicion.component';
 import { EspacioDeportivoComponent } from './views/espaciosdeportivos/list/espaciodeportivo.component';
 import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/list/espaciocomplementario.component';
-import { EditRolComponent } from './views/roles/edit-rol/edit-rol.component';
+import { RolFormComponent } from './views/roles/form/rol-form.component';
 
 export const routes: Routes = [
   {
@@ -104,8 +104,9 @@ export const routes: Routes = [
       {
         path: 'roles',
         children: [
-          { path: '', component: RolComponent }
-          // { path: ':id', component: EditRolComponent },
+          { path: '', component: RolComponent },
+          { path: 'nuevo', component: RolFormComponent },
+          { path: ':id', component: RolFormComponent }
         ]
       },
       {
@@ -152,7 +153,7 @@ export const routes: Routes = [
         path: 'comunidades',
         children: [
           { path: '', component: ListComunidadesComponent }
-          // { path: ':id', component: EditUsuarioComponent },
+          // { path: ':id', component: EditComunidadComponent },
         ]
       },
       {

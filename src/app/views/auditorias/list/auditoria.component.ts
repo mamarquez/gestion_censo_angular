@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { Auditoria } from '../../../models/auditoria';
@@ -46,6 +47,7 @@ export class AuditoriaComponent implements OnInit {
   private readonly service = inject(AuditoriaService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
+  private readonly destroyRef = inject(DestroyRef);
 
   auditoria: Auditoria = null;
   auditorias: Auditoria[] = [];
@@ -85,7 +87,9 @@ export class AuditoriaComponent implements OnInit {
     const filtros = this.form.value;
     this.cargando = true;
 
-    this.service.getAll(filtros).subscribe({
+    this.service.getAll(filtros)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
           this.auditorias = response.data;
@@ -106,7 +110,9 @@ export class AuditoriaComponent implements OnInit {
   }
 
   private cargar(): void {
-    this.service.getAll().subscribe({
+    this.service.getAll()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         this.auditorias = response.data || [];
         this.cargando = false;
@@ -124,7 +130,9 @@ export class AuditoriaComponent implements OnInit {
   ver(id: string) {
     this.mostrarModal = true;
 
-    this.service.get(id).subscribe({
+    this.service.get(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponseWrapper<Auditoria>) => {
         this.auditoria = response.data ?? null;
         this.cargando = false;

@@ -32,6 +32,31 @@ export class RolService {
   }
 
   /**
+   * Obtiene un rol por su id
+   * @param id Id del registro
+   */
+  rol(id: number): Observable<ApiResponseWrapper<Rol>> {
+    return this.http.get<ApiResponseWrapper<Rol>>(`${this.api}/${id}`, { headers: this.headers });
+  }
+
+  /**
+   * Crea un nuevo rol
+   * @param rol Datos del rol a crear
+   */
+  add(rol: Partial<Rol>): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, rol, { headers: this.headers });
+  }
+
+  /**
+   * Actualiza un rol existente
+   * @param id Id del registro
+   * @param rol Datos actualizados del rol
+   */
+  update(id: number, rol: Partial<Rol>): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, rol, { headers: this.headers });
+  }
+
+  /**
    * Cambia el estado de un registro
    * @param id Id del registro
    */

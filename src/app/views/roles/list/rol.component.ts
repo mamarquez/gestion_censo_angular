@@ -1,4 +1,6 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
@@ -28,6 +30,8 @@ export class RolComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
 
   roles: Rol [] = [];
   cargando: boolean = true;
@@ -55,7 +59,9 @@ export class RolComponent implements OnInit {
     const filtros = this.form.value;
     this.cargando = true;
 
-    this.service.getAll(filtros).subscribe({
+    this.service.getAll(filtros)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
           this.roles = response.data;
@@ -76,7 +82,9 @@ export class RolComponent implements OnInit {
   }
 
   cargar(): void {
-    this.service.getAll().subscribe({
+    this.service.getAll()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         this.roles = response.data || [];
         this.cargando = false;
@@ -97,7 +105,9 @@ export class RolComponent implements OnInit {
   cambiarEstado(id: number): void {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarEstado(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const rol = this.roles.find(p => p.id === id);
         if (rol) {
@@ -129,7 +139,9 @@ export class RolComponent implements OnInit {
   private borrarRegistro(id: number) {
     this.cargando = true;
 
-    this.service.borrarRegistro(id).subscribe({
+    this.service.borrarRegistro(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.roles = this.roles.filter(p => p.id !== id);
         this.messageService.add({
@@ -169,7 +181,9 @@ export class RolComponent implements OnInit {
   private cargarPermisos(idRol: number): void {
     this.cargandoPermisos[idRol] = true;
 
-    this.rolPermisoService.getAll({ idRol }).subscribe({
+    this.rolPermisoService.getAll({ idRol })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         this.permisosPorRol[idRol] = response.data || [];
         this.cargandoPermisos[idRol] = false;
@@ -190,21 +204,37 @@ export class RolComponent implements OnInit {
     this.modalVisible = true;
   }
 
+  nuevoRol(): void {
+    this.router.navigate(['/roles/nuevo']);
+  }
+
+  editar(id: number): void {
+    this.router.navigate(['/roles', id]);
+  }
+
+  idsTipoRolAsignados(idRol: number): number[] {
+    return (this.permisosPorRol[idRol] || []).map(p => p.tipoRol.id);
+  }
+
   permisoGuardado(idRol: number): void {
     this.cargarPermisos(idRol);
   }
 
   confirmarBorradoPermiso(idRol: number, permiso: RolPermisoModel): void {
-    this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar el permiso "<strong>${permiso.tipoRol?.nombre}</strong>"?`,
-      titulo: 'Confirmar eliminación',
-      labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarPermiso(idRol, permiso.id)
-    });
+    if (idRol !== 1) {
+      this.dialog.confirmar({
+        mensaje: `¿Deseas eliminar el permiso "<strong>${permiso.tipoRol?.nombre}</strong>"?`,
+        titulo: 'Confirmar eliminación',
+        labelAceptar: 'Sí, eliminar',
+        onAccept: () => this.borrarPermiso(idRol, permiso.id)
+      });
+    }
   }
 
   private borrarPermiso(idRol: number, idPermiso: number): void {
-    this.rolPermisoService.borrarRegistro(idPermiso).subscribe({
+    this.rolPermisoService.borrarRegistro(idPermiso)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.permisosPorRol[idRol] = (this.permisosPorRol[idRol] || []).filter(p => p.id !== idPermiso);
         mensajesUtil(this.messageService, 'success', 'delete');

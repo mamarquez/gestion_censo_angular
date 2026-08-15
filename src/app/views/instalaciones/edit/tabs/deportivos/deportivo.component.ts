@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -48,6 +49,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
 
   @Output() cargandoChange = new EventEmitter<boolean>();
 
@@ -78,7 +80,9 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
     this.cargandoChange.emit(true);
     this.cdr.detectChanges();
 
-    this.service.getAll({ idInstalacion: id }).subscribe({
+    this.service.getAll({ idInstalacion: id })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponse<InstalacionEspacioDeportivo[]>) => {
         this.espaciosDeportivos = response.data ?? [];
 
@@ -111,7 +115,9 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   cambiarEstado(id: number) {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarEstado(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponseWrapper<InstalacionEspacioDeportivo>) => {
         const espacioDeportivo = this.espaciosDeportivos.find(p => p.id === id);
         if (espacioDeportivo) {
@@ -134,7 +140,9 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   cambiarVisible(id: number) {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarEstado(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponseWrapper<InstalacionEspacioDeportivo>) => {
         const espacioDeportivo = this.espaciosDeportivos.find(c => c.id === id);
         if (espacioDeportivo) {
@@ -164,7 +172,9 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   }
 
   private borrarRegistro(id: number): void {
-    this.service.borrarRegistro(id).subscribe({
+    this.service.borrarRegistro(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponseWrapper<InstalacionEspacioDeportivo>) => {
         this.espaciosDeportivos = this.espaciosDeportivos.filter(t => t.id !== id);
         mensajesUtil(this.messageService, 'success', 'delete');

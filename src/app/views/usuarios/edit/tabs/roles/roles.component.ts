@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, inject, model, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, model, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Button } from 'primeng/button';
 import { Fieldset } from 'primeng/fieldset';
 import { Fluid } from 'primeng/fluid';
@@ -8,6 +9,7 @@ import { RolService } from '../../../../../services/rol.service';
 import { ProvinciaService } from '../../../../../services/provincia.service';
 import { UsuarioService } from '../../../../../services/usuario.service';
 import { UsuarioRolService } from '../../../../../services/usuariorol.service';
+import { UsuarioProvinciaService } from '../../../../../services/usuarioprovincia.service';
 import { MessageService } from 'primeng/api';
 import { Rol } from '../../../../../models/rol';
 import { Provincia } from '../../../../../models/provincia';
@@ -16,6 +18,7 @@ import { ApiResponse } from '../../../../../models/apiresponse';
 import { UsuarioModel } from '../../../../../models/usuario-model';
 import { mensajesUtil } from '../../../../../utils/mensajes.util';
 import { LoaderComponent } from '../../../../../layouts/loader/loader.component';
+import { forkJoin } from 'rxjs';
 
 /**
  * @version 1.0.1
@@ -41,24 +44,27 @@ export class RolesComponent implements OnInit {
   private readonly provinciaService = inject(ProvinciaService);
   private readonly usuarioService = inject(UsuarioService);
   private readonly usuarioRolService = inject(UsuarioRolService);
+  private readonly usuarioProvinciaService = inject(UsuarioProvinciaService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly fb = inject(FormBuilder);
   private readonly messageService = inject(MessageService);
+  private readonly destroyRef = inject(DestroyRef);
 
   idUsuario = model.required<string>();
   roles: Rol[] = [];
   rolesUsuario: number[] = [];
-  provincias: Provincia[] = [];
-  provinciasUsuario: number[] = [];
+  todasLasProvincias: Provincia[] = [];
+  provinciasDisponibles: Provincia[] = [];
+  provinciasSeleccionadas: Provincia[] = [];
+  provinciasDisponiblesElegidas: Provincia[] = [];
+  provinciasSeleccionadasElegidas: Provincia[] = [];
   cargandoRoles = false;
   cargandoProvincias = false;
   guardando = false;
   rolesCargados = false;
   provinciasCargadas = false;
 
-  form: FormGroup = this.fb.group({
-    provinciasUsuario: [[]]
-  });
+  form: FormGroup = this.fb.group({});
 
   ngOnInit(): void {
     this.cargarRolesUsuario();
@@ -67,7 +73,9 @@ export class RolesComponent implements OnInit {
   }
 
   private cargarRolesUsuario(): void {
-    this.usuarioService.get(this.idUsuario()).subscribe({
+    this.usuarioService.get(this.idUsuario())
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponse<UsuarioModel>) => {
         const usuario = response.data ?? null;
         this.rolesUsuario = (usuario?.roles ?? []).map(rol => rol.id);
@@ -82,7 +90,9 @@ export class RolesComponent implements OnInit {
   private cargarRoles(): void {
     this.cargandoRoles = true;
 
-    this.rolService.getAll().subscribe({
+    this.rolService.getAll()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         this.roles = response.data || [];
         this.rolesCargados = true;
@@ -101,9 +111,20 @@ export class RolesComponent implements OnInit {
   private cargarProvincias(): void {
     this.cargandoProvincias = true;
 
-    this.provinciaService.getAll({ activo: true }).subscribe({
-      next: (respose: ApiResponseWrapper<Provincia[]>) => {
-        this.provincias = respose.data || [];
+    forkJoin({
+      provincias: this.provinciaService.getAll({ activo: true }),
+      asignadas: this.usuarioProvinciaService.getByUsuario(Number(this.idUsuario()))
+    })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+      next: ({ provincias, asignadas }) => {
+        this.todasLasProvincias = provincias.data || [];
+
+        const idsAsignados = new Set((asignadas.data || []).map(a => a.provinciaId));
+
+        this.provinciasSeleccionadas = this.todasLasProvincias.filter(p => idsAsignados.has(p.id));
+        this.provinciasDisponibles = this.todasLasProvincias.filter(p => !idsAsignados.has(p.id));
+
         this.provinciasCargadas = true;
         this.cargandoProvincias = false;
         this.cdr.detectChanges();
@@ -115,6 +136,30 @@ export class RolesComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  moverAseleccionadas(): void {
+    this.provinciasSeleccionadas = [...this.provinciasSeleccionadas, ...this.provinciasDisponiblesElegidas];
+    this.provinciasDisponibles = this.provinciasDisponibles.filter(p => !this.provinciasDisponiblesElegidas.includes(p));
+    this.provinciasDisponiblesElegidas = [];
+  }
+
+  moverTodasASeleccionadas(): void {
+    this.provinciasSeleccionadas = [...this.provinciasSeleccionadas, ...this.provinciasDisponibles];
+    this.provinciasDisponibles = [];
+    this.provinciasDisponiblesElegidas = [];
+  }
+
+  moverADisponibles(): void {
+    this.provinciasDisponibles = [...this.provinciasDisponibles, ...this.provinciasSeleccionadasElegidas];
+    this.provinciasSeleccionadas = this.provinciasSeleccionadas.filter(p => !this.provinciasSeleccionadasElegidas.includes(p));
+    this.provinciasSeleccionadasElegidas = [];
+  }
+
+  moverTodasADisponibles(): void {
+    this.provinciasDisponibles = [...this.provinciasDisponibles, ...this.provinciasSeleccionadas];
+    this.provinciasSeleccionadas = [];
+    this.provinciasSeleccionadasElegidas = [];
   }
 
   tieneRol(rolId: number): boolean {
@@ -144,16 +189,29 @@ export class RolesComponent implements OnInit {
   }
 
   guardar(): void {
+    if (this.provinciasSeleccionadas.length === 0) {
+      mensajesUtil(this.messageService, 'error', 'error');
+      return;
+    }
+
     this.guardando = true;
 
-    this.usuarioRolService.asignarRoles(Number(this.idUsuario()), this.rolesUsuario).subscribe({
+    const idUsuario = Number(this.idUsuario());
+    const provinciaIds = this.provinciasSeleccionadas.map(p => p.id);
+
+    forkJoin({
+      roles: this.usuarioRolService.asignarRoles(idUsuario, this.rolesUsuario),
+      provincias: this.usuarioProvinciaService.asignarProvincias(idUsuario, provinciaIds)
+    })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         mensajesUtil(this.messageService, 'success', 'update');
         this.guardando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al guardar los roles', err);
+        console.error('Error al guardar los roles/provincias', err);
         mensajesUtil(this.messageService, 'error', 'error');
         this.guardando = false;
         this.cdr.detectChanges();

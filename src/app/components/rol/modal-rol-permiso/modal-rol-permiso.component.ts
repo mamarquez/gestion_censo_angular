@@ -1,4 +1,15 @@
-import { ChangeDetectorRef, Component, effect, EventEmitter, inject, input, model, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  effect,
+  EventEmitter,
+  inject,
+  input,
+  model,
+  Output
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
 import { Button } from 'primeng/button';
@@ -29,8 +40,10 @@ export class ModalRolPermisoComponent {
   private readonly tipoRolService = inject(TipoRolService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
+  private readonly destroyRef = inject(DestroyRef);
 
   idRol = input.required<number>();
+  idsTipoRolAsignados = input<number[]>([]);
   modalVisible = model<boolean>(false);
   @Output() guardado = new EventEmitter<void>();
 
@@ -48,10 +61,7 @@ export class ModalRolPermisoComponent {
       if (this.modalVisible()) {
         this.modalForm.setValue({ tipoRol: null });
         this.tipoSeleccionado = null;
-
-        if (this.tiposDisponibles.length === 0) {
-          this.cargarTiposDisponibles();
-        }
+        this.cargarTiposDisponibles();
       }
     });
   }
@@ -59,18 +69,21 @@ export class ModalRolPermisoComponent {
   private cargarTiposDisponibles(): void {
     this.cargandoTipos = true;
 
-    this.tipoRolService.getAll().subscribe({
-      next: (response) => {
-        this.tiposDisponibles = response.data || [];
-        this.cargandoTipos = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al cargar los tipos de permiso', err);
-        this.cargandoTipos = false;
-        this.cdr.detectChanges();
-      }
-    });
+    this.tipoRolService.getAll()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          const asignados = new Set(this.idsTipoRolAsignados());
+          this.tiposDisponibles = (response.data || []).filter(tipo => !asignados.has(tipo.id));
+          this.cargandoTipos = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error al cargar los tipos de permiso', err);
+          this.cargandoTipos = false;
+          this.cdr.detectChanges();
+        }
+      });
   }
 
   seleccionarTipo(event: any): void {
@@ -90,19 +103,21 @@ export class ModalRolPermisoComponent {
 
     this.guardando = true;
 
-    this.service.crear(this.idRol(), this.modalForm.value.tipoRol).subscribe({
-      next: () => {
-        mensajesUtil(this.messageService, 'success', 'add');
-        this.guardando = false;
-        this.cerrarModal();
-        this.guardado.emit();
-      },
-      error: (err) => {
-        console.error('Error al asignar el permiso', err);
-        mensajesUtil(this.messageService, 'error', 'error');
-        this.guardando = false;
-        this.cdr.detectChanges();
-      }
-    });
+    this.service.crear(this.idRol(), this.modalForm.value.tipoRol)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'add');
+          this.guardando = false;
+          this.cerrarModal();
+          this.guardado.emit();
+        },
+        error: (err) => {
+          console.error('Error al asignar el permiso', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.guardando = false;
+          this.cdr.detectChanges();
+        }
+      });
   }
 }

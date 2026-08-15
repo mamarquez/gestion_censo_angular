@@ -5,5 +5,4 @@ export class RolPermisoModel {
   id!: number;
   rol!: Rol;
   tipoRol!: TipoRolModel;
-
 }

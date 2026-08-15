@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, effect, EventEmitter, inject, input, model, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, effect, EventEmitter, inject, input, model, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Dialog } from 'primeng/dialog';
 import { Button } from 'primeng/button';
@@ -34,6 +35,7 @@ export class ModalCaracteristicaComponent {
   private readonly medidaService = inject(MedidaService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
+  private readonly destroyRef = inject(DestroyRef);
 
   idInstalacion = input<string>('');
   modalVisible = model<boolean>(false);
@@ -82,7 +84,9 @@ export class ModalCaracteristicaComponent {
   private cargarCaracteristicasDisponibles(): void {
     this.cargandoCaracteristicas = true;
 
-    this.caracteristicaService.getAll({ activo: true }).subscribe({
+    this.caracteristicaService.getAll({ activo: true })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         this.caracteristicasDisponibles = response.data || [];
         this.cargandoCaracteristicas = false;
@@ -99,7 +103,9 @@ export class ModalCaracteristicaComponent {
   private cargarMedidasDisponibles(): void {
     this.cargandoMedidas = true;
 
-    this.medidaService.getAll({ activo: true }).subscribe({
+    this.medidaService.getAll({ activo: true })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         this.medidasDisponibles = response.data || [];
         this.cargandoMedidas = false;
@@ -145,7 +151,9 @@ export class ModalCaracteristicaComponent {
       visible: this.modalForm.value.visible
     };
 
-    this.service.crear(datos).subscribe({
+    this.service.crear(datos)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',

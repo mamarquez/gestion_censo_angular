@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TableModule } from 'primeng/table';
 import { NivelEnergetico } from '../../../models/nivelenergetico';
 import { NivelEnergeticoService } from '../../../services/nivelenergetico.service';
@@ -36,6 +37,7 @@ export class NivelEnergeticoComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
 
   nivelEnergetico: NivelEnergetico | any = null;
   nivelesEnergeticos: NivelEnergetico[] = [];
@@ -62,7 +64,9 @@ export class NivelEnergeticoComponent implements OnInit {
     const filtros = this.form.value;
     this.cargando = true;
 
-    this.service.getAll(filtros).subscribe({
+    this.service.getAll(filtros)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
           this.nivelesEnergeticos = response.data;
@@ -83,7 +87,9 @@ export class NivelEnergeticoComponent implements OnInit {
   }
 
   cargar(): void {
-    this.service.getAll().subscribe({
+    this.service.getAll()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         this.nivelesEnergeticos = response.data || [];
         this.cargando = false;
@@ -104,7 +110,9 @@ export class NivelEnergeticoComponent implements OnInit {
   cambiarEstado(id: number): void {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarEstado(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const nivelEnergetico = this.nivelesEnergeticos.find(p => p.id === id);
         if (nivelEnergetico) {
@@ -134,7 +142,9 @@ export class NivelEnergeticoComponent implements OnInit {
   }
 
   editar(id: string) {
-    this.service.get(id).subscribe({
+    this.service.get(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponseWrapper<NivelEnergetico>) => {
         this.nivelEnergetico = response.data || [];
 
@@ -154,7 +164,9 @@ export class NivelEnergeticoComponent implements OnInit {
   private borrarRegistro(id: number): void {
     this.cargando = true;
 
-    this.service.borrarRegistro(id).subscribe({
+    this.service.borrarRegistro(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.nivelesEnergeticos = this.nivelesEnergeticos.filter(p => p.id !== id);
         this.messageService.add({
@@ -193,7 +205,9 @@ export class NivelEnergeticoComponent implements OnInit {
 
       console.log(datos);
 
-      this.service.updateRegistro(datos).subscribe({
+      this.service.updateRegistro(datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
         next: () => {
 
           this.messageService.add({
@@ -220,7 +234,9 @@ export class NivelEnergeticoComponent implements OnInit {
         }
       });
     } else {
-      this.service.addRegistro(datos).subscribe({
+      this.service.addRegistro(datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
         next: () => {
 
           this.messageService.add({

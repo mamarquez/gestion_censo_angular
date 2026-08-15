@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -31,6 +32,7 @@ export class EditInstalacionDeportivaComponent implements OnInit {
   private readonly service = inject(InstalacionEspacioDeportivoService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
+  private readonly destroyRef = inject(DestroyRef);
 
   @Output() cargandoChange = new EventEmitter<boolean>();
 
@@ -59,7 +61,9 @@ export class EditInstalacionDeportivaComponent implements OnInit {
     this.cargando = true;
     this.cargandoChange.emit(true);
 
-    this.service.get(id).subscribe({
+    this.service.get(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponse<InstalacionEspacioDeportivo>) => {
         this.espacioDeportivo = response.data ?? null;
 

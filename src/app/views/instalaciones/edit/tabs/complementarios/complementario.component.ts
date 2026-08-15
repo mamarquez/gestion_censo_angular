@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, EventEmitter, inject, input, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -41,6 +42,7 @@ export class ComplementarioComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
 
   @Output() cargandoChange = new EventEmitter<boolean>();
 
@@ -72,7 +74,9 @@ export class ComplementarioComponent implements OnInit {
     this.cargandoChange.emit(true);
     this.cdr.detectChanges();
 
-    this.service.getAll({ idInstalacion: id }).subscribe({
+    this.service.getAll({ idInstalacion: id })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponseWrapper<InstalacionEspacioComplementario[]>) => {
         this.espaciosComplementarios = response.data ?? [];
 
@@ -106,7 +110,9 @@ export class ComplementarioComponent implements OnInit {
     const filtros = this.form.value;
     this.cargando = true;
 
-    this.service.getAll(filtros).subscribe({
+    this.service.getAll(filtros)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
           this.espaciosComplementarios = response.data;
@@ -136,7 +142,9 @@ export class ComplementarioComponent implements OnInit {
       activo: true
     };
 
-    this.service.crear(datos).subscribe({
+    this.service.crear(datos)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         mensajesUtil(this.messageService, 'success', 'add');
         this.guardando = false;
@@ -154,7 +162,9 @@ export class ComplementarioComponent implements OnInit {
   cambiarEstado(id: number) {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarEstado(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const espacioComplementario = this.espaciosComplementarios.find(p => p.id === id);
         if (espacioComplementario) {
@@ -177,7 +187,9 @@ export class ComplementarioComponent implements OnInit {
   cambiarVisible(id: number) {
     this.cargando = true;
 
-    this.service.cambiarVisible(id).subscribe({
+    this.service.cambiarVisible(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const espacioComplementario = this.espaciosComplementarios.find(p => p.id === id);
         if (espacioComplementario) {
@@ -207,7 +219,9 @@ export class ComplementarioComponent implements OnInit {
   }
 
   private borrarRegistro(id: number): void {
-    this.service.borrarRegistro(id).subscribe({
+    this.service.borrarRegistro(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.espaciosComplementarios = this.espaciosComplementarios.filter(t => t.id !== id);
         mensajesUtil(this.messageService, 'success', 'delete');

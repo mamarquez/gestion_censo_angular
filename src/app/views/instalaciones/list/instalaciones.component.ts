@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { Instalacion } from '../../../models/instalacion';
@@ -39,6 +40,7 @@ export class ListInstalacionesComponent implements OnInit {
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   instalaciones: Instalacion [] = [];
   cargando: boolean = true;
@@ -63,7 +65,9 @@ export class ListInstalacionesComponent implements OnInit {
     const filtros = this.form.value;
     this.cargando = true;
 
-    this.service.getAll(filtros).subscribe({
+    this.service.getAll(filtros)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         if (response && Array.isArray(response.data)) {
           this.instalaciones = response.data;
@@ -84,7 +88,9 @@ export class ListInstalacionesComponent implements OnInit {
   }
 
   cargar(): void {
-    this.service.getAll().subscribe({
+    this.service.getAll()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response) => {
         this.instalaciones = response.data || [];
         this.cargando = false;
@@ -110,7 +116,9 @@ export class ListInstalacionesComponent implements OnInit {
   cambiarVisible(id: number): void {
     this.cargando = true;
 
-    this.service.cambiarVisible(id).subscribe({
+    this.service.cambiarVisible(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const instalacion = this.instalaciones.find(p => p.id === id);
         if (instalacion) {
@@ -137,7 +145,9 @@ export class ListInstalacionesComponent implements OnInit {
   cambiarEstado(id: number): void {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarEstado(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const instalacion = this.instalaciones.find(p => p.id === id);
         if (instalacion) {
@@ -169,7 +179,9 @@ export class ListInstalacionesComponent implements OnInit {
   private borrarRegistro(id: number) {
     this.cargando = true;
 
-    this.service.borrarRegistro(id).subscribe({
+    this.service.borrarRegistro(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.instalaciones = this.instalaciones.filter(p => p.id !== id);
         mensajesUtil(this.messageService, 'success', 'delete');

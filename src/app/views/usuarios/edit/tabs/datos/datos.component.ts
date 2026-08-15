@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, inject, model, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, model, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Button } from 'primeng/button';
 import { Fieldset } from 'primeng/fieldset';
 import { Fluid } from 'primeng/fluid';
@@ -28,6 +29,7 @@ export class DatosComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly fb = inject(FormBuilder);
   private readonly messageService = inject(MessageService);
+  private readonly destroyRef = inject(DestroyRef);
 
   idUsuario = model.required<string>();
 
@@ -56,7 +58,9 @@ export class DatosComponent implements OnInit {
   }
 
   private cargarDatos(id: string): void {
-    this.service.get(id).subscribe({
+    this.service.get(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponse<UsuarioModel>) => {
         const usuario = response.data ?? null;
 
@@ -93,7 +97,9 @@ export class DatosComponent implements OnInit {
       // roles: this.rolesUsuario.map(id => ({ id }))
     };
 
-    this.service.update(this.idUsuario(), datos).subscribe({
+    this.service.update(this.idUsuario(), datos)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se han guardado los cambios' });
         this.guardando = false;

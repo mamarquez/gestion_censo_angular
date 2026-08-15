@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, model, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, EventEmitter, inject, model, OnInit, Output } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -38,6 +39,7 @@ export class DatosCaracteristicaComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
+  private readonly destroyRef = inject(DestroyRef);
 
   @Output() cargandoChange = new EventEmitter<boolean>();
 
@@ -64,7 +66,9 @@ export class DatosCaracteristicaComponent implements OnInit {
     this.cargandoChange.emit(true);
     this.cdr.detectChanges();
 
-    this.service.getAll({ idInstalacion: this.idInstalacion() }).subscribe({
+    this.service.getAll({ idInstalacion: this.idInstalacion() })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponse<InstalacionCaracteristica[]>) => {
         this.caracteristicas = response.data ?? [];
 
@@ -101,7 +105,9 @@ export class DatosCaracteristicaComponent implements OnInit {
   cambiarEstado(id: number) {
     this.cargando = true;
 
-    this.service.cambiarEstado(id).subscribe({
+    this.service.cambiarEstado(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const caracteristica = this.caracteristicas.find(p => p.id === id);
         if (caracteristica) {
@@ -124,7 +130,9 @@ export class DatosCaracteristicaComponent implements OnInit {
   cambiarVisible(id: number) {
     this.cargando = true;
 
-    this.service.cambiarVisible(id).subscribe({
+    this.service.cambiarVisible(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         const caracteristica = this.caracteristicas.find(p => p.id === id);
         if (caracteristica) {
@@ -154,7 +162,9 @@ export class DatosCaracteristicaComponent implements OnInit {
   }
 
   private borrarRegistro(id: number): void {
-    this.service.borrarRegistro(id).subscribe({
+    this.service.borrarRegistro(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: () => {
         this.caracteristicas = this.caracteristicas.filter(t => t.id !== id);
         this.messageService.add({ severity: 'success', summary: 'Eliminado', detail: 'Se ha borrado correctamente' });
