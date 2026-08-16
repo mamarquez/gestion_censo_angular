@@ -8,10 +8,12 @@ import { TableModule } from 'primeng/table';
 import { InstalacionRuta } from '../../../../../models/instalacionRuta';
 import { Router } from '@angular/router';
 import { InstalacionRutaService } from '../../../../../services/instalacionRuta.service';
+import { InstalacionRutaCoordenadaService } from '../../../../../services/instalacionRutaCoordenada.service';
 import { DialogService } from '../../../../../services/dialog.service';
 import { ApiResponseWrapper } from '../../../../../interface/api-response-wrapper.interface';
 import { Truncar } from '../../../../../pipe/trucar.pipe';
 import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acciones-tabla.component';
+import { MapaRutaComponent, PuntoRuta } from '../../../../../components/mapa-ruta/mapa-ruta.component';
 
 @Component({
   standalone: true,
@@ -23,7 +25,8 @@ import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acci
     PrimeTemplate,
     TableModule,
     Truncar,
-    AccionesTablaComponent
+    AccionesTablaComponent,
+    MapaRutaComponent
   ],
   templateUrl: './rutas.component.html'
 })
@@ -32,6 +35,7 @@ export class RutasComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
   private readonly service = inject(InstalacionRutaService);
+  private readonly coordenadaService = inject(InstalacionRutaCoordenadaService);
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly messageService = inject(MessageService);
   private readonly dialog = inject(DialogService);
@@ -43,6 +47,10 @@ export class RutasComponent implements OnInit {
   rutas: InstalacionRuta [] = [];
   cargando = false;
   guardando = false;
+
+  puntosPorRuta: Record<number, PuntoRuta[]> = {};
+  cargandoPuntos: Record<number, boolean> = {};
+  expandedRowKeys: Record<string, boolean> = {};
 
   form: FormGroup = this.fb.group({
     idInstalacion: [''],
@@ -128,8 +136,42 @@ export class RutasComponent implements OnInit {
     });
   }
 
+  nuevo(): void {
+    this.router.navigate(['/instalacionesrutas', 'nuevo'], {
+      queryParams: { idInstalacion: this.idInstalacion() }
+    });
+  }
+
   editar(id: number): void {
     this.router.navigate(['/instalacionesrutas', id]);
+  }
+
+  cargarPuntosRuta(ruta: InstalacionRuta): void {
+    if (!ruta.id || this.puntosPorRuta[ruta.id]) {
+      return;
+    }
+
+    this.cargandoPuntos[ruta.id] = true;
+
+    this.coordenadaService.getAll({ idRuta: ruta.id })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+      next: (response) => {
+        this.puntosPorRuta[ruta.id as number] = (response.data ?? []).map(c => ({
+          id: c.id,
+          x: c.x,
+          y: c.y
+        }));
+        this.cargandoPuntos[ruta.id as number] = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cargar las coordenadas de la ruta', err);
+        this.puntosPorRuta[ruta.id as number] = [];
+        this.cargandoPuntos[ruta.id as number] = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   cambiarEstado(id: number) {

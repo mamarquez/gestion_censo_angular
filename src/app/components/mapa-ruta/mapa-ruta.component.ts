@@ -19,6 +19,7 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('mapaContenedor', { static: true }) private mapaContenedor!: ElementRef<HTMLDivElement>;
 
   puntosIniciales = input<PuntoRuta[]>([]);
+  soloLectura = input<boolean>(false);
   rutaCambiada = output<PuntoRuta[]>();
 
   private mapa!: L.Map;
@@ -89,9 +90,11 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
       opacity: 1
     }).addTo(this.mapa);
 
-    this.mapa.on('click', (event: L.LeafletMouseEvent) => {
-      this.agregarPunto(event.latlng, true);
-    });
+    if (!this.soloLectura()) {
+      this.mapa.on('click', (event: L.LeafletMouseEvent) => {
+        this.agregarPunto(event.latlng, true);
+      });
+    }
   }
 
   private agregarPunto(latlng: L.LatLng, emitir: boolean, id?: number): void {
@@ -114,7 +117,9 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
       className: 'mapa-ruta-tooltip-punto'
     });
 
-    this.habilitarArrastre(marcador);
+    if (!this.soloLectura()) {
+      this.habilitarArrastre(marcador);
+    }
 
     this.marcadores.push(marcador);
 

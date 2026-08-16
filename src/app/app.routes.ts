@@ -225,6 +225,7 @@ export const routes: Routes = [
       {
         path: 'instalacionesrutas',
         children: [
+          { path: 'nuevo', component: EditInstalacionRutaComponent },
           { path: ':id', component: EditInstalacionRutaComponent }
         ]
       },

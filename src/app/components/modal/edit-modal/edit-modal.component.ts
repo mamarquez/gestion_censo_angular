@@ -101,7 +101,7 @@ export class EditModalComponent {
     dc: [null],
     ine: [null],
     codigo: [null],
-    nombre: [null, Validators.required],
+    nombre: [null],
     descripcion: [null],
     valor: [null],
     mostrar: [null],
@@ -124,20 +124,26 @@ export class EditModalComponent {
 
       this.form.reset();
 
-      this.form.get('nombre')?.setValidators([
-        Validators.required,
-        Validators.maxLength(this.maxValores().nombre ?? 255)
-      ]);
+      if (this.camposMostrar().nombre) {
+        this.form.get('nombre')?.setValidators([
+          Validators.required,
+          Validators.maxLength(this.maxValores().nombre ?? 255)
+        ]);
+      } else {
+        this.form.get('nombre')?.clearValidators();
+      }
       this.form.get('nombre')?.updateValueAndValidity();
 
       if (datos) {
         this.form.patchValue({
           ...datos,
+          idInstalacion: datos.idInstalacion ?? this.idInstalacion(),
           tipoGestor: datos.tipoGestor?.id ?? null
         });
       } else {
         this.form.reset({
           id: null,
+          idInstalacion: this.idInstalacion(),
           ine: null,
           cpro: null,
           cmun: null,

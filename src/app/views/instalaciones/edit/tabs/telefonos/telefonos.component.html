@@ -2,14 +2,13 @@
   [titulo]='"Telefono"'
   [(isVisible)]="modalVisible"
   [datos]='telefono'
+  [idInstalacion]="idInstalacion() ?? ''"
   [camposMostrar]='{
     idInstalacion: true,
     numero: true,
     contacto: true,
     notas: true,
-    nombre: false,
-    visible: true,
-    activo: false
+    visible: true
   }'
   (guardar)="guardar($event)"
 />
@@ -84,4 +83,4 @@
 
 </p-table>
 
-<p-toast />
+<p-toast [life]='1500'></p-toast>

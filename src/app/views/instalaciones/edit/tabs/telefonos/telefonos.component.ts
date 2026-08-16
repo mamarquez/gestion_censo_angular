@@ -55,6 +55,7 @@ export class DatosTelefonosComponent implements OnInit {
   }
 
   abrirModal(): void {
+    this.telefono = null;
     this.modalVisible = true;
   }
 

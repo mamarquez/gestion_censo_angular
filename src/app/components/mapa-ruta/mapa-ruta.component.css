@@ -1,3 +1,8 @@
+:host {
+  display: block;
+  height: 400px;
+}
+
 ::ng-deep .mapa-ruta-tooltip-punto {
   background: #e11d48;
   color: #ffffff;
