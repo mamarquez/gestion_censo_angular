@@ -85,7 +85,8 @@ export class PerfilComponent {
             apellido2: usuario.apellido2 ?? '',
             email: usuario.email,
             descripcion: usuario.descripcion ?? '',
-            activo: usuario.activo
+            activo: usuario.activo,
+            avatar: usuario.avatar ?? null
           });
         }
 

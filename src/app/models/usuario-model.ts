@@ -10,6 +10,7 @@ export interface UsuarioModel {
   descripcion?: string;
   activo: boolean;
   email: string;
+  avatar?: string | null;
   ultimo_acceso?: Date;
   roles: Rol[];
 }
