@@ -14,7 +14,9 @@ export const AUTH = {
     RESET_PASSWORD: '/auth/reset-password',
     CHANGE_PASSWORD: '/auth/change-password',
     ACCESS_DENIED: '/auth/access-denied',
-    SESSION_EXPIRED: '/auth/session-expired'
+    SESSION_EXPIRED: '/auth/session-expired',
+    SERVER_ERROR: '/500',
+    NOT_FOUND: '/404'
   },
 
   PUBLIC_ENDPOINTS: [

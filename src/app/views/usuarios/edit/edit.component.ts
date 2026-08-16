@@ -50,10 +50,6 @@ export class EditUsuarioComponent implements OnInit {
     }
   }
 
-  usuarioCreado(id: string): void {
-    this.idUsuario.set(id);
-  }
-
   seleccionarTab(tab: 'datos' | 'roles'): void {
     this.tabActiva = tab;
   }

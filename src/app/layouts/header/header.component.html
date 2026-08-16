@@ -34,7 +34,7 @@
         @if (isDropdownOpen) {
         <ul class="dropdown-menu-angular" style="position: absolute; right: 0; top: 100%; margin-top: 0.5rem;">
             <li>
-                <a tabindex="-1" routerLink="/mis-datos" (click)="closeDropdown()">
+                <a tabindex="-1" [routerLink]="['usuarios/perfil']" (click)="closeDropdown()">
                     <i class="si si-user"></i> Perfil
                 </a>
             </li>

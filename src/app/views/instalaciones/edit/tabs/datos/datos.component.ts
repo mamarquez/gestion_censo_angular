@@ -8,7 +8,7 @@ import { DialogService } from '../../../../../services/dialog.service';
 import { Instalacion } from '../../../../../models/instalacion';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiResponse } from '../../../../../models/apiresponse';
 import { SelectModule } from 'primeng/select';
 import { Provincia } from '../../../../../models/provincia';
@@ -39,6 +39,7 @@ import { InputText } from 'primeng/inputtext';
 export class DatosComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
   private readonly service = inject(InstalacionService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -115,13 +116,19 @@ export class DatosComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar instalación', err);
+        this.cargando = false;
+        this.cargandoChange.emit(false);
+
+        if (err.status === 404) {
+          this.router.navigateByUrl('/no-encontrado', { skipLocationChange: true });
+          return;
+        }
+
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
           detail: 'Error al cargar datos de instalaciones'
         });
-        this.cargando = false;
-        this.cargandoChange.emit(false);
         this.cdr.detectChanges();
       }
     });

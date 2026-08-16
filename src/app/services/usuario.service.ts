@@ -41,8 +41,8 @@ export class UsuarioService {
    * Crea un nuevo usuario
    * @param usuario Datos del nuevo usuario
    */
-  add(usuario: Partial<UsuarioModel>): Observable<ApiResponseWrapper<UsuarioModel>> {
-    return this.http.post<ApiResponseWrapper<UsuarioModel>>(`${this.api}`, usuario, { headers: this.headers });
+  add(usuario: Partial<UsuarioModel>): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.post<ApiResponseWrapper<boolean>>(`${this.api}`, usuario, { headers: this.headers });
   }
 
   /**
@@ -50,23 +50,32 @@ export class UsuarioService {
    * @param id Id del registro
    * @param usuario Datos a actualizar
    */
-  update(id: string, usuario: Partial<UsuarioModel>): Observable<ApiResponseWrapper<UsuarioModel>> {
-    return this.http.put<ApiResponseWrapper<UsuarioModel>>(`${this.api}/${id}`, usuario, { headers: this.headers });
+  update(id: string, usuario: Partial<UsuarioModel>): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, usuario, { headers: this.headers });
+  }
+
+  /**
+   * Actualiza los datos de un perfil de usuario
+   * @param id Id del registro
+   * @param usuario Datos a actualizar
+   */
+  updatePerfil(id: number, datos: any): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/perfil/${id}`, datos, { headers: this.headers });
   }
 
   /**
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: string): Observable<ApiResponseWrapper<UsuarioModel>> {
-    return this.http.patch<ApiResponseWrapper<UsuarioModel>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: string): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.patch<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: string): Observable<ApiResponseWrapper<UsuarioModel>> {
-    return this.http.delete<ApiResponseWrapper<UsuarioModel>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: string): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.delete<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

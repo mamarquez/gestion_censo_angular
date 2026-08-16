@@ -90,7 +90,7 @@ export class AuthService {
 
   getUser(): LoginResponse | null {
 
-    const user = localStorage.getItem(AUTH.USER);
+    const user = sessionStorage.getItem(AUTH.USER);
 
     return user
       ? JSON.parse(user)

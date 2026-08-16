@@ -18,7 +18,7 @@ export class HeaderComponent {
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
-    // Si clicas fuera del wrapper, se cierra
+
     if (!target.closest('.avatar-dropdown-wrapper')) {
       this.isDropdownOpen = false;
     }

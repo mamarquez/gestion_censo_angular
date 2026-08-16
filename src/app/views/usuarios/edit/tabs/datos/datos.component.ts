@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, DestroyRef, inject, model, OnInit, output } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, model, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Button } from 'primeng/button';
 import { Fieldset } from 'primeng/fieldset';
@@ -35,7 +35,6 @@ export class DatosComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   idUsuario = model<string>('');
-  usuarioCreado = output<string>();
 
   get esEdicion(): boolean {
     return !!this.idUsuario();
@@ -118,16 +117,11 @@ export class DatosComponent implements OnInit {
     this.service.add(datos)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response: ApiResponse<UsuarioModel>) => {
+      next: () => {
         mensajesUtil(this.messageService, 'success', 'add');
         this.guardando = false;
-
-        const id = response.data?.id;
-        if (id) {
-          this.usuarioCreado.emit(id);
-        }
-
         this.cdr.detectChanges();
+        this.router.navigate(['/usuarios']);
       },
       error: (err) => {
         console.error('Error al crear usuario', err);

@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
+import { SessionExpiredComponent } from './session-expired/session-expired.component';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
 export const AUTH_ROUTES: Routes = [
   {
@@ -7,13 +9,16 @@ export const AUTH_ROUTES: Routes = [
     component: LoginComponent
   },
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
+    path: 'session-expired',
+    component: SessionExpiredComponent
   },
   {
-    path: 'usuarios',
-    redirectTo: 'usuarios',
+    path: 'access-denied',
+    component: AccessDeniedComponent
+  },
+  {
+    path: '',
+    redirectTo: 'login',
     pathMatch: 'full'
   }
 ];

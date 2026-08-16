@@ -49,6 +49,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           router.navigateByUrl(AUTH.ROUTES.ACCESS_DENIED);
           break;
 
+        case 500:
+        case 502:
+        case 503:
+        case 504:
+        case 0:
+          router.navigateByUrl(AUTH.ROUTES.SERVER_ERROR);
+          break;
       }
 
       return throwError(() => error);

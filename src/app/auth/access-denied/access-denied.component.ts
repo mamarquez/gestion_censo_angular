@@ -3,9 +3,9 @@ import { ErrorPageComponent } from '../../views/errors/error-page/error-page.com
 
 @Component({
   standalone: true,
-  selector: 'app-session-expired',
+  selector: 'app-access-denied',
   imports: [ErrorPageComponent],
-  templateUrl: './session-expired.component.html'
+  templateUrl: './access-denied.component.html'
 })
-export class SessionExpiredComponent {
+export class AccessDeniedComponent {
 }

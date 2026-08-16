@@ -1,0 +1,74 @@
+:host {
+  display: block;
+  font-family: 'Open Sans', 'Montserrat', 'Source Sans Pro', sans-serif;
+}
+
+.error-page {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.error-card {
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+}
+
+.error-icon {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  background: #eef3f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-icon i {
+  font-size: 2.5rem;
+  color: #44b4a6;
+}
+
+.error-codigo {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #44b4a6;
+  text-transform: uppercase;
+}
+
+.error-titulo {
+  margin: 0 0 0.75rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.error-mensaje {
+  margin: 0 0 2rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.error-acciones {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .error-card {
+    max-width: 100%;
+  }
+
+  .error-titulo {
+    font-size: 1.4rem;
+  }
+}

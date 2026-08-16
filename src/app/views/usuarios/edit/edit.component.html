@@ -13,7 +13,7 @@
 
     <div class="tab-content">
       @if (tabActiva === 'datos') {
-        <app-datos [(idUsuario)]="idUsuario" (usuarioCreado)="usuarioCreado($event)" />
+        <app-datos [(idUsuario)]="idUsuario" />
       } @else if (tabActiva === 'roles' && esEdicion) {
         <app-roles [(idUsuario)]="idUsuario" />
       }

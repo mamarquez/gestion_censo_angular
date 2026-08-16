@@ -32,7 +32,6 @@ import { EditInstalacionComponent } from './views/instalaciones/edit/editInstala
 import {
   EditInstalacionDeportivaComponent
 } from './views/instalaciones/edit/tabs/deportivos/edit-espacio-deportivo/edit-instalacion-deportiva.component';
-import { GeoPosicionComponent } from './views/instalaciones/edit/tabs/geoposicion/geoposicion.component';
 import { EspacioDeportivoComponent } from './views/espaciosdeportivos/list/espaciodeportivo.component';
 import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/list/espaciocomplementario.component';
 import { RolFormComponent } from './views/roles/form/rol-form.component';
@@ -40,6 +39,10 @@ import {
   EditInstalacionRutaComponent
 } from './views/instalaciones/edit/tabs/rutas/edit-instalacion-ruta/edit-instalacion-ruta.component';
 import { MapaRutaComponent } from './components/mapa-ruta/mapa-ruta.component';
+import { PerfilComponent } from './views/usuarios/perfil/perfil.component';
+import { NotFoundComponent } from './views/errors/not-found/not-found.component';
+import { ForbiddenComponent } from './views/errors/forbidden/forbidden.component';
+import { ServerErrorComponent } from './views/errors/server-error/server-error.component';
 
 /**
  * @version 2.0.0
@@ -48,7 +51,7 @@ import { MapaRutaComponent } from './components/mapa-ruta/mapa-ruta.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'auth/login',
     pathMatch: 'full'
   },
   /*
@@ -60,6 +63,10 @@ export const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.routes').then(m => m.AUTH_ROUTES)
+  },
+  {
+    path: '500',
+    component: ServerErrorComponent
   },
   {
     path: '',
@@ -85,6 +92,7 @@ export const routes: Routes = [
         children: [
           { path: '', component: UsuarioComponent },
           { path: 'nuevo', component: EditUsuarioComponent },
+          { path: 'perfil', component: PerfilComponent },
           { path: ':id', component: EditUsuarioComponent }
         ]
       },
@@ -198,10 +206,6 @@ export const routes: Routes = [
         component: EstadoUsoComponent
       },
       {
-        path: 'caracteristicas',
-        component: CaracteristicaComponent
-      },
-      {
         path: 'espacioscomplementarios',
         component: EspacioComplementarioCompoment
       },
@@ -211,10 +215,6 @@ export const routes: Routes = [
           { path: '', component: EspacioDeportivoComponent },
           { path: ':id', component: EspacioDeportivoComponent }
         ]
-      },
-      {
-        path: 'geoposiciones',
-        component: GeoPosicionComponent
       },
       {
         path: 'instalacionesespacios',
@@ -234,11 +234,23 @@ export const routes: Routes = [
         children: [
           { path: '', component: MapaRutaComponent }
         ]
+      },
+      {
+        path: 'error/403',
+        component: ForbiddenComponent
+      },
+      {
+        path: 'error/500',
+        component: ServerErrorComponent
+      },
+      {
+        path: 'no-encontrado',
+        component: NotFoundComponent
       }
     ]
   },
   {
     path: '**',
-    redirectTo: 'login'
+    component: NotFoundComponent
   }
 ];

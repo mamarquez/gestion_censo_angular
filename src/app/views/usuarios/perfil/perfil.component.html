@@ -1,0 +1,87 @@
+<div class="tab-content">
+  <!--
+    @if (cargando) {
+      <app-loader />
+    } @else {
+    -->
+    <form [formGroup]='form' (ngSubmit)='guardar()'>
+
+      <input id='id' type='number' formControlName='id' readonly hidden />
+
+      <p-fieldset legend="Datos personales">
+        <p-fluid>
+
+          <div class='fields-row'>
+            <div class='field col-4'>
+              <label for='username'>Usuario</label>
+              <input id='username' type='text' pInputText formControlName='nombreUsuario' />
+            </div>
+
+            <div class='field col-5'>
+              <label for='email'>Email</label>
+              <input id='email' type='email' pInputText formControlName='email' />
+            </div>
+
+            <div class='field field-checkbox col-2' style='margin-top: 12%'>
+              <label class="switch-native {{ form.value.activo ? 'verde' : 'rojo' }}">
+                  <input id='activo' type='checkbox' formControlName='activo' />
+                  <span class='slider-native'></span>
+                  <span class='sr-only'>Activo</span>
+                </label>
+                <label for='activo'>Activo</label>
+            </div>
+
+            <div class="image-container" (click)="fileInput.click()">
+              <img [src]="form.get('avatar')?.value || '/images/no_image_user.png'" alt="Avatar" width='60px' height='60px'>
+              <input
+                #fileInput
+                type="file"
+                accept="image/*"
+                style="display: none;"
+                (change)="onFileSelected($event)"
+              />
+            </div>
+
+          </div>
+
+          <div class='fields-row'>
+            <div class='field col-4'>
+              <label for='nombre'>Nombre</label>
+              <input id='nombre' type='text' pInputText formControlName='nombre' />
+            </div>
+
+            <div class='field col-4'>
+              <label for='apellido1'>Primer apellido</label>
+              <input id='apellido1' type='text' pInputText formControlName='apellido1' />
+            </div>
+
+            <div class='field col-4'>
+              <label for='apellido2'>Segundo apellido</label>
+              <input id='apellido2' type='text' pInputText formControlName='apellido2' />
+            </div>
+          </div>
+
+        </p-fluid>
+      </p-fieldset>
+
+      <div style='display: flex; justify-content: flex-end; gap: 0.5rem; padding-top: 1rem;'>
+        <p-button
+          label='Cancelar'
+          severity='secondary'
+          (onClick)='cancelar()'
+        ></p-button>
+        <p-button
+          type="submit"
+          label="Guardar"
+          [loading]="guardando"
+          [disabled]="form.invalid"
+        ></p-button>
+      </div>
+
+    </form>
+  <!--
+  }
+  -->
+</div>
+
+<p-toast [life]='1500'></p-toast>
