@@ -22,7 +22,7 @@
               <input id='email' type='email' pInputText formControlName='email' />
             </div>
 
-            <div class='field field-checkbox col-2' style='margin-top: 12%'>
+            <div class='field field-checkbox col-2' style='margin-top: 13%'>
               <label class="switch-native {{ form.value.activo ? 'verde' : 'rojo' }}">
                   <input id='activo' type='checkbox' formControlName='activo' />
                   <span class='slider-native'></span>
@@ -59,6 +59,33 @@
               <label for='apellido2'>Segundo apellido</label>
               <input id='apellido2' type='text' pInputText formControlName='apellido2' />
             </div>
+          </div>
+
+          <div class='fields-row'>
+            <div class='col-6'>
+              <p-fieldset legend="Permisos" class='col-12'>
+                <p-fluid>
+                  @for (rol of form.controls.roles.value; track rol.id) {
+                    <p-chip [label]="rol.nombre" value="Success" [rounded]="true" />
+                  } @empty {
+                    <span class="text-color-secondary">No hay roles asignados.</span>
+                  }
+                </p-fluid>
+              </p-fieldset>
+            </div>
+
+            <div class='col-6'>
+              <p-fieldset legend="Provincias">
+                <p-fluid>
+                  @for (rol of form.controls.roles.value; track rol.id) {
+                    <p-chip [label]="rol.nombre" value="Success" [rounded]="true" />
+                  } @empty {
+                    <span class="text-color-secondary">No hay roles asignados.</span>
+                  }
+                </p-fluid>
+              </p-fieldset>
+            </div>
+
           </div>
 
         </p-fluid>

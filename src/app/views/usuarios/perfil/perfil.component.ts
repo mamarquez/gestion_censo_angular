@@ -4,7 +4,6 @@ import { UsuarioService } from '../../../services/usuario.service';
 import { UsuarioModel } from '../../../models/usuario-model';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../auth/services/auth.service';
 import { Button } from 'primeng/button';
 import { Fieldset } from 'primeng/fieldset';
 import { Fluid } from 'primeng/fluid';
@@ -13,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { Router } from '@angular/router';
+import { ChipModule } from 'primeng/chip';
 
 @Component({
   standalone: true,
@@ -24,7 +24,8 @@ import { Router } from '@angular/router';
     FormsModule,
     InputText,
     ReactiveFormsModule,
-    ToastModule
+    ToastModule,
+    ChipModule
   ],
   providers: [MessageService],
   templateUrl: './perfil.component.html',
@@ -33,7 +34,6 @@ import { Router } from '@angular/router';
 export class PerfilComponent {
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
-  private readonly authService = inject(AuthService);
   private readonly usuarioService = inject(UsuarioService);
   private readonly messageService = inject(MessageService);
   private readonly destroyRef = inject(DestroyRef);
@@ -42,7 +42,6 @@ export class PerfilComponent {
   cargando = false;
   guardando = false;
   private usuarioId: string | null = null;
-  private selectedFile: File | null = null;
 
   form = this.fb.group({
     id: [null],
@@ -53,7 +52,8 @@ export class PerfilComponent {
     email: ['', [Validators.required, Validators.email]],
     descripcion: [null],
     activo: [true],
-    avatar: [null]
+    avatar: [null],
+    roles: [null]
   });
 
   constructor() {
@@ -72,32 +72,35 @@ export class PerfilComponent {
     this.usuarioService.get(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response: ApiResponseWrapper<UsuarioModel>) => {
-        const usuario = response.data ?? null;
+        next: (response: ApiResponseWrapper<UsuarioModel>) => {
+          const usuario = response.data ?? null;
 
-        if (usuario) {
-          this.usuarioId = String(usuario.id);
-          this.form.patchValue({
-            id: usuario.id,
-            nombreUsuario: usuario.nombreUsuario,
-            nombre: usuario.nombre,
-            apellido1: usuario.apellido1,
-            apellido2: usuario.apellido2 ?? '',
-            email: usuario.email,
-            descripcion: usuario.descripcion ?? '',
-            activo: usuario.activo,
-            avatar: usuario.avatar ?? null
-          });
+          console.log(usuario);
+
+          if (usuario) {
+            this.usuarioId = String(usuario.id);
+            this.form.patchValue({
+              id: usuario.id,
+              nombreUsuario: usuario.nombreUsuario,
+              nombre: usuario.nombre,
+              apellido1: usuario.apellido1,
+              apellido2: usuario.apellido2 ?? '',
+              email: usuario.email,
+              descripcion: usuario.descripcion ?? '',
+              activo: usuario.activo,
+              avatar: usuario.avatar ?? null,
+              roles: usuario.roles ?? null
+            });
+          }
+
+          this.cargando = false;
+        },
+        error: (err) => {
+          console.error('Error al cargar perfil:', err);
+          mensajesUtil(this.messageService, 'error', 'carga');
+          this.cargando = false;
         }
-
-        this.cargando = false;
-      },
-      error: (err) => {
-        console.error('Error al cargar perfil:', err);
-        mensajesUtil(this.messageService, 'error', 'carga');
-        this.cargando = false;
-      }
-    });
+      });
   }
 
   guardar(): void {
@@ -119,16 +122,16 @@ export class PerfilComponent {
     this.usuarioService.updatePerfil(Number(this.usuarioId), datos)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: () => {
-        mensajesUtil(this.messageService, 'success', 'update');
-        this.guardando = false;
-      },
-      error: (err) => {
-        console.error('Error al guardar perfil', err);
-        mensajesUtil(this.messageService, 'error', 'error');
-        this.guardando = false;
-      }
-    });
+        next: () => {
+          mensajesUtil(this.messageService, 'success', 'update');
+          this.guardando = false;
+        },
+        error: (err) => {
+          console.error('Error al guardar perfil', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.guardando = false;
+        }
+      });
   }
 
   cancelar(): void {
