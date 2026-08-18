@@ -1,66 +1,67 @@
 @if (cargando) {
   <app-loader />
 } @else {
-
   <div class="row">
     <h1>Espacio complementario</h1>
   </div>
 
   <br>
 
-  <p-fieldset legend="Datos personales">
+  <p-fieldset>
     <p-fluid>
 
-      <form [formGroup]='form' (ngSubmit)='guardar()'>
+      <form [formGroup]="form" (ngSubmit)="guardar()">
+        <!-- ID -->
+        <input id="id" type="number" formControlName="id" readonly hidden />
 
-        <input id='id' type='number' formControlName='id' readonly hidden />
-
-        <div class='fields-row'>
-          <div class='field col-11'>
-            <label for='nombre'>Nombre</label>
-            <input id='nombre' type='text' pInputText formControlName='nombre' />
+        <!-- Nombre + Activo -->
+        <div class="fields-row">
+          <div class="field col-11">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" type="text" pInputText formControlName="nombre" />
           </div>
 
-          <div class='field field-checkbox col-1' style='margin-top: 15%'>
-            <label
-              class="switch-native"
+          <div class="field field-checkbox col-1" style="margin-top: 15%;">
+            <label class="switch-native"
               [class.verde]="form.value.activo"
               [class.rojo]="!form.value.activo">
-              <input id='activo' type='checkbox' formControlName='activo' />
-              <span class='slider-native'></span>
-              <span class='sr-only'>Activo</span>
+              <input id="activo" type="checkbox" formControlName="activo" />
+              <span class="slider-native"></span>
+              <span class="sr-only">Activo</span>
             </label>
-            <label for='activo'>Activo</label>
-          </div>
-
-        </div>
-
-        <div class='fields-row'>
-          <div class='field col-12'>
-            <textarea name="descripcion" id="descripcion" cols="30" rows="10" formControlName='descripcion'></textarea>
+            <label for="activo">Activo</label>
           </div>
         </div>
 
-        <br />
+        <!-- Descripción -->
+        <div class="fields-row">
+          <div class="field col-12">
+            <label for="descripcion">Descripción</label>
+            <ckeditor
+              [editor]="Editor"
+              [config]="config"
+              formControlName="descripcion">
+            </ckeditor>
+          </div>
+        </div>
 
-        <div style='display: flex; justify-content: flex-end; gap: 0.5rem; padding-top: 1rem;'>
+        <!-- Botones -->
+        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; padding-top: 1rem; width: 100%;">
           <p-button
             type="button"
             label="Cancelar"
             severity="secondary"
             (onClick)="cancelar()">
           </p-button>
+
           <p-button
             type="submit"
             label="Guardar"
             [loading]="guardando"
-            [disabled]="form.invalid"
-          ></p-button>
+            [disabled]="form.invalid || guardando">
+          </p-button>
         </div>
-
       </form>
-
-   </p-fluid>
-
+    </p-fluid>
   </p-fieldset>
 }

@@ -318,3 +318,10 @@ app-footer {
   gap: var(--p-tag-gap);
   */
 }
+
+/***
+  Quitar el logo de ckeditor
+ */
+.ck-powered-by {
+  display: none;
+}
