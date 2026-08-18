@@ -1,0 +1,66 @@
+@if (cargando) {
+  <app-loader />
+} @else {
+
+  <div class="row">
+    <h1>Espacio complementario</h1>
+  </div>
+
+  <br>
+
+  <p-fieldset legend="Datos personales">
+    <p-fluid>
+
+      <form [formGroup]='form' (ngSubmit)='guardar()'>
+
+        <input id='id' type='number' formControlName='id' readonly hidden />
+
+        <div class='fields-row'>
+          <div class='field col-11'>
+            <label for='nombre'>Nombre</label>
+            <input id='nombre' type='text' pInputText formControlName='nombre' />
+          </div>
+
+          <div class='field field-checkbox col-1' style='margin-top: 15%'>
+            <label
+              class="switch-native"
+              [class.verde]="form.value.activo"
+              [class.rojo]="!form.value.activo">
+              <input id='activo' type='checkbox' formControlName='activo' />
+              <span class='slider-native'></span>
+              <span class='sr-only'>Activo</span>
+            </label>
+            <label for='activo'>Activo</label>
+          </div>
+
+        </div>
+
+        <div class='fields-row'>
+          <div class='field col-12'>
+            <textarea name="descripcion" id="descripcion" cols="30" rows="10" formControlName='descripcion'></textarea>
+          </div>
+        </div>
+
+        <br />
+
+        <div style='display: flex; justify-content: flex-end; gap: 0.5rem; padding-top: 1rem;'>
+          <p-button
+            type="button"
+            label="Cancelar"
+            severity="secondary"
+            (onClick)="cancelar()">
+          </p-button>
+          <p-button
+            type="submit"
+            label="Guardar"
+            [loading]="guardando"
+            [disabled]="form.invalid"
+          ></p-button>
+        </div>
+
+      </form>
+
+   </p-fluid>
+
+  </p-fieldset>
+}

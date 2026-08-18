@@ -30,3 +30,9 @@
   padding: 15px;
   display: block;
 }
+
+@media (max-width: 480px) {
+  .layout-content {
+    padding: 10px;
+  }
+}

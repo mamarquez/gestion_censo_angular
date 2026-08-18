@@ -1,4 +1,4 @@
-import { Component, inject, HostListener } from '@angular/core';
+import { Component, inject, HostListener, EventEmitter, Output } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../auth/services/auth.service';
 
@@ -12,6 +12,8 @@ import { AuthService } from '../../auth/services/auth.service';
 export class HeaderComponent {
   public authService = inject(AuthService);
   private router = inject(Router);
+
+  @Output() toggleSidebar = new EventEmitter<void>();
 
   isDropdownOpen = false;
 

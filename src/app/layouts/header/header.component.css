@@ -24,6 +24,19 @@
   list-style: none;
 }
 
+.sidebar-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #343a40;
+}
+
 .nav-header-right {
   margin-left: auto;
 }

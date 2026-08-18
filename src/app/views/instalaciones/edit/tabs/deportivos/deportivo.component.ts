@@ -189,6 +189,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   }
 
   editar(id: number) {
+    console.log('espacio deportivo');
     this.router.navigate(['/espaciosdeportivos', id]);
   }
 

@@ -2,9 +2,9 @@
 
   <!-- LADO IZQUIERDO (Botón móvil) -->
   <ul class="nav-header-left" style="display: flex; align-items: center; margin: 0; padding: 0; list-style: none;">
-    <li class="hidden-md hidden-lg">
-      <button class="btn btn-default" type="button">
-        <i class="fa fa-navicon"></i>
+    <li class="sidebar-toggle-item">
+      <button class="btn btn-default sidebar-toggle-btn" type="button" aria-label="Abrir menú" (click)="toggleSidebar.emit()">
+        <i class="pi pi-bars"></i>
       </button>
     </li>
   </ul>

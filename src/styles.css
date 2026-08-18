@@ -60,6 +60,12 @@ h1 {
   line-height: 1.1 !important;
 }
 
+/* Responsive: las tablas con min-width fijo (p.ej. 50rem) hacen scroll horizontal
+   contenido dentro de su propio wrapper en vez de desbordar y romper el layout */
+.p-datatable-table-container {
+  overflow-x: auto;
+}
+
 /* Personalización de PrimeNG Paginator */
 .p-paginator {
   padding: .35rem .5rem !important;
@@ -145,6 +151,63 @@ app-sidebar {
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+/* Overlay oculto por defecto; solo se usa en móvil/tablet cuando el sidebar está abierto */
+.sidebar-overlay {
+  display: none;
+}
+
+/* Botón hamburguesa: oculto en escritorio, el sidebar siempre visible ahí */
+.sidebar-toggle-item {
+  display: none;
+}
+
+/* =========================================================
+   Responsive: sidebar deslizante en móvil/tablet (<= 991px)
+   ========================================================= */
+@media (max-width: 991px) {
+  .sidebar-toggle-item {
+    display: block;
+  }
+
+  app-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1100;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .layout-main-wrapper.sidebar-abierto app-sidebar {
+    transform: translateX(0);
+  }
+
+  .layout-main-wrapper.sidebar-abierto .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1090;
+  }
+}
+
+@media (max-width: 480px) {
+  app-sidebar {
+    width: 85vw;
+    min-width: 0;
+    max-width: 300px;
+  }
+
+  /* Los campos de los filtros de listado usan anchos fijos en px/% inline
+     (250px, 12rem, 60%...); en móvil los forzamos a ocupar todo el ancho
+     disponible para que no desborden el viewport */
+  .bg-white.p-5.rounded-xl.shadow-sm.border > div[style*='flex-wrap'] > div[style*='width'] {
+    width: 100% !important;
+    max-width: 100%;
+  }
 }
 
 /* Estructura interna de la navegación en el sidebar */

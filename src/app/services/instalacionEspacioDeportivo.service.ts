@@ -30,7 +30,7 @@ export class InstalacionEspacioDeportivoService {
   /**
    * Obtener espacios deportivos de una instalación
    */
-  get(id?: any): Observable<ApiResponseWrapper<InstalacionEspacioDeportivo>> {
+  get(id: number): Observable<ApiResponseWrapper<InstalacionEspacioDeportivo>> {
     return this.http.get<ApiResponseWrapper<InstalacionEspacioDeportivo>>(`${this.api}/${id}`, {
       headers: this.headers
     });
@@ -50,6 +50,15 @@ export class InstalacionEspacioDeportivoService {
    */
   crear(espacioDeportivo: Partial<InstalacionEspacioDeportivo>): Observable<ApiResponseWrapper<InstalacionEspacioDeportivo>> {
     return this.http.post<ApiResponseWrapper<InstalacionEspacioDeportivo>>(`${this.api}`, espacioDeportivo, { headers: this.headers });
+  }
+
+  /**
+   * Actualiza
+   * @param id Id del registro
+   * @param datos Datos actualizados
+   */
+  update(id: number, datos: InstalacionEspacioDeportivo): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, datos, { headers: this.headers });
   }
 
   /**

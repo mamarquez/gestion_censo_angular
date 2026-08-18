@@ -20,7 +20,7 @@
               <input id='email' type='email' pInputText formControlName='email' />
             </div>
 
-            <div class='field field-checkbox col-3'>
+            <div class='field field-checkbox col-2' style='margin-top: 9%'>
               <label class="switch-native {{ form.value.activo ? 'verde' : 'rojo' }}">
                 <input id='activo' type='checkbox' formControlName='activo' />
                 <span class='slider-native'></span>
@@ -28,6 +28,18 @@
               </label>
               <label for='activo'>Activo</label>
             </div>
+
+            <div class="image-container" (click)="fileInput.click()">
+              <img [src]="form.get('avatar')?.value || '/images/no_image_user.png'" alt="Avatar" width='60px' height='60px'>
+              <input
+                #fileInput
+                type="file"
+                accept="image/*"
+                style="display: none;"
+                (change)="onFileSelected($event)"
+              />
+            </div>
+
           </div>
 
           @if (!esEdicion) {

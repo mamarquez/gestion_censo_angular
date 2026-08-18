@@ -137,6 +137,25 @@
   width: 100% !important;
 }
 
+/* Responsive: en tablet reducimos a una rejilla de 6 columnas y en móvil colapsa a 1 sola */
+@media (max-width: 768px) {
+  .fields-row {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .fields-row {
+    grid-template-columns: 1fr;
+  }
+
+  .fields-row .field,
+  .fields-row [class^='col-'],
+  .fields-row [class*=' col-'] {
+    grid-column: 1 / -1 !important;
+  }
+}
+
 /* Oculta visualmente pero mantiene accesible para lectores de pantalla */
 .sr-only {
   position: absolute;

@@ -130,7 +130,7 @@
       <th id="auditoria.fecha" style='width: 10%;' pSortableColumn="fecha">Fecha<p-sortIcon field="fecha"></p-sortIcon></th>
       <th id="auditoria.tabla" style='width: 10%;' pSortableColumn="tabla">Tabla<p-sortIcon field="tabla"></p-sortIcon></th>
       <th id="auditoria.operacion" style="text-align: center !important; width: 10%;" pSortableColumn="operacion">Operación<p-sortIcon field="operacion"></p-sortIcon></th>
-      <th id="auditoria.usuario" pSortableColumn="usuario.nombreUsuario">UsuarioModel<p-sortIcon field="usuario.nombreUsuario"></p-sortIcon></th>
+      <th id="auditoria.usuario" pSortableColumn="usuario.nombreUsuario">Usuario<p-sortIcon field="usuario.nombreUsuario"></p-sortIcon></th>
       <th id='auditoria.accion' class='text-right' style='width: 1%'></th>
     </tr>
   </ng-template>
@@ -183,23 +183,24 @@
   [(visible)]="mostrarModal"
   [modal]="true"
   [style]="{ width: '50rem' }"
+  [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
 >
   @if (auditoria) {
     <div class="grid">
 
-      <div class="fields-row" style="display: flex; gap: 1rem; width: 100%; margin-bottom: 1rem;">
+      <div class="fields-row" style="display: flex; flex-wrap: wrap; gap: 1rem; width: 100%; margin-bottom: 1rem;">
 
-        <div class="field" style="flex: 1;">
+        <div class="field" style="flex: 1 1 180px;">
           <label for="tabla"><strong>Tabla</strong></label>
           <input id="tabla" type="text" pInputText readonly disabled [value]="auditoria.tabla" style="width: 100%;" />
         </div>
 
-        <div class="field" style="flex: 1;">
+        <div class="field" style="flex: 1 1 180px;">
           <label for="operacion"><strong>Operación</strong></label>
           <input id="operacion" type="text" pInputText readonly disabled [value]="auditoria.operacion" style="width: 100%;" />
         </div>
 
-        <div class="field" style="flex: 1;">
+        <div class="field" style="flex: 1 1 180px;">
           <label for="fecha"><strong>Fecha</strong></label>
           <input id="fecha" type="text" pInputText readonly disabled [value]="auditoria.fecha | date:'dd/MM/yyyy HH:mm'" style="width: 100%;" />
         </div>

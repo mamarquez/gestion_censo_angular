@@ -20,6 +20,17 @@ export class AdminLayoutComponent {
   // Creamos una Signal reactiva con los datos del usuario al arrancar el Layout
   usuarioLogueado = signal(this.authService.getUser());
 
+  // Controla la visibilidad del sidebar en viewports móviles/tablet
+  sidebarAbierto = signal(false);
+
+  toggleSidebar(): void {
+    this.sidebarAbierto.update(abierto => !abierto);
+  }
+
+  cerrarSidebar(): void {
+    this.sidebarAbierto.set(false);
+  }
+
   onLogout(): void {
     this.authService.logout();
   }

@@ -43,6 +43,9 @@ import { PerfilComponent } from './views/usuarios/perfil/perfil.component';
 import { NotFoundComponent } from './views/errors/not-found/not-found.component';
 import { ForbiddenComponent } from './views/errors/forbidden/forbidden.component';
 import { ServerErrorComponent } from './views/errors/server-error/server-error.component';
+import {
+  EditEspacioComplementarioComponent
+} from './views/espacioscomplementarios/edit-espacio-complementario/edit-espacio-complementario.component';
 
 /**
  * @version 2.0.0
@@ -207,13 +210,16 @@ export const routes: Routes = [
       },
       {
         path: 'espacioscomplementarios',
-        component: EspacioComplementarioCompoment
+        children: [
+          { path: '', component: EspacioComplementarioCompoment },
+          { path: ':id', component: EditEspacioComplementarioComponent },
+        ]
       },
       {
         path: 'espaciosdeportivos',
         children: [
           { path: '', component: EspacioDeportivoComponent },
-          { path: ':id', component: EspacioDeportivoComponent }
+          { path: ':id', component: EditEspacioComplementarioComponent }
         ]
       },
       {

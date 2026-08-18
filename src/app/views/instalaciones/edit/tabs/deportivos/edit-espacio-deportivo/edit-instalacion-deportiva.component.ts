@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiResponse } from '../../../../../../models/apiresponse';
 import { MessageService } from 'primeng/api';
 import {
@@ -12,6 +12,8 @@ import {
 import { FieldsetModule } from 'primeng/fieldset';
 import { InstalacionEspacioDeportivo } from '../../../../../../models/instalacionEspacioDeportivo';
 import { InstalacionEspacioDeportivoService } from '../../../../../../services/instalacionEspacioDeportivo.service';
+import { EditModalComponent } from '../../../../../../components/modal/edit-modal/edit-modal.component';
+import { mensajesUtil } from '../../../../../../utils/mensajes.util';
 
 @Component({
   standalone: true,
@@ -21,12 +23,14 @@ import { InstalacionEspacioDeportivoService } from '../../../../../../services/i
     InputText,
     ReactiveFormsModule,
     FieldsetModule,
-    ListCaracteristicasComponent
+    ListCaracteristicasComponent,
+    EditModalComponent
   ],
   templateUrl: './edit-instalacion-deportiva.component.html'
 })
 export class EditInstalacionDeportivaComponent implements OnInit {
 
+  private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly fb = inject(FormBuilder);
   private readonly service = inject(InstalacionEspacioDeportivoService);
@@ -40,6 +44,7 @@ export class EditInstalacionDeportivaComponent implements OnInit {
   espacioDeportivo: InstalacionEspacioDeportivo = null;
   cargando = false;
   guardando = false;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -53,51 +58,86 @@ export class EditInstalacionDeportivaComponent implements OnInit {
     this.id = this.route.snapshot.paramMap.get('id');
 
     if (this.id) {
-      this.cargarDatos(this.id);
+      this.cargar(this.id);
     }
   }
 
-  private cargarDatos(id: string): void {
+  private cargar(id: string): void {
     this.cargando = true;
     this.cargandoChange.emit(true);
 
-    this.service.get(id)
+    this.service.get(Number(id))
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response: ApiResponse<InstalacionEspacioDeportivo>) => {
-        this.espacioDeportivo = response.data ?? null;
+        next: (response: ApiResponse<InstalacionEspacioDeportivo>) => {
+          this.espacioDeportivo = response.data ?? null;
 
-        if (this.espacioDeportivo) {
-          this.form.patchValue({
-            id: this.espacioDeportivo.id,
-            nombre: this.espacioDeportivo.nombre,
-            descripcion: this.espacioDeportivo.descripcion
-            /*
-            nombre_popular: this.instalacion.nombrePopular,
-            direccion: this.instalacion.direccion,
-            id_comunidad: this.instalacion.comunidad.id,
-            id_provincia: this.instalacion.provincia.id,
-            id_municipio: this.instalacion.municipio.id,
-            referencia_catastral: this.instalacion.referencia_catastral,
-            cp: this.instalacion.cp,
-            email: this.instalacion.email,
-            web: this.instalacion.web,
-            observaciones: this.instalacion.observaciones
-            */
-          });
+          if (this.espacioDeportivo) {
+            this.form.patchValue({
+              id: this.espacioDeportivo.id,
+              nombre: this.espacioDeportivo.nombre,
+              descripcion: this.espacioDeportivo.descripcion
+            });
+          }
+          this.cargando = false;
+          this.cargandoChange.emit(false);
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Error al cargar datos', err);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar datos' });
+          this.cargando = false;
+          this.cargandoChange.emit(false);
+          this.cdr.detectChanges();
         }
-        this.cargando = false;
-        this.cargandoChange.emit(false);
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al cargar datos', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar datos' });
-        this.cargando = false;
-        this.cargandoChange.emit(false);
-        this.cdr.detectChanges();
-      }
-    });
+      });
+  }
+
+  guardar(espacioDeportivo: InstalacionEspacioDeportivo) {
+    this.cargando = true;
+
+    const datos: InstalacionEspacioDeportivo = {
+      id: espacioDeportivo.id,
+      instalacion: espacioDeportivo.instalacion,
+      nombre: espacioDeportivo.nombre,
+      descripcion: espacioDeportivo.descripcion,
+      visible: espacioDeportivo.visible,
+      activo: espacioDeportivo.activo
+    };
+
+    if (datos.id) {
+      this.service.update(Number(this.id), datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            mensajesUtil(this.messageService, 'success', 'update');
+            this.modalVisible = false;
+            this.cargando = false;
+            this.cargar(this.id);
+          },
+          error: (err) => {
+            console.error('Error al actualizar nivel energético', err);
+            mensajesUtil(this.messageService, 'error', 'error');
+            this.cargando = false;
+          }
+        });
+    } else {
+      this.service.crear(datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            mensajesUtil(this.messageService, 'success', 'add');
+            this.modalVisible = false;
+            this.cargando = false;
+            this.cargar(this.id);
+          },
+          error: (err) => {
+            console.error('Error al añadir registro', err);
+            mensajesUtil(this.messageService, 'error', 'error');
+            this.cargando = false;
+          }
+        });
+    }
   }
 
 }

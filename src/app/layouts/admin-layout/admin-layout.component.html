@@ -1,18 +1,21 @@
 <!-- <app-loader></app-loader> -->
 
-<div class="layout-main-wrapper">
-  
+<div class="layout-main-wrapper" [class.sidebar-abierto]="sidebarAbierto()">
+
   <!-- Sidebar tipo AdminLTE -->
-  <app-sidebar></app-sidebar>
+  <app-sidebar (enlaceSeleccionado)="cerrarSidebar()"></app-sidebar>
+
+  <!-- Overlay para cerrar el sidebar en móvil al tocar fuera -->
+  <div class="sidebar-overlay" (click)="cerrarSidebar()"></div>
 
   <!-- Columna Derecha -->
   <div class="content-wrapper">
-    <app-header></app-header>
-    
+    <app-header (toggleSidebar)="toggleSidebar()"></app-header>
+
     <main class="layout-content">
       <router-outlet></router-outlet>
     </main>
-    
+
     <app-footer></app-footer>
   </div>
 

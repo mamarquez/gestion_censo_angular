@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TableModule } from 'primeng/table';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../services/dialog.service';
 import { Button } from 'primeng/button';
@@ -23,7 +23,17 @@ import { Truncar } from '../../../pipe/trucar.pipe';
 @Component({
   standalone: true,
   selector: 'app-espacio-complementario',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent, EditModalComponent, Truncar],
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    AccionesTablaComponent,
+    EditModalComponent,
+    Truncar
+  ],
   templateUrl: './espaciocomplementario.component.html'
 })
 export class EspacioComplementarioCompoment implements OnInit {
@@ -41,10 +51,10 @@ export class EspacioComplementarioCompoment implements OnInit {
   modalVisible = false;
 
   form: FormGroup = this.fb.group({
-    id: [''],
-    nombre: [''],
-    descripcion: [''],
-    activo: ['']
+    id: [null],
+    nombre: ['', [Validators.required, Validators.maxLength(EspacioComplementario.campos.nombre.maxLength) ]],
+    descripcion: [null],
+    activo: [true]
   });
 
   ngOnInit(): void {
@@ -178,10 +188,7 @@ export class EspacioComplementarioCompoment implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Error al editar: ', {
-          id,
-          error: err
-        });
+        console.error('Error al editar: ', { id, error: err });
         mensajesUtil(this.messageService, 'error', 'carga');
         this.cargando = false;
         this.cdr.detectChanges();
@@ -210,10 +217,7 @@ export class EspacioComplementarioCompoment implements OnInit {
           this.cargar();
         },
         error: (err) => {
-          console.error('Error al actualizar: ', {
-            datos,
-            error: err
-          });
+          console.error('Error al actualizar: ', { datos, error: err });
           mensajesUtil(this.messageService, 'error', 'error');
           this.cargando = false;
         }

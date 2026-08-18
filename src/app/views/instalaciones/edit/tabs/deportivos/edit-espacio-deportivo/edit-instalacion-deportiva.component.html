@@ -1,3 +1,19 @@
+<app-edit-modal
+  [titulo] = '"Espacio deportivo"'
+  [(isVisible)]="modalVisible"
+  [datos]='espacioDeportivo'
+  [maxValores]='{
+    nombre: 255
+  }'
+  [camposMostrar]='{
+    nombre: true,
+    activo: true,
+    descripcion: true
+  }'
+  (guardar)="guardar($event)"
+/>
+
+
 <div class="row">
   <h1>Espacio deportivo </h1>
 </div>
