@@ -53,9 +53,9 @@ export class RutasComponent implements OnInit {
   expandedRowKeys: Record<string, boolean> = {};
 
   form: FormGroup = this.fb.group({
-    idInstalacion: [''],
+    idInstalacion: [null],
     nombre: ['', Validators.required],
-    descripcion: [''],
+    descripcion: [null],
     activo: [true]
   });
 
@@ -233,7 +233,7 @@ export class RutasComponent implements OnInit {
       mensaje: `¿Deseas eliminar el teléfono "<strong>${ruta.nombre}</strong>"?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(ruta.id)
+      onAccept: () => this.borrarRegistro(Number(ruta.id))
     });
   }
 
@@ -256,6 +256,26 @@ export class RutasComponent implements OnInit {
         this.cdr.detectChanges();
       }
     });
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+
+    console.log('Archivo seleccionado:', input.files?.[0]);
+
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+
+      // 1. Cuando termine de leer el archivo, guarda el Base64 en el formulario
+      reader.onload = () => {
+        console.log('Archivo leído, Base64:', reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+    console.log(event);
   }
 
 }

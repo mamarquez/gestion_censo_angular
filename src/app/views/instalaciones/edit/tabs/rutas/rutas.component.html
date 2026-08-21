@@ -49,7 +49,23 @@
 
 <br/>
 
-<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+<div style='display: flex; justify-content: space-between; margin-bottom: 1rem;'>
+  <p-button
+    type='button'
+    label='Importar'
+    icon='pi pi-upload'
+    styleClass='p-button-outlined p-button-secondary p-button-sm'
+    (onClick)="fileInput.click()"
+  ></p-button>
+
+  <input
+    #fileInput
+    type="file"
+    accept=".kml, .kmz"
+    style="display: none;"
+    (change)="onFileSelected($event)"
+  />
+
   <p-button
     type='button'
     label='Añadir'
