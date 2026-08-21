@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TableModule } from 'primeng/table';
 import { Iluminacion } from '../../../models/iluminacion';
 import { IluminacionService } from '../../../services/iluminacion.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../services/dialog.service';
 import { Button } from 'primeng/button';
@@ -28,6 +28,7 @@ import { BotonAddComponent } from "../../../components/boton-add/boton-add.compo
   imports: [
     TableModule,
     Button,
+    FormsModule,
     InputText,
     ReactiveFormsModule,
     ConfirmDialogModule,
@@ -54,10 +55,10 @@ export class IluminacionComponent implements OnInit {
   modalVisible = false;
 
   form: FormGroup = this.fb.group({
-    id: [''],
-    nombre: [''],
-    descripcion: [''],
-    activo: ['']
+    id: [null],
+    nombre: ['', Validators.required],
+    descripcion: [null],
+    activo: [true]
   });
 
   ngOnInit(): void {

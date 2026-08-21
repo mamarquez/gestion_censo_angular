@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, DestroyRef, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, EventEmitter, input, inject, OnInit, Output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -16,6 +16,7 @@ import { TableModule } from 'primeng/table';
 import { EspacioDeportivo } from '../../../../../models/espaciodeportivo';
 import { mensajesUtil } from '../../../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../../../interface/api-response-wrapper.interface';
+import { BotonAddComponent } from "../../../../../components/boton-add/boton-add.component";
 
 @Component({
   standalone: true,
@@ -28,14 +29,8 @@ import { ApiResponseWrapper } from '../../../../../interface/api-response-wrappe
     ToastModule,
     AccionesTablaComponent,
     InputText,
-    TableModule
-    /*
-    SelectModule,
-    SelectComunidadComponent,
-    SelectProvinciaComponent,
-    SelectMunicipioComponent
-
-     */
+    TableModule,
+    BotonAddComponent
   ],
   providers: [MessageService],
   templateUrl: './deportivo.component.html'
@@ -53,10 +48,11 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
 
   @Output() cargandoChange = new EventEmitter<boolean>();
 
-  private id: string | null = null;
+  idInstalacion = input<string>();
+  espacioDeportivo: InstalacionEspacioDeportivo | any = null;
   espaciosDeportivos: InstalacionEspacioDeportivo[] = [];
   cargando = false;
-  guardando = false;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
     id: [null],
@@ -68,10 +64,8 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-
-    if (this.id) {
-      this.cargarDatos(this.id);
+    if (this.idInstalacion()) {
+      this.cargarDatos(this.idInstalacion());
     }
   }
 
@@ -87,7 +81,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
         this.espaciosDeportivos = response.data ?? [];
 
         this.form.patchValue({
-          id: this.id
+          id: this.idInstalacion()
         });
 
         this.cargando = false;
@@ -191,6 +185,11 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   editar(id: number) {
     console.log('espacio deportivo');
     this.router.navigate(['/espaciosdeportivos', id]);
+  }
+
+    abrirModal(): void {
+    this.espacioDeportivo = null;
+    this.modalVisible = true;
   }
 
 }

@@ -15,6 +15,7 @@ import { InputText } from 'primeng/inputtext';
 import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acciones-tabla.component';
 import { ApiResponseWrapper } from '../../../../../interface/api-response-wrapper.interface';
 import { mensajesUtil } from '../../../../../utils/mensajes.util';
+import { EditModalComponent } from '../../../../../components/modal/edit-modal/edit-modal.component';
 
 /**
  * @version 1.0.1
@@ -31,7 +32,8 @@ import { mensajesUtil } from '../../../../../utils/mensajes.util';
     ToastModule,
     AccionesTablaComponent,
     InputText,
-    TableModule
+    TableModule,
+    EditModalComponent
   ],
   templateUrl: './complementario.component.html'
 })
@@ -237,5 +239,9 @@ export class ComplementarioComponent implements OnInit {
     });
   }
   */
+
+  guardar(espacioComplementario: InstalacionEspacioComplementario) {
+    this.cargando = true;
+  }
 
 }

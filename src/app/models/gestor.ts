@@ -1,4 +1,4 @@
-import {TipoGestorPropiedad} from './tipogestorpropiedad';
+import {TipoGestorPropiedad} from './TipoGestorPropiedad';
 
 export class Gestor {
   id!: number;

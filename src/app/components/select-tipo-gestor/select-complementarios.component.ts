@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SelectModule } from 'primeng/select';
-import { TipoGestorPropiedad } from '../../models/tipogestorpropiedad';
+import { TipoGestorPropiedad } from '../../models/TipoGestorPropiedad';
 import { ApiResponseWrapper } from '../../interface/api-response-wrapper.interface';
 import { TipoGestorPropiedadService } from '../../services/tipogestorpropiedad.service';
 

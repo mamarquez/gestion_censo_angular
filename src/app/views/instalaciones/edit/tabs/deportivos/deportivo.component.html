@@ -58,14 +58,7 @@
 
 </form>
 
-<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
-  <p-button
-    type='button'
-    label='Añadir'
-    icon='pi pi-plus'
-    styleClass='p-button-primary p-button-sm'>
-  </p-button>
-</div>
+<app-boton-add (add)="abrirModal()" />
 
 <p-table
   size='small'

@@ -8,7 +8,7 @@ import { MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogService } from '../../../services/dialog.service';
 import { TipoGestorPropiedadService } from '../../../services/tipogestorpropiedad.service';
-import { TipoGestorPropiedad } from '../../../models/tipogestorpropiedad';
+import { TipoGestorPropiedad } from '../../../models/TipoGestorPropiedad';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';

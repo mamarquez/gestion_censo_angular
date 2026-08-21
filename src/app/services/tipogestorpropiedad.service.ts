@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AUTH } from '../auth/auth.constants';
-import { TipoGestorPropiedad } from '../models/tipogestorpropiedad';
+import { TipoGestorPropiedad } from '../models/TipoGestorPropiedad';
 import { buildHttpParams } from '../utils/params.util';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 
