@@ -36,7 +36,7 @@ export class ListCaracteristicasComponent implements OnChanges {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  @Input() idEspacioDeportivo: number | null = null;
+  @Input() idEspacioDeportivo: number | undefined;
 
   cargando: boolean = false;
   caracteristicas: InstalacionCaracteristica[] = [];
@@ -46,13 +46,13 @@ export class ListCaracteristicasComponent implements OnChanges {
   });
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['idEspacioDeportivo'] && this.idEspacioDeportivo) {
+    if (changes['idEspacioDeportivo'] && this.idEspacioDeportivo !== undefined) {
       this.cargar();
     }
   }
 
   private cargar(): void {
-    if (!this.idEspacioDeportivo) return;
+    if (this.idEspacioDeportivo === undefined) return;
 
     this.cargando = true;
 

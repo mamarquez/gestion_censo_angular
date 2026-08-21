@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, DestroyRef, EventEmitter, input, inject, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, model, OnInit, output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ButtonModule } from 'primeng/button';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -46,9 +46,9 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  @Output() cargandoChange = new EventEmitter<boolean>();
+  cargandoChange = output<boolean>();
 
-  idInstalacion = input<string>();
+  idInstalacion = model<string>();
   espacioDeportivo: InstalacionEspacioDeportivo | any = null;
   espaciosDeportivos: InstalacionEspacioDeportivo[] = [];
   cargando = false;
