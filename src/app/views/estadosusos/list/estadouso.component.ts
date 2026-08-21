@@ -15,6 +15,7 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { Truncar } from '../../../pipe/trucar.pipe';
+import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
 
 /**
  * @version 1.0.0
@@ -32,8 +33,9 @@ import { Truncar } from '../../../pipe/trucar.pipe';
     TooltipModule,
     EditModalComponent,
     AccionesTablaComponent,
-    Truncar
-  ],
+    Truncar,
+    BotonAddComponent
+],
   templateUrl: './estadouso.component.html'
 })
 export class EstadoUsoComponent implements OnInit {

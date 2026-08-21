@@ -14,9 +14,8 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
-import { NivelDotacion } from '../../../models/niveldotacion';
-import { Caracteristica } from '../../../models/caracteristica';
 import { Truncar } from '../../../pipe/trucar.pipe';
+import { BotonAddComponent } from '../../../components/boton-add/boton-add.component';
 
 /**
  * @version 1.0.1
@@ -34,7 +33,8 @@ import { Truncar } from '../../../pipe/trucar.pipe';
     TooltipModule,
     AccionesTablaComponent,
     EditModalComponent,
-    Truncar
+    Truncar,
+    BotonAddComponent
   ],
   templateUrl: './espaciodeportivo.component.html'
 })

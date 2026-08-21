@@ -13,6 +13,9 @@ import { GestorService } from '../../../services/gestor.service';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 @Component({
   standalone: true,
@@ -24,8 +27,11 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
     ReactiveFormsModule,
     ConfirmDialogModule,
     TooltipModule,
-    EditModalComponent
-  ],
+    EditModalComponent,
+    BotonAddComponent,
+    AccionesTablaComponent,
+    Truncar
+],
   templateUrl: './gestor.component.html'
 })
 export class GestorComponent implements OnInit {
@@ -107,7 +113,7 @@ export class GestorComponent implements OnInit {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): void {
+  cambiarActivo(id: number): void {
     this.cargando = true;
 
     this.service.cambiarEstado(id)

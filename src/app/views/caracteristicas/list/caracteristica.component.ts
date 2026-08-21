@@ -15,6 +15,7 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
 import { NivelDotacion } from '../../../models/niveldotacion';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { Truncar } from '../../../pipe/trucar.pipe';
+import { BotonAddComponent } from '../../../components/boton-add/boton-add.component';
 
 /**
  * @version 1.0.0
@@ -23,7 +24,17 @@ import { Truncar } from '../../../pipe/trucar.pipe';
 @Component({
   standalone: true,
   selector: 'app-caracteristica',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, AccionesTablaComponent, EditModalComponent, Truncar],
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    AccionesTablaComponent,
+    EditModalComponent,
+    Truncar,
+    BotonAddComponent
+  ],
   templateUrl: './caracteristica.component.html'
 })
 export class CaracteristicaComponent implements OnInit {
@@ -92,7 +103,7 @@ export class CaracteristicaComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar municipios', err);
+        console.error('Error al cargar caracteristicas', err);
         mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cdr.detectChanges();

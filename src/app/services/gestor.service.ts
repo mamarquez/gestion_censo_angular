@@ -55,15 +55,15 @@ export class GestorService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponseWrapper<Gestor>> {
-    return this.http.patch<ApiResponseWrapper<Gestor>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.patch<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponseWrapper<Gestor>> {
-    return this.http.delete<ApiResponseWrapper<Gestor>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.delete<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

@@ -83,15 +83,7 @@
 
 <br />
 
-<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
-  <p-button
-    type='button'
-    label='Añadir'
-    icon='pi pi-plus'
-    styleClass='p-button-primary p-button-sm'
-    (onClick)='abrirModal()'>
-  </p-button>
-</div>
+<app-boton-add (add)='abrirModal()' />
 
 <p-table
   size='small'
@@ -112,8 +104,8 @@
     <ng-template pTemplate="header">
         <tr>
           <th id='gestor.nombre' pSortableColumn='nombre'>Nombre<p-sortIcon field='nombre'></p-sortIcon></th>
-          <th id='gestor.descripcion' pSortableColumn='descripcion'>Descripción<p-sortIcon field='descripcion'></p-sortIcon></th>
-          <th id='gestor.tipogestor' pSortableColumn='tipoGestor.mostrar'>Tipo<p-sortIcon field='tipogestor'></p-sortIcon></th>
+          <th id='gestor.descripcion' pSortableColumn='descripcion' style='width: 30%'>Descripción<p-sortIcon field='descripcion'></p-sortIcon></th>
+          <th id='gestor.tipogestor' pSortableColumn='tipoGestor.mostrar' style='width: 30%'>Tipo<p-sortIcon field='tipogestor'></p-sortIcon></th>
           <th id='gestor.estado' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
           <th id='gestor.accion' class='text-right' style='width: 10%'></th>
         </tr>
@@ -133,11 +125,11 @@
     <ng-template pTemplate="body" let-gestor>
         <tr>
           <td>{{ gestor.nombre }}</td>
-          <td>{{ gestor.descripcion }}</td>
+          <td>{{ gestor.descripcion | truncar:150 }}</td>
 
           <td>
             @if (gestor.tipoGestor) {
-              {{ gestor.tipoGestor.mostrar }}
+              {{ gestor.tipoGestor.mostrar | truncar: 100 }}
             }
           </td>
 
@@ -148,60 +140,12 @@
             </label>
           </td>
 
-          <td
-            style='display: flex !important; justify-content: flex-end !important; align-items: center !important; gap: 0.25rem !important;'>
-            <p-button
-              severity='secondary'
-              [rounded]='true'
-              [text]='true'
-              (onClick)='editar(gestor.id)'
-            >
-              <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
-                   stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
-                <path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'></path>
-              </svg>
-            </p-button>
-
-            <!-- Activar/desactivar -->
-            <p-button
-              severity='secondary'
-              [rounded]='true'
-              [text]='true'
-              (onClick)='cambiarEstado(gestor.id)'
-            >
-              @if (gestor.activo) {
-                <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
-                         stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
-                         style='color: blue'>
-                  <rect x='6' y='6' width='12' height='12' rx='2'></rect>
-                </svg>
-              } @else {
-                <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
-                   stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
-                   style='color: green'>
-                  <polygon points='6 3 20 12 6 21 6 3'></polygon>
-                </svg>
-              }
-            </p-button>
-
-            <p-button
-              severity='secondary'
-              [rounded]='true'
-              [text]='true'
-              (onClick)='confirmarBorrado(gestor)'
-            >
-              <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none'
-                   stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
-                   class='text-red-600'
-                   style='color: red'>
-                <path d='M3 6h18' />
-                <path d='M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6' />
-                <path d='M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2' />
-                <line x1='10' y1='11' x2='10' y2='17' />
-                <line x1='14' y1='11' x2='14' y2='17' />
-              </svg>
-            </p-button>
-          </td>
+          <app-acciones-tabla
+            (editar)="editar(gestor.id)"
+            [activo]="gestor.activo"
+            (toggleEstado)="cambiarActivo(gestor.id)"
+            (borrar)="confirmarBorrado(gestor)"
+          />
         </tr>
     </ng-template>
 </p-table>

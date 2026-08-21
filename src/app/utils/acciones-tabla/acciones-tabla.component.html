@@ -1,5 +1,5 @@
 <td style='display: flex !important; justify-content: flex-end !important; align-items: center !important; gap: 0.25rem !important;'>
-  <p-button severity='secondary' [rounded]='true' [text]='true' (onClick)='editar.emit()'>
+  <p-button severity='secondary' [rounded]='true' [text]='true' (onClick)='editar.emit()' pTooltip="Editar" [tooltipOptions]="{ appendTo: 'body' }">
     <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
          stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
       <path d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'></path>
@@ -7,8 +7,8 @@
   </p-button>
 
   @if (visible() !== undefined) {
-    <p-button severity='secondary' [rounded]='true' [text]='true' (onClick)='toggleVisible.emit()'>
-      @if (visible()) {
+    <p-button severity='secondary' [rounded]='true' [text]='true' (onClick)='toggleVisible.emit()' [pTooltip]="visible() ? 'Ocultar' : 'Mostrar'" [tooltipOptions]="{ appendTo: 'body' }">
+      @if (!visible()) {
         <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
              stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
              style='color: green'>
@@ -29,7 +29,7 @@
   }
 
   @if (activo() !== undefined) {
-    <p-button severity='secondary' [rounded]='true' [text]='true' (onClick)='toggleEstado.emit()'>
+    <p-button severity='secondary' [rounded]='true' [text]='true' (onClick)='toggleEstado.emit()' [pTooltip]="activo() ? 'No activar' : 'Activar'" [tooltipOptions]="{ appendTo: 'body' }">
       @if (activo()) {
         <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none'
              stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
@@ -46,7 +46,7 @@
     </p-button>
   }
 
-  <p-button severity='secondary' [rounded]='true' [text]='true' (onClick)='borrar.emit()'>
+  <p-button severity='secondary' [rounded]='true' [text]='true' (onClick)='borrar.emit()' pTooltip="Borrar" [tooltipOptions]="{ appendTo: 'body' }">
     <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none'
          stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
          style='color: red'>

@@ -14,6 +14,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { CentroEducativo } from '../../../models/centroeducativo';
+import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
 
 /**
  * @version 1.0.1
@@ -29,8 +30,9 @@ import { CentroEducativo } from '../../../models/centroeducativo';
     ReactiveFormsModule,
     ConfirmDialogModule,
     AccionesTablaComponent,
-    EditModalComponent
-  ],
+    EditModalComponent,
+    BotonAddComponent
+],
   templateUrl: './municipio.component.html'
 })
 export class MunicipioComponent implements OnInit {

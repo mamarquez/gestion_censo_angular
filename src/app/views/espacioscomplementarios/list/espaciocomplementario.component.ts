@@ -15,6 +15,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { Truncar } from '../../../pipe/trucar.pipe';
+import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
 
 /**
  * @version 1.0.1
@@ -32,8 +33,9 @@ import { Truncar } from '../../../pipe/trucar.pipe';
     TooltipModule,
     AccionesTablaComponent,
     EditModalComponent,
-    Truncar
-  ],
+    Truncar,
+    BotonAddComponent
+],
   templateUrl: './espaciocomplementario.component.html'
 })
 export class EspacioComplementarioCompoment implements OnInit {

@@ -16,6 +16,7 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
 import { EstadoUso } from '../../../models/estadouso';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { Truncar } from '../../../pipe/trucar.pipe';
+import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
 
 /**
  * @version 1.0.0
@@ -24,7 +25,18 @@ import { Truncar } from '../../../pipe/trucar.pipe';
 @Component({
   standalone: true,
   selector: 'app-iluminacion',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, AccionesTablaComponent, EditModalComponent, Truncar],
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    AccionesTablaComponent,
+    EditModalComponent,
+    Truncar,
+    BotonAddComponent
+  ],
   templateUrl: './iluminacion.component.html'
 })
 export class IluminacionComponent implements OnInit {

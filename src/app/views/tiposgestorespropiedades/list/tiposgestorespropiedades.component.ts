@@ -13,6 +13,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { BotonAddComponent } from '../../../components/boton-add/boton-add.component';
 
 /**
  * @version 1.0.0
@@ -21,7 +22,16 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
 @Component({
   standalone: true,
   selector: 'app-tipos-gestores-propiedades',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, EditModalComponent, AccionesTablaComponent],
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    EditModalComponent,
+    AccionesTablaComponent,
+    BotonAddComponent
+  ],
   templateUrl: './tiposgestorespropiedades.component.html'
 })
 export class TiposGestoresPropiedadesComponent implements OnInit {

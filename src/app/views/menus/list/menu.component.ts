@@ -41,7 +41,7 @@ export class MenuComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  menu: Menu | null = null;
+  menu: Menu | any = null;
   menus: Menu [] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -51,6 +51,7 @@ export class MenuComponent implements OnInit {
     nombre: [null, Validators.required],
     descripcion: [null],
     enlace: [null, Validators.required],
+    visible: [null],
     activo: [true]
   });
 
@@ -108,6 +109,35 @@ export class MenuComponent implements OnInit {
   }
 
   /**
+   * Cambia el estado de visibilidad de un registro
+   * @param id Id del registro
+   */
+  cambiarVisible(id: number): void {
+    this.cargando = true;
+
+    this.service.cambiarVisible(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+      next: () => {
+        const menu = this.menus.find(p => p.id === id);
+        if (menu) {
+          menu.visible = !menu.visible;
+        }
+
+        mensajesUtil(this.messageService, 'success', 'update');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cambiar el estado del menu', err);
+        mensajesUtil(this.messageService, 'error', 'error');
+        this.cargando = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  /**
    * Cambia el estado de un registro
    * @param id Id del registro
    */
@@ -141,7 +171,7 @@ export class MenuComponent implements OnInit {
       mensaje: `¿Deseas eliminar "<strong>${menu.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(menu.id)
+      onAccept: () => this.borrarRegistro(Number(menu.id))
     });
   }
 
@@ -201,6 +231,7 @@ export class MenuComponent implements OnInit {
       nombre: menu.nombre,
       descripcion: menu.descripcion,
       enlace: menu.enlace,
+      visible: menu.visible,
       activo: menu.activo
     };
 

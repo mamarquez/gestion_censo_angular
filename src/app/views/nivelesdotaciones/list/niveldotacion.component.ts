@@ -9,12 +9,16 @@ import { MessageService } from 'primeng/api';
 import { DialogService } from '../../../services/dialog.service';
 import { InputText } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { TooltipModule } from 'primeng/tooltip';
 import { NivelEducativo } from '../../../models/niveleducativo';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { Truncar } from '../../../pipe/trucar.pipe';
+import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+
+/**
+ * @version 1.0.0
+ */
 
 @Component({
   standalone: true,
@@ -25,9 +29,9 @@ import { Truncar } from '../../../pipe/trucar.pipe';
     InputText,
     ReactiveFormsModule,
     ConfirmDialogModule,
-    TooltipModule,
     EditModalComponent,
-    Truncar
+    Truncar,
+    AccionesTablaComponent
   ],
   templateUrl: './niveldotacion.component.html'
 })
@@ -210,14 +214,11 @@ export class NivelDotacionComponent implements OnInit {
 
           this.modalVisible = false;
           this.cargando = false;
-
           this.cargar();
         },
-
         error: (err) => {
-          console.error('Error al actualizar nivel energético', err);
+          console.error('Error al actualizar nivel de dotación', err);
           mensajesUtil(this.messageService, 'error', 'error');
-
           this.cargando = false;
         }
       });
@@ -227,17 +228,13 @@ export class NivelDotacionComponent implements OnInit {
         .subscribe({
         next: () => {
           mensajesUtil(this.messageService, 'success', 'add');
-
           this.modalVisible = false;
           this.cargando = false;
-
           this.cargar();
         },
-
         error: (err) => {
           console.error('Error al añadir registro', err);
           mensajesUtil(this.messageService, 'error', 'error');
-
           this.cargando = false;
         }
       });

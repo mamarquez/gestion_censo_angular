@@ -71,15 +71,7 @@
 
 <br />
 
-<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
-  <p-button
-    type='button'
-    label='Añadir'
-    icon='pi pi-plus'
-    styleClass='p-button-primary p-button-sm'
-    (onClick)='abrirModal()'>
-  </p-button>
-</div>
+<app-boton-add (add)='abrirModal()' />
 
 <p-table
   size='small'
@@ -99,7 +91,7 @@
 
     <ng-template pTemplate="header">
         <tr>
-          <th id='propietario.nombre' pSortableColumn='nombre' style='width: 30%'>Nombre<p-sortIcon field='nombre'></p-sortIcon></th>
+          <th id='propietario.nombre' pSortableColumn='nombre'>Nombre<p-sortIcon field='nombre'></p-sortIcon></th>
           <th id='propietario.descripcion' pSortableColumn='descripcion' style='width: 30%'>Descripción<p-sortIcon field='descripcion'></p-sortIcon></th>
           <th id='propietario.visible' pSortableColumn='visible' class='text-center' style='width: 10%'>Visible<p-sortIcon field='visible'></p-sortIcon></th>
           <th id='propietario.estado' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>

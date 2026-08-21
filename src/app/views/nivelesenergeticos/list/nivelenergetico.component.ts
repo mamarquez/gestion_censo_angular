@@ -15,6 +15,7 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { Truncar } from '../../../pipe/trucar.pipe';
+import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
 
 @Component({
   standalone: true,
@@ -28,7 +29,8 @@ import { Truncar } from '../../../pipe/trucar.pipe';
     TooltipModule,
     EditModalComponent,
     AccionesTablaComponent,
-    Truncar
+    Truncar,
+    BotonAddComponent
   ],
   templateUrl: './nivelenergetico.component.html'
 })
