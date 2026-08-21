@@ -252,4 +252,25 @@ export class RutasComponent implements OnInit {
     console.log(event);
   }
 
+  descargarFichero(idRuta: number) {
+    this.service.descargarFichero(idRuta).subscribe({
+      next: (response) => {
+        /*
+        const blob = new Blob([response], { type: 'application/octet-stream' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `ruta_${idRuta}.kml`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        */
+        console.log('Archivo descargado:', response);
+      },
+      error: (err) => {
+        console.error('Error al descargar el archivo', err);
+      }
+    });
+  }
 }

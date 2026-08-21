@@ -137,6 +137,8 @@
         [visible]="ruta.visible"
         (toggleVisible)="cambiarVisible(ruta.id)"
         (borrar)="confirmarBorrado(ruta)"
+        [descargar]="true"
+        (descargarFichero)="descargarFichero(ruta.id)"
       />
 
     </tr>

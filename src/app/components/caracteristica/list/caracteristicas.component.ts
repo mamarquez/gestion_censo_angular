@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, DestroyRef, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService, PrimeTemplate } from 'primeng/api';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { Button } from 'primeng/button';
@@ -10,6 +10,7 @@ import { ToastModule } from 'primeng/toast';
 import { DialogService } from '../../../services/dialog.service';
 import { InstalacionCaracteristicaService } from '../../../services/instalacionCaracteristica.service';
 import { InstalacionCaracteristica } from '../../../models/instalacionCaracteristica';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 
 @Component({
   standalone: true,
@@ -42,7 +43,10 @@ export class ListCaracteristicasComponent implements OnChanges {
   caracteristicas: InstalacionCaracteristica[] = [];
 
   form: FormGroup = this.fb.group({
-    nombre: ['']
+    id: [null],
+    nombre: ['', Validators.required],
+    descripcion: [null],
+    visible: [true]
   });
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -64,7 +68,7 @@ export class ListCaracteristicasComponent implements OnChanges {
     this.service.getAll(filtros)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response) => {
+      next: (response: ApiResponseWrapper<InstalacionCaracteristica[]>) => {
         this.caracteristicas = response.data || [];
         this.cargando = false;
         this.cdr.detectChanges();

@@ -69,4 +69,18 @@ export class InstalacionRutaService {
   borrarRegistro(id: number): Observable<ApiResponseWrapper<boolean>> {
     return this.http.delete<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, { headers: this.headers });
   }
+
+
+  /**
+   * Descarga un fichero kml de una ruta
+   * 
+   * @param idRuta Id del ruta
+   * @returns fichero kml
+   */
+  descargarFichero(idRuta: number): Observable<Blob> {
+    console.log('Descargando fichero kml para la ruta con id:', idRuta);
+
+    return this.http.get(`${this.api}/descargar/${idRuta}`, { headers: this.headers, responseType: 'blob' });
+  }
+
 }

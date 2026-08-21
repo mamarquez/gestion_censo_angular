@@ -17,10 +17,12 @@ import { TooltipModule } from 'primeng/tooltip';
 })
 export class AccionesTablaComponent {
   editarRoute = input<any[]>([]);
-  editar = output<void>();
   activo = input<boolean | undefined>();
   visible = input<boolean | undefined>();
+  descargar = input<boolean | undefined>();
   toggleEstado = output<void>();
   toggleVisible = output<void>();
+  editar = output<void>();
   borrar = output<void>();
+  descargarFichero = output<number>();
 }
