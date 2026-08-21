@@ -2,18 +2,18 @@ import { Component, DestroyRef, effect, inject, input, output, signal } from '@a
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
 import { FieldsetModule } from 'primeng/fieldset';
 import { FluidModule } from 'primeng/fluid';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { MessageService } from 'primeng/api';
-
 import { CoordenadaService } from '../../../../../services/coordenada.service';
-import { DialogService } from '../../../../../services/dialog.service';
 import { ApiResponseWrapper } from '../../../../../interface/api-response-wrapper.interface';
 import { Coordenada } from '../../../../../models/coordenada';
 import { mensajesUtil } from '../../../../../utils/mensajes.util';
+import { LocalizameComponent } from './localizame/localizame.component';
+import { PuntoCoordenada } from '../../../../../components/mapa-coordenada/mapa-coordenada.component';
+import { decimalAGms, latLngAUtm } from '../../../../../utils/coordenadas.util';
 
 @Component({
   standalone: true,
@@ -24,7 +24,8 @@ import { mensajesUtil } from '../../../../../utils/mensajes.util';
     ButtonModule,
     FieldsetModule,
     FluidModule,
-    InputTextModule
+    InputTextModule,
+    LocalizameComponent
   ],
   templateUrl: './geoposicion.component.html'
 })
@@ -127,6 +128,42 @@ export class GeoPosicionComponent {
           mensajesUtil(this.messageService, 'error', 'carga'); // Corregido 'errpr'
         }
       });
+  }
+
+  onPuntoSeleccionado(punto: PuntoCoordenada): void {
+    const gmsLatitud = decimalAGms(punto.lat);
+    const gmsLongitud = decimalAGms(punto.lng);
+    const utm = latLngAUtm(punto.lat, punto.lng);
+
+    this.geoForm.patchValue({
+      // xy_x/xy_y son los únicos campos obligatorios del formulario. Pese a que
+      // el backend los etiqueta como "sistema local", los datos reales en BD
+      // muestran que se usan como alias de latitud/longitud WGS84 (mismo rango
+      // y precisión que nmea_latitud/nmea_longitud) — se rellenan igual para
+      // que marcar un punto en el mapa deje el formulario listo para guardar.
+      xy: {
+        x: punto.lat.toFixed(6),
+        y: punto.lng.toFixed(6)
+      },
+      nmea: {
+        latitud: punto.lat.toFixed(6),
+        longitud: punto.lng.toFixed(6)
+      },
+      gms: {
+        gradosLatitud: gmsLatitud.grados,
+        minutosLatitud: gmsLatitud.minutos,
+        segundosLatitud: gmsLatitud.segundos,
+        gradosLongitud: gmsLongitud.grados,
+        minutosLongitud: gmsLongitud.minutos,
+        segundosLongitud: gmsLongitud.segundos
+      },
+      utm: {
+        x: utm.x,
+        y: utm.y,
+        banda: utm.banda,
+        huso: utm.huso
+      }
+    });
   }
 
   onSubmit(): void {

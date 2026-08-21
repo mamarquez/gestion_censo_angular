@@ -1,0 +1,51 @@
+<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
+  <p-button
+    type="button"
+    label="Localízame"
+    icon="pi pi-map-marker"
+    styleClass='p-button-primary p-button-sm'
+    (onClick)="popover.toggle($event)"
+  ></p-button>
+</div>
+
+<p-popover #popover (onShow)="alAbrir()">
+  <div class="localizame-panel">
+
+    @if (cargando()) {
+      <div class="localizame-estado">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Obteniendo tu ubicación...</span>
+      </div>
+    } @else if (error()) {
+      <div class="localizame-error">
+        {{ error() }} Marca el punto manualmente en el mapa.
+      </div>
+    }
+
+    <app-mapa-coordenada
+      [puntoInicial]="punto()"
+      (puntoCambiado)="ajustarPunto($event)"
+    ></app-mapa-coordenada>
+
+    @if (punto(); as p) {
+      <div class="localizame-coordenadas">
+        <div>Lat: {{ p.lat.toFixed(6) }}</div>
+        <div>Lng: {{ p.lng.toFixed(6) }}</div>
+      </div>
+    }
+
+    <div class="localizame-acciones">
+      @if (error()) {
+        <p-button label="Reintentar" styleClass="p-button-outlined" size="small" (onClick)="localizar()"></p-button>
+      }
+      <p-button
+        label="Usar esta ubicación"
+        icon="pi pi-check"
+        size="small"
+        [disabled]="!punto()"
+        (onClick)="usarUbicacion(); popover.hide()"
+      ></p-button>
+    </div>
+
+  </div>
+</p-popover>

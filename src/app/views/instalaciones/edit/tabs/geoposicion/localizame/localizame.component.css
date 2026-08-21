@@ -1,0 +1,35 @@
+.localizame-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 320px;
+}
+
+app-mapa-coordenada {
+  display: block;
+  height: 260px;
+}
+
+.localizame-estado {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.localizame-error {
+  font-size: 0.875rem;
+  color: #dc2626;
+}
+
+.localizame-coordenadas {
+  font-size: 0.875rem;
+  color: #334155;
+}
+
+.localizame-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
