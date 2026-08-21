@@ -37,14 +37,6 @@ export class InstalacionEspacioComplementarioService {
   }
 
   /**
-   * Cambia el estado de un registro
-   * @param id Id del registro
-   */
-  cambiarEstado(id: number): Observable<ApiResponseWrapper<InstalacionEspacioComplementario>> {
-    return this.http.patch<ApiResponseWrapper<InstalacionEspacioComplementario>>(`${this.api}/${id}`, null, { headers: this.headers });
-  }
-
-  /**
    * Cambia la visibilidad de un registro
    * @param id Id del registro
    */

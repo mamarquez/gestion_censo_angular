@@ -37,14 +37,6 @@ export class InstalacionRutaService {
   }
 
   /**
-   * Cambia el estado de un registro
-   * @param id Id del registro
-   */
-  cambiarEstado(id: number): Observable<ApiResponseWrapper<boolean>> {
-    return this.http.patch<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, null, { headers: this.headers });
-  }
-
-  /**
    * Cambia la visibilidad
    * @param id Id del registro
    */
