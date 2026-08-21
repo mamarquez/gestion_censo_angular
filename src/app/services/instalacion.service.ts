@@ -51,7 +51,7 @@ export class InstalacionService {
    * @param id Id del registro
    */
   cambiarVisible(id: number): Observable<ApiResponseWrapper<Instalacion>> {
-    return this.http.patch<ApiResponseWrapper<Instalacion>>(`${this.api}/visibilidad/${id}`, null, { headers: this.headers });
+    return this.http.patch<ApiResponseWrapper<Instalacion>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**

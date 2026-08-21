@@ -174,31 +174,6 @@ export class RutasComponent implements OnInit {
     });
   }
 
-  cambiarEstado(id: number) {
-    this.cargando = true;
-
-    this.service.cambiarEstado(id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-      next: () => {
-        const ruta = this.rutas.find(p => p.id === id);
-        if (ruta) {
-          ruta.activo = !ruta.activo;
-        }
-
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
-        this.cargando = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al cambiar el estado del telefono', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
-        this.cargando = false;
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
   cambiarVisible(id: number) {
     this.cargando = true;
 

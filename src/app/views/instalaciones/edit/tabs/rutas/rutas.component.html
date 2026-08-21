@@ -1,7 +1,7 @@
 <div class='bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-6' [formGroup]='form'>
   <div style='display: flex !important; flex-direction: row !important; align-items: flex-end !important; gap: 1rem !important; flex-wrap: wrap !important;'>
 
-    <input id="idInstalacion" type="text" pInputText formControlName="idInstalacion" readonly [hidden]='true' />
+    <input id="idInstalacion" type="number" pInputText formControlName="idInstalacion" readonly [hidden]='true' />
 
     <!-- Nombre -->
     <div style='display: flex; flex-direction: column; gap: 0.375rem; width: 250px;'>
@@ -96,14 +96,13 @@
       <th id='ruta.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
       <th id='ruta.descripcion' pSortableColumn="descripcion">Descripción<p-sortIcon field="descripcion"></p-sortIcon></th>
       <th id='ruta.visible' pSortableColumn='visible' class='text-center' style='width: 10%'>Visible<p-sortIcon field='visible'></p-sortIcon></th>
-      <th id='ruta.activo' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
       <th id='ruta.accion' class='text-right' style='width: 10%'></th>
     </tr>
   </ng-template>
 
   <ng-template pTemplate="emptymessage">
     <tr>
-      <td colspan="6">
+      <td colspan="4">
         <div style="display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-off-icon lucide-circle-off"><path d="m2 2 20 20"/><path d="M8.35 2.69A10 10 0 0 1 21.3 15.65"/><path d="M19.08 19.08A10 10 0 1 1 4.92 4.92"/></svg>
           <p style="margin-top: 1rem; color: #64748b; font-weight: 600;">No hay registros para mostrar</p>
@@ -132,18 +131,10 @@
           <span class="slider-native"></span>
         </label>
       </td>
-      <td class="centrado">
-        <label class="switch-native {{ ruta.activo ? 'verde' : 'rojo' }}">
-          <input type="checkbox" [checked]="ruta.activo" disabled />
-          <span class="slider-native"></span>
-        </label>
-      </td>
 
       <app-acciones-tabla
         (editar)="editar(ruta.id)"
-        [activo]="ruta.activo"
         [visible]="ruta.visible"
-        (toggleEstado)="cambiarEstado(ruta.id)"
         (toggleVisible)="cambiarVisible(ruta.id)"
         (borrar)="confirmarBorrado(ruta)"
       />

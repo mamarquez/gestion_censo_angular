@@ -30,26 +30,18 @@ export class InstalacionCaracteristicaService {
   /**
    * Obtener registro
    */
-  get(id?: any): Observable<ApiResponseWrapper<InstalacionCaracteristica[]>> {
+  get(id: number): Observable<ApiResponseWrapper<InstalacionCaracteristica[]>> {
     return this.http.get<ApiResponseWrapper<InstalacionCaracteristica[]>>(`${this.api}/${id}`, {
       headers: this.headers
     });
   }
 
   /**
-   * Cambia el estado de un registro
+   * Cambia la visibilidad de un registro
    * @param id Id del registro
    */
   cambiarEstado(id: number): Observable<ApiResponseWrapper<boolean>> {
     return this.http.patch<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, null, { headers: this.headers });
-  }
-
-  /**
-   * Cambia la visibilidad de un registro
-   * @param id Id del registro
-   */
-  cambiarVisible(id: number): Observable<ApiResponseWrapper<boolean>> {
-    return this.http.patch<ApiResponseWrapper<boolean>>(`${this.api}/visibilidad/${id}`, null, { headers: this.headers });
   }
 
   /**

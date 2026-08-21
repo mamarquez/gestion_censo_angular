@@ -130,7 +130,7 @@ export class DatosCaracteristicaComponent implements OnInit {
   cambiarVisible(id: number) {
     this.cargando = true;
 
-    this.service.cambiarVisible(id)
+    this.service.cambiarEstado(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: () => {
