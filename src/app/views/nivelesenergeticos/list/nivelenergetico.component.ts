@@ -17,6 +17,10 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
 import { Truncar } from '../../../pipe/trucar.pipe';
 import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
 
+/**
+ * @version 1.0.0
+ */
+
 @Component({
   standalone: true,
   selector: 'app-nivel-energetico',

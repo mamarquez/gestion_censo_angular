@@ -8,6 +8,11 @@ import { HttpParams } from '@angular/common/http';
  * @param filtros Objeto con los filtros del formulario
  * @returns Instancia de HttpParams lista para enviar en HttpClient
  */
+
+/**
+ * @version 1.0.0
+ */
+
 export function buildHttpParams(filtros: any): HttpParams {
   let params = new HttpParams();
 

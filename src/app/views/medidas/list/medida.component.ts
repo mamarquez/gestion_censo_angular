@@ -17,6 +17,10 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 import { Truncar } from '../../../pipe/trucar.pipe';
 import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
 
+/**
+ * @version 1.0.0
+ */
+
 @Component({
   standalone: true,
   selector: 'app-medida',

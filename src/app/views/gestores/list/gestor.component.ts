@@ -17,6 +17,10 @@ import { BotonAddComponent } from "../../../components/boton-add/boton-add.compo
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { Truncar } from '../../../pipe/trucar.pipe';
 
+/**
+ * @version 1.0.1
+ */
+
 @Component({
   standalone: true,
   selector: 'app-gestor',

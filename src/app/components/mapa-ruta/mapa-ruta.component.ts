@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, input, OnChanges, OnDestroy, output, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, input, NgZone, OnChanges, OnDestroy, output, SimpleChanges, ViewChild } from '@angular/core';
 import * as L from 'leaflet';
 
 export interface PuntoRuta {
@@ -18,6 +18,8 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   @ViewChild('mapaContenedor', { static: true }) private mapaContenedor!: ElementRef<HTMLDivElement>;
 
+  private readonly ngZone = inject(NgZone);
+
   puntosIniciales = input<PuntoRuta[]>([]);
   soloLectura = input<boolean>(false);
   rutaCambiada = output<PuntoRuta[]>();
@@ -35,17 +37,23 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
   private mapaListo = false;
 
   ngAfterViewInit(): void {
-    this.inicializarMapa();
-    this.mapaListo = true;
+    // Leaflet registra internamente muchos listeners (arrastre, zoom, tiles...).
+    // Si se registran dentro de la zona de Angular, cada mousemove al mover el
+    // mapa dispara un ciclo de detección de cambios completo y la app se nota
+    // congelada. Se inicializa fuera de la zona para evitarlo.
+    this.ngZone.runOutsideAngular(() => {
+      this.inicializarMapa();
+      this.mapaListo = true;
 
-    // El contenedor puede no tener aún su tamaño final (p.ej. dentro de un tab/fieldset),
-    // lo que hace que Leaflet cargue solo un tile inicial y el resto se vea en blanco.
-    // Se invalida el tamaño ANTES de dibujar la ruta para que la polyline se calcule
-    // ya sobre las dimensiones reales del contenedor.
-    setTimeout(() => {
-      this.mapa.invalidateSize();
-      this.cargarPuntosIniciales();
-    }, 0);
+      // El contenedor puede no tener aún su tamaño final (p.ej. dentro de un tab/fieldset),
+      // lo que hace que Leaflet cargue solo un tile inicial y el resto se vea en blanco.
+      // Se invalida el tamaño ANTES de dibujar la ruta para que la polyline se calcule
+      // ya sobre las dimensiones reales del contenedor.
+      setTimeout(() => {
+        this.mapa.invalidateSize();
+        this.cargarPuntosIniciales();
+      }, 0);
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -66,7 +74,12 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
     puntos.forEach(punto => this.agregarPunto(L.latLng(punto.x, punto.y), false, punto.id));
 
     if (this.ruta.length > 0) {
-      this.mapa.fitBounds(this.polyline.getBounds(), { padding: [20, 20] });
+      // fitBounds dispara la animación de zoom/paneo de Leaflet: si se llama
+      // desde ngOnChanges (dentro de la zona de Angular), esa animación
+      // también corre dentro de la zona y se nota igual de lenta.
+      this.ngZone.runOutsideAngular(() => {
+        this.mapa.fitBounds(this.polyline.getBounds(), { padding: [20, 20] });
+      });
     }
   }
 
@@ -102,28 +115,33 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.ruta.push(latlng);
     this.idsPuntos.push(id);
 
-    const marcador = L.circleMarker(latlng, {
-      radius: 3,
-      color: '#e11d48',
-      fillColor: '#ffffff',
-      fillOpacity: 1,
-      weight: 2
-    }).addTo(this.mapa);
+    // Puede llamarse desde ngOnChanges (dentro de la zona de Angular), así que
+    // se fuerza a salir de la zona para que el marcador no acabe registrando
+    // sus listeners de arrastre dentro de la zona.
+    this.ngZone.runOutsideAngular(() => {
+      const marcador = L.circleMarker(latlng, {
+        radius: 3,
+        color: '#e11d48',
+        fillColor: '#ffffff',
+        fillOpacity: 1,
+        weight: 2
+      }).addTo(this.mapa);
 
-    marcador.bindTooltip(id !== undefined ? `${id}` : '?', {
-      permanent: false,
-      direction: 'top',
-      offset: [0, -6],
-      className: 'mapa-ruta-tooltip-punto'
+      marcador.bindTooltip(id !== undefined ? `${id}` : '?', {
+        permanent: false,
+        direction: 'top',
+        offset: [0, -6],
+        className: 'mapa-ruta-tooltip-punto'
+      });
+
+      if (!this.soloLectura()) {
+        this.habilitarArrastre(marcador);
+      }
+
+      this.marcadores.push(marcador);
+
+      this.actualizarRuta();
     });
-
-    if (!this.soloLectura()) {
-      this.habilitarArrastre(marcador);
-    }
-
-    this.marcadores.push(marcador);
-
-    this.actualizarRuta();
 
     if (emitir) {
       this.emitirRuta();
@@ -180,7 +198,11 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   private emitirRuta(): void {
-    this.rutaCambiada.emit(this.obtenerRuta());
+    // El emit sí debe entrar en la zona de Angular para que el padre
+    // (formulario, otros bindings) reaccione al cambio.
+    this.ngZone.run(() => {
+      this.rutaCambiada.emit(this.obtenerRuta());
+    });
   }
 
   limpiarRuta(emitir: boolean = true): void {

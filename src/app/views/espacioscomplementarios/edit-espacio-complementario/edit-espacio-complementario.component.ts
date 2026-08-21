@@ -6,17 +6,12 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-
 import { EspacioComplementarioService } from '../../../services/espaciocomplementario.service';
 import { MessageService } from 'primeng/api';
-import { DialogService } from '../../../services/dialog.service';
 import { EspacioComplementario } from '../../../models/espaciocomplementario';
-
 import { Button } from 'primeng/button';
 import { Fieldset } from 'primeng/fieldset';
-
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-
 import {
   ClassicEditor,
   Essentials,
@@ -28,7 +23,6 @@ import {
   List,
   Undo
 } from 'ckeditor5';
-
 import coreTranslations from 'ckeditor5/translations/es.js';
 import 'ckeditor5/ckeditor5.css';
 

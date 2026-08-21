@@ -16,10 +16,22 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
 import { ModalRolPermisoComponent } from '../../../components/rol/modal-rol-permiso/modal-rol-permiso.component';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 
+/**
+ * @version 1.0.0
+ */
+
 @Component({
   standalone: true,
   selector: 'app-rol',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, AccionesTablaComponent, ModalRolPermisoComponent],
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    AccionesTablaComponent,
+    ModalRolPermisoComponent
+  ],
   templateUrl: './rol.component.html'
 })
 export class RolComponent implements OnInit {

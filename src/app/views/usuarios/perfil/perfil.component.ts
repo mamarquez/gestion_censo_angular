@@ -14,6 +14,10 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { Router } from '@angular/router';
 import { ChipModule } from 'primeng/chip';
 
+/**
+ * @version 1.0.0
+ */
+
 @Component({
   standalone: true,
   selector: 'app-perfil',

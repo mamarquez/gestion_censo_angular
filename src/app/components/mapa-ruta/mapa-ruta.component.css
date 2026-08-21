@@ -1,6 +1,6 @@
 :host {
   display: block;
-  height: 400px;
+  height: 200px;
 }
 
 ::ng-deep .mapa-ruta-tooltip-punto {

@@ -16,6 +16,10 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { Truncar } from '../../../pipe/trucar.pipe';
 
+/**
+ * @version 1.0.0
+ */
+
 @Component({
   standalone: true,
   selector: 'app-menu',
