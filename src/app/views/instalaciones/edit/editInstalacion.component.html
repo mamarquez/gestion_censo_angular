@@ -52,7 +52,7 @@
         } @else if (tabActiva === 'telefonos') {
           <app-datos-telefonos (cargandoChange)="onCargandoChange($event)" [(idInstalacion)]="idInstalacion" />
         } @else if (tabActiva === 'deportivos') {
-          <app-datos-espacios-deportivos (cargandoChange)="onCargandoChange($event)" [(idInstalacion)]="idInstalacion" />
+          <app-datos-espacios-deportivos (cargandoChange)="onCargandoChange($event)" [idInstalacion]="idInstalacion" />
         } @else if (tabActiva === 'caracteristicas') {
           <app-datos-caracteristicas (cargandoChange)="onCargandoChange($event)" [(idInstalacion)]="idInstalacion" />
         } @else if (tabActiva === 'complementarios') {

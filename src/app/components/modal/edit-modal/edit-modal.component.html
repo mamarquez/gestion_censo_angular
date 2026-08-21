@@ -120,6 +120,15 @@
       </div>
     }
 
+    @if (camposMostrar().espacioComplementario) {
+      <div class='fields-row'>
+        <div class='field col-12'>
+          <label for='complementario-select'>Espacio complementario</label>
+          <app-select-complementarios formControlName='espacioComplementario' />
+        </div>
+      </div>
+    }
+
     <div class='fields-row'>
 
       @if (datos() !== null && datos()?.visible !== undefined && camposMostrar().visible) {

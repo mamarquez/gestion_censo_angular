@@ -32,8 +32,6 @@ import { EditInstalacionComponent } from './views/instalaciones/edit/editInstala
 import {
   EditInstalacionDeportivaComponent
 } from './views/instalaciones/edit/tabs/deportivos/edit-espacio-deportivo/edit-instalacion-deportiva.component';
-import { EspacioDeportivoComponent } from './views/espaciosdeportivos/list/espaciodeportivo.component';
-import { EspacioComplementarioCompoment } from './views/espacioscomplementarios/list/espaciocomplementario.component';
 import { RolFormComponent } from './views/roles/form/rol-form.component';
 import {
   EditInstalacionRutaComponent
@@ -43,12 +41,9 @@ import { PerfilComponent } from './views/usuarios/perfil/perfil.component';
 import { NotFoundComponent } from './views/errors/not-found/not-found.component';
 import { ForbiddenComponent } from './views/errors/forbidden/forbidden.component';
 import { ServerErrorComponent } from './views/errors/server-error/server-error.component';
-import {
-  EditEspacioComplementarioComponent
-} from './views/espacioscomplementarios/edit-espacio-complementario/edit-espacio-complementario.component';
 
 /**
- * @version 2.0.0
+ * @version 2.0.1
  */
 
 export const routes: Routes = [
@@ -207,20 +202,6 @@ export const routes: Routes = [
       {
         path: 'estadosusos',
         component: EstadoUsoComponent
-      },
-      {
-        path: 'espacioscomplementarios',
-        children: [
-          { path: '', component: EspacioComplementarioCompoment },
-          { path: ':id', component: EditEspacioComplementarioComponent },
-        ]
-      },
-      {
-        path: 'espaciosdeportivos',
-        children: [
-          { path: '', component: EspacioDeportivoComponent },
-          { path: ':id', component: EditEspacioComplementarioComponent }
-        ]
       },
       {
         path: 'instalacionesespacios',

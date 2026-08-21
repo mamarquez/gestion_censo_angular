@@ -1,5 +1,4 @@
-<label for="provincia-select">Provincia</label>
-
+<label for='provincia-select'>Provincia</label>
 <p-select
   inputId="provincia-select"
   [options]="provincias"
@@ -11,8 +10,6 @@
   (onBlur)="onTouched()"
   [disabled]="disabled()"
   [loading]="cargandoProvincias"
-  [filter]="true"
-  filterBy="nombre"
-  [showClear]="true"
   styleClass="w-full"
+  [style]="{'width': '100%'}"
 ></p-select>

@@ -30,8 +30,8 @@ export class InstalacionEspacioComplementarioService {
   /**
    * Obtener espacios deportivos de una instalación
    */
-  get(id?: any): Observable<ApiResponseWrapper<InstalacionEspacioComplementario[]>> {
-    return this.http.get<ApiResponseWrapper<InstalacionEspacioComplementario[]>>(`${this.api}/${id}`, {
+  get(id: number): Observable<ApiResponseWrapper<InstalacionEspacioComplementario>> {
+    return this.http.get<ApiResponseWrapper<InstalacionEspacioComplementario>>(`${this.api}/${id}`, {
       headers: this.headers
     });
   }
@@ -50,6 +50,14 @@ export class InstalacionEspacioComplementarioService {
    */
   crear(espacioDeportivo: Partial<InstalacionEspacioComplementario>): Observable<ApiResponseWrapper<InstalacionEspacioComplementario>> {
     return this.http.post<ApiResponseWrapper<InstalacionEspacioComplementario>>(`${this.api}`, espacioDeportivo, { headers: this.headers });
+  }
+
+  /**
+   * Crea un nuevo espacio deportivo
+   * @param espacioDeportivo Datos del espacio deportivo
+   */
+  update(id: number, espacioDeportivo: InstalacionEspacioComplementario): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, espacioDeportivo, { headers: this.headers });
   }
 
   /**

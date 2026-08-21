@@ -1,17 +1,11 @@
 <app-edit-modal
-  [titulo]="'Espacio deportivo'"
+  [titulo]="'Espacio complementario'"
   [(isVisible)]="modalVisible"
   [datos]='espacioComplementario'
-  [maxValores]='{
-    nombre: 255,
-    valor: 255
-  }'
   (guardar)="guardar($event)"
   [camposMostrar]="{
-    nombre: true,
-    descripcion: true,
-    valor: true,
-    activo: true
+    espacioComplementario: true,
+    visible: true
   }"
 />
 
@@ -81,13 +75,13 @@
     style='display: flex !important; flex-direction: row !important; align-items: flex-end !important; gap: 1rem !important; flex-wrap: wrap !important;'>
 
 
-  <form [formGroup]="form">
-    <div class="fields-row">
-        <div class="field col-3">
-          <input id="id" type="text" formControlName="id" readonly [hidden]='true' />
-        </div>
-    </div>
-  </form>
+    <form [formGroup]="form">
+      <div class="fields-row">
+          <div class="field col-3">
+            <input id="id" type="text" formControlName="id" readonly [hidden]='true' />
+          </div>
+      </div>
+    </form>
 
   </div>
 </div>
@@ -138,7 +132,7 @@
         </label>
       </td>
       <app-acciones-tabla
-        [editarRoute]="['/instalacionesespacios', espacioComplementario.id]"
+        (editar)="editar(espacioComplementario.id)"
         [visible]="espacioComplementario.visible"
         (toggleVisible)="cambiarVisible(espacioComplementario.id)"
         (borrar)="confirmarBorrado(espacioComplementario)"

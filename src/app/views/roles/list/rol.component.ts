@@ -15,6 +15,8 @@ import { RolPermisoModel } from '../../../models/rol-permiso-model';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { ModalRolPermisoComponent } from '../../../components/rol/modal-rol-permiso/modal-rol-permiso.component';
 import { mensajesUtil } from '../../../utils/mensajes.util';
+import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { Truncar } from '../../../pipe/trucar.pipe';
 
 /**
  * @version 1.0.0
@@ -30,7 +32,8 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
     ReactiveFormsModule,
     ConfirmDialogModule,
     AccionesTablaComponent,
-    ModalRolPermisoComponent
+    ModalRolPermisoComponent,
+    Truncar
   ],
   templateUrl: './rol.component.html'
 })
@@ -55,6 +58,7 @@ export class RolComponent implements OnInit {
 
   form: FormGroup = this.fb.group({
     nombre: ['', [Validators.required, Validators.maxLength(Rol.campos.nombre.maxLength)]],
+    descripcion: [null],
     activo: [null]
   });
 
@@ -197,7 +201,7 @@ export class RolComponent implements OnInit {
     this.rolPermisoService.getAll({ idRol })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response) => {
+      next: (response: ApiResponseWrapper<RolPermisoModel[]>) => {
         this.permisosPorRol[idRol] = response.data || [];
         this.cargandoPermisos[idRol] = false;
         this.cdr.detectChanges();

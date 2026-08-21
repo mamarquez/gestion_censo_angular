@@ -137,7 +137,7 @@ export class ComplementarioComponent implements OnInit {
   addRegistro(idEspacioComplementario: number) {
     this.guardando = true;
 
-    const datos: Partial<InstalacionEspacioComplementario> = {
+    const datos: InstalacionEspacioComplementario = {
       idInstalacion: Number(this.idInstalacion()),
       espacioComplementario: { id: idEspacioComplementario } as any,
       visible: true,
@@ -217,31 +217,68 @@ export class ComplementarioComponent implements OnInit {
     this.modalVisible = true;
   }
 
-  /*
-  editar(id: string) {
-    this.service.get(id).subscribe({
+  editar(id: number): void {
+    this.service.get(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
       next: (response: ApiResponseWrapper<InstalacionEspacioComplementario>) => {
         this.espacioComplementario = response.data ?? null;
 
         if (this.espacioComplementario !== null) {
           this.modalVisible = true;
+          this.cdr.detectChanges();
         }
       },
       error: (err) => {
-        console.error('Error al editar: ', {
-          id,
-          error: err
-        });
+        console.error('Error al cargar el espacio complementario', err);
         mensajesUtil(this.messageService, 'error', 'carga');
-        this.cargando = false;
-        this.cdr.detectChanges();
       }
     });
   }
-  */
 
-  guardar(espacioComplementario: InstalacionEspacioComplementario) {
-    this.cargando = true;
+  guardar(valores: any): void {
+    if (!valores.espacioComplementario) {
+      return;
+    }
+
+    this.guardando = true;
+    const id = Number(valores.id);
+    const datos: InstalacionEspacioComplementario = {
+      idInstalacion: Number(this.idInstalacion()),
+      espacioComplementario: { id: Number(valores.espacioComplementario) } as any,
+      visible: valores.visible ?? true,
+      activo: valores.activo ?? true
+    };
+
+    if (id > 0) {
+      this.service.update(id, { ...datos, id } as InstalacionEspacioComplementario)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => this.guardadoCorrecto('update'),
+          error: (err) => this.guardadoError(err)
+        });
+    } else {
+      this.service.crear(datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => this.guardadoCorrecto('add'),
+          error: (err) => this.guardadoError(err)
+        });
+    }
+  };
+
+  private guardadoCorrecto(mensaje: 'update' | 'add'): void {
+    mensajesUtil(this.messageService, 'success', mensaje);
+    this.modalVisible = false;
+    this.guardando = false;
+    this.cargarDatos(this.idInstalacion());
+  }
+
+  private guardadoError(err: unknown): void {
+    console.error('Error al guardar el espacio complementario', err);
+    mensajesUtil(this.messageService, 'error', 'error');
+    this.guardando = false;
+    this.cdr.detectChanges();
   }
 
 }

@@ -6,6 +6,7 @@ import { Button } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
 import { InputText } from 'primeng/inputtext';
 import { SelectTiposGestoresComponent } from '../../select-tipo-gestor/select-complementarios.component';
+import { SelectComplementariosComponent } from '../../select-complementario/select-complementarios.component';
 
 @Component({
   standalone: true,
@@ -16,7 +17,8 @@ import { SelectTiposGestoresComponent } from '../../select-tipo-gestor/select-co
     FormsModule,
     ReactiveFormsModule,
     InputText,
-    SelectTiposGestoresComponent
+    SelectTiposGestoresComponent,
+    SelectComplementariosComponent
   ],
   templateUrl: './edit-modal.component.html'
 })
@@ -62,6 +64,8 @@ export class EditModalComponent {
     contacto?: boolean;
     notas?: boolean;
     tiposGestores?: boolean;
+    espacioComplementario?: boolean;
+    espacioDeportivo?: boolean;
   }>({
     id: false,
     idInstalacion: false,
@@ -81,7 +85,8 @@ export class EditModalComponent {
     numero: false,
     contacto: false,
     notas: false,
-    tiposGestores: false
+    tiposGestores: false,
+    espacioComplementario: false
   });
 
   camposReadOnly = input<{
@@ -111,7 +116,8 @@ export class EditModalComponent {
     numero: [null],
     contacto: [null],
     notas: [null],
-    tipoGestor: [null]
+    tipoGestor: [null],
+    espacioComplementario: [null]
   });
 
   constructor() {
@@ -138,7 +144,8 @@ export class EditModalComponent {
         this.form.patchValue({
           ...datos,
           idInstalacion: datos.idInstalacion ?? this.idInstalacion(),
-          tipoGestor: datos.tipoGestor?.id ?? null
+          tipoGestor: datos.tipoGestor?.id ?? null,
+          espacioComplementario: datos.espacioComplementario?.id ?? null
         });
       } else {
         this.form.reset({
