@@ -70,8 +70,7 @@ export class EditInstalacionRutaComponent implements OnInit {
     id: [null],
     nombre: ['', Validators.required],
     descripcion: [null],
-    visible: [true],
-    activo: [true]
+    visible: [true]
   });
 
   ngOnInit(): void {

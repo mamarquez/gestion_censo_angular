@@ -4,5 +4,4 @@ export class InstalacionRuta {
   nombre!: string;
   descripcion?: string;
   visible!: boolean;
-  activo!: boolean;
 }

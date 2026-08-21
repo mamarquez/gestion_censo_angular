@@ -6,5 +6,4 @@ export class InstalacionEspacioDeportivo {
   nombre!: string;
   descripcion?: string;
   visible!: boolean;
-  activo!: boolean;
 }

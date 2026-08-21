@@ -55,8 +55,7 @@ export class RutasComponent implements OnInit {
   form: FormGroup = this.fb.group({
     idInstalacion: [null],
     nombre: ['', Validators.required],
-    descripcion: [null],
-    activo: [true]
+    descripcion: [null]
   });
 
   ngOnInit() {

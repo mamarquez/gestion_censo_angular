@@ -50,8 +50,7 @@ export class EditInstalacionDeportivaComponent implements OnInit {
     id: [''],
     nombre: ['', Validators.required],
     descripcion: [''],
-    visible: [true, Validators.required],
-    activo: [true, Validators.required]
+    visible: [true, Validators.required]
   });
 
   ngOnInit() {
@@ -101,8 +100,7 @@ export class EditInstalacionDeportivaComponent implements OnInit {
       instalacion: espacioDeportivo.instalacion,
       nombre: espacioDeportivo.nombre,
       descripcion: espacioDeportivo.descripcion,
-      visible: espacioDeportivo.visible,
-      activo: espacioDeportivo.activo
+      visible: espacioDeportivo.visible
     };
 
     if (datos.id) {

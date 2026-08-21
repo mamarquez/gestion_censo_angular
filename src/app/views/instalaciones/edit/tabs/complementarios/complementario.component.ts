@@ -61,8 +61,7 @@ export class ComplementarioComponent implements OnInit {
     idInstalacion: [null, Validators.required],
     nombre: [null, Validators.required],
     descripcion: [null],
-    visible: [true],
-    activo: [true]
+    visible: [true]
   });
 
   ngOnInit() {
@@ -140,8 +139,7 @@ export class ComplementarioComponent implements OnInit {
     const datos: InstalacionEspacioComplementario = {
       idInstalacion: Number(this.idInstalacion()),
       espacioComplementario: { id: idEspacioComplementario } as any,
-      visible: true,
-      activo: true
+      visible: true
     };
 
     this.service.crear(datos)
@@ -246,8 +244,7 @@ export class ComplementarioComponent implements OnInit {
     const datos: InstalacionEspacioComplementario = {
       idInstalacion: Number(this.idInstalacion()),
       espacioComplementario: { id: Number(valores.espacioComplementario) } as any,
-      visible: valores.visible ?? true,
-      activo: valores.activo ?? true
+      visible: valores.visible ?? true
     };
 
     if (id > 0) {

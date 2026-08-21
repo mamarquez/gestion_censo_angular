@@ -58,8 +58,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
     idInstalacion: ['', Validators.required],
     nombre: ['', [Validators.required, Validators.maxLength(EspacioDeportivo.campos.nombre.maxLength)]],
     descripcion: [null],
-    visible: [true],
-    activo: [true]
+    visible: [true]
   });
 
   ngOnInit() {
@@ -122,31 +121,6 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
         mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.espaciosDeportivos = [];
-      }
-    });
-  }
-
-  cambiarEstado(id: number) {
-    this.cargando = true;
-
-    this.service.cambiarEstado(id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-      next: (response: ApiResponseWrapper<InstalacionEspacioDeportivo>) => {
-        const espacioDeportivo = this.espaciosDeportivos.find(p => p.id === id);
-        if (espacioDeportivo) {
-          espacioDeportivo.activo = !espacioDeportivo.activo;
-        }
-
-        mensajesUtil(this.messageService, 'success', 'update');
-        this.cargando = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al cambiar el estado del espacio deportivo', err);
-        mensajesUtil(this.messageService, 'error', 'error');
-        this.cargando = false;
-        this.cdr.detectChanges();
       }
     });
   }
@@ -230,8 +204,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
       instalacion: valores.instalacion ?? { id: Number(this.idInstalacion()) },
       nombre: valores.nombre,
       descripcion: valores.descripcion,
-      visible: valores.visible ?? true,
-      activo: valores.activo ?? true
+      visible: valores.visible ?? true
     };
 
     if (datos.id) {
