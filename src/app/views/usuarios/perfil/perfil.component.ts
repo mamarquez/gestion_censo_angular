@@ -45,11 +45,11 @@ export class PerfilComponent {
 
   form = this.fb.group({
     id: [null],
-    nombreUsuario: ['', Validators.required],
-    nombre: ['', Validators.required],
-    apellido1: ['', Validators.required],
+    nombreUsuario: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(255)]],
+    nombre: ['', [Validators.required]],
+    apellido1: [null],
     apellido2: [null],
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
     descripcion: [null],
     activo: [true],
     avatar: [null],

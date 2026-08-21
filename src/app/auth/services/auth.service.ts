@@ -81,7 +81,7 @@ export class AuthService {
       response.refreshToken
     );
 
-    localStorage.setItem(
+    sessionStorage.setItem(
       AUTH.USER,
       JSON.stringify(response)
     );

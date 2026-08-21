@@ -25,6 +25,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
     const token = tokenService.get();
 
+    if (token && tokenService.isExpired(token)) {
+      authService.logout();
+      router.navigateByUrl(AUTH.ROUTES.SESSION_EXPIRED);
+      return throwError(() => new Error('Token expirado'));
+    }
+
     if (token) {
       request = req.clone({
         setHeaders: {

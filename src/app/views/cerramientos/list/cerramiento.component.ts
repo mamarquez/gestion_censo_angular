@@ -17,6 +17,7 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
 import { NivelDotacion } from '../../../models/niveldotacion';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { Truncar } from '../../../pipe/trucar.pipe';
+import { BotonAddComponent } from '../../../components/boton-add/boton-add.component';
 
 /**
  * @version 1.0.0
@@ -25,7 +26,18 @@ import { Truncar } from '../../../pipe/trucar.pipe';
 @Component({
   standalone: true,
   selector: 'app-cerramiento',
-  imports: [TableModule, Button, InputText, ReactiveFormsModule, ConfirmDialogModule, TooltipModule, EditModalComponent, AccionesTablaComponent, Truncar],
+  imports: [
+    TableModule,
+    Button,
+    InputText,
+    ReactiveFormsModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    EditModalComponent,
+    AccionesTablaComponent,
+    Truncar,
+    BotonAddComponent
+  ],
   templateUrl: './cerramiento.component.html'
 })
 export class CerramientoComponent implements OnInit {

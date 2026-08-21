@@ -9,6 +9,7 @@
     nombre: true,
     descripcion: true,
     enlace: true,
+    visible: true,
     activo: true
   }'
   (guardar)="guardar($event)"
@@ -115,6 +116,7 @@
           <th id='menu.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
           <th id='menu.descripcion' pSortableColumn="descripcion">Descripción<p-sortIcon field="descripcion"></p-sortIcon></th>
           <th id='menu.enlace' pSortableColumn="enlace">Enlace<p-sortIcon field="enlace"></p-sortIcon></th>
+          <th id='menu.visible' pSortableColumn="visible">Visible<p-sortIcon field="visible"></p-sortIcon></th>
           <th id='menu.estado' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
           <th id='menu.accion' class='text-right' style='width: 10%'></th>
         </tr>
@@ -122,7 +124,7 @@
 
     <ng-template pTemplate="emptymessage">
         <tr>
-            <td colspan="5">
+            <td colspan="6">
                 <div style="display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-off-icon lucide-circle-off"><path d="m2 2 20 20"/><path d="M8.35 2.69A10 10 0 0 1 21.3 15.65"/><path d="M19.08 19.08A10 10 0 1 1 4.92 4.92"/></svg>
                     <p style="margin-top: 1rem; color: #64748b; font-weight: 600;">No hay registros para mostrar</p>
@@ -137,17 +139,25 @@
             <td>{{ menu.descripcion | truncar: 150 }}</td>
             <td>{{ menu.enlace | truncar: 150 }}</td>
             <td class="centrado">
-                <label class="switch-native {{ menu.activo ? 'verde' : 'rojo' }}">
-                    <input type="checkbox" [checked]="menu.activo" disabled />
+                <label class="switch-native {{ menu.visible ? 'verde' : 'rojo' }}">
+                    <input id="menu-visible-{{menu.id}}" type="checkbox" [checked]="menu.visible" disabled />
                     <span class="slider-native"></span>
                 </label>
             </td>
-          <app-acciones-tabla
-            (editar)="editar(menu.id)"
-            [activo]="menu.activo"
-            (toggleEstado)="cambiarEstado(menu.id)"
-            (borrar)="confirmarBorrado(menu)"
-          />
+            <td class="centrado">
+                <label class="switch-native {{ menu.activo ? 'verde' : 'rojo' }}">
+                    <input id="menu-activo-{{menu.id}}" type="checkbox" [checked]="menu.activo" disabled />
+                    <span class="slider-native"></span>
+                </label>
+            </td>
+            <app-acciones-tabla
+              (editar)="editar(menu.id)"
+              [activo]="!menu.baja"
+              [visible]="menu.visible"
+              (toggleVisible)="cambiarVisible(menu.id)"
+              (toggleEstado)="cambiarEstado(menu.id)"
+              (borrar)="confirmarBorrado(menu)"
+            />
         </tr>
     </ng-template>
 </p-table>

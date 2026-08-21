@@ -15,6 +15,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { CentroEducativo } from '../../../models/centroeducativo';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
+import { BotonAddComponent } from '../../../components/boton-add/boton-add.component';
 
 /**
  * @version 1.0.1
@@ -31,7 +32,8 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
     ConfirmDialogModule,
     TooltipModule,
     AccionesTablaComponent,
-    EditModalComponent
+    EditModalComponent,
+    BotonAddComponent
   ],
   templateUrl: 'comunidades.component.html'
 })

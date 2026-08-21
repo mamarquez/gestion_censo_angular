@@ -59,6 +59,14 @@ export class MenuService {
   }
 
   /**
+   * Cambia el estado de visibilidad de un registro
+   * @param id Id del registro
+   */
+  cambiarVisible(id: number): Observable<ApiResponseWrapper<Menu>> {
+    return this.http.patch<ApiResponseWrapper<Menu>>(`${this.api}/visibilidad/${id}`, null, { headers: this.headers });
+  }
+
+  /**
    * Borra un registro
    * @param id Id del registro
    */

@@ -1,9 +1,10 @@
 export class Menu {
-  id!: number;
+  id?: number;
   nombre!: string;
   descripcion?: string;
   enlace?: string;
-  activo?: boolean;
+  visible: boolean;
+  activo: boolean;
 
   // Configuración de validaciones
   public static readonly campos = {

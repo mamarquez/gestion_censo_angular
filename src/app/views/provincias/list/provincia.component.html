@@ -1,7 +1,7 @@
 <app-edit-modal
   [titulo] = '"Provincia"'
   [(isVisible)]="modalVisible"
-  [datos]='provincia'
+  [datos]='provincia()'
   [maxValores]='{
     ine: 2,
     nombre: 255
@@ -71,19 +71,11 @@
 
 <br />
 
-<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
-  <p-button
-    type='button'
-    label='Añadir'
-    icon='pi pi-plus'
-    styleClass='p-button-primary p-button-sm'
-    (onClick)='abrirModal()'>
-  </p-button>
-</div>
+<app-boton-add (add)='abrirModal()' />
 
 <p-table
   size='small'
-  [value]='provincias'
+  [value]='provincias()'
   [tableStyle]="{ 'min-width': '50rem' }"
   [stripedRows]='true'
   [paginator]='true'
@@ -92,7 +84,7 @@
   [showCurrentPageReport]='true'
   currentPageReportTemplate='Mostrando {first} a {last} de {totalRecords} registros'
   dataKey='id'
-  [loading]='cargando'
+  [loading]='cargando()'
   sortField='nombre'
   [sortOrder]='1'
 >

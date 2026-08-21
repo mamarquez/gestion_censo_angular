@@ -17,6 +17,7 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { BotonAddComponent } from '../../../components/boton-add/boton-add.component';
 
 /**
  * @version 1.0.0
@@ -34,7 +35,8 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
     TooltipModule,
     Truncar,
     EditModalComponent,
-    AccionesTablaComponent
+    AccionesTablaComponent,
+    BotonAddComponent
   ],
   templateUrl: './configuraciones.component.html'
 })

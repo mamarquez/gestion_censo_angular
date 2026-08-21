@@ -159,31 +159,6 @@ export class ComplementarioComponent implements OnInit {
     });
   }
 
-  cambiarEstado(id: number) {
-    this.cargando = true;
-
-    this.service.cambiarEstado(id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-      next: () => {
-        const espacioComplementario = this.espaciosComplementarios.find(p => p.id === id);
-        if (espacioComplementario) {
-          espacioComplementario.activo = !espacioComplementario.activo;
-        }
-
-        mensajesUtil(this.messageService, 'success', 'update');
-        this.cargando = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al cambiar el estado del telefono', err);
-        mensajesUtil(this.messageService, 'error', 'error');
-        this.cargando = false;
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
   cambiarVisible(id: number) {
     this.cargando = true;
 

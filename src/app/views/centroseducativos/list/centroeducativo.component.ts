@@ -16,6 +16,7 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { Truncar } from '../../../pipe/trucar.pipe';
+import { BotonAddComponent } from '../../../components/boton-add/boton-add.component';
 
 /**
  * @version 1.0.1
@@ -33,7 +34,8 @@ import { Truncar } from '../../../pipe/trucar.pipe';
     TooltipModule,
     AccionesTablaComponent,
     EditModalComponent,
-    Truncar
+    Truncar,
+    BotonAddComponent
   ],
   templateUrl: './centroeducativo.component.html'
 })

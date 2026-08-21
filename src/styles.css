@@ -325,3 +325,9 @@ app-footer {
 .ck-powered-by {
   display: none;
 }
+
+/* Hace que todos los tooltips de PrimeNG sean más pequeños */
+.p-tooltip .p-tooltip-text {
+  font-size: 0.75rem !important; 
+  padding: 0.2rem 0.5rem !important;
+}

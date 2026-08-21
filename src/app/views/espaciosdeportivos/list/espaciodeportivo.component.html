@@ -70,15 +70,7 @@
 
 <br/>
 
-<div style='display: flex; justify-content: flex-end; margin-bottom: 1rem;'>
-  <p-button
-    type='button'
-    label='Añadir'
-    icon='pi pi-plus'
-    styleClass='p-button-primary p-button-sm'
-    (onClick)='abrirModal()'>
-  </p-button>
-</div>
+<app-boton-add (add)='abrirModal()' />
 
 <p-table
     [value]="espaciosDeportivos"
@@ -98,8 +90,8 @@
         <tr>
             <th id='espaciodeportivo.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
             <th id='espaciodeportivo.descripcion' pSortableColumn="descripcion">Descripción<p-sortIcon field="descripcion"></p-sortIcon></th>
-            <th id='espaciodeportivo.estado' pSortableColumn="estado">Estado<p-sortIcon field="estado"></p-sortIcon></th>
-            <th id='espaciodeportivo.accion'></th>
+            <th id='espaciodeportivo.estado' pSortableColumn="estado" class='text-center' style='width: 10%'>Estado<p-sortIcon field="estado"></p-sortIcon></th>
+            <th id='espaciodeportivo.accion' class='text-center' style='width: 10%'></th>
         </tr>
     </ng-template>
 

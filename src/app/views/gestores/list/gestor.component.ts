@@ -13,6 +13,7 @@ import { GestorService } from '../../../services/gestor.service';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
 
 @Component({
   standalone: true,
@@ -24,8 +25,9 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
     ReactiveFormsModule,
     ConfirmDialogModule,
     TooltipModule,
-    EditModalComponent
-  ],
+    EditModalComponent,
+    BotonAddComponent
+],
   templateUrl: './gestor.component.html'
 })
 export class GestorComponent implements OnInit {

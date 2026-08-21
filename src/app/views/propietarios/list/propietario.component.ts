@@ -14,7 +14,7 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
-import { NivelEnergetico } from '../../../models/nivelenergetico';
+import { BotonAddComponent } from '../../../components/boton-add/boton-add.component';
 
 /**
  * @version 1.0.0
@@ -31,7 +31,8 @@ import { NivelEnergetico } from '../../../models/nivelenergetico';
     ConfirmDialogModule,
     TooltipModule,
     AccionesTablaComponent,
-    EditModalComponent
+    EditModalComponent,
+    BotonAddComponent
   ],
   templateUrl: './propietario.component.html'
 })
@@ -211,7 +212,7 @@ export class PropietarioComponent implements OnInit {
     this.service.get(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response: ApiResponseWrapper<NivelEnergetico>) => {
+      next: (response: ApiResponseWrapper<Propietario>) => {
         this.propietario = response.data || [];
 
         if (this.propietario) {
