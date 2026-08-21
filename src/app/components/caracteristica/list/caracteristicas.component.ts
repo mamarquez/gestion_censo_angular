@@ -106,10 +106,10 @@ export class ListCaracteristicasComponent implements OnChanges {
   }
 
   guardar(valores: InstalacionCaracteristica): void {
-    const datos: InstalacionCaracteristica = {
+    const datos: any = {
       ...valores,
       idInstalacion: null,
-      idEspacioDeportivo: this.idEspacioDeportivo ?? null
+      instalacionEspacioDeportivo: this.idEspacioDeportivo ?? null
     };
 
     if (datos.id) {
