@@ -14,6 +14,7 @@ import { ApiResponseWrapper } from '../../../../../interface/api-response-wrappe
 import { Truncar } from '../../../../../pipe/trucar.pipe';
 import { AccionesTablaComponent } from '../../../../../utils/acciones-tabla/acciones-tabla.component';
 import { MapaRutaComponent, PuntoRuta } from '../../../../../components/mapa-ruta/mapa-ruta.component';
+import { mensajesUtil } from '../../../../../utils/mensajes.util';
 
 @Component({
   standalone: true,
@@ -91,11 +92,7 @@ export class RutasComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando:', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar'
-        });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.rutas = [];
       }
@@ -123,11 +120,7 @@ export class RutasComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar datos', err);
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Error al cargar datos de instalaciones'
-        });
+        mensajesUtil(this.messageService, 'error', 'cargas');
         this.cargando = false;
         this.cargandoChange.emit(false);
         this.cdr.detectChanges();
@@ -185,17 +178,13 @@ export class RutasComponent implements OnInit {
           ruta.visible = !ruta.visible;
         }
 
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Actualizado',
-          detail: 'Se ha actualizado la visibilidad'
-        });
+        mensajesUtil(this.messageService, 'success', 'update');
         this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cambiar la visibilidad del telefono', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar la visibilidad' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
       }
@@ -217,16 +206,12 @@ export class RutasComponent implements OnInit {
       .subscribe({
       next: () => {
         this.rutas = this.rutas.filter(t => t.id !== id);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Eliminado',
-          detail: 'Se ha borrado correctamente'
-        });
+        mensajesUtil(this.messageService, 'success', 'delete');
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al borrar el registro', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al borrar el registro' });
+        mensajesUtil(this.messageService, 'error', 'error');
         this.cdr.detectChanges();
       }
     });
@@ -255,7 +240,6 @@ export class RutasComponent implements OnInit {
   descargarFichero(idRuta: number) {
     this.service.descargarFichero(idRuta).subscribe({
       next: (response) => {
-        /*
         const blob = new Blob([response], { type: 'application/octet-stream' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -265,11 +249,10 @@ export class RutasComponent implements OnInit {
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
-        */
-        console.log('Archivo descargado:', response);
       },
       error: (err) => {
         console.error('Error al descargar el archivo', err);
+        mensajesUtil(this.messageService, 'error', 'error');
       }
     });
   }
