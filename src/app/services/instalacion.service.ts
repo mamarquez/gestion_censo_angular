@@ -5,7 +5,6 @@ import { Instalacion } from '../models/instalacion';
 import { AUTH } from '../auth/auth.constants';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
-import { Pavimento } from '../models/pavimento';
 
 
 @Injectable({
@@ -42,23 +41,23 @@ export class InstalacionService {
    * Cambia el estado de un registro
    * @param id Id del registro
    */
-  cambiarEstado(id: number): Observable<ApiResponseWrapper<Pavimento>> {
-    return this.http.patch<ApiResponseWrapper<Pavimento>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarEstado(id: number): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.patch<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Cambia visibilidad de un registro
    * @param id Id del registro
    */
-  cambiarVisible(id: number): Observable<ApiResponseWrapper<Instalacion>> {
-    return this.http.patch<ApiResponseWrapper<Instalacion>>(`${this.api}/${id}`, null, { headers: this.headers });
+  cambiarVisible(id: number): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.patch<ApiResponseWrapper<boolean>>(`${this.api}/visibilidad/${id}`, null, { headers: this.headers });
   }
 
   /**
    * Borra un registro
    * @param id Id del registro
    */
-  borrarRegistro(id: number): Observable<ApiResponseWrapper<Pavimento>> {
-    return this.http.delete<ApiResponseWrapper<Pavimento>>(`${this.api}/${id}`, { headers: this.headers });
+  borrarRegistro(id: number): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.delete<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, { headers: this.headers });
   }
 }

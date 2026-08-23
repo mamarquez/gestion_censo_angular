@@ -32,7 +32,13 @@
             </div>
 
             <div class="image-container" (click)="fileInput.click()">
-              <img [src]="form.get('avatar')?.value || '/images/no_image_user.png'" alt="Avatar" width='60px' height='60px'>
+              <img
+                [ngSrc]="avatarUrl"
+                alt="Avatar"
+                width="60"
+                height="60"
+                loading="lazy"
+                style="border-radius: 50%; cursor: pointer; object-fit: cover;" />
               <input
                 #fileInput
                 type="file"

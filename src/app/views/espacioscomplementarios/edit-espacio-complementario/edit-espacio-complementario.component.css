@@ -1,0 +1,25 @@
+:host ::ng-deep .p-fieldset {
+  min-width: 0;
+}
+
+:host ::ng-deep ckeditor {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+:host ::ng-deep .ck-editor,
+:host ::ng-deep .ck-editor__main {
+  width: 100%;
+  max-width: 100%;
+}
+
+:host ::ng-deep .ck-toolbar {
+  width: 100%;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+
+.field-checkbox {
+  margin-top: 1.4rem;
+}

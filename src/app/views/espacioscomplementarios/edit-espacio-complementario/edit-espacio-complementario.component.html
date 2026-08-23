@@ -1,0 +1,125 @@
+<!--
+@if (cargando) {
+  <app-loader />
+} @else {
+-->
+  <div class="row">
+    <h1>Espacio complementario</h1>
+  </div>
+
+  <br>
+
+  <p-fieldset legend='Datos'>
+    <p-fluid>
+
+      <form [formGroup]="form" (ngSubmit)="guardar()">
+        <!-- ID -->
+        <input id="id" type="number" formControlName="id" readonly hidden />
+
+        <!-- Nombre + Activo -->
+        <div class="fields-row">
+          <div class="field col-9">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" type="text" pInputText formControlName="nombre" />
+          </div>
+
+          <div class="field field-checkbox col-3">
+            <label class="switch-native"
+              [class.verde]="form.value.activo"
+              [class.rojo]="!form.value.activo">
+              <input id="activo" type="checkbox" formControlName="activo" />
+              <span class="slider-native"></span>
+              <span class="sr-only">Activo</span>
+            </label>
+            <label for="activo">Activo</label>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="fields-row">
+          <div class="field col-12">
+            <label for="descripcion">Descripción</label>
+            <ckeditor
+              [editor]="Editor"
+              [config]="config"
+              formControlName="descripcion">
+            </ckeditor>
+          </div>
+        </div>
+
+        <!-- Características -->
+        <p-fieldset legend='Características'>
+          <p-fluid>
+
+            <p-table
+              size='small'
+              [value]='caracteristicasEspacioComplementario'
+              [tableStyle]="{ 'min-width': '50rem' }"
+              [stripedRows]='true'
+              [paginator]='true'
+              [rows]='10'
+              [rowsPerPageOptions]='[10, 20, 50, 100]'
+              [showCurrentPageReport]='true'
+              currentPageReportTemplate='Mostrando {first} a {last} de {totalRecords} registros'
+              dataKey='id'
+              [loading]='cargando'
+              sortField='nombre'
+              [sortOrder]='1'
+              [scrollable]="true"
+              scrollHeight="flex"
+            >
+
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th id='espacio-complementario.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
+                <th id='espacio-complementario.valor' pSortableColumn='valor' class='text-center' style='width: 7%'>Medida<p-sortIcon field='valor'></p-sortIcon></th>
+                <th id='espacio-complementario.visible' pSortableColumn='activo' class='text-center' style='width: 7%'>Activo<p-sortIcon field='activo'></p-sortIcon></th>
+                <th id='espacio-complementario.accion' class='text-right' style='width: 10%'></th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate='emptymessage'>
+              <tr>
+                <td colspan='4'>
+                  <div style='display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;'>
+                    <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'
+                      stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
+                      class='lucide lucide-circle-off-icon lucide-circle-off'>
+                      <path d='m2 2 20 20' />
+                      <path d='M8.35 2.69A10 10 0 0 1 21.3 15.65' />
+                      <path d='M19.08 19.08A10 10 0 1 1 4.92 4.92' />
+                    </svg>
+                    <p style='margin-top: 1rem; color: #64748b; font-weight: 600;'>No hay registros para mostrar</p>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+
+            </p-table>
+          </p-fluid>
+        </p-fieldset>
+
+        <!-- Botones -->
+        <div style="display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem; padding-top: 1rem; width: 100%;">
+          <p-button
+            type="button"
+            label="Cancelar"
+            severity="secondary"
+            (onClick)="cancelar()">
+          </p-button>
+
+          <p-button
+            type="submit"
+            label="Guardar"
+            [loading]="guardando"
+            [disabled]="form.invalid || guardando">
+          </p-button>
+        </div>
+      </form>
+
+    </p-fluid>
+  </p-fieldset>
+<!--
+}
+-->

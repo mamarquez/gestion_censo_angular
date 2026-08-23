@@ -6,7 +6,9 @@
 
 <!-- Contenedor principal del filtro -->
 <div class='bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-6' [formGroup]='form'>
-  <div style='display: flex !important; flex-direction: row !important; align-items: flex-end !important; gap: 1rem !important; flex-wrap: wrap !important;'>
+
+    <p-fieldset legend='Filtros' style='width: 100%'>
+      <div style='display: flex !important; flex-direction: row !important; align-items: flex-end !important; gap: 1rem !important; flex-wrap: wrap !important;'>
 
     <!-- codigo -->
     <div style='display: flex; flex-direction: column; gap: 0.375rem; width: 250px;'>
@@ -34,6 +36,27 @@
       />
     </div>
 
+    <!-- Provincia -->
+    <div style='display: flex; flex-direction: column; gap: 0.375rem; width: 250px;'>
+      <app-select-provincia
+        id='filtro-provincia'
+        formControlName='provincia'
+        placeholder='Seleccione una provincia...'
+        class='w-full'
+      ></app-select-provincia>
+    </div>
+
+    <!-- Municipio -->
+    <div style='display: flex; flex-direction: column; gap: 0.375rem; width: 250px;'>
+      <app-select-municipio
+        id='filtro-municipio'
+        formControlName='municipio'
+        [idProvincia]="form.get('provincia')?.value"
+        placeholder='Seleccione un municipio...'
+        class='w-full'
+      ></app-select-municipio>
+    </div>
+
     <div style="display: flex !important; align-items: flex-end !important; gap: 0.5rem !important; margin-left: auto !important;">
       <p-button
         icon='pi pi-filter-slash'
@@ -49,6 +72,8 @@
     </div>
 
   </div>
+
+  </p-fieldset>
 
 </div>
 

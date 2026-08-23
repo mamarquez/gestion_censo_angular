@@ -13,9 +13,12 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { mensajesUtil } from '../../../utils/mensajes.util';
+import { SelectProvinciaComponent } from '../../../components/select-provincia/select-provincia.component';
+import { SelectMunicipioComponent } from '../../../components/select-municipio/select-provincia.component';
+import { Fieldset } from "primeng/fieldset";
 
 /**
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 @Component({
@@ -28,8 +31,11 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
     ReactiveFormsModule,
     ConfirmDialogModule,
     TooltipModule,
-    AccionesTablaComponent
-  ],
+    AccionesTablaComponent,
+    SelectProvinciaComponent,
+    SelectMunicipioComponent,
+    Fieldset
+],
   templateUrl: './instalaciones.component.html'
 })
 export class ListInstalacionesComponent implements OnInit {
@@ -49,6 +55,8 @@ export class ListInstalacionesComponent implements OnInit {
     id: [null],
     codigo: [''],
     nombre: [''],
+    provincia: [null],
+    municipio: [null],
     activo: [true]
   });
 

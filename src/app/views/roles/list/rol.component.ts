@@ -230,7 +230,7 @@ export class RolComponent implements OnInit {
   }
 
   idsTipoRolAsignados(idRol: number): number[] {
-    return (this.permisosPorRol[idRol] || []).map(p => p.tipoRol.id);
+    return (this.permisosPorRol[idRol] || []).map(p => p.idTipoRol);
   }
 
   permisoGuardado(idRol: number): void {
@@ -240,7 +240,7 @@ export class RolComponent implements OnInit {
   confirmarBorradoPermiso(idRol: number, permiso: RolPermisoModel): void {
     if (idRol !== 1) {
       this.dialog.confirmar({
-        mensaje: `¿Deseas eliminar el permiso "<strong>${permiso.tipoRol?.nombre}</strong>"?`,
+        mensaje: `¿Deseas eliminar el permiso "<strong>${permiso.nombreTipoRol}</strong>"?`,
         titulo: 'Confirmar eliminación',
         labelAceptar: 'Sí, eliminar',
         onAccept: () => this.borrarPermiso(idRol, permiso.id)

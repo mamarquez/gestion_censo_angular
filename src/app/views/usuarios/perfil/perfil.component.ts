@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject, input } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, input, effect } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UsuarioService } from '../../../services/usuario.service';
 import { UsuarioModel } from '../../../models/usuario-model';
@@ -13,9 +13,11 @@ import { ToastModule } from 'primeng/toast';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { Router } from '@angular/router';
 import { ChipModule } from 'primeng/chip';
+import { NgOptimizedImage } from '@angular/common';
+import { AUTH } from '../../../auth/auth.constants';
 
 /**
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 @Component({
@@ -29,15 +31,16 @@ import { ChipModule } from 'primeng/chip';
     InputText,
     ReactiveFormsModule,
     ToastModule,
-    ChipModule
+    ChipModule,
+    NgOptimizedImage
   ],
   providers: [MessageService],
-  templateUrl: './perfil.component.html',
-  styleUrl: './perfil.component.css'
+  templateUrl: './perfil.component.html'
 })
 export class PerfilComponent {
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+  private readonly cdr = inject(ChangeDetectorRef);
   private readonly usuarioService = inject(UsuarioService);
   private readonly messageService = inject(MessageService);
   private readonly destroyRef = inject(DestroyRef);
@@ -46,6 +49,23 @@ export class PerfilComponent {
   cargando = false;
   guardando = false;
   private usuarioId: string | null = null;
+
+  get avatarUrl(): string {
+    const avatar = this.form.get('avatar')?.value;
+    
+    if (!avatar) {
+      return '/images/no_image_user.png';
+    }
+
+    if (avatar.startsWith('http')) {
+      return avatar;
+    }
+
+    console.log('Avatar:', avatar);
+    console.log('Avatar:', `${AUTH.API}/usuarios/uploads/${avatar}`);
+
+    return `${AUTH.API}/usuarios/uploads/${avatar}`;
+  }
 
   form = this.fb.group({
     id: [null],
@@ -95,6 +115,8 @@ export class PerfilComponent {
               avatar: usuario.avatar ?? null,
               roles: usuario.roles ?? null
             });
+
+            this.cdr.detectChanges();
           }
 
           this.cargando = false;
@@ -116,6 +138,8 @@ export class PerfilComponent {
     this.guardando = true;
 
     const datos = { ...this.form.value };
+
+    console.log('Datos a guardar:', datos);
 
     for (const campo in datos) {
       if (typeof datos[campo] === 'string' && !datos[campo].trim()) {

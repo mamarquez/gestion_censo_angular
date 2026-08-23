@@ -96,7 +96,7 @@ export class RolFormComponent implements OnInit {
           this.permisosAsignados = asignados?.data || [];
 
           const todosTipos = tipos.data || [];
-          const idsAsignados = new Set(this.permisosAsignados.map(p => p.tipoRol.id));
+          const idsAsignados = new Set(this.permisosAsignados.map(p => p.idTipoRol));
 
           this.permisosSeleccionados = todosTipos.filter(t => idsAsignados.has(t.id));
           this.permisosDisponibles = todosTipos.filter(t => !idsAsignados.has(t.id));
@@ -177,11 +177,11 @@ export class RolFormComponent implements OnInit {
   }
 
   private guardarPermisos(idRol: number): void {
-    const idsAntes = new Set(this.permisosAsignados.map(p => p.tipoRol.id));
+    const idsAntes = new Set(this.permisosAsignados.map(p => p.idTipoRol));
     const idsAhora = new Set(this.permisosSeleccionados.map(p => p.id));
 
     const aCrear = this.permisosSeleccionados.filter(t => !idsAntes.has(t.id));
-    const aBorrar = this.permisosAsignados.filter(p => !idsAhora.has(p.tipoRol.id));
+    const aBorrar = this.permisosAsignados.filter(p => !idsAhora.has(p.idTipoRol));
 
     const peticiones: Observable<any>[] = [
       ...aCrear.map(t => this.rolPermisoService.crear(idRol, t.id)),

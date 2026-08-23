@@ -1,4 +1,4 @@
-import { Component, forwardRef, inject, OnInit, DestroyRef, signal } from '@angular/core';
+import { Component, effect, forwardRef, inject, input, DestroyRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -25,27 +25,39 @@ import { Municipio } from '../../models/municipio';
     }
   ]
 })
-export class SelectMunicipioComponent implements ControlValueAccessor, OnInit {
+export class SelectMunicipioComponent implements ControlValueAccessor {
 
   private readonly service = inject(MunicipioService);
   private readonly destroyRef = inject(DestroyRef);
+
+  // Id de la provincia seleccionada en el formulario padre. Cuando cambia,
+  // se vuelve a pedir el listado filtrado por esa provincia en vez de traer
+  // siempre el catálogo completo (~8.000 municipios).
+  idProvincia = input<number | string | null>(null);
 
   municipios: Municipio[] = [];
   cargandoMunicipios = true;
   disabled = signal<boolean>(false);
   value: any = null;
-  filtros = { activo: true };
 
   onChange: any = () => {};
   onTouched: any = () => {};
 
-  ngOnInit(): void {
-    this.cargarProvincias();
+  constructor() {
+    effect(() => {
+      this.cargarMunicipios(this.idProvincia());
+    });
   }
 
-	// Cuando el usuario elige una opción en el select
-  private cargarProvincias(): void {
-    this.service.getAll(this.filtros)
+  private cargarMunicipios(idProvincia: number | string | null): void {
+    this.cargandoMunicipios = true;
+
+    const filtros: any = { activo: true };
+    if (idProvincia) {
+      filtros.idProvincia = idProvincia;
+    }
+
+    this.service.getAll(filtros)
 		.pipe(takeUntilDestroyed(this.destroyRef))
 		.subscribe({
 			next: (response: any) => {
