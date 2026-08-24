@@ -114,6 +114,8 @@ export class RutasComponent implements OnInit {
           idInstalacion: this.idInstalacion()
         });
 
+        console.log(`Coordenadas cargadas para la ruta:`, response.data);
+
         this.cargando = false;
         this.cargandoChange.emit(false);
         this.cdr.detectChanges();
@@ -144,6 +146,7 @@ export class RutasComponent implements OnInit {
     }
 
     this.cargandoPuntos[ruta.id] = true;
+    console.log(`Cargando coordenadas para la ruta ${ruta.id}...`);
 
     this.coordenadaService.getAll({ idRuta: ruta.id })
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -154,6 +157,7 @@ export class RutasComponent implements OnInit {
           x: c.x,
           y: c.y
         }));
+
         this.cargandoPuntos[ruta.id as number] = false;
         this.cdr.detectChanges();
       },

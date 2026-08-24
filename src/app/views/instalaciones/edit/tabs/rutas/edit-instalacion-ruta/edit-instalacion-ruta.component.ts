@@ -1,5 +1,7 @@
 import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { concat } from 'rxjs';
+import { toArray } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
@@ -22,7 +24,7 @@ import { MapaRutaComponent, PuntoRuta } from '../../../../../../components/mapa-
 import { mensajesUtil } from '../../../../../../utils/mensajes.util';
 
 /**
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 @Component({
@@ -39,7 +41,8 @@ import { mensajesUtil } from '../../../../../../utils/mensajes.util';
     LoaderComponent,
     MapaRutaComponent
   ],
-  templateUrl: './edit-instalacion-ruta.component.html'
+  templateUrl: './edit-instalacion-ruta.component.html',
+  styleUrl: './edit-instalacion-ruta.component.css'
 })
 export class EditInstalacionRutaComponent implements OnInit {
 
@@ -64,6 +67,14 @@ export class EditInstalacionRutaComponent implements OnInit {
   modalVisible = false;
   coordenadaSeleccionada: InstalacionRutaCoordenada | null = null;
 
+  // Evita que el usuario pueda añadir un punto en el mapa mientras hay una
+  // operación de coordenada en curso (deshacer, borrar, crear...). Sin esto,
+  // un click durante la ventana asíncrona de esas peticiones puede quedar
+  // mezclado con el estado que se está actualizando y desordenar el trazado.
+  procesandoCoordenada = false;
+
+  ruta: InstalacionRuta | null = null;
+
   private idInstalacion: number | null = null;
 
   form: FormGroup = this.fb.group({
@@ -74,11 +85,15 @@ export class EditInstalacionRutaComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.idRuta = Number(this.route.snapshot.paramMap.get('id'));
+    const idParam = this.route.snapshot.paramMap.get('id');
 
-    if (this.idRuta) {
+    if (idParam && idParam !== 'nuevo') {
+      this.idRuta = Number(idParam);
       this.cargar(this.idRuta);
       this.cargarCoordenadas(this.idRuta);
+    } else {
+      const idInstalacionParam = this.route.snapshot.queryParamMap.get('idInstalacion');
+      this.idInstalacion = idInstalacionParam ? Number(idInstalacionParam) : null;
     }
   }
 
@@ -94,6 +109,7 @@ export class EditInstalacionRutaComponent implements OnInit {
           if (ruta) {
             this.idInstalacion = ruta.idInstalacion ?? null;
             this.form.patchValue(ruta);
+            this.ruta = ruta;
           }
 
           this.cargando = false;
@@ -132,7 +148,7 @@ export class EditInstalacionRutaComponent implements OnInit {
   }
 
   guardar(): void {
-    if (this.form.invalid || !this.idRuta || !this.idInstalacion) {
+    if (this.form.invalid || !this.idInstalacion) {
       this.form.markAllAsTouched();
       return;
     }
@@ -147,21 +163,40 @@ export class EditInstalacionRutaComponent implements OnInit {
       }
     }
 
-    this.service.actualizar(this.idRuta, this.idInstalacion, ruta)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => {
-          mensajesUtil(this.messageService, 'success', 'update');
-          this.guardando = false;
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          console.error('Error al guardar la ruta', err);
-          mensajesUtil(this.messageService, 'error', 'error');
-          this.guardando = false;
-          this.cdr.detectChanges();
-        }
-      });
+    if (this.idRuta) {
+      this.service.actualizar(this.idRuta, this.idInstalacion, ruta)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            mensajesUtil(this.messageService, 'success', 'update');
+            this.guardando = false;
+            this.cargar(this.idRuta as number);
+            this.cargarCoordenadas(this.idRuta as number);
+          },
+          error: (err) => {
+            console.error('Error al guardar la ruta', err);
+            mensajesUtil(this.messageService, 'error', 'error');
+            this.guardando = false;
+            this.cdr.detectChanges();
+          }
+        });
+    } else {
+      this.service.crear({ idInstalacion: this.idInstalacion, ...ruta })
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => {
+            mensajesUtil(this.messageService, 'success', 'add');
+            this.guardando = false;
+            this.router.navigate(['/instalaciones', this.idInstalacion], { queryParams: { tab: 'rutas' } });
+          },
+          error: (err) => {
+            console.error('Error al crear la ruta', err);
+            mensajesUtil(this.messageService, 'error', 'error');
+            this.guardando = false;
+            this.cdr.detectChanges();
+          }
+        });
+    }
   }
 
   abrirModalNuevaCoordenada(): void {
@@ -177,21 +212,44 @@ export class EditInstalacionRutaComponent implements OnInit {
   coordenadaGuardada(): void {
     if (this.idRuta) {
       this.cargarCoordenadas(this.idRuta);
+      this.recargarDatosCalculados(this.idRuta);
     }
+  }
+
+  private recargarDatosCalculados(id: number): void {
+    this.service.get(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response: ApiResponseWrapper<InstalacionRuta>) => {
+          this.ruta = response.data ?? null;
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error('Error al recalcular los datos de la ruta', err)
+      });
   }
 
   puntosMapa: PuntoRuta[] = [];
 
   private actualizarPuntosMapa(): void {
-    this.puntosMapa = this.coordenadas.map(c => ({ id: c.id, x: c.x, y: c.y }));
+    // p-table ordena `coordenadas` in-place (sortField='id', sortOrder=-1 en la
+    // plantilla), porque comparte la misma referencia de array que se le pasa
+    // aquí. Sin este sort explícito, el trazado del mapa hereda ese orden
+    // descendente y el punto más reciente aparece primero en vez de al final,
+    // dejando el próximo punto añadido conectado desde el principio de la ruta.
+    this.puntosMapa = [...this.coordenadas]
+      .sort((a, b) => (a.id as number) - (b.id as number))
+      .map(c => ({ id: c.id, x: c.x, y: c.y }));
   }
 
   agregarCoordenadaDesdeMapa(puntos: PuntoRuta[]): void {
-    if (!this.idRuta || puntos.length === 0) {
+    if (!this.idRuta || puntos.length === 0 || this.procesandoCoordenada) {
       return;
     }
 
     const nuevoPunto = puntos[puntos.length - 1];
+
+    this.procesandoCoordenada = true;
+    this.mapaRuta?.setBloqueado(true);
 
     this.coordenadaService.crear(this.idRuta, nuevoPunto)
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -201,11 +259,17 @@ export class EditInstalacionRutaComponent implements OnInit {
 
           if (this.idRuta) {
             this.cargarCoordenadasTabla(this.idRuta, true);
+            this.recargarDatosCalculados(this.idRuta);
           }
+
+          this.procesandoCoordenada = false;
+          this.mapaRuta?.setBloqueado(false);
         },
         error: (err) => {
           console.error('Error al añadir la coordenada desde el mapa', err);
           mensajesUtil(this.messageService, 'error', 'error');
+          this.procesandoCoordenada = false;
+          this.mapaRuta?.setBloqueado(false);
         }
       });
   }
@@ -216,6 +280,7 @@ export class EditInstalacionRutaComponent implements OnInit {
       .subscribe({
         next: (response: ApiResponseWrapper<InstalacionRutaCoordenada[]>) => {
           this.coordenadas = response.data || [];
+          this.actualizarPuntosMapa();
 
           if (esCreacion && this.coordenadas.length > 0) {
             const creada = this.coordenadas.reduce((max, c) =>
@@ -243,6 +308,10 @@ export class EditInstalacionRutaComponent implements OnInit {
   }
 
   private borrarCoordenada(id: number): void {
+    this.procesandoCoordenada = true;
+    this.mapaRuta?.setBloqueado(true);
+    this.cdr.detectChanges();
+
     this.coordenadaService.borrarRegistro(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
@@ -250,12 +319,90 @@ export class EditInstalacionRutaComponent implements OnInit {
           this.coordenadas = this.coordenadas.filter(c => c.id !== id);
           this.actualizarPuntosMapa();
           mensajesUtil(this.messageService, 'success', 'delete');
+
+          if (this.idRuta) {
+            this.recargarDatosCalculados(this.idRuta);
+          }
+
+          this.procesandoCoordenada = false;
           this.cdr.detectChanges();
+
+          // El desbloqueo se hace tras el siguiente tick para dar tiempo a que
+          // ngOnChanges del mapa (disparado por el nuevo puntosMapa) termine de
+          // repoblar el trazado antes de aceptar un nuevo click del usuario.
+          setTimeout(() => this.mapaRuta?.setBloqueado(false));
         },
         error: (err) => {
           console.error('Error al borrar la coordenada', err);
           mensajesUtil(this.messageService, 'error', 'error');
+          this.procesandoCoordenada = false;
+          this.mapaRuta?.setBloqueado(false);
           this.cdr.detectChanges();
+        }
+      });
+  }
+
+  deshacerUltimoPunto(): void {
+    if (this.coordenadas.length === 0 || this.procesandoCoordenada) {
+      return;
+    }
+
+    const ultima = this.coordenadas.reduce((max, c) =>
+      (c.id as number) > (max.id as number) ? c : max
+    );
+
+    this.borrarCoordenada(ultima.id as number);
+  }
+
+  confirmarBorrarTodasCoordenadas(): void {
+    if (this.coordenadas.length === 0) {
+      return;
+    }
+
+    this.dialog.confirmar({
+      mensaje: '¿Deseas eliminar <strong>todas</strong> las coordenadas de esta ruta?',
+      titulo: 'Confirmar eliminación',
+      labelAceptar: 'Sí, eliminar todas',
+      onAccept: () => this.borrarTodasCoordenadas()
+    });
+  }
+
+  private borrarTodasCoordenadas(): void {
+    const idsABorrar = this.coordenadas.map(c => c.id as number);
+
+    if (idsABorrar.length === 0) {
+      return;
+    }
+
+    this.procesandoCoordenada = true;
+    this.mapaRuta?.setBloqueado(true);
+
+    concat(...idsABorrar.map(id => this.coordenadaService.borrarRegistro(id)))
+      .pipe(toArray(), takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: () => {
+          this.coordenadas = [];
+          this.actualizarPuntosMapa();
+          this.mapaRuta?.limpiarRuta(false);
+          mensajesUtil(this.messageService, 'success', 'delete');
+
+          if (this.idRuta) {
+            this.recargarDatosCalculados(this.idRuta);
+          }
+
+          this.procesandoCoordenada = false;
+          this.cdr.detectChanges();
+          setTimeout(() => this.mapaRuta?.setBloqueado(false));
+        },
+        error: (err) => {
+          console.error('Error al borrar todas las coordenadas', err);
+          mensajesUtil(this.messageService, 'error', 'error');
+          this.procesandoCoordenada = false;
+          this.mapaRuta?.setBloqueado(false);
+
+          if (this.idRuta) {
+            this.cargarCoordenadas(this.idRuta);
+          }
         }
       });
   }
@@ -265,7 +412,7 @@ export class EditInstalacionRutaComponent implements OnInit {
       return;
     }
 
-    this.router.navigate(['/instalaciones', this.idInstalacion]);
+    this.router.navigate(['/instalaciones', this.idInstalacion], { queryParams: { tab: 'rutas' } });
   }
 
 }

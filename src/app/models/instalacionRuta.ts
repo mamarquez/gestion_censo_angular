@@ -4,4 +4,13 @@ export class InstalacionRuta {
   nombre!: string;
   descripcion?: string;
   visible!: boolean;
+  distanciaMetros?: number;
+  desnivelPositivoMetros?: number;
+  tiempoSenderismoMinutos?: number;
+  tiempoRunningMinutos?: number;
+  tiempoBttMinutos?: number;
+  distanciaKm?: number;
+  tiempoSenderismoFormateado?: string;
+  tiempoRunningFormateado?: string;
+  tiempoBttFormateado?: string;
 }

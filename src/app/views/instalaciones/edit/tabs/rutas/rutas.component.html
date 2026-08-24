@@ -92,17 +92,24 @@
 
   <ng-template pTemplate="header">
     <tr>
+      <!--
       <th style='width: 3rem'></th>
+      -->
       <th id='ruta.nombre' pSortableColumn="nombre">Nombre<p-sortIcon field="nombre"></p-sortIcon></th>
       <th id='ruta.descripcion' pSortableColumn="descripcion">Descripción<p-sortIcon field="descripcion"></p-sortIcon></th>
-      <th id='ruta.visible' pSortableColumn='visible' class='text-center' style='width: 10%'>Visible<p-sortIcon field='visible'></p-sortIcon></th>
-      <th id='ruta.accion' class='text-right' style='width: 10%'></th>
+      <th id='ruta.km' pSortableColumn="km">Distancia<p-sortIcon field="km"></p-sortIcon></th>
+      <th id='ruta.desnivel' pSortableColumn="desnivel">Desnivel<p-sortIcon field="desnivel"></p-sortIcon></th>
+      <th id='ruta.senderismo' pSortableColumn="senderismo">Senderismo<p-sortIcon field="senderismo"></p-sortIcon></th>
+      <th id='ruta.corriendo' pSortableColumn="corriendo">Corriendo<p-sortIcon field="corriendo"></p-sortIcon></th>
+      <th id='ruta.btt' pSortableColumn="btt">Bicicleta<p-sortIcon field="btt"></p-sortIcon></th>
+      <th id='ruta.visible' pSortableColumn='visible' class='text-center' style='width: 7%'>Visible<p-sortIcon field='visible'></p-sortIcon></th>
+      <th id='ruta.accion' class='text-right' style='width: 7%'></th>
     </tr>
   </ng-template>
 
   <ng-template pTemplate="emptymessage">
     <tr>
-      <td colspan="4">
+      <td colspan="9">
         <div style="display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-off-icon lucide-circle-off"><path d="m2 2 20 20"/><path d="M8.35 2.69A10 10 0 0 1 21.3 15.65"/><path d="M19.08 19.08A10 10 0 1 1 4.92 4.92"/></svg>
           <p style="margin-top: 1rem; color: #64748b; font-weight: 600;">No hay registros para mostrar</p>
@@ -113,6 +120,7 @@
 
   <ng-template pTemplate="body" let-ruta>
     <tr>
+      <!--
       <td>
         <p-button
           type='button'
@@ -123,8 +131,14 @@
           [pRowToggler]="ruta"
         ></p-button>
       </td>
+      -->
       <td>{{ ruta.nombre }}</td>
       <td>{{ ruta.descripcion | truncar:100 }}</td>
+      <td>{{ ruta.distanciaKm }} Km</td>
+      <td>{{ ruta.desnivelPositivoMetros }} m</td>
+      <td>{{ ruta.tiempoSenderismoFormateado }}</td>
+      <td>{{ ruta.tiempoRunningFormateado }}</td>
+      <td>{{ ruta.tiempoBttFormateado }}</td>
       <td class="centrado">
         <label class="switch-native {{ ruta.visible ? 'verde' : 'rojo' }}">
           <input type="checkbox" [checked]="ruta.visible" disabled />

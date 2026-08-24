@@ -13,7 +13,6 @@ import { ToastModule } from 'primeng/toast';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { Router } from '@angular/router';
 import { ChipModule } from 'primeng/chip';
-import { NgOptimizedImage } from '@angular/common';
 import { AUTH } from '../../../auth/auth.constants';
 
 /**
@@ -31,8 +30,7 @@ import { AUTH } from '../../../auth/auth.constants';
     InputText,
     ReactiveFormsModule,
     ToastModule,
-    ChipModule,
-    NgOptimizedImage
+    ChipModule
   ],
   providers: [MessageService],
   templateUrl: './perfil.component.html'

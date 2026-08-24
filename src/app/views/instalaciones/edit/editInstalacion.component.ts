@@ -14,7 +14,7 @@ import { ComplementarioComponent } from './tabs/complementarios/complementario.c
 import { RutasComponent } from './tabs/rutas/rutas.component';
 
 /**
- * @version 1.0.1
+ * @version 1.0.2
  */
 
 @Component({
@@ -48,6 +48,11 @@ export class EditInstalacionComponent implements OnInit {
 
   ngOnInit(): void {
     this.idInstalacion.set(this.route.snapshot.paramMap.get('id') ?? '');
+
+    const tab = this.route.snapshot.queryParamMap.get('tab');
+    if (tab === 'datos' || tab === 'geoposicion' || tab === 'caracteristicas' || tab === 'complementarios' || tab === 'rutas' || tab === 'telefonos' || tab === 'deportivos' || tab === 'fotos') {
+      this.tabActiva = tab;
+    }
   }
 
   seleccionarTab(tab: 'datos' | 'geoposicion' | 'caracteristicas' | 'complementarios' | 'rutas' | 'telefonos' | 'deportivos' | 'fotos'): void {

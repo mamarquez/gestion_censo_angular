@@ -24,6 +24,17 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
   soloLectura = input<boolean>(false);
   rutaCambiada = output<PuntoRuta[]>();
 
+  // Propiedad plana (no signal/input) para que el padre pueda bloquear los
+  // clicks de forma síncrona vía @ViewChild, sin depender del ciclo de
+  // detección de cambios de Angular. Un click en Leaflet ocurre fuera de la
+  // zona de Angular, así que si el bloqueo llegara por binding de plantilla
+  // habría una ventana en la que el valor todavía no se ha propagado.
+  private bloqueado = false;
+
+  setBloqueado(valor: boolean): void {
+    this.bloqueado = valor;
+  }
+
   private mapa!: L.Map;
 
   private ruta: L.LatLng[] = [];
@@ -36,6 +47,10 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private mapaListo = false;
 
+  private encuadreInicialHecho = false;
+
+  private resizeObserver?: ResizeObserver;
+
   ngAfterViewInit(): void {
     // Leaflet registra internamente muchos listeners (arrastre, zoom, tiles...).
     // Si se registran dentro de la zona de Angular, cada mousemove al mover el
@@ -45,10 +60,20 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
       this.inicializarMapa();
       this.mapaListo = true;
 
-      // El contenedor puede no tener aún su tamaño final (p.ej. dentro de un tab/fieldset),
-      // lo que hace que Leaflet cargue solo un tile inicial y el resto se vea en blanco.
-      // Se invalida el tamaño ANTES de dibujar la ruta para que la polyline se calcule
-      // ya sobre las dimensiones reales del contenedor.
+      // El contenedor puede no tener aún su tamaño final (p.ej. dentro de un tab/fieldset,
+      // una fila expandida de tabla en animación, o un `height: auto` con aspect-ratio),
+      // lo que hace que Leaflet cargue solo un tile inicial y las líneas se dibujen mal.
+      // Un ResizeObserver invalida el tamaño cada vez que el contenedor cambia de verdad,
+      // en vez de asumir que un único setTimeout(0) es suficiente.
+      this.resizeObserver = new ResizeObserver(() => {
+        this.mapa.invalidateSize();
+
+        if (this.ruta.length > 0) {
+          this.mapa.fitBounds(this.polyline.getBounds(), { padding: [20, 20] });
+        }
+      });
+      this.resizeObserver.observe(this.mapaContenedor.nativeElement);
+
       setTimeout(() => {
         this.mapa.invalidateSize();
         this.cargarPuntosIniciales();
@@ -73,7 +98,14 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     puntos.forEach(punto => this.agregarPunto(L.latLng(punto.x, punto.y), false, punto.id));
 
-    if (this.ruta.length > 0) {
+    // El encuadre automático solo debe ocurrir la primera vez que se cargan los puntos
+    // (al abrir la pantalla). En cambios posteriores (deshacer último punto, borrar una
+    // coordenada, añadir una nueva) el usuario puede estar centrado con zoom en una zona
+    // concreta de la ruta; recentrar en cada cambio se percibe como si el mapa "empezara
+    // de nuevo" desde el primer punto.
+    if (this.ruta.length > 0 && !this.encuadreInicialHecho) {
+      this.encuadreInicialHecho = true;
+
       // fitBounds dispara la animación de zoom/paneo de Leaflet: si se llama
       // desde ngOnChanges (dentro de la zona de Angular), esa animación
       // también corre dentro de la zona y se nota igual de lenta.
@@ -105,6 +137,15 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     if (!this.soloLectura()) {
       this.mapa.on('click', (event: L.LeafletMouseEvent) => {
+        // Mientras el padre tiene una operación de coordenada en curso (crear,
+        // borrar, deshacer), se ignoran los clicks: aceptar uno en esa ventana
+        // asíncrona puede mezclarse con el estado que se está actualizando y
+        // desordenar el trazado (el nuevo punto puede acabar "colgado" del
+        // primer punto en vez de del último).
+        if (this.bloqueado) {
+          return;
+        }
+
         this.agregarPunto(event.latlng, true);
       });
     }
@@ -232,6 +273,7 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.resizeObserver?.disconnect();
     this.mapa?.remove();
   }
 }
