@@ -78,8 +78,6 @@ export class InstalacionRutaService {
    * @returns fichero kml
    */
   descargarFichero(idRuta: number): Observable<Blob> {
-    console.log('Descargando fichero kml para la ruta con id:', idRuta);
-
     return this.http.get(`${this.api}/descargar/${idRuta}`, { headers: this.headers, responseType: 'blob' });
   }
 

@@ -152,7 +152,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
 
   confirmarBorrado(espacioDeportivo: EspacioDeportivo) {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar el teléfono "<strong>${espacioDeportivo.nombre}</strong>"?`,
+      mensaje: `¿Deseas eliminar el espacio deportivo "<strong>${espacioDeportivo.nombre}</strong>"?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
       onAccept: () => this.borrarRegistro(espacioDeportivo.id)

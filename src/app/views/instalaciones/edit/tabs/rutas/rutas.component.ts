@@ -114,8 +114,6 @@ export class RutasComponent implements OnInit {
           idInstalacion: this.idInstalacion()
         });
 
-        console.log(`Coordenadas cargadas para la ruta:`, response.data);
-
         this.cargando = false;
         this.cargandoChange.emit(false);
         this.cdr.detectChanges();
@@ -146,7 +144,6 @@ export class RutasComponent implements OnInit {
     }
 
     this.cargandoPuntos[ruta.id] = true;
-    console.log(`Cargando coordenadas para la ruta ${ruta.id}...`);
 
     this.coordenadaService.getAll({ idRuta: ruta.id })
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -187,7 +184,7 @@ export class RutasComponent implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cambiar la visibilidad del telefono', err);
+        console.error('Error al cambiar la visibilidad de la ruta', err);
         mensajesUtil(this.messageService, 'error', 'error');
         this.cargando = false;
         this.cdr.detectChanges();
@@ -197,7 +194,7 @@ export class RutasComponent implements OnInit {
 
   confirmarBorrado(ruta: InstalacionRuta): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar el teléfono "<strong>${ruta.nombre}</strong>"?`,
+      mensaje: `¿Deseas eliminar la ruta "<strong>${ruta.nombre}</strong>"?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
       onAccept: () => this.borrarRegistro(Number(ruta.id))
@@ -224,21 +221,12 @@ export class RutasComponent implements OnInit {
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
 
-    console.log('Archivo seleccionado:', input.files?.[0]);
-
     if (input.files && input.files[0]) {
       const file = input.files[0];
       const reader = new FileReader();
 
-      // 1. Cuando termine de leer el archivo, guarda el Base64 en el formulario
-      reader.onload = () => {
-        console.log('Archivo leído, Base64:', reader.result);
-      };
-
       reader.readAsDataURL(file);
     }
-
-    console.log(event);
   }
 
   descargarFichero(idRuta: number) {
