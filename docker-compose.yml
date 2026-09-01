@@ -1,0 +1,14 @@
+services:
+  gestion-censo-front:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: gestion-censo-front:latest
+    container_name: gestion-censo-front
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      # URL completa de la API backend (instalaciones-api), incluyendo el prefijo /v1.
+      # Ajusta el host/puerto al de la máquina donde corra el backend en este despliegue.
+      API_URL: "http://localhost:8080/api-instalaciones/v1"
