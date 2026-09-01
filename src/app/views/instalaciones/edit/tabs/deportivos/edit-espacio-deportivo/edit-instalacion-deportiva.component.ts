@@ -6,14 +6,14 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiResponse } from '../../../../../../models/apiresponse';
 import { MessageService } from 'primeng/api';
-import {
-  ListCaracteristicasComponent
-} from '../../../../../../components/caracteristica/list/caracteristicas.component';
+import { ListCaracteristicasComponent } from '../../../../../../components/caracteristica/list/caracteristicas.component';
 import { FieldsetModule } from 'primeng/fieldset';
 import { InstalacionEspacioDeportivo } from '../../../../../../models/instalacionEspacioDeportivo';
 import { InstalacionEspacioDeportivoService } from '../../../../../../services/instalacionEspacioDeportivo.service';
 import { EditModalComponent } from '../../../../../../components/modal/edit-modal/edit-modal.component';
 import { mensajesUtil } from '../../../../../../utils/mensajes.util';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   standalone: true,
@@ -24,7 +24,9 @@ import { mensajesUtil } from '../../../../../../utils/mensajes.util';
     ReactiveFormsModule,
     FieldsetModule,
     ListCaracteristicasComponent,
-    EditModalComponent
+    EditModalComponent,
+    ButtonModule,
+    TooltipModule
   ],
   templateUrl: './edit-instalacion-deportiva.component.html'
 })

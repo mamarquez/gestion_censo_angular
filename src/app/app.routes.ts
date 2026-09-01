@@ -22,25 +22,20 @@ import { IluminacionComponent } from './views/iluminaciones/list/iluminacion.com
 import { GestorComponent } from './views/gestores/list/gestor.component';
 import { EstadoUsoComponent } from './views/estadosusos/list/estadouso.component';
 import { PropietarioComponent } from './views/propietarios/list/propietario.component';
-import {
-  TiposGestoresPropiedadesComponent
-} from './views/tiposgestorespropiedades/list/tiposgestorespropiedades.component';
+import { TiposGestoresPropiedadesComponent } from './views/tiposgestorespropiedades/list/tiposgestorespropiedades.component';
 import { ConfiguracionComponent } from './views/configuracion/list/configuraciones.component';
 import { EditUsuarioComponent } from './views/usuarios/edit/edit.component';
 import { ListComunidadesComponent } from './views/comunidades/list/comunidades.component';
 import { EditInstalacionComponent } from './views/instalaciones/edit/editInstalacion.component';
-import {
-  EditInstalacionDeportivaComponent
-} from './views/instalaciones/edit/tabs/deportivos/edit-espacio-deportivo/edit-instalacion-deportiva.component';
+import { EditInstalacionDeportivaComponent } from './views/instalaciones/edit/tabs/deportivos/edit-espacio-deportivo/edit-instalacion-deportiva.component';
 import { RolFormComponent } from './views/roles/form/rol-form.component';
-import {
-  EditInstalacionRutaComponent
-} from './views/instalaciones/edit/tabs/rutas/edit-instalacion-ruta/edit-instalacion-ruta.component';
+import { EditInstalacionRutaComponent } from './views/instalaciones/edit/tabs/rutas/edit-instalacion-ruta/edit-instalacion-ruta.component';
 import { MapaRutaComponent } from './components/mapa-ruta/mapa-ruta.component';
 import { PerfilComponent } from './views/usuarios/perfil/perfil.component';
 import { NotFoundComponent } from './views/errors/not-found/not-found.component';
 import { ForbiddenComponent } from './views/errors/forbidden/forbidden.component';
 import { ServerErrorComponent } from './views/errors/server-error/server-error.component';
+import { ImagenComponent } from './views/instalaciones/edit/tabs/imagenes/imagen.component';
 
 /**
  * @version 2.0.1
@@ -220,6 +215,12 @@ export const routes: Routes = [
         path: 'mapa',
         children: [
           { path: '', component: MapaRutaComponent }
+        ]
+      },
+      {
+        path: 'imagenes',
+        children: [
+          { path: ':id', component: ImagenComponent }
         ]
       },
       {

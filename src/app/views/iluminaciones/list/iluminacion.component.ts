@@ -143,7 +143,7 @@ export class IluminacionComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(iluminacion: Iluminacion): void {
+  confirmarBorrado(iluminacion:   Iluminacion): void {
     this.dialog.confirmar({
       mensaje: `¿Deseas eliminar "<strong>${iluminacion.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',

@@ -1,0 +1,149 @@
+{
+  "errores": {
+    "titulo": "Error",
+    "sin_conexion": "No se ha podido conectar con el servidor. Comprueba tu conexión.",
+    "peticion_invalida": "La solicitud no es válida.",
+    "no_autorizado": "No tienes permiso para realizar esta acción.",
+    "no_encontrado": "No se ha encontrado el recurso solicitado.",
+    "servidor": "El servidor ha devuelto un error. Inténtalo de nuevo más tarde.",
+    "desconocido": "Se ha producido un error inesperado.",
+    "pagina_no_encontrada": "La página que buscas no existe o ha sido movida.",
+    "volver_inicio": "Volver al inicio",
+    "volver_listado": "Volver al listado",
+    "instalacion_no_encontrada": "La instalación solicitada no existe.",
+    "instalacion_error": "No se ha podido cargar la instalación.",
+    "reintentar": "Reintentar"
+  },
+  "widget": {
+    "titulo_pagina": "Insertar mapa",
+    "alerta_busqueda": "Utiliza algún criterio de búsqueda por favor",
+    "titulo": "Crea tu widget",
+    "descripcion": "Utiliza el formulario para configurar las instalaciones que quieres mostrar en el mapa.",
+    "provincia": "Provincia",
+    "provincia_placeholder": "Seleccione una provincia",
+    "provincia_todas": "Todas",
+    "municipio": "Municipio",
+    "municipio_placeholder": "Seleccione un municipio",
+    "municipio_todos": "Todos",
+    "deporte": "Deporte",
+    "deporte_placeholder": "Seleccione un deporte",
+    "deporte_todos": "Todos",
+    "anchura": "Anchura (pixeles)",
+    "altura": "Altura (pixeles)",
+    "codigo_label": "Copiar el siguiente código en tu web para insertar el widget.",
+    "copiar": "Copiar código",
+    "copiado": "¡Copiado!",
+    "cerrar": "Cerrar"
+  },
+  "menu": {
+    "entrada": "Entrada",
+    "busqueda_avanzada": "Busqueda avanzada",
+    "mapa_instalaciones": "Mapa de instalaciones",
+    "acerca_inventario": "Acerca del inventario",
+    "insertar_mapa": "Insertar mapa",
+    "planes_locales": "Planes locales"
+  },
+  "header": {
+    "gestion": "Gestión",
+    "logo_alt": "Inventario Andaluz de Instalaciones y Equipamientos Deportivos",
+    "junta_alt": "Junta de Andalucía"
+  },
+  "footer": {
+    "junta_alt": "Junta de Andalucía",
+    "copyright": "Junta de Andalucía.",
+    "version": "Versión:",
+    "informacion_legal": "Información Legal",
+    "subir": "Subir"
+  },
+  "index": {
+    "buscar_placeholder": "Escribe algo...",
+    "buscar": "Buscar",
+    "mas": "Más",
+    "menos": "Menos",
+    "todos": "Todos",
+    "provincia": "Provincia",
+    "municipio": "Municipio",
+    "clase_instalacion": "Clase de instalación",
+    "deporte": "Deporte",
+    "nivel_dotacion": "Nivel de dotación"
+  },
+  "buscar": {
+    "titulo_pagina": "Búsqueda avanzada",
+    "titulo": "Búsqueda avanzada",
+    "nombre": "Nombre de la instalación",
+    "provincia": "Provincia",
+    "zona_deportiva": "Zona deportiva",
+    "municipio": "Municipio",
+    "distrito": "Distrito",
+    "clase_instalacion": "Clase de instalación",
+    "deporte": "Deporte",
+    "modalidad": "Modalidad",
+    "tipo_espacio": "Tipo de espacio",
+    "espacio_abierto": "Espacio abierto",
+    "recinto_cerrado": "Recinto cerrado",
+    "tipo_gestor": "Tipo de gestor",
+    "propiedad_publica": "Propiedad pública",
+    "propiedad_privada": "Propiedad privada",
+    "nivel_dotacion": "Nivel de dotación",
+    "red_basica": "Red básica",
+    "red_complementaria": "Red complementaria",
+    "red_especial": "Red especial",
+    "todos": "Todos",
+    "todas": "Todas",
+    "cualquiera": "Cualquiera",
+    "buscar": "Buscar",
+    "limpiar": "Limpiar búsqueda",
+    "proximamente": "Disponible próximamente"
+  },
+  "planes_locales": {
+    "titulo_pagina": "Planes Locales"
+  },
+  "informacion_legal": {
+    "titulo_pagina": "Información legal"
+  },
+  "acerca": {
+    "titulo_pagina": "Acerca del inventario"
+  },
+  "loader": {
+    "cargando": "Cargando..."
+  },
+  "contador": {
+    "instalaciones": "Instalaciones",
+    "espacios_deportivos": "Espacios deportivos",
+    "espacios_complementarios": "Espacios complementarios",
+    "modalidades_deportivas": "Modalidades deportivas",
+    "modalidad_deportiva": "Modalidad deportiva",
+    "rutas_deportivas": "Rutas deportivas"
+  },
+  "instalaciones": {
+    "total_instalaciones": "instalaciones",
+    "xls": "xls",
+    "resumen_espacios": "espacios deportivos y",
+    "espacios_complementarios": "espacios complementarios",
+    "ver_en_mapa": "ver en mapa",
+    "codigo": "Código",
+    "ir": "Ir",
+    "pagina": "Página",
+    "filtros_busqueda": "Filtros de la búsqueda",
+    "provincia": "Provincia",
+    "cambiar_busqueda": "Cambiar búsqueda"
+  },
+  "instalacion": {
+    "codigo": "Código",
+    "contacto": "Contacto",
+    "localizacion": "Localización",
+    "como_llegar": "Como llegar",
+    "telefono": "Teléfono/s",
+    "fax": "Fax",
+    "web": "Web",
+    "correo_electronico": "Correo electronico",
+    "mostrar_en_web": "Muestra esta instalación en tu web",
+    "tipo_gestor": "Tipo de gestor",
+    "accesibilidad": "Accesibilidad/Supresión de barreras arquitectónicas",
+    "descargar": "Descargar:",
+    "pdf": "pdf",
+    "galeria": "Galería de fotos",
+    "galeria_cargando": "Cargando galería...",
+    "galeria_vacia": "No hay imágenes en la galería."
+  }
+}

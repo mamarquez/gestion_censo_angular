@@ -19,7 +19,8 @@ export function mensajesUtil(
     'delete': 'Registro borrado correctamente',
     'error': 'No se ha podido realizar la operación',
     'cargas': 'No se han podido obtener los registros',
-    'carga': 'No se ha podido obtener el registro'
+    'carga': 'No se ha podido obtener el registro',
+    'formato': 'Formato de imagen no soportado. Usa PNG, JPG, GIF o BMP'
   };
 
   switch (tipo) {

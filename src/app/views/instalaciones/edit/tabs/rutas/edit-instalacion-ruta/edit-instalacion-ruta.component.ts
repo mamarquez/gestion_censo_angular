@@ -16,9 +16,7 @@ import { InstalacionRutaCoordenada } from '../../../../../../models/instalacionR
 import { DialogService } from '../../../../../../services/dialog.service';
 import { ApiResponseWrapper } from '../../../../../../interface/api-response-wrapper.interface';
 import { AccionesTablaComponent } from '../../../../../../utils/acciones-tabla/acciones-tabla.component';
-import {
-  ModalCoordenadaComponent
-} from '../../../../../../components/ruta/modal-coordenada/modal-coordenada.component';
+import { ModalCoordenadaComponent } from '../../../../../../components/ruta/modal-coordenada/modal-coordenada.component';
 import { LoaderComponent } from '../../../../../../layouts/loader/loader.component';
 import { MapaRutaComponent, PuntoRuta } from '../../../../../../components/mapa-ruta/mapa-ruta.component';
 import { mensajesUtil } from '../../../../../../utils/mensajes.util';
@@ -61,20 +59,12 @@ export class EditInstalacionRutaComponent implements OnInit {
   idRuta: number | null = null;
   cargando = false;
   guardando = false;
-
   coordenadas: InstalacionRutaCoordenada[] = [];
   cargandoCoordenadas = false;
   modalVisible = false;
   coordenadaSeleccionada: InstalacionRutaCoordenada | null = null;
-
-  // Evita que el usuario pueda añadir un punto en el mapa mientras hay una
-  // operación de coordenada en curso (deshacer, borrar, crear...). Sin esto,
-  // un click durante la ventana asíncrona de esas peticiones puede quedar
-  // mezclado con el estado que se está actualizando y desordenar el trazado.
   procesandoCoordenada = false;
-
   ruta: InstalacionRuta | null = null;
-
   private idInstalacion: number | null = null;
 
   form: FormGroup = this.fb.group({
@@ -231,11 +221,6 @@ export class EditInstalacionRutaComponent implements OnInit {
   puntosMapa: PuntoRuta[] = [];
 
   private actualizarPuntosMapa(): void {
-    // p-table ordena `coordenadas` in-place (sortField='id', sortOrder=-1 en la
-    // plantilla), porque comparte la misma referencia de array que se le pasa
-    // aquí. Sin este sort explícito, el trazado del mapa hereda ese orden
-    // descendente y el punto más reciente aparece primero en vez de al final,
-    // dejando el próximo punto añadido conectado desde el principio de la ruta.
     this.puntosMapa = [...this.coordenadas]
       .sort((a, b) => (a.id as number) - (b.id as number))
       .map(c => ({ id: c.id, x: c.x, y: c.y }));
@@ -327,9 +312,6 @@ export class EditInstalacionRutaComponent implements OnInit {
           this.procesandoCoordenada = false;
           this.cdr.detectChanges();
 
-          // El desbloqueo se hace tras el siguiente tick para dar tiempo a que
-          // ngOnChanges del mapa (disparado por el nuevo puntosMapa) termine de
-          // repoblar el trazado antes de aceptar un nuevo click del usuario.
           setTimeout(() => this.mapaRuta?.setBloqueado(false));
         },
         error: (err) => {

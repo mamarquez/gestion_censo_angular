@@ -136,11 +136,6 @@ export class GeoPosicionComponent {
     const utm = latLngAUtm(punto.lat, punto.lng);
 
     this.geoForm.patchValue({
-      // xy_x/xy_y son los únicos campos obligatorios del formulario. Pese a que
-      // el backend los etiqueta como "sistema local", los datos reales en BD
-      // muestran que se usan como alias de latitud/longitud WGS84 (mismo rango
-      // y precisión que nmea_latitud/nmea_longitud) — se rellenan igual para
-      // que marcar un punto en el mapa deje el formulario listo para guardar.
       xy: {
         x: punto.lat.toFixed(6),
         y: punto.lng.toFixed(6)

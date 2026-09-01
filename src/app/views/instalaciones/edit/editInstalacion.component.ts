@@ -12,6 +12,7 @@ import { DatosCaracteristicaComponent } from './tabs/caracteristicas/caracterist
 import { GeoPosicionComponent } from './tabs/geoposicion/geoposicion.component';
 import { ComplementarioComponent } from './tabs/complementarios/complementario.component';
 import { RutasComponent } from './tabs/rutas/rutas.component';
+import { ImagenComponent } from './tabs/imagenes/imagen.component';
 
 /**
  * @version 1.0.2
@@ -32,7 +33,8 @@ import { RutasComponent } from './tabs/rutas/rutas.component';
     DatosCaracteristicaComponent,
     ComplementarioComponent,
     GeoPosicionComponent,
-    RutasComponent
+    RutasComponent,
+    ImagenComponent
   ],
   templateUrl: './editInstalacion.component.html',
   styleUrl: './editInstalacion.component.css'
@@ -41,7 +43,7 @@ export class EditInstalacionComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
 
-  tabActiva: 'datos' | 'geoposicion' | 'caracteristicas' | 'complementarios' | 'rutas' | 'telefonos' | 'deportivos' | 'fotos' = 'datos';
+  tabActiva: 'datos' | 'geoposicion' | 'caracteristicas' | 'complementarios' | 'rutas' | 'telefonos' | 'deportivos' | 'imagenes' = 'datos';
   cargando: boolean = false;
 
   idInstalacion = signal<string>('');
@@ -50,12 +52,12 @@ export class EditInstalacionComponent implements OnInit {
     this.idInstalacion.set(this.route.snapshot.paramMap.get('id') ?? '');
 
     const tab = this.route.snapshot.queryParamMap.get('tab');
-    if (tab === 'datos' || tab === 'geoposicion' || tab === 'caracteristicas' || tab === 'complementarios' || tab === 'rutas' || tab === 'telefonos' || tab === 'deportivos' || tab === 'fotos') {
+    if (tab === 'datos' || tab === 'geoposicion' || tab === 'caracteristicas' || tab === 'complementarios' || tab === 'rutas' || tab === 'telefonos' || tab === 'deportivos' || tab === 'imagenes') {
       this.tabActiva = tab;
     }
   }
 
-  seleccionarTab(tab: 'datos' | 'geoposicion' | 'caracteristicas' | 'complementarios' | 'rutas' | 'telefonos' | 'deportivos' | 'fotos'): void {
+  seleccionarTab(tab: 'datos' | 'geoposicion' | 'caracteristicas' | 'complementarios' | 'rutas' | 'telefonos' | 'deportivos' | 'imagenes'): void {
     this.tabActiva = tab;
   }
 

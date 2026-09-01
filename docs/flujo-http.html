@@ -1,0 +1,679 @@
+<title>Flujo de una Petición HTTP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --ground: #f7f6f3;
+    --surface: #ffffff;
+    --surface-2: #f0eee9;
+    --ink: #23262d;
+    --ink-soft: #565b68;
+    --ink-faint: #8b8fa0;
+    --border: #e2ded6;
+    --border-strong: #cfc9bd;
+    --accent: #3f6fd6;
+    --accent-soft: #eaf0fc;
+    --accent-ink: #2a51a8;
+    --ok: #4f8a4f;
+    --ok-soft: #e8f2e6;
+    --warn: #b8912f;
+    --warn-soft: #f8f0dc;
+    --danger: #bd4f3f;
+    --danger-soft: #f8e6e2;
+    --shadow: 0 1px 2px rgba(30, 28, 22, 0.06), 0 8px 24px -12px rgba(30, 28, 22, 0.14);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #16181e;
+      --surface: #1e2129;
+      --surface-2: #262a34;
+      --ink: #e7e8ec;
+      --ink-soft: #a9adba;
+      --ink-faint: #757a8a;
+      --border: #2e323d;
+      --border-strong: #3c4150;
+      --accent: #7ea2ec;
+      --accent-soft: #232a3b;
+      --accent-ink: #a9c2f4;
+      --ok: #7bbd7b;
+      --ok-soft: #1f2a20;
+      --warn: #d8b25f;
+      --warn-soft: #2c2717;
+      --danger: #dd8577;
+      --danger-soft: #2e1d1a;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px -14px rgba(0, 0, 0, 0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #16181e;
+    --surface: #1e2129;
+    --surface-2: #262a34;
+    --ink: #e7e8ec;
+    --ink-soft: #a9adba;
+    --ink-faint: #757a8a;
+    --border: #2e323d;
+    --border-strong: #3c4150;
+    --accent: #7ea2ec;
+    --accent-soft: #232a3b;
+    --accent-ink: #a9c2f4;
+    --ok: #7bbd7b;
+    --ok-soft: #1f2a20;
+    --warn: #d8b25f;
+    --warn-soft: #2c2717;
+    --danger: #dd8577;
+    --danger-soft: #2e1d1a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px -14px rgba(0, 0, 0, 0.5);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 48px 28px 96px; }
+
+  header.masthead {
+    border-bottom: 2px solid var(--border-strong);
+    padding-bottom: 28px;
+    margin-bottom: 32px;
+  }
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-faint); margin: 0 0 12px;
+  }
+  h1 {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.9rem, 4.5vw, 2.9rem);
+    line-height: 1.08; letter-spacing: -0.02em;
+    text-wrap: balance; margin: 0 0 14px;
+  }
+  .lede {
+    font-size: 1.02rem; color: var(--ink-soft);
+    max-width: 64ch; margin: 0;
+  }
+  .lede code, .step-detail code, .note code, .legend-item code {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.88em;
+    background: var(--surface-2);
+    padding: 0.1em 0.4em; border-radius: 4px;
+  }
+
+  /* ---- playback controls ---- */
+  .player {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--ground);
+    padding: 14px 0 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    margin-bottom: 28px;
+  }
+  .btn {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 0.88rem; font-weight: 600;
+    padding: 9px 16px; border-radius: 8px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface); color: var(--ink);
+    cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+    transition: background .12s, border-color .12s, transform .06s;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn:active { transform: translateY(1px); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  :root[data-theme="dark"] .btn.primary,
+  :root:not([data-theme="light"]) .btn.primary { color: #10131a; }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) .btn.primary { color: #fff; }
+  }
+  .progress {
+    flex: 1 1 160px; min-width: 120px;
+    height: 6px; border-radius: 999px;
+    background: var(--surface-2);
+    overflow: hidden;
+  }
+  .progress .bar {
+    height: 100%; width: 0%;
+    background: var(--accent);
+    transition: width .35s ease;
+  }
+  .step-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.8rem; color: var(--ink-faint);
+    white-space: nowrap;
+  }
+  .toggle-error {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 0.82rem; font-weight: 500;
+    padding: 8px 13px; border-radius: 999px;
+    border: 1px solid var(--border-strong);
+    background: var(--surface); color: var(--ink-soft);
+    cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+  }
+  .toggle-error:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .toggle-error .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--danger); }
+  .toggle-error.on { background: var(--danger-soft); color: var(--danger); border-color: var(--danger); }
+
+  /* ---- lane diagram ---- */
+  .diagram {
+    display: grid;
+    grid-template-columns: 168px 1fr;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .lane-head {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 168px repeat(4, 1fr);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+  .lane-head .cell {
+    padding: 12px 10px;
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600; font-size: 0.78rem;
+    text-align: center;
+    color: var(--ink-soft);
+    border-left: 1px solid var(--border);
+    line-height: 1.25;
+  }
+  .lane-head .cell:first-child { border-left: 0; text-align: left; color: var(--ink-faint); font-weight: 500; }
+  .lane-head .cell .sub {
+    display: block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem; font-weight: 400;
+    color: var(--ink-faint); margin-top: 2px;
+  }
+
+  .steps { grid-column: 1 / -1; }
+
+  .step {
+    display: grid;
+    grid-template-columns: 168px repeat(4, 1fr);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    opacity: 0.32;
+    transition: opacity .3s ease, background .3s ease;
+  }
+  .step:last-child { border-bottom: 0; }
+  .step.active { opacity: 1; background: var(--accent-soft); }
+  .step.done { opacity: 0.72; }
+  .step.err-step { }
+  .step.err-step.active { background: var(--danger-soft); }
+
+  .step-meta {
+    padding: 14px 12px;
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .step-num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.7rem; font-weight: 600;
+    color: var(--accent-ink);
+    letter-spacing: 0.04em;
+  }
+  .step.err-step .step-num { color: var(--danger); }
+  .step-file {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    word-break: break-word;
+  }
+
+  .step-track {
+    grid-column: 2 / -1;
+    position: relative;
+    display: flex; align-items: center;
+    padding: 14px 0;
+    min-height: 62px;
+  }
+  /* the actor markers sit at 4 column centers: 12.5%, 37.5%, 62.5%, 87.5% */
+  .msg {
+    position: absolute;
+    top: 50%; transform: translateY(-50%);
+    height: 30px;
+    display: flex; align-items: center;
+    background: var(--surface);
+    border: 1.5px solid var(--accent);
+    border-radius: 999px;
+    padding: 0 12px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.74rem; font-weight: 500;
+    color: var(--accent-ink);
+    white-space: nowrap;
+    box-shadow: var(--shadow);
+  }
+  .step.err-step .msg { border-color: var(--danger); color: var(--danger); }
+  .msg::after {
+    content: "";
+    position: absolute;
+    width: 8px; height: 8px;
+    border-top: 1.5px solid var(--accent);
+    border-right: 1.5px solid var(--accent);
+  }
+  .step.err-step .msg::after { border-color: var(--danger); }
+  .msg.to-right::after { right: -1px; transform: rotate(45deg); }
+  .msg.to-left::after { left: -1px; transform: rotate(-135deg); }
+  .msg.self {
+    border-style: dashed;
+  }
+  .msg.self::after { display: none; }
+
+  .step-detail {
+    grid-column: 1 / -1;
+    padding: 0 16px;
+    max-height: 0;
+    overflow: hidden;
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    transition: max-height .3s ease, padding .3s ease;
+    border-top: 0 solid var(--border);
+    background: var(--surface);
+  }
+  .step.active .step-detail {
+    max-height: 240px;
+    padding: 4px 16px 16px;
+  }
+  .step-detail strong { color: var(--ink); font-weight: 600; }
+
+  /* actor rails behind steps */
+  .rails {
+    position: absolute;
+    inset: 0;
+    grid-column: 2 / -1;
+    pointer-events: none;
+  }
+
+  /* ---- static outcome cards ---- */
+  .outcomes {
+    margin-top: 36px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .outcome {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border-strong);
+    border-radius: 9px;
+    padding: 15px 17px;
+    box-shadow: var(--shadow);
+  }
+  .outcome.ok { border-left-color: var(--ok); }
+  .outcome.e401 { border-left-color: var(--danger); }
+  .outcome.e403 { border-left-color: var(--warn); }
+  .outcome.e5xx { border-left-color: var(--ink-faint); }
+  .outcome h3 {
+    margin: 0 0 6px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--ink);
+  }
+  .outcome p { margin: 0; font-size: 0.85rem; color: var(--ink-soft); }
+  .outcome code {
+    font-family: "IBM Plex Mono", monospace; font-size: 0.86em;
+    background: var(--surface-2); padding: 0.08em 0.36em; border-radius: 4px;
+  }
+
+  h2 {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 600; font-size: 1.15rem;
+    letter-spacing: -0.01em;
+    margin: 44px 0 16px;
+  }
+
+  .note {
+    margin: 20px 0 0;
+    background: var(--warn-soft);
+    border: 1px solid var(--warn);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 0.88rem; color: var(--ink);
+  }
+  .note strong { color: var(--warn); }
+
+  .legend {
+    margin-top: 22px;
+    padding: 18px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 12px 24px;
+  }
+  .legend-item { display: flex; gap: 10px; font-size: 0.85rem; color: var(--ink-soft); }
+  .legend-item .k {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem; font-weight: 600;
+    color: var(--accent-ink);
+    flex-shrink: 0;
+    padding-top: 2px;
+    min-width: 46px;
+  }
+  .legend-item strong { color: var(--ink); font-weight: 600; }
+
+  footer.foot {
+    margin-top: 32px;
+    font-size: 0.8rem; color: var(--ink-faint);
+    font-family: "IBM Plex Mono", monospace;
+  }
+  footer.foot code { color: var(--ink-soft); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, .step, .step-detail, .progress .bar { transition: none !important; }
+  }
+
+  @media (max-width: 720px) {
+    .wrap { padding: 32px 14px 72px; }
+    .lane-head { grid-template-columns: 96px repeat(4, 1fr); }
+    .lane-head .cell { font-size: 0.66rem; padding: 9px 5px; }
+    .lane-head .cell .sub { display: none; }
+    .step { grid-template-columns: 96px repeat(4, 1fr); }
+    .step-meta { padding: 10px 7px; }
+    .msg { font-size: 0.62rem; height: 26px; padding: 0 8px; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">gestion_censo_angular · ciclo de vida de una request</p>
+    <h1>Flujo de una Petición HTTP</h1>
+    <p class="lede">Qué ocurre entre que un componente de listado llama a <code>service.getAll(filtros)</code> y que la tabla se repinta. En medio: <code>buildHttpParams</code>, el <code>authInterceptor</code> que adjunta el <code>Bearer</code> token y vigila la expiración, el backend en <code>localhost:8080</code>, y el desempaquetado de <code>ApiResponseWrapper&lt;T&gt;</code>. Pulsa <strong>Paso a paso</strong> o activa el <strong>modo error</strong> para ver la rama de <code>catchError</code>.</p>
+  </header>
+
+  <div class="player">
+    <button class="btn primary" id="playBtn">▶ Reproducir</button>
+    <button class="btn" id="stepBtn">Paso a paso ›</button>
+    <button class="btn" id="resetBtn">↺ Reiniciar</button>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <span class="step-label" id="stepLabel">paso 0 / 0</span>
+    <button class="toggle-error" id="errBtn" aria-pressed="false">
+      <span class="dot"></span> modo error (401 / 403 / 5xx)
+    </button>
+  </div>
+
+  <div class="diagram">
+    <div class="lane-head">
+      <div class="cell">actores &rarr;</div>
+      <div class="cell">Componente<span class="sub">views/*/list</span></div>
+      <div class="cell">Service<span class="sub">services/*.service.ts</span></div>
+      <div class="cell">authInterceptor<span class="sub">withInterceptors([...])</span></div>
+      <div class="cell">Backend<span class="sub">:8080/api-instalaciones/v1</span></div>
+    </div>
+    <div class="steps" id="steps"></div>
+  </div>
+
+  <h2>Desenlaces posibles</h2>
+  <div class="outcomes">
+    <div class="outcome ok">
+      <h3>2xx — éxito</h3>
+      <p>El componente hace <code>response.data</code>, <code>this.provincias.set(...)</code> y baja el flag <code>cargando</code>. Si usa <code>ChangeDetectorRef</code> en vez de signals, aquí va el <code>markForCheck()</code>.</p>
+    </div>
+    <div class="outcome e401">
+      <h3>401 — no autenticado</h3>
+      <p>El interceptor llama <code>authService.logout()</code> y <code>navigateByUrl('/auth/session-expired')</code>. El error se re-lanza; el <code>error:</code> del componente también se ejecuta.</p>
+    </div>
+    <div class="outcome e403">
+      <h3>403 — sin permiso</h3>
+      <p>El interceptor redirige a <code>/auth/access-denied</code>. No hay logout: el token sigue siendo válido, falta autorización.</p>
+    </div>
+    <div class="outcome e5xx">
+      <h3>500 / 502 / 503 / 504 / 0</h3>
+      <p>Redirige a <code>/500</code> (<code>AUTH.ROUTES.SERVER_ERROR</code>). El <code>status: 0</code> cubre el caso de backend caído / CORS / red.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Antes de la request:</strong> si el token existe pero <code>tokenService.isExpired(token)</code> es <code>true</code> (compara <code>payload.exp * 1000</code> con <code>Date.now()</code>), el interceptor corta en seco: <code>logout()</code> + redirección a <code>session-expired</code> y devuelve <code>throwError</code> — la petición nunca sale. Las URLs que contienen un fragmento de <code>AUTH.PUBLIC_ENDPOINTS</code> (<code>/login</code>, <code>/refresh-token</code>…) se saltan todo esto y van sin cabecera.
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="k">params</span><span><strong>buildHttpParams(filtros)</strong> descarta <code>null</code>/<code>undefined</code>/<code>''</code> y trata <code>activo</code> como triestado: <code>'1'</code>→<code>true</code>, <code>'0'</code>→<code>false</code>, <code>'2'</code>→se omite (“Todos”).</span></div>
+    <div class="legend-item"><span class="k">wrapper</span><span><strong>ApiResponseWrapper&lt;T&gt;</strong>: <code>{ message, data, success, fieldErrors }</code>. Los listados tipan contra esto; las acciones puntuales a veces usan <code>ApiResponse&lt;T&gt;</code> (solo <code>message</code>/<code>data</code>) — es inconsistente entre servicios.</span></div>
+    <div class="legend-item"><span class="k">token</span><span><strong>TokenService</strong> lee de <code>sessionStorage</code> (no <code>localStorage</code>). <code>decodePayload</code> hace <code>atob</code> del segundo segmento del JWT.</span></div>
+    <div class="legend-item"><span class="k">verbos</span><span><code>getAll</code>/<code>get</code> → GET · <code>cambiarEstado</code> → PATCH · <code>borrarRegistro</code> → DELETE · <code>add</code> → POST · <code>update</code> → PUT. Todos con <code>Content-Type: application/json</code>.</span></div>
+  </div>
+
+  <footer class="foot">
+    Fuente: <code>auth/interceptors/auth.interceptor.ts</code> · <code>services/usuario.service.ts</code> · <code>utils/params.util.ts</code> · <code>auth/services/token.service.ts</code> · <code>views/provincias/list/provincia.component.ts</code> · <code>app.config.ts</code>.
+  </footer>
+</div>
+
+<script>
+  // column centers for 4 lanes inside .step-track (which spans cols 2..5)
+  const COL = { comp: 12.5, svc: 37.5, intc: 62.5, back: 87.5 };
+
+  const HAPPY = [
+    {
+      num: "01", file: "views/*/list", err: false,
+      from: "comp", to: "svc", dir: "right",
+      msg: "getAll(this.form.value)",
+      detail: "El componente llama al service en <code>ngOnInit → cargar()</code> o al pulsar <code>buscar()</code>. Sube el flag <code>cargando</code> y se suscribe con <code>takeUntilDestroyed(this.destroyRef)</code>."
+    },
+    {
+      num: "02", file: "utils/params.util.ts", err: false,
+      self: "svc",
+      msg: "buildHttpParams(filtros)",
+      detail: "El service convierte el objeto de filtros en <code>HttpParams</code>: fuera <code>null</code>/<code>''</code>, <code>activo</code> como triestado. Monta la URL <code>${AUTH.API}/usuarios</code> y hace <code>http.get&lt;ApiResponseWrapper&lt;T[]&gt;&gt;(...)</code>."
+    },
+    {
+      num: "03", file: "app.config.ts", err: false,
+      from: "svc", to: "intc", dir: "right",
+      msg: "HttpRequest sale por la cadena",
+      detail: "<code>provideHttpClient(withInterceptors([authInterceptor]))</code>. Toda petición pasa por aquí antes de tocar la red."
+    },
+    {
+      num: "04", file: "auth.interceptor.ts", err: false,
+      self: "intc",
+      msg: "¿URL en PUBLIC_ENDPOINTS?",
+      detail: "Si la URL contiene <code>/login</code>, <code>/refresh-token</code>, etc. → pasa tal cual, sin cabecera. En caso contrario sigue al chequeo de token."
+    },
+    {
+      num: "05", file: "token.service.ts", err: false,
+      self: "intc",
+      msg: "token && !isExpired(token)",
+      detail: "Lee el JWT de <code>sessionStorage</code>. Si está <strong>expirado</strong>: <code>logout()</code> + <code>navigateByUrl('/auth/session-expired')</code> y <code>throwError</code> — se corta aquí. Si es válido, continúa."
+    },
+    {
+      num: "06", file: "auth.interceptor.ts", err: false,
+      self: "intc",
+      msg: "req.clone({ Authorization: Bearer … })",
+      detail: "Clona la request añadiendo la cabecera <code>Authorization: Bearer &lt;token&gt;</code> y la reenvía con <code>next(request)</code>."
+    },
+    {
+      num: "07", file: "localhost:8080", err: false,
+      from: "intc", to: "back", dir: "right",
+      msg: "GET /api-instalaciones/v1/usuarios?…",
+      detail: "La petición llega al backend Spring local. No hay <code>environments/</code>: la URL base vive fija en <code>AUTH.API</code>."
+    },
+    {
+      num: "08", file: "localhost:8080", err: false,
+      from: "back", to: "intc", dir: "left",
+      msg: "200 · { message, data, success, fieldErrors }",
+      detail: "El backend responde con el <code>ApiResponseWrapper</code> serializado. El interceptor pasa por <code>catchError</code> sin hacer nada (no es error) y deja fluir la respuesta."
+    },
+    {
+      num: "09", file: "*.service.ts", err: false,
+      from: "intc", to: "svc", dir: "left",
+      msg: "Observable&lt;ApiResponseWrapper&lt;T[]&gt;&gt;",
+      detail: "El service no transforma: devuelve el <code>Observable</code> tal cual al componente que se suscribió."
+    },
+    {
+      num: "10", file: "views/*/list", err: false,
+      from: "svc", to: "comp", dir: "left",
+      msg: "next: response.data → set(...) + cargando=false",
+      detail: "El <code>next</code> del componente hace <code>response.data ?? []</code>, actualiza el signal / la propiedad de la lista, baja <code>cargando</code>. Con OnPush sin signals: <code>cdr.markForCheck()</code>. La tabla se repinta."
+    }
+  ];
+
+  // error branch replaces steps 08..10
+  const ERR_TAIL = {
+    "401": [
+      { num: "08", file: "localhost:8080", err: true, from: "back", to: "intc", dir: "left",
+        msg: "401 Unauthorized",
+        detail: "Token ausente, inválido o rechazado por el backend." },
+      { num: "09", file: "auth.interceptor.ts", err: true, self: "intc",
+        msg: "case 401 → logout() + session-expired",
+        detail: "<code>authService.logout()</code> limpia <code>sessionStorage</code> y <code>router.navigateByUrl('/auth/session-expired')</code>. Luego <code>throwError(() =&gt; error)</code>." },
+      { num: "10", file: "views/*/list", err: true, from: "intc", to: "comp", dir: "left",
+        msg: "error: → console.error + toast + cargando=false",
+        detail: "El <code>error:</code> del componente también corre: log, <code>mensajesUtil(messageService, 'error', 'cargas')</code>, baja <code>cargando</code>. Pero la vista ya está navegando fuera." }
+    ],
+    "403": [
+      { num: "08", file: "localhost:8080", err: true, from: "back", to: "intc", dir: "left",
+        msg: "403 Forbidden",
+        detail: "El token es válido pero el usuario no tiene permiso para ese recurso." },
+      { num: "09", file: "auth.interceptor.ts", err: true, self: "intc",
+        msg: "case 403 → navigateByUrl('/auth/access-denied')",
+        detail: "Sin <code>logout()</code>: la sesión sigue viva. Solo redirección a <code>AUTH.ROUTES.ACCESS_DENIED</code> y re-lanza el error." },
+      { num: "10", file: "views/*/list", err: true, from: "intc", to: "comp", dir: "left",
+        msg: "error: → toast + cargando=false",
+        detail: "Igual que arriba: el <code>error:</code> del componente se ejecuta antes de que el router complete la navegación." }
+    ],
+    "5xx": [
+      { num: "08", file: "localhost:8080", err: true, from: "back", to: "intc", dir: "left",
+        msg: "500 / 502 / 503 / 504  ·  (o status 0)",
+        detail: "Error de servidor, o <code>status: 0</code> = backend caído, CORS o sin red." },
+      { num: "09", file: "auth.interceptor.ts", err: true, self: "intc",
+        msg: "default → navigateByUrl('/500')",
+        detail: "Todos los 5xx y el <code>0</code> caen en el mismo <code>case</code> → <code>AUTH.ROUTES.SERVER_ERROR</code> (<code>/500</code>, ruta suelta fuera del shell)." },
+      { num: "10", file: "views/*/list", err: true, from: "intc", to: "comp", dir: "left",
+        msg: "error: → toast 'cargas' + cargando=false",
+        detail: "El componente registra el error y baja el flag; la app muestra la página <code>/500</code>." }
+    ]
+  };
+
+  let errorMode = null; // null | "401" | "403" | "5xx"
+  const errorOrder = [null, "401", "403", "5xx"];
+
+  const stepsEl = document.getElementById("steps");
+  const barEl = document.getElementById("bar");
+  const stepLabelEl = document.getElementById("stepLabel");
+  const playBtn = document.getElementById("playBtn");
+  const stepBtn = document.getElementById("stepBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const errBtn = document.getElementById("errBtn");
+
+  let sequence = [];
+  let cursor = 0;
+  let timer = null;
+
+  function buildSequence() {
+    if (!errorMode) return HAPPY.slice();
+    return HAPPY.slice(0, 7).concat(ERR_TAIL[errorMode]);
+  }
+
+  function render() {
+    stepsEl.innerHTML = "";
+    sequence.forEach((s, i) => {
+      const row = document.createElement("div");
+      row.className = "step" + (s.err ? " err-step" : "");
+      row.dataset.i = i;
+
+      const meta = document.createElement("div");
+      meta.className = "step-meta";
+      meta.innerHTML = `<span class="step-num">${s.num}</span><span class="step-file">${s.file}</span>`;
+
+      const track = document.createElement("div");
+      track.className = "step-track";
+
+      const msg = document.createElement("div");
+      if (s.self) {
+        msg.className = "msg self";
+        const c = COL[s.self];
+        msg.style.left = c + "%";
+        msg.style.transform = "translate(-50%, -50%)";
+      } else {
+        const a = COL[s.from], b = COL[s.to];
+        const left = Math.min(a, b), right = Math.max(a, b);
+        msg.className = "msg " + (s.dir === "right" ? "to-right" : "to-left");
+        msg.style.left = left + "%";
+        msg.style.right = (100 - right) + "%";
+        msg.style.justifyContent = s.dir === "right" ? "flex-start" : "flex-end";
+      }
+      msg.innerHTML = `<span>${s.msg}</span>`;
+      track.appendChild(msg);
+
+      const detail = document.createElement("div");
+      detail.className = "step-detail";
+      detail.innerHTML = `<p>${s.detail}</p>`;
+
+      row.appendChild(meta);
+      row.appendChild(track);
+      row.appendChild(detail);
+      row.addEventListener("click", () => { stop(); cursor = i + 1; paint(); });
+      stepsEl.appendChild(row);
+    });
+  }
+
+  function paint() {
+    const rows = [...stepsEl.children];
+    rows.forEach((r, i) => {
+      r.classList.toggle("active", i === cursor - 1);
+      r.classList.toggle("done", i < cursor - 1);
+    });
+    const total = sequence.length;
+    barEl.style.width = (total ? (cursor / total) * 100 : 0) + "%";
+    stepLabelEl.textContent = `paso ${cursor} / ${total}`;
+    if (cursor > 0 && cursor <= total) {
+      rows[cursor - 1].scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+    playBtn.textContent = timer ? "⏸ Pausa" : (cursor >= total ? "↺ Reproducir" : "▶ Reproducir");
+  }
+
+  function next() {
+    if (cursor >= sequence.length) { stop(); return; }
+    cursor++;
+    paint();
+  }
+
+  function play() {
+    if (timer) { stop(); return; }
+    if (cursor >= sequence.length) cursor = 0;
+    timer = setInterval(next, 1400);
+    next();
+    paint();
+  }
+  function stop() {
+    if (timer) { clearInterval(timer); timer = null; }
+    paint();
+  }
+  function reset() {
+    stop();
+    sequence = buildSequence();
+    cursor = 0;
+    render();
+    paint();
+  }
+
+  playBtn.addEventListener("click", play);
+  stepBtn.addEventListener("click", () => { stop(); next(); });
+  resetBtn.addEventListener("click", reset);
+  errBtn.addEventListener("click", () => {
+    const idx = errorOrder.indexOf(errorMode);
+    errorMode = errorOrder[(idx + 1) % errorOrder.length];
+    errBtn.classList.toggle("on", errorMode !== null);
+    errBtn.setAttribute("aria-pressed", errorMode !== null ? "true" : "false");
+    errBtn.querySelector("span:last-child").textContent = errorMode
+      ? `modo error: ${errorMode}`
+      : "modo error (401 / 403 / 5xx)";
+    reset();
+  });
+
+  reset();
+</script>

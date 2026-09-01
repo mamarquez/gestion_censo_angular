@@ -8,21 +8,35 @@ import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
+// Configuración moderna de ngx-translate
+import { provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+
 export const appConfig: ApplicationConfig = {
   providers: [
-
     provideRouter(routes),
 
     provideHttpClient(
       withInterceptors([authInterceptor])
     ),
+
+    // Inyección oficial según la última especificación
+    provideTranslateService({
+      lang: 'es', // 👈 La propiedad correcta es 'lang'
+      fallbackLang: 'es',
+      loader: provideTranslateHttpLoader({
+        prefix: './assets/i18n/',
+        suffix: '.json'
+      })
+    }),
+
     provideAnimations(),
     providePrimeNG({
       theme: {
         preset: Aura,
         options: {
           prefix: 'p',
-          darkModeSelector: '.my-app-dark', // Opcional: para soporte dark mode
+          darkModeSelector: '.my-app-dark',
           cssLayer: false
         }
       },

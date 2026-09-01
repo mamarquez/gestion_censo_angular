@@ -26,6 +26,8 @@
     "@fontsource/montserrat": "^5.2.8",
     "@fontsource/open-sans": "^5.2.7",
     "@fontsource/source-sans-pro": "^5.2.5",
+    "@ngx-translate/core": "^18.0.0",
+    "@ngx-translate/http-loader": "^18.0.0",
     "@primeng/themes": "^20.4.0",
     "ckeditor5": "^48.4.0",
     "leaflet": "^1.9.4",
