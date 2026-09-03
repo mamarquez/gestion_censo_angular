@@ -36,9 +36,10 @@ import { NotFoundComponent } from './views/errors/not-found/not-found.component'
 import { ForbiddenComponent } from './views/errors/forbidden/forbidden.component';
 import { ServerErrorComponent } from './views/errors/server-error/server-error.component';
 import { ImagenComponent } from './views/instalaciones/edit/tabs/imagenes/imagen.component';
+import { FicheroComponent } from './views/instalaciones/edit/tabs/ficheros/fichero.component';
 
 /**
- * @version 2.0.1
+ * @version 2.0.2
  */
 
 export const routes: Routes = [
@@ -221,6 +222,12 @@ export const routes: Routes = [
         path: 'imagenes',
         children: [
           { path: ':id', component: ImagenComponent }
+        ]
+      },
+      {
+        path: 'ficheros',
+        children: [
+          { path: ':id', component: FicheroComponent }
         ]
       },
       {

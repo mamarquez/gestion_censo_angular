@@ -225,6 +225,30 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private actualizarRuta(): void {
     this.polyline.setLatLngs(this.ruta);
+
+    // Cuando dos puntos consecutivos de la ruta coinciden exactamente (el caso más
+    // habitual es cerrar el circuito volviendo al punto de inicio, pero puede darse
+    // en cualquier posición, p.ej. varios puntos con las mismas coordenadas seguidos),
+    // el segmento entre ellos sí se dibuja, pero el marcador circular del punto ya
+    // existente se pinta por encima de la polyline (se añadió antes al mapa) y tapa
+    // visualmente ese tramo, dando la impresión de que no se ha dibujado. Se trae la
+    // polyline al frente para que esos tramos coincidentes sean visibles.
+    if (this.tienePuntosConsecutivosCoincidentes()) {
+      this.polyline.bringToFront();
+    }
+  }
+
+  private tienePuntosConsecutivosCoincidentes(): boolean {
+    for (let i = 1; i < this.ruta.length; i++) {
+      const anterior = this.ruta[i - 1];
+      const actual = this.ruta[i];
+
+      if (anterior.lat === actual.lat && anterior.lng === actual.lng) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   asignarIdUltimoPunto(id: number): void {

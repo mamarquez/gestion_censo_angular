@@ -35,6 +35,9 @@
       <li [class.active]="tabActiva === 'imagenes'">
         <a (click)="seleccionarTab('imagenes')">Fotos</a>
       </li>
+      <li [class.active]="tabActiva === 'ficheros'">
+        <a (click)="seleccionarTab('ficheros')">Ficheros</a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -59,6 +62,8 @@
           <app-datos-rutas (cargandoChange)="onCargandoChange($event)" [(idInstalacion)]="idInstalacion" />
         } @else if (tabActiva === 'imagenes') {
           <app-datos-imagenes (cargandoChange)="onCargandoChange($event)" [(idInstalacion)]="idInstalacion" />
+        } @else if (tabActiva === 'ficheros') {
+          <app-datos-ficheros (cargandoChange)="onCargandoChange($event)" [(idInstalacion)]="idInstalacion" />
         }
       </div>
     </div>

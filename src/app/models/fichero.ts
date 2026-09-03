@@ -1,4 +1,4 @@
-export interface Imagen {
+export interface Fichero {
     id?: number;
     idInstalacion: number;
     nombre: string;
