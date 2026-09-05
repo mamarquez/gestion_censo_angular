@@ -17,6 +17,7 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
 import { DialogModule } from 'primeng/dialog';
 import { SafeHtmlPipe } from 'primeng/menu';
 import { mensajesUtil } from '../../../utils/mensajes.util';
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.1
@@ -37,7 +38,8 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
     SelectModule,
     Tooltip,
     DialogModule,
-    SafeHtmlPipe
+    SafeHtmlPipe,
+    FilasAutoajustablesDirective
   ],
   templateUrl: 'auditoria.component.html'
 })
@@ -53,6 +55,11 @@ export class AuditoriaComponent implements OnInit {
   auditorias: Auditoria[] = [];
   cargando: boolean = true;
   mostrarModal: boolean = false;
+  filasPorPagina = 10;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     id: [null],

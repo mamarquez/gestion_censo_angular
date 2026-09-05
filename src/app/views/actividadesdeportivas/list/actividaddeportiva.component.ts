@@ -34,7 +34,8 @@ import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../u
     TooltipModule,
     AccionesTablaComponent,
     EditModalComponent,
-    Truncar
+    Truncar,
+    FilasAutoajustablesDirective
   ],
   templateUrl: './actividaddeportiva.component.html'
 })
@@ -51,6 +52,11 @@ export class ActividadDeportivaComponent implements OnInit {
   actividadesDeportivas: ActividadDeportiva [] = [];
   cargando: boolean = true;
   modalVisible = false;
+  filasPorPagina = 10;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     id: [null],
