@@ -15,6 +15,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { BotonAddComponent } from '../../../components/boton-add/boton-add.component';
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.0
@@ -32,7 +33,8 @@ import { BotonAddComponent } from '../../../components/boton-add/boton-add.compo
     TooltipModule,
     AccionesTablaComponent,
     EditModalComponent,
-    BotonAddComponent
+    BotonAddComponent,
+    FilasAutoajustablesDirective
   ],
   templateUrl: './propietario.component.html'
 })
@@ -49,6 +51,11 @@ export class PropietarioComponent implements OnInit {
   propietarios: Propietario [] = [];
   cargando: boolean = true;
   modalVisible = false;
+  filasPorPagina = 10;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     id: [null],

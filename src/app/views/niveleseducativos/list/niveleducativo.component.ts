@@ -17,6 +17,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { Truncar } from '../../../pipe/trucar.pipe';
 import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.0
@@ -35,7 +36,8 @@ import { BotonAddComponent } from "../../../components/boton-add/boton-add.compo
     EditModalComponent,
     AccionesTablaComponent,
     Truncar,
-    BotonAddComponent
+    BotonAddComponent,
+    FilasAutoajustablesDirective
 ],
   templateUrl: './niveleducativo.component.html'
 })
@@ -52,6 +54,11 @@ export class NivelEducativoComponent implements OnInit {
   nivelesEducativos: NivelEducativo [] = [];
   cargando: boolean = true;
   modalVisible = false;
+  filasPorPagina = 20;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     id: [''],

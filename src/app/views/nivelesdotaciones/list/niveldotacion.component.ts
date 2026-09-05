@@ -15,6 +15,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { Truncar } from '../../../pipe/trucar.pipe';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.0
@@ -31,7 +32,8 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
     ConfirmDialogModule,
     EditModalComponent,
     Truncar,
-    AccionesTablaComponent
+    AccionesTablaComponent,
+    FilasAutoajustablesDirective
   ],
   templateUrl: './niveldotacion.component.html'
 })
@@ -48,6 +50,11 @@ export class NivelDotacionComponent implements OnInit {
   nivelesDotaciones: NivelDotacion [] = [];
   cargando: boolean = true;
   modalVisible = false;
+  filasPorPagina = 20;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     id: [null],

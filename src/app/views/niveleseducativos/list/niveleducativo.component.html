@@ -73,13 +73,15 @@
 <app-boton-add (add)='abrirModal()' />
 
 <p-table
+    appFilasAutoajustables
+    (filasChange)="filasPorPagina = $event"
     [value]="nivelesEducativos"
     [tableStyle]="{ 'min-width': '50rem' }"
     [size]="'small'"
     [stripedRows]="true"
     [paginator]="true"
-    [rows]="20"
-    [rowsPerPageOptions]="[20, 50, 100]"
+    [rows]="filasPorPagina"
+    [rowsPerPageOptions]="opcionesFilasPorPagina"
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
     dataKey="id"

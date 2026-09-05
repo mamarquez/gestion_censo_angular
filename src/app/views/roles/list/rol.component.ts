@@ -17,6 +17,7 @@ import { ModalRolPermisoComponent } from '../../../components/rol/modal-rol-perm
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { Truncar } from '../../../pipe/trucar.pipe';
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.0
@@ -33,7 +34,8 @@ import { Truncar } from '../../../pipe/trucar.pipe';
     ConfirmDialogModule,
     AccionesTablaComponent,
     ModalRolPermisoComponent,
-    Truncar
+    Truncar,
+    FilasAutoajustablesDirective
   ],
   templateUrl: './rol.component.html'
 })
@@ -55,6 +57,11 @@ export class RolComponent implements OnInit {
   cargandoPermisos: Record<number, boolean> = {};
   modalVisible = false;
   rolSeleccionado: Rol | null = null;
+  filasPorPagina = 10;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     nombre: ['', [Validators.required, Validators.maxLength(Rol.campos.nombre.maxLength)]],

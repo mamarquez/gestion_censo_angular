@@ -72,6 +72,15 @@ h1 {
   font-size: .85rem;
 }
 
+/* Reparte el paginador a lo ancho: reporte a la izquierda, filas por página a la derecha */
+.p-paginator .p-paginator-current {
+  margin-right: auto;
+}
+
+.p-paginator .p-paginator-rpp-dropdown {
+  margin-left: auto;
+}
+
 .p-paginator .p-paginator-page,
 .p-paginator .p-paginator-first,
 .p-paginator .p-paginator-prev,

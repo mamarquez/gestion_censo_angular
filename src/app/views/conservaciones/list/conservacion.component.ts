@@ -16,6 +16,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { Truncar } from '../../../pipe/trucar.pipe';
 import { BotonAddComponent } from '../../../components/boton-add/boton-add.component';
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.1
@@ -34,7 +35,8 @@ import { BotonAddComponent } from '../../../components/boton-add/boton-add.compo
     AccionesTablaComponent,
     EditModalComponent,
     Truncar,
-    BotonAddComponent
+    BotonAddComponent,
+    FilasAutoajustablesDirective
   ],
   templateUrl: './conservacion.component.html'
 })
@@ -51,6 +53,11 @@ export class ConservacionComponent implements OnInit {
   conservaciones: Conservacion [] = [];
   cargando: boolean = true;
   modalVisible = false;
+  filasPorPagina = 10;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     id: [null],

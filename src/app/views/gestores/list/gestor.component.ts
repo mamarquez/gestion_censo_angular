@@ -16,6 +16,7 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
 import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { Truncar } from '../../../pipe/trucar.pipe';
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.1
@@ -34,7 +35,8 @@ import { Truncar } from '../../../pipe/trucar.pipe';
     EditModalComponent,
     BotonAddComponent,
     AccionesTablaComponent,
-    Truncar
+    Truncar,
+    FilasAutoajustablesDirective
 ],
   templateUrl: './gestor.component.html'
 })
@@ -51,6 +53,11 @@ export class GestorComponent implements OnInit {
   gestores: Gestor [] = [];
   cargando: boolean = true;
   modalVisible = false;
+  filasPorPagina = 10;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     id: [null],

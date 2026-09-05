@@ -16,6 +16,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { SelectProvinciaComponent } from '../../../components/select-provincia/select-provincia.component';
 import { SelectMunicipioComponent } from '../../../components/select-municipio/select-provincia.component';
 import { Fieldset } from "primeng/fieldset";
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.2
@@ -34,7 +35,8 @@ import { Fieldset } from "primeng/fieldset";
     AccionesTablaComponent,
     SelectProvinciaComponent,
     SelectMunicipioComponent,
-    Fieldset
+    Fieldset,
+    FilasAutoajustablesDirective
 ],
   templateUrl: './instalaciones.component.html'
 })
@@ -50,6 +52,11 @@ export class ListInstalacionesComponent implements OnInit {
 
   instalaciones: Instalacion [] = [];
   cargando: boolean = true;
+  filasPorPagina = 10;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     id: [null],

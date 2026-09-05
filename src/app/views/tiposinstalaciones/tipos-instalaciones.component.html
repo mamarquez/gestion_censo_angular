@@ -1,5 +1,5 @@
 <app-edit-modal
-  [titulo] = "'Tipos de instalaciones'"
+  [titulo]="'Tipos de instalaciones'"
   [(isVisible)]="modalVisible"
   [datos]='tipoInstalacion'
   [maxValores]='{
@@ -15,11 +15,11 @@
   (guardar)="guardar($event)"
 />
 
-<div class="row">
-    <h1>Gestión de tipos de instalaciones</h1>
+<div class='mb-4'>
+  <h1 class='text-2xl font-bold text-slate-800'>Tipos de instalaciones</h1>
 </div>
 
-<br/>
+<br />
 
 <!-- Contenedor principal del filtro -->
 <div class='bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-6' [formGroup]='form'>
@@ -75,13 +75,15 @@
 <app-boton-add (add)='abrirModal()' />
 
 <p-table
+  appFilasAutoajustables
+  (filasChange)='filasPorPagina = $event'
   size='small'
   [value]='tiposInstalaciones'
   [tableStyle]="{ 'min-width': '50rem' }"
   [stripedRows]='true'
   [paginator]='true'
-  [rows]='10'
-  [rowsPerPageOptions]='[10, 20, 50, 100]'
+  [rows]='filasPorPagina'
+  [rowsPerPageOptions]='opcionesFilasPorPagina'
   [showCurrentPageReport]='true'
   currentPageReportTemplate='Mostrando {first} a {last} de {totalRecords} registros'
   dataKey='id'
@@ -90,43 +92,55 @@
   [sortOrder]='1'
 >
 
-    <ng-template pTemplate="header">
-        <tr>
-          <th id='tipo-instalacion.nombre' pSortableColumn='nombre'>Nombre<p-sortIcon field='nombre'></p-sortIcon></th>
-          <th id='tipo-instalacion.valor' pSortableColumn='valor'>Valor<p-sortIcon field='valor'></p-sortIcon></th>
-          <th id='tipo-instalacion.estado' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
-          <th id='tipo-instalacion.accion' class='text-right' style='width: 10%'></th>
-        </tr>
-    </ng-template>
+  <ng-template pTemplate='header'>
+    <tr>
+      <th id='tipo-instalacion.nombre' pSortableColumn='nombre'>Nombre<p-sortIcon field='nombre'></p-sortIcon></th>
+      <th id='tipo-instalacion.valor' pSortableColumn='valor'>Valor<p-sortIcon field='valor'></p-sortIcon></th>
+      <th id='tipo-instalacion.estado' pSortableColumn='activo' class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
+      <th id='tipo-instalacion.accion' class='text-right' style='width: 10%'></th>
+    </tr>
+  </ng-template>
 
-    <ng-template pTemplate="emptymessage">
-        <tr>
-            <td colspan="4">
-                <div style="display: flex; flex-direction: column; align-items: center; padding: 3rem; text-align: center;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-off-icon lucide-circle-off"><path d="m2 2 20 20"/><path d="M8.35 2.69A10 10 0 0 1 21.3 15.65"/><path d="M19.08 19.08A10 10 0 1 1 4.92 4.92"/></svg>
-                    <p style="margin-top: 1rem; color: #64748b; font-weight: 600;">No hay registros para mostrar</p>
-                </div>
-            </td>
-        </tr>
-    </ng-template>
+  <ng-template pTemplate='emptymessage'>
+    <tr>
+      <td colspan='100%'>
+        <div
+          style='display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; padding: 3rem 1rem !important; text-align: center !important; width: 100% !important;'>
 
-    <ng-template pTemplate="body" let-tipoInstalacion>
-        <tr>
-          <td>{{ tipoInstalacion.nombre }}</td>
-          <td>{{ tipoInstalacion.valor }}</td>
-          <td class='centrado'>
-            <label class="switch-native {{ tipoInstalacion.activo ? 'verde' : 'rojo' }}">
-              <input type='checkbox' [checked]='tipoInstalacion.activo' disabled />
-              <span class='slider-native'></span>
-            </label>
-          </td>
+          <svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24' fill='none'
+               stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
+               style='color: #94a3b8;'>
+            <path d='m2 2 20 20' />
+            <path d='M8.35 2.69A10 10 0 0 1 21.3 15.65' />
+            <path d='M19.08 19.08A10 10 0 1 1 4.92 4.92' />
+          </svg>
 
-          <app-acciones-tabla
-            (editar)="editar(tipoInstalacion.id)"
-            [activo]="tipoInstalacion.activo"
-            (toggleEstado)="cambiarEstado(tipoInstalacion.id)"
-            (borrar)="confirmarBorrado(tipoInstalacion)"
-          />
-        </tr>
-    </ng-template>
+          <p style='margin-top: 0.75rem; color: #64748b; font-weight: 600; font-size: 0.875rem;'>
+            No hay registros para mostrar
+          </p>
+
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate='body' let-tipoInstalacion>
+    <tr>
+      <td>{{ tipoInstalacion.nombre }}</td>
+      <td>{{ tipoInstalacion.valor }}</td>
+      <td class='text-center' style='text-align: center'>
+        <label class="switch-native {{ tipoInstalacion.activo ? 'verde' : 'rojo' }}">
+          <input type='checkbox' [checked]='tipoInstalacion.activo' disabled />
+          <span class='slider-native'></span>
+        </label>
+      </td>
+      <app-acciones-tabla
+        (editar)="editar(tipoInstalacion.id)"
+        [activo]="tipoInstalacion.activo"
+        (toggleEstado)="cambiarEstado(tipoInstalacion.id)"
+        (borrar)="confirmarBorrado(tipoInstalacion)"
+      />
+    </tr>
+  </ng-template>
+
 </p-table>

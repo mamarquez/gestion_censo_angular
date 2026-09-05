@@ -15,6 +15,7 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { Truncar } from '../../../pipe/trucar.pipe';
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.0
@@ -32,7 +33,8 @@ import { Truncar } from '../../../pipe/trucar.pipe';
     TooltipModule,
     AccionesTablaComponent,
     EditModalComponent,
-    Truncar
+    Truncar,
+    FilasAutoajustablesDirective
   ],
   templateUrl: './menu.component.html'
 })
@@ -49,6 +51,11 @@ export class MenuComponent implements OnInit {
   menus: Menu [] = [];
   cargando: boolean = true;
   modalVisible = false;
+  filasPorPagina = 10;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     id: [null],

@@ -18,6 +18,7 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.1
@@ -38,7 +39,8 @@ import { BotonAddComponent } from "../../../components/boton-add/boton-add.compo
     ConfirmDialogModule,
     AccionesTablaComponent,
     EditModalComponent,
-    BotonAddComponent
+    BotonAddComponent,
+    FilasAutoajustablesDirective
 ],
   providers: [
     MessageService,
@@ -58,6 +60,11 @@ export class ListProvinciaComponent implements OnInit {
   provincias = signal<Provincia[]>([]);
   cargando = signal<boolean>(true);
   modalVisible = signal<boolean>(false);
+  filasPorPagina = signal(10);
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina());
+  }
 
   form: FormGroup = this.fb.group({
     id: [null],

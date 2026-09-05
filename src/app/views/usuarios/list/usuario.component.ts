@@ -14,6 +14,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Tag } from 'primeng/tag';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { mensajesUtil } from '../../../utils/mensajes.util';
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.1
@@ -30,7 +31,8 @@ import { mensajesUtil } from '../../../utils/mensajes.util';
     ConfirmDialogModule,
     TooltipModule,
     Tag,
-    AccionesTablaComponent
+    AccionesTablaComponent,
+    FilasAutoajustablesDirective
   ],
   templateUrl: './usuario.component.html'
 })
@@ -46,6 +48,11 @@ export class UsuarioComponent implements OnInit {
 
   usuarios: UsuarioModel [] = [];
   cargando: boolean = true;
+  filasPorPagina = 20;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   ngOnInit(): void {
     this.cargar();

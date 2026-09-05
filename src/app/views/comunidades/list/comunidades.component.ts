@@ -16,6 +16,7 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
 import { CentroEducativo } from '../../../models/centroeducativo';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { BotonAddComponent } from '../../../components/boton-add/boton-add.component';
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.1
@@ -33,7 +34,8 @@ import { BotonAddComponent } from '../../../components/boton-add/boton-add.compo
     TooltipModule,
     AccionesTablaComponent,
     EditModalComponent,
-    BotonAddComponent
+    BotonAddComponent,
+    FilasAutoajustablesDirective
   ],
   templateUrl: 'comunidades.component.html'
 })
@@ -50,6 +52,11 @@ export class ListComunidadesComponent implements OnInit {
   comunidades: ComunidadAutonoma[] = [];
   cargando: boolean = true;
   modalVisible = false;
+  filasPorPagina = 10;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     id: [null],

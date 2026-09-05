@@ -17,6 +17,7 @@ import { EstadoUso } from '../../../models/estadouso';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { Truncar } from '../../../pipe/trucar.pipe';
 import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.0
@@ -36,7 +37,8 @@ import { BotonAddComponent } from "../../../components/boton-add/boton-add.compo
     AccionesTablaComponent,
     EditModalComponent,
     Truncar,
-    BotonAddComponent
+    BotonAddComponent,
+    FilasAutoajustablesDirective
   ],
   templateUrl: './iluminacion.component.html'
 })
@@ -53,6 +55,11 @@ export class IluminacionComponent implements OnInit {
   iluminaciones: Iluminacion [] = [];
   cargando: boolean = true;
   modalVisible = false;
+  filasPorPagina = 10;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     id: [null],

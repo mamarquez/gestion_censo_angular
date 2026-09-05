@@ -14,6 +14,7 @@ import { ApiResponseWrapper } from '../../interface/api-response-wrapper.interfa
 import { EditModalComponent } from '../../components/modal/edit-modal/edit-modal.component';
 import { AccionesTablaComponent } from '../../utils/acciones-tabla/acciones-tabla.component';
 import { BotonAddComponent } from '../../components/boton-add/boton-add.component';
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.0
@@ -30,7 +31,8 @@ import { BotonAddComponent } from '../../components/boton-add/boton-add.componen
     ConfirmDialogModule,
     EditModalComponent,
     AccionesTablaComponent,
-    BotonAddComponent
+    BotonAddComponent,
+    FilasAutoajustablesDirective
   ],
   templateUrl: './tipos-instalaciones.component.html'
 })
@@ -47,6 +49,11 @@ export class TiposInstalacionesComponent implements OnInit {
   tiposInstalaciones: TipoInstalacion [] = [];
   cargando: boolean = true;
   modalVisible = false;
+  filasPorPagina = 10;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     id: [null],

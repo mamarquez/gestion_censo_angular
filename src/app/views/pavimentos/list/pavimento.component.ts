@@ -16,6 +16,7 @@ import { EditModalComponent } from '../../../components/modal/edit-modal/edit-mo
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { Truncar } from '../../../pipe/trucar.pipe';
 import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
+import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
 /**
  * @version 1.0.1
@@ -34,7 +35,8 @@ import { BotonAddComponent } from "../../../components/boton-add/boton-add.compo
     AccionesTablaComponent,
     EditModalComponent,
     Truncar,
-    BotonAddComponent
+    BotonAddComponent,
+    FilasAutoajustablesDirective
 ],
   templateUrl: './pavimento.component.html'
 })
@@ -51,6 +53,11 @@ export class PavimentoComponent implements OnInit {
   pavimentos: Pavimento [] = [];
   cargando: boolean = true;
   modalVisible = false;
+  filasPorPagina = 10;
+
+  get opcionesFilasPorPagina(): number[] {
+    return opcionesFilasPorPagina(this.filasPorPagina);
+  }
 
   form: FormGroup = this.fb.group({
     id: [null],

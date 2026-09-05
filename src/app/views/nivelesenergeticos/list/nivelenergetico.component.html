@@ -75,13 +75,15 @@
 <br />
 
 <p-table
+  appFilasAutoajustables
+  (filasChange)='filasPorPagina = $event'
   size='small'
   [value]='nivelesEnergeticos'
   [tableStyle]="{ 'min-width': '50rem' }"
   [stripedRows]='true'
   [paginator]='true'
-  [rows]='10'
-  [rowsPerPageOptions]='[10, 20, 50, 100]'
+  [rows]='filasPorPagina'
+  [rowsPerPageOptions]='opcionesFilasPorPagina'
   [showCurrentPageReport]='true'
   currentPageReportTemplate='Mostrando {first} a {last} de {totalRecords} registros'
   dataKey='id'

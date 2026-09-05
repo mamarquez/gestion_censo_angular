@@ -74,13 +74,15 @@
 <app-boton-add (add)='abrirModal()' />
 
 <p-table
+  appFilasAutoajustables
+  (filasChange)='filasPorPagina.set($event)'
   size='small'
   [value]='provincias()'
   [tableStyle]="{ 'min-width': '50rem' }"
   [stripedRows]='true'
   [paginator]='true'
-  [rows]='10'
-  [rowsPerPageOptions]='[10, 20, 50, 100]'
+  [rows]='filasPorPagina()'
+  [rowsPerPageOptions]='opcionesFilasPorPagina'
   [showCurrentPageReport]='true'
   currentPageReportTemplate='Mostrando {first} a {last} de {totalRecords} registros'
   dataKey='id'
