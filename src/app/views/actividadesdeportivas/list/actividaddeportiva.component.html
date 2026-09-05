@@ -127,9 +127,10 @@
       <td>{{ actividadDeportiva.nombre }}</td>
       <td>{{ actividadDeportiva.descripcion | truncar: 150 }}</td>
       <td class='centrado'>
-        <label class="switch-native {{ actividadDeportiva.activo ? 'verde' : 'rojo' }}">
-          <input type='checkbox' [checked]='actividadDeportiva.activo' disabled />
+        <label for='actividad-deportiva-activo-{{ actividadDeportiva.id }}' class="switch-native {{ actividadDeportiva.activo ? 'verde' : 'rojo' }}">
+          <input id='actividad-deportiva-activo-{{ actividadDeportiva.id }}' type='checkbox' [checked]='actividadDeportiva.activo' disabled />
           <span class='slider-native'></span>
+          <span class='sr-only'>Activo</span>
         </label>
       </td>
       <app-acciones-tabla

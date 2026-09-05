@@ -209,8 +209,8 @@
 
       @if (auditoria.cambios) {
         <div class="col-12">
-          <label><strong>Cambios</strong></label>
-          <div id='cambios' [innerHTML]="auditoria.cambios | safeHtml"
+          <span id='cambios-titulo'><strong>Cambios</strong></span>
+          <div id='cambios' aria-labelledby='cambios-titulo' [innerHTML]="auditoria.cambios | safeHtml"
                 style="background: #f8f9fa; padding: 15px; border-radius: 5px; width: 100%; max-height: 300px; overflow-y: auto; border: 1px solid #ddd;">
           </div>
         </div>

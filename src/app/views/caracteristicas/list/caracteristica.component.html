@@ -120,9 +120,10 @@
       <td>{{ caracteristica.nombre }}</td>
       <td>{{ caracteristica.descripcion | truncar: 150 }}</td>
       <td class='centrado'>
-        <label class="switch-native {{ caracteristica.activo ? 'verde' : 'rojo' }}">
-          <input type='checkbox' [checked]='caracteristica.activo' disabled />
+        <label for='caracteristica-activo-{{ caracteristica.id }}' class="switch-native {{ caracteristica.activo ? 'verde' : 'rojo' }}">
+          <input id='caracteristica-activo-{{ caracteristica.id }}' type='checkbox' [checked]='caracteristica.activo' disabled />
           <span class='slider-native'></span>
+          <span class='sr-only'>Activo</span>
         </label>
       </td>
       <app-acciones-tabla
