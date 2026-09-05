@@ -103,7 +103,6 @@ export class UsuarioComponent implements OnInit {
       .subscribe({
       next: (response) => {
         this.usuarios = response.data || [];
-        console.log(this.usuarios);
         this.cargando = false;
         this.cdr.detectChanges();
       },

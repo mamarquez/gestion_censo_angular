@@ -101,8 +101,6 @@ export class LoginComponent {
     try {
       const response = await firstValueFrom(this.authService.login(credentials));
 
-      console.log('Login correcto', response);
-
       // Guardar sesión utilizando tu servicio estructurado
       this.authService.saveSession(response);
 

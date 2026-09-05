@@ -85,10 +85,8 @@ export class FicheroComponent {
                     ficheroUrl: `${AUTH.API}/instalacionesficheros/ficheros/${img.nombre}`
                     };
                 });
-
-                console.log('Ficheros cargados:', this.ficheros);
                 }
-                
+
                 this.cargando = false;
                 this.cdr.detectChanges();
             },
@@ -159,7 +157,6 @@ export class FicheroComponent {
     }
     
     descargar(nombreArchivo: string): void {
-        console.log('Descargando fichero:', nombreArchivo);
         this.service.descargar(nombreArchivo)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({

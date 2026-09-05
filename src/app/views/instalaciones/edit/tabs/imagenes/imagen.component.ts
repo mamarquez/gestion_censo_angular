@@ -89,10 +89,8 @@ export class ImagenComponent {
                     imagenUrl: `${AUTH.API}/instalacionesgaleria/images/${img.nombre}`
                   };
                 });
-
-                console.log('Fotos cargadas:', this.imagenes);
               }
-              
+
               this.cargando = false;
               this.cdr.detectChanges();
             },
@@ -163,7 +161,6 @@ export class ImagenComponent {
     }
 
     descargar(nombreArchivo: string): void {
-        console.log('Descargando fichero:', nombreArchivo);
         this.service.descargar(nombreArchivo)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({

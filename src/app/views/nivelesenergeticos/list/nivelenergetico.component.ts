@@ -217,9 +217,6 @@ export class NivelEnergeticoComponent implements OnInit {
     };
 
     if (datos.id) {
-
-      console.log(datos);
-
       this.service.updateRegistro(datos)
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({

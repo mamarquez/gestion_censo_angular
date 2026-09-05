@@ -59,9 +59,6 @@ export class PerfilComponent {
       return avatar;
     }
 
-    console.log('Avatar:', avatar);
-    console.log('Avatar:', `${AUTH.API}/usuarios/uploads/${avatar}`);
-
     return `${AUTH.API}/usuarios/uploads/${avatar}`;
   }
 
@@ -96,8 +93,6 @@ export class PerfilComponent {
       .subscribe({
         next: (response: ApiResponseWrapper<UsuarioModel>) => {
           const usuario = response.data ?? null;
-
-          console.log(usuario);
 
           if (usuario) {
             this.usuarioId = String(usuario.id);
@@ -136,8 +131,6 @@ export class PerfilComponent {
     this.guardando = true;
 
     const datos = { ...this.form.value };
-
-    console.log('Datos a guardar:', datos);
 
     for (const campo in datos) {
       if (typeof datos[campo] === 'string' && !datos[campo].trim()) {
@@ -180,8 +173,6 @@ export class PerfilComponent {
 
       reader.readAsDataURL(file);
     }
-
-    console.log(event);
   }
 
 }
