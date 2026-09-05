@@ -129,9 +129,18 @@
       </div>
     }
 
+    @if (camposMostrar().tipoInstalacion) {
+      <div class='fields-row'>
+        <div class='field col-12'>
+          <label for='deportivo-select'>Tipo</label>
+          <app-select-deportivo formControlName='tipoInstalacion' />
+        </div>
+      </div>
+    }
+
     <div class='fields-row'>
 
-      @if (datos() !== null && datos()?.visible !== undefined && camposMostrar().visible) {
+      @if (camposMostrar().visible) {
         <div class='field col-6'>
           <div class='field field-checkbox'>
             <label

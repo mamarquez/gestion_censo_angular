@@ -97,9 +97,10 @@ export class EditInstalacionDeportivaComponent implements OnInit {
   guardar(espacioDeportivo: InstalacionEspacioDeportivo) {
     this.cargando = true;
 
-    const datos: InstalacionEspacioDeportivo = {
+    const datos: any = {
       id: espacioDeportivo.id,
-      instalacion: espacioDeportivo.instalacion,
+      idInstalacion: this.espacioDeportivo?.instalacion?.id,
+      tipoInstalacion: espacioDeportivo.tipoInstalacion,
       nombre: espacioDeportivo.nombre,
       descripcion: espacioDeportivo.descripcion,
       visible: espacioDeportivo.visible

@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { of, throwError } from 'rxjs';
 import { MessageService } from 'primeng/api';
 import { DatosEspaciosDeportivosComponent } from './deportivo.component';
@@ -42,7 +44,9 @@ describe('DatosEspaciosDeportivosComponent', () => {
         { provide: InstalacionEspacioDeportivoService, useValue: serviceSpy },
         { provide: DialogService, useValue: dialogServiceSpy },
         MessageService,
-        provideNoopAnimations()
+        provideNoopAnimations(),
+        provideHttpClient(),
+        provideHttpClientTesting()
       ]
     }).compileComponents();
 
@@ -149,7 +153,7 @@ describe('DatosEspaciosDeportivosComponent', () => {
     expect(component.modalVisible).toBeTrue();
   });
 
-  it('guardar() sin id llama a crear() con la instalación reconstruida a partir de idInstalacion', () => {
+  it('guardar() sin id llama a crear() con idInstalacion reconstruido a partir del input', () => {
     inicializarConInstalacion('10');
     serviceSpy.crear.and.returnValue(of(respuesta(true)));
     serviceSpy.getAll.calls.reset();
@@ -157,12 +161,34 @@ describe('DatosEspaciosDeportivosComponent', () => {
     component.guardar({ nombre: 'Pista nueva', descripcion: 'desc', visible: true });
 
     expect(serviceSpy.crear).toHaveBeenCalledWith(jasmine.objectContaining({
-      instalacion: { id: 10 },
+      idInstalacion: 10,
       nombre: 'Pista nueva'
     }));
     expect(component.modalVisible).toBeFalse();
     expect(component.guardando).toBeFalse();
     expect(serviceSpy.getAll).toHaveBeenCalled();
+  });
+
+  it('guardar() incluye el tipo de instalación seleccionado como objeto con id', () => {
+    inicializarConInstalacion('10');
+    serviceSpy.crear.and.returnValue(of(respuesta(true)));
+
+    component.guardar({ nombre: 'Pista nueva', visible: true, tipoInstalacion: 5 });
+
+    expect(serviceSpy.crear).toHaveBeenCalledWith(jasmine.objectContaining({
+      tipoInstalacion: { id: 5 }
+    }));
+  });
+
+  it('guardar() envía tipoInstalacion null si no se selecciona ningún tipo', () => {
+    inicializarConInstalacion('10');
+    serviceSpy.crear.and.returnValue(of(respuesta(true)));
+
+    component.guardar({ nombre: 'Pista nueva', visible: true });
+
+    expect(serviceSpy.crear).toHaveBeenCalledWith(jasmine.objectContaining({
+      tipoInstalacion: null
+    }));
   });
 
   it('guardar() con id llama a update() con el id numérico', () => {

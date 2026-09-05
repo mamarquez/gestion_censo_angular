@@ -201,7 +201,8 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
     this.guardando = true;
     const datos: any = {
       id: valores.id,
-      instalacion: valores.instalacion ?? { id: Number(this.idInstalacion()) },
+      idInstalacion: Number(valores.idInstalacion ?? this.idInstalacion()),
+      tipoInstalacion: valores.tipoInstalacion ? { id: Number(valores.tipoInstalacion) } : null,
       nombre: valores.nombre,
       descripcion: valores.descripcion,
       visible: valores.visible ?? true
