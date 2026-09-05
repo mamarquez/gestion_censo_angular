@@ -32,7 +32,7 @@ export class MunicipioService {
    * Obtiene el registro
    * @param id Id del registro
    */
-  get(id: String): Observable<ApiResponseWrapper<Municipio>> {
+  get(id: string): Observable<ApiResponseWrapper<Municipio>> {
     return this.http.get<ApiResponseWrapper<Municipio>>(`${this.api}/${id}`, {
       headers: this.headers
     });

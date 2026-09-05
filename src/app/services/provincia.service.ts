@@ -33,7 +33,7 @@ export class ProvinciaService {
    * Obtiene el registro
    * @param id Id del registro
    */
-  get(id: String): Observable<ApiResponseWrapper<Provincia>> {
+  get(id: string): Observable<ApiResponseWrapper<Provincia>> {
     return this.http.get<ApiResponseWrapper<Provincia>>(`${this.api}/${id}`, {
       headers: this.headers
     });
