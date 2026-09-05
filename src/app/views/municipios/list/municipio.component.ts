@@ -13,7 +13,6 @@ import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-t
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
-import { CentroEducativo } from '../../../models/centroeducativo';
 import { BotonAddComponent } from "../../../components/boton-add/boton-add.component";
 import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
 
@@ -46,7 +45,7 @@ export class MunicipioComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  municipio: Municipio | any = null;
+  municipio: Municipio | null = null;
   municipios: Municipio[] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -188,8 +187,8 @@ export class MunicipioComponent implements OnInit {
     this.service.get(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response: ApiResponseWrapper<CentroEducativo>) => {
-        this.municipio = response.data || [];
+      next: (response: ApiResponseWrapper<Municipio>) => {
+        this.municipio = response.data ?? null;
 
         if (this.municipio) {
           this.modalVisible = true;

@@ -45,7 +45,7 @@ export class TiposGestoresPropiedadesComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  tipoGestorPropiedad: TipoGestorPropiedad | any = null;
+  tipoGestorPropiedad: TipoGestorPropiedad | null = null;
   tiposGestoresPropiedades: TipoGestorPropiedad [] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -186,7 +186,7 @@ export class TiposGestoresPropiedadesComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponseWrapper<TipoGestorPropiedad>) => {
-        this.tipoGestorPropiedad = response.data || [];
+        this.tipoGestorPropiedad = response.data ?? null;
 
         if (this.tipoGestorPropiedad) {
           this.modalVisible = true;

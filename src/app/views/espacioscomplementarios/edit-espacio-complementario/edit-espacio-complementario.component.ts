@@ -13,7 +13,6 @@ import { Bold, ClassicEditor, Essentials, Heading, Italic, Link, List, Paragraph
 import coreTranslations from 'ckeditor5/translations/es.js';
 import 'ckeditor5/ckeditor5.css';
 import { mensajesUtil } from '../../../utils/mensajes.util';
-import { LoaderComponent } from '../../../layouts/loader/loader.component';
 import { TableModule } from 'primeng/table';
 import { FluidModule } from 'primeng/fluid';
 import { finalize, forkJoin } from 'rxjs';

@@ -13,7 +13,6 @@ import { DialogService } from '../../../services/dialog.service';
 import { ComunidadautonomaService } from '../../../services/comunidadautonoma.service';
 import { mensajesUtil } from '../../../utils/mensajes.util';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
-import { CentroEducativo } from '../../../models/centroeducativo';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { BotonAddComponent } from '../../../components/boton-add/boton-add.component';
 import { FilasAutoajustablesDirective, opcionesFilasPorPagina } from '../../../utils/filas-autoajustables.directive';
@@ -48,7 +47,7 @@ export class ListComunidadesComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  comunidad: ComunidadAutonoma | any = null;
+  comunidad: ComunidadAutonoma | null = null;
   comunidades: ComunidadAutonoma[] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -188,8 +187,8 @@ export class ListComunidadesComponent implements OnInit {
     this.service.get(id)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-      next: (response: ApiResponseWrapper<CentroEducativo>) => {
-        this.comunidad = response.data || [];
+      next: (response: ApiResponseWrapper<ComunidadAutonoma>) => {
+        this.comunidad = response.data ?? null;
 
         if (this.comunidad) {
           this.modalVisible = true;

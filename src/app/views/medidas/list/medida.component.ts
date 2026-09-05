@@ -48,7 +48,7 @@ export class MedidaComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  medida: Medida | any = null;
+  medida: Medida | null = null;
   medidas: Medida [] = [];
   cargando: boolean = true;
   modalVisible = false;

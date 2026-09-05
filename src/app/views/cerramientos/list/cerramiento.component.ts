@@ -51,7 +51,7 @@ export class CerramientoComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  cerramiento: Cerramiento | any = null;
+  cerramiento: Cerramiento | null = null;
   cerramientos: Cerramiento [] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -192,7 +192,7 @@ export class CerramientoComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponseWrapper<NivelDotacion>) => {
-        this.cerramiento = response.data || [];
+        this.cerramiento = response.data ?? null;
 
         if (this.cerramiento) {
           this.modalVisible = true;

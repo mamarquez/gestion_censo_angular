@@ -50,7 +50,7 @@ export class ListCentroEducativoComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  centroEducativo: CentroEducativo | any = null;
+  centroEducativo: CentroEducativo | null = null;
   centrosEducativos: CentroEducativo [] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -191,7 +191,7 @@ export class ListCentroEducativoComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponseWrapper<CentroEducativo>) => {
-        this.centroEducativo = response.data || [];
+        this.centroEducativo = response.data ?? null;
 
         if (this.centroEducativo) {
           this.modalVisible = true;

@@ -50,7 +50,7 @@ export class NivelEducativoComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  nivelEducativo: NivelEducativo | any = null;
+  nivelEducativo: NivelEducativo | null = null;
   nivelesEducativos: NivelEducativo [] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -191,7 +191,7 @@ export class NivelEducativoComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponseWrapper<NivelEnergetico>) => {
-        this.nivelEducativo = response.data || [];
+        this.nivelEducativo = response.data ?? null;
 
         if (this.nivelEducativo) {
           this.modalVisible = true;

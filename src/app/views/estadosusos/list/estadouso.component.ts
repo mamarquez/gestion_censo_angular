@@ -49,7 +49,7 @@ export class EstadoUsoComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  estadoUso: EstadoUso | any = null;
+  estadoUso: EstadoUso | null = null;
   estadosUsos: EstadoUso [] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -190,7 +190,7 @@ export class EstadoUsoComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponseWrapper<EstadoUso>) => {
-        this.estadoUso = response.data || [];
+        this.estadoUso = response.data ?? null;
 
         if (this.estadoUso) {
           this.modalVisible = true;

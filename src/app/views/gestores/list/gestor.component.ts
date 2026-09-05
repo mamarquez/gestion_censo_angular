@@ -49,7 +49,7 @@ export class GestorComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  gestor: Gestor | any = null;
+  gestor: Gestor | null = null;
   gestores: Gestor [] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -191,7 +191,7 @@ export class GestorComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponseWrapper<Gestor>) => {
-        this.gestor = response.data || [];
+        this.gestor = response.data ?? null;
 
         if (this.gestor) {
           this.modalVisible = true;

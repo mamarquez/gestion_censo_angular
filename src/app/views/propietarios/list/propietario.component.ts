@@ -47,7 +47,7 @@ export class PropietarioComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  propietario: Propietario | any = null;
+  propietario: Propietario | null = null;
   propietarios: Propietario [] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -220,7 +220,7 @@ export class PropietarioComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponseWrapper<Propietario>) => {
-        this.propietario = response.data || [];
+        this.propietario = response.data ?? null;
 
         if (this.propietario) {
           this.modalVisible = true;

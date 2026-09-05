@@ -47,7 +47,7 @@ export class DatosEspaciosDeportivosComponent implements OnInit {
   cargandoChange = output<boolean>();
 
   idInstalacion = input.required<string>();
-  espacioDeportivo: InstalacionEspacioDeportivo | any = null;
+  espacioDeportivo: InstalacionEspacioDeportivo | null = null;
   espaciosDeportivos: InstalacionEspacioDeportivo[] = [];
   cargando = false;
   guardando = false;

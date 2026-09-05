@@ -49,7 +49,7 @@ export class ConservacionComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  conservacion: Conservacion | any = null;
+  conservacion: Conservacion | null = null;
   conservaciones: Conservacion [] = [];
   cargando: boolean = true;
   modalVisible = false;

@@ -54,7 +54,7 @@ export class EditInstalacionRutaComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  @ViewChild('mapaRuta') private mapaRuta?: MapaRutaComponent;
+  @ViewChild('mapaRuta') private readonly mapaRuta?: MapaRutaComponent;
 
   idRuta: number | null = null;
   cargando = false;
@@ -231,7 +231,7 @@ export class EditInstalacionRutaComponent implements OnInit {
       return;
     }
 
-    const nuevoPunto = puntos[puntos.length - 1];
+    const nuevoPunto = puntos.at(-1)!;
 
     this.procesandoCoordenada = true;
     this.mapaRuta?.setBloqueado(true);
@@ -270,7 +270,7 @@ export class EditInstalacionRutaComponent implements OnInit {
           if (esCreacion && this.coordenadas.length > 0) {
             const creada = this.coordenadas.reduce((max, c) =>
               (c.id as number) > (max.id as number) ? c : max
-            );
+            , this.coordenadas[0]);
 
             this.mapaRuta?.asignarIdUltimoPunto(creada.id as number);
           }

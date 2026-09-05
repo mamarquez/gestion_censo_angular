@@ -47,7 +47,7 @@ export class MenuComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  menu: Menu | any = null;
+  menu: Menu | null = null;
   menus: Menu [] = [];
   cargando: boolean = true;
   modalVisible = false;

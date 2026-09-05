@@ -12,7 +12,6 @@ import { InstalacionEspacioDeportivo } from '../../../../../../models/instalacio
 import { InstalacionEspacioDeportivoService } from '../../../../../../services/instalacionEspacioDeportivo.service';
 import { EditModalComponent } from '../../../../../../components/modal/edit-modal/edit-modal.component';
 import { mensajesUtil } from '../../../../../../utils/mensajes.util';
-import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
@@ -25,7 +24,6 @@ import { TooltipModule } from 'primeng/tooltip';
     FieldsetModule,
     ListCaracteristicasComponent,
     EditModalComponent,
-    ButtonModule,
     TooltipModule
   ],
   templateUrl: './edit-instalacion-deportiva.component.html'

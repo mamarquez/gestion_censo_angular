@@ -48,7 +48,7 @@ export class ActividadDeportivaComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  actividadDeportiva: ActividadDeportiva | any = null;
+  actividadDeportiva: ActividadDeportiva | null = null;
   actividadesDeportivas: ActividadDeportiva [] = [];
   cargando: boolean = true;
   modalVisible = false;

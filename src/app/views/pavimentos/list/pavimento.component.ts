@@ -49,7 +49,7 @@ export class PavimentoComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  pavimento: Pavimento | any = null;
+  pavimento: Pavimento | null = null;
   pavimentos: Pavimento [] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -190,7 +190,7 @@ export class PavimentoComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponseWrapper<Pavimento>) => {
-        this.pavimento = response.data || [];
+        this.pavimento = response.data ?? null;
 
         if (this.pavimento) {
           this.modalVisible = true;

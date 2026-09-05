@@ -20,7 +20,7 @@ import { MapaCoordenadaComponent, PuntoCoordenada } from '../../../../../../comp
 })
 export class LocalizameComponent {
 
-  @ViewChild(MapaCoordenadaComponent) private mapaComponente?: MapaCoordenadaComponent;
+  @ViewChild(MapaCoordenadaComponent) private readonly mapaComponente?: MapaCoordenadaComponent;
 
   localizado = output<PuntoCoordenada>();
 

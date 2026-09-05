@@ -50,7 +50,7 @@ export class ComplementarioComponent implements OnInit {
 
   idInstalacion = input<string>('');
 
-  espacioComplementario: InstalacionEspacioComplementario | any = null;
+  espacioComplementario: InstalacionEspacioComplementario | null = null;
   espaciosComplementarios: InstalacionEspacioComplementario[] = [];
   cargando = false;
   guardando = false;

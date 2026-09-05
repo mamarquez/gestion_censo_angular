@@ -51,7 +51,7 @@ export class IluminacionComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  iluminacion: Iluminacion | any = null;
+  iluminacion: Iluminacion | null = null;
   iluminaciones: Iluminacion [] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -192,7 +192,7 @@ export class IluminacionComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponseWrapper<EstadoUso>) => {
-        this.iluminacion = response.data || [];
+        this.iluminacion = response.data ?? null;
 
         if (this.iluminacion) {
           this.modalVisible = true;

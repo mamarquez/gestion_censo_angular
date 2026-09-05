@@ -51,7 +51,7 @@ export class ConfiguracionComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  configuracion: Configuracion | any = null;
+  configuracion: Configuracion | null = null;
   configuraciones: Configuracion [] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -191,7 +191,7 @@ export class ConfiguracionComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponseWrapper<Configuracion>) => {
-        this.configuracion = response.data || [];
+        this.configuracion = response.data ?? null;
 
         if (this.configuracion) {
           this.modalVisible = true;

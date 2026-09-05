@@ -43,7 +43,7 @@ export class DatosTelefonosComponent implements OnInit {
 
   idInstalacion = input<string>();
 
-  telefono: InstalacionTelefono | any = null;
+  telefono: InstalacionTelefono | null = null;
   telefonos: InstalacionTelefono[] = [];
   cargando = false;
   modalVisible = false;
@@ -145,7 +145,7 @@ export class DatosTelefonosComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponseWrapper<InstalacionTelefono>) => {
-        this.telefono = response.data || [];
+        this.telefono = response.data ?? null;
 
         if (this.telefono) {
           this.modalVisible = true;

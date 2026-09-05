@@ -48,7 +48,7 @@ export class CaracteristicaComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  caracteristica: Caracteristica | any = null;
+  caracteristica: Caracteristica | null = null;
   caracteristicas: Caracteristica [] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -189,7 +189,7 @@ export class CaracteristicaComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponseWrapper<NivelDotacion>) => {
-        this.caracteristica = response.data || [];
+        this.caracteristica = response.data ?? null;
 
         if (this.caracteristica) {
           this.modalVisible = true;
