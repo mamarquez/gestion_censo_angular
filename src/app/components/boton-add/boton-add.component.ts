@@ -8,7 +8,6 @@ import { ButtonModule } from 'primeng/button';
     ButtonModule
   ],
   templateUrl: './boton-add.component.html',
-  styleUrl: './boton-add.component.css',
 })
 export class BotonAddComponent {
   add = output<void>();

@@ -11,6 +11,7 @@ import { DialogService } from '../../../services/dialog.service';
 import { InstalacionCaracteristicaService } from '../../../services/instalacionCaracteristica.service';
 import { InstalacionCaracteristica } from '../../../models/instalacionCaracteristica';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
+import { EditCaracteristicaModalComponent } from '../edit-caracteristica-modal/edit-caracteristica-modal.component';
 
 @Component({
   standalone: true,
@@ -23,7 +24,8 @@ import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.inte
     PrimeTemplate,
     ReactiveFormsModule,
     TableModule,
-    ToastModule
+    ToastModule,
+    EditCaracteristicaModalComponent
   ],
   providers: [MessageService],
   templateUrl: './caracteristicas.component.html'
@@ -41,6 +43,8 @@ export class ListCaracteristicasComponent implements OnChanges {
 
   cargando: boolean = false;
   caracteristicas: InstalacionCaracteristica[] = [];
+  caracteristicaSeleccionada: InstalacionCaracteristica | null = null;
+  modalVisible = false;
 
   form: FormGroup = this.fb.group({
     id: [null],
@@ -92,7 +96,49 @@ export class ListCaracteristicasComponent implements OnChanges {
   }
 
   abrirModal(): void {
+    this.caracteristicaSeleccionada = null;
+    this.modalVisible = true;
+  }
 
+  editar(caracteristica: InstalacionCaracteristica): void {
+    this.caracteristicaSeleccionada = caracteristica;
+    this.modalVisible = true;
+  }
+
+  guardar(valores: InstalacionCaracteristica): void {
+    const datos: InstalacionCaracteristica = {
+      ...valores,
+      idInstalacion: null,
+      idEspacioDeportivo: this.idEspacioDeportivo ?? null
+    };
+
+    if (datos.id) {
+      this.service.update(Number(datos.id), datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => this.guardadoCorrecto('Se ha actualizado la característica'),
+          error: (err) => this.guardadoError(err)
+        });
+    } else {
+      this.service.crear(datos)
+        .pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe({
+          next: () => this.guardadoCorrecto('Se ha añadido la característica'),
+          error: (err) => this.guardadoError(err)
+        });
+    }
+  }
+
+  private guardadoCorrecto(detail: string): void {
+    this.messageService.add({ severity: 'success', summary: 'Correcto', detail });
+    this.modalVisible = false;
+    this.cargar();
+  }
+
+  private guardadoError(err: unknown): void {
+    console.error('Error al guardar la característica', err);
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al guardar la característica' });
+    this.cdr.detectChanges();
   }
 
   cambiarVisible(id: number): void {

@@ -1,7 +1,7 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { routes } from './app.routes';
 import { authInterceptor } from './auth/interceptors/auth.interceptor';
 import { providePrimeNG } from 'primeng/config';
@@ -30,7 +30,7 @@ export const appConfig: ApplicationConfig = {
       })
     }),
 
-    provideAnimations(),
+    provideAnimationsAsync(),
     providePrimeNG({
       theme: {
         preset: Aura,

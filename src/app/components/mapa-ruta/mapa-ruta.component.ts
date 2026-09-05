@@ -16,7 +16,7 @@ export interface PuntoRuta {
 })
 export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
 
-  @ViewChild('mapaContenedor', { static: true }) private mapaContenedor!: ElementRef<HTMLDivElement>;
+  @ViewChild('mapaContenedor', { static: true }) private readonly mapaContenedor!: ElementRef<HTMLDivElement>;
 
   private readonly ngZone = inject(NgZone);
 
@@ -118,7 +118,7 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
   private inicializarMapa(): void {
 
     this.mapa = L.map(this.mapaContenedor.nativeElement).setView(
-      [40.416775, -3.703790],
+      [40.416775, -3.70379],
       13
     );
 

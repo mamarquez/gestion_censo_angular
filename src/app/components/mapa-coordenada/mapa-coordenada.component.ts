@@ -15,7 +15,7 @@ export interface PuntoCoordenada {
 })
 export class MapaCoordenadaComponent implements AfterViewInit, OnChanges, OnDestroy {
 
-  @ViewChild('mapaContenedor', { static: true }) private mapaContenedor!: ElementRef<HTMLDivElement>;
+  @ViewChild('mapaContenedor', { static: true }) private readonly mapaContenedor!: ElementRef<HTMLDivElement>;
 
   private readonly ngZone = inject(NgZone);
 

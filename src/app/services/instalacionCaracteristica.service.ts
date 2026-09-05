@@ -53,6 +53,15 @@ export class InstalacionCaracteristicaService {
   }
 
   /**
+   * Actualiza una característica de instalación existente
+   * @param id Id del registro
+   * @param caracteristica Datos actualizados
+   */
+  update(id: number, caracteristica: InstalacionCaracteristica): Observable<ApiResponseWrapper<boolean>> {
+    return this.http.put<ApiResponseWrapper<boolean>>(`${this.api}/${id}`, caracteristica, { headers: this.headers });
+  }
+
+  /**
    * Borra un registro
    * @param id Id del registro
    */

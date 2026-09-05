@@ -39,7 +39,7 @@ import { ImagenComponent } from './views/instalaciones/edit/tabs/imagenes/imagen
 import { FicheroComponent } from './views/instalaciones/edit/tabs/ficheros/fichero.component';
 
 /**
- * @version 2.0.2
+ * @version 2.0.3
  */
 
 export const routes: Routes = [
@@ -229,6 +229,10 @@ export const routes: Routes = [
         children: [
           { path: ':id', component: FicheroComponent }
         ]
+      },
+      {
+        path: 'tiposinstalaciones',
+        loadComponent: () => import('./views/tiposinstalaciones/tipos-instalaciones.component').then(m => m.TiposInstalacionesComponent)
       },
       {
         path: 'error/403',

@@ -120,22 +120,12 @@
 
   <ng-template pTemplate="body" let-ruta>
     <tr>
-      <!--
-      <td>
-        <p-button
-          type='button'
-          [text]='true'
-          [rounded]='true'
-          severity='secondary'
-          [icon]="ruta.expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-          [pRowToggler]="ruta"
-        ></p-button>
-      </td>
-      -->
       <td>{{ ruta.nombre }}</td>
       <td>{{ ruta.descripcion | truncar:100 }}</td>
       <td>{{ ruta.distanciaKm }} Km</td>
-      <td>{{ ruta.desnivelPositivoMetros }} m</td>
+      <td>
+        @if (ruta.desnivelPositivoMetros) { {{ ruta.desnivelPositivoMetros }} m } @else { - }
+      </td>
       <td>{{ ruta.tiempoSenderismoFormateado }}</td>
       <td>{{ ruta.tiempoRunningFormateado }}</td>
       <td>{{ ruta.tiempoBttFormateado }}</td>
