@@ -168,7 +168,7 @@ export class MapaRutaComponent implements AfterViewInit, OnChanges, OnDestroy {
         weight: 2
       }).addTo(this.mapa);
 
-      marcador.bindTooltip(id !== undefined ? `${id}` : '?', {
+      marcador.bindTooltip(id === undefined ? '?' : `${id}`, {
         permanent: false,
         direction: 'top',
         offset: [0, -6],

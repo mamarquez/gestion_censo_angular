@@ -32,7 +32,7 @@ export class AuditoriaService {
    * Obtiene el registro
    * @param id Id del registro
    */
-  get(id: String) : Observable<ApiResponseWrapper<Auditoria>> {
+  get(id: string) : Observable<ApiResponseWrapper<Auditoria>> {
     return this.http.get<ApiResponseWrapper<Auditoria>>(`${this.api}/${id}`, {
       headers: this.headers
     });

@@ -3,11 +3,10 @@ import {
   Component,
   DestroyRef,
   effect,
-  EventEmitter,
   inject,
   input,
-  model, output,
-  Output
+  model,
+  output
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';

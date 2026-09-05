@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 import { AUTH } from '../auth/auth.constants';
 import { Cerramiento } from '../models/cerramiento';
-import { ApiResponse } from '../models/apiresponse';
 import { ApiResponseWrapper } from '../interface/api-response-wrapper.interface';
 import { buildHttpParams } from '../utils/params.util';
 

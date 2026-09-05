@@ -27,7 +27,7 @@ export class EditModalComponent {
   private readonly fb = inject(FormBuilder);
 
   titulo = input<string>('');
-  datos = input<any | null>(null);
+  datos = input<any>(null);
   idInstalacion = input<string>('');
   isVisible = model<boolean>(false);
 

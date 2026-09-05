@@ -6,7 +6,12 @@
   <app-sidebar (enlaceSeleccionado)="cerrarSidebar()"></app-sidebar>
 
   <!-- Overlay para cerrar el sidebar en móvil al tocar fuera -->
-  <div class="sidebar-overlay" (click)="cerrarSidebar()"></div>
+  <button
+    type="button"
+    class="sidebar-overlay"
+    aria-label="Cerrar menú"
+    (click)="cerrarSidebar()"
+  ></button>
 
   <!-- Columna Derecha -->
   <div class="content-wrapper">

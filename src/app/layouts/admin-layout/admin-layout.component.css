@@ -36,3 +36,9 @@
     padding: 10px;
   }
 }
+
+.sidebar-overlay {
+  border: none;
+  padding: 0;
+  cursor: default;
+}

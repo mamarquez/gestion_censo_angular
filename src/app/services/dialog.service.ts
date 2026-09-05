@@ -24,12 +24,12 @@ export class DialogService {
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: config.labelAceptar || 'Aceptar',
       rejectLabel: config.labelCancelar || 'Cancelar',
-      acceptButtonStyleClass: config.esPeligroso !== false
-        ? 'p-button-danger p-button-sm'
-        : 'p-button-primary p-button-sm',
+      acceptButtonStyleClass: config.esPeligroso === false
+        ? 'p-button-primary p-button-sm'
+        : 'p-button-danger p-button-sm',
       rejectButtonStyleClass: 'p-button-outlined p-button-secondary p-button-sm',
       accept: () => config.onAccept(),
-      reject: () => config.onReject && config.onReject()
+      reject: () => config.onReject?.()
     });
   }
 }

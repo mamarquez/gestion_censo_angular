@@ -10,8 +10,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class SidebarComponent {
   @Output() enlaceSeleccionado = new EventEmitter<void>();
 
-  // Delegación de eventos: solo notifica al pulsar un enlace real (no el <summary> de un submenú)
-  onNavClick(event: MouseEvent): void {
+  // Delegación de eventos: solo notifica al pulsar/activar un enlace real (no el <summary> de un submenú)
+  onNavClick(event: MouseEvent | KeyboardEvent): void {
     const target = event.target as HTMLElement;
     if (target.closest('a')) {
       this.enlaceSeleccionado.emit();

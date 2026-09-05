@@ -1,13 +1,8 @@
 import { Component, effect, forwardRef, inject, input, DestroyRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
-import { ComunidadAutonoma } from '../../models/comunidadautonoma';
-import { ComunidadautonomaService } from '../../services/comunidadautonoma.service';
-import { Provincia } from '../../models/provincia';
-import { ProvinciaService } from '../../services/provincia.service';
 import { MunicipioService } from '../../services/municipio.service';
 import { Municipio } from '../../models/municipio';
 

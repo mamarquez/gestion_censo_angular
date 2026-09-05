@@ -31,7 +31,7 @@ export class ComunidadautonomaService {
    * Obtiene el registro
    * @param id Id del registro
    */
-  get(id: String): Observable<ApiResponseWrapper<ComunidadAutonoma>> {
+  get(id: string): Observable<ApiResponseWrapper<ComunidadAutonoma>> {
     return this.http.get<ApiResponseWrapper<ComunidadAutonoma>>(`${this.api}/${id}`, {
       headers: this.headers
     });
