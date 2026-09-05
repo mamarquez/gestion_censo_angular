@@ -2,7 +2,7 @@
   min-width: 0;
 }
 
-:host ::ng-deep ckeditor {
+:host ::ng-deep .ckeditor-descripcion {
   display: block;
   width: 100%;
   max-width: 100%;

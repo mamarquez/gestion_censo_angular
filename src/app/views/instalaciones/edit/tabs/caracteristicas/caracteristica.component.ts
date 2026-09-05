@@ -66,7 +66,12 @@ export class DatosCaracteristicaComponent implements OnInit {
     this.cargandoChange.emit(true);
     this.cdr.detectChanges();
 
-    this.service.getAll({ idInstalacion: this.idInstalacion() })
+    const filtros = {
+      ...this.form.value,
+      idInstalacion: this.idInstalacion()
+    };
+
+    this.service.getAll(filtros)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponse<InstalacionCaracteristica[]>) => {
@@ -90,12 +95,13 @@ export class DatosCaracteristicaComponent implements OnInit {
     });
   }
 
-  limpiar() {
-
+  limpiar(): void {
+    this.form.reset();
+    this.cargarDatos();
   }
 
-  buscar() {
-
+  buscar(): void {
+    this.cargarDatos();
   }
 
   abrirModal(): void {
