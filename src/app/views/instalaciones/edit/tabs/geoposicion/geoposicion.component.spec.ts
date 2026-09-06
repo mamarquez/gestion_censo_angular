@@ -108,6 +108,71 @@ describe('GeoPosicionComponent', () => {
     expect(component.geoForm.get('utm.huso')?.value).toBe('30');
   });
 
+  it('teclear X/Y manualmente recalcula NMEA/GMS/UTM automáticamente', () => {
+    serviceSpy.get.and.returnValue(of(respuesta(null)));
+    fixture.detectChanges();
+
+    component.geoForm.get('xy.x')?.setValue('40.416775');
+    component.geoForm.get('xy.y')?.setValue('-3.70379');
+
+    expect(component.geoForm.get('nmea.latitud')?.value).toBe('40.416775');
+    expect(component.geoForm.get('nmea.longitud')?.value).toBe('-3.703790');
+    expect(component.geoForm.get('gms.gradosLatitud')?.value).toBe('40');
+    expect(component.geoForm.get('utm.huso')?.value).toBe('30');
+  });
+
+  it('teclear GMS manualmente recalcula XY/NMEA/UTM', () => {
+    serviceSpy.get.and.returnValue(of(respuesta(null)));
+    fixture.detectChanges();
+
+    component.geoForm.get('gms.gradosLatitud')?.setValue('40');
+    component.geoForm.get('gms.minutosLatitud')?.setValue('25');
+    component.geoForm.get('gms.segundosLatitud')?.setValue('0.39');
+    component.geoForm.get('gms.gradosLongitud')?.setValue('-3');
+    component.geoForm.get('gms.minutosLongitud')?.setValue('42');
+    component.geoForm.get('gms.segundosLongitud')?.setValue('13.64');
+
+    expect(component.geoForm.get('xy.x')?.value).toBeTruthy();
+    expect(component.geoForm.get('nmea.latitud')?.value).toBeTruthy();
+    expect(component.geoForm.get('utm.huso')?.value).toBeTruthy();
+  });
+
+  it('teclear UTM manualmente recalcula XY/NMEA/GMS', () => {
+    serviceSpy.get.and.returnValue(of(respuesta(null)));
+    fixture.detectChanges();
+
+    component.geoForm.get('utm.x')?.setValue('440000');
+    component.geoForm.get('utm.y')?.setValue('4474000');
+    component.geoForm.get('utm.huso')?.setValue('30');
+    component.geoForm.get('utm.banda')?.setValue('T');
+
+    expect(component.geoForm.get('xy.x')?.value).toBeTruthy();
+    expect(component.geoForm.get('nmea.latitud')?.value).toBeTruthy();
+    expect(component.geoForm.get('gms.gradosLatitud')?.value).toBeTruthy();
+  });
+
+  it('recalcular desde una sección no reescribe la propia sección de origen', () => {
+    serviceSpy.get.and.returnValue(of(respuesta(null)));
+    fixture.detectChanges();
+
+    component.geoForm.get('xy.x')?.setValue('40.416775');
+    component.geoForm.get('xy.y')?.setValue('-3.70379');
+
+    // xy.x/xy.y deben mantener el valor tecleado, no el recalculado desde sí mismos
+    expect(component.geoForm.get('xy.x')?.value).toBe('40.416775');
+    expect(component.geoForm.get('xy.y')?.value).toBe('-3.70379');
+  });
+
+  it('teclear un valor no numérico en X/Y no recalcula ni lanza error', () => {
+    serviceSpy.get.and.returnValue(of(respuesta(null)));
+    fixture.detectChanges();
+
+    component.geoForm.get('xy.x')?.setValue('abc');
+    component.geoForm.get('xy.y')?.setValue('-3.70379');
+
+    expect(component.geoForm.get('nmea.latitud')?.value).toBeNull();
+  });
+
   it('onSubmit() no hace nada si el formulario es inválido', () => {
     serviceSpy.get.and.returnValue(of(respuesta(null)));
     fixture.componentRef.setInput('idInstalacion', '7');

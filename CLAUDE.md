@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Regla general
+
+Si algo no está confirmado en el código, en la BD real o por el usuario, no lo inventes ni asumas. Pregunta al usuario en vez de adivinar (endpoint, nombre de campo, entidad, esquema de tabla, decisión de producto, etc.).
+
 ## Comandos
 
 ```bash

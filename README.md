@@ -86,7 +86,7 @@ Código fuente bajo `src/app/`:
 `menus`, `tiposgestorespropiedades`, `propietarios`, `gestores`, `caracteristicas`, `auditorias`,
 `pavimentos`, `configuraciones`, `medidas`, `actividadesdeportivas`, `centroseducativos`,
 `cerramientos`, `conservaciones`, `nivelesenergeticos`, `niveleseducativos`,
-`nivelesdotaciones`, `iluminaciones`, `estadosusos`.
+`nivelesdotaciones`, `iluminaciones`, `estadosusos`, `tiposinstalaciones`.
 
 Solo **`instalaciones`**, **`usuarios`** y **`roles`** tienen edición por ruta (`:id`) realmente
 activada hoy; el resto de entidades definen la ruta pero la dejan comentada como placeholder en
@@ -124,6 +124,7 @@ manuales (sin `router-outlet`), que monta un componente hijo distinto por tab ba
 | `complementarios` | Espacios complementarios |
 | `rutas` | Rutas de senderismo/running/BTT con mapa Leaflet, cálculo de distancia y tiempos |
 | `imagenes` | Galería de imágenes de la instalación (subida, visibilidad, ampliación) |
+| `ficheros` | Documentos adjuntos de la instalación (subida, descarga, visibilidad) |
 
 Cada tab lee el `:id` de instalación directamente de `ActivatedRoute` (no vía `@Input()`), y
 expone `@Output() cargandoChange` para que el shell muestre `<app-loader>` mientras carga.

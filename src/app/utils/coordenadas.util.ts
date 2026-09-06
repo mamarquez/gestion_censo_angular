@@ -57,3 +57,23 @@ export function latLngAUtm(latitud: number, longitud: number): CoordenadaUtm {
     banda
   };
 }
+
+export interface LatLng {
+  lat: number;
+  lng: number;
+}
+
+export function gmsADecimal(grados: number, minutos: number, segundos: number): number {
+  const signo = grados < 0 ? -1 : 1;
+  return signo * (Math.abs(grados) + minutos / 60 + segundos / 3600);
+}
+
+export function utmALatLng(x: number, y: number, huso: number, banda: string): LatLng {
+  const hemisferioSur = banda < 'N';
+  const hemisferio = hemisferioSur ? ' +south' : '';
+  const proyeccion = `+proj=utm +zone=${huso}${hemisferio} +datum=WGS84 +units=m +no_defs`;
+
+  const [longitud, latitud] = proj4(proyeccion, 'WGS84', [x, y]);
+
+  return { lat: latitud, lng: longitud };
+}

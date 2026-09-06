@@ -32,7 +32,24 @@ contra los nombres válidos en PrimeNG 19).
 - [ ] Confirmar en navegador (no verificado tras el último cambio):
   - Punto nuevo añadido al mapa de una ruta muestra su id real tras guardarse (antes se quedaba en
     "?" indefinidamente).
-  - "Características" de una instalación devuelve resultados tras el rename a `idInstalacion`
-    (camelCase) del filtro.
   - Modal genérico `EditModalComponent` marca "Nombre" en rojo si se deja vacío (usado por Nivel
     dotación, entre otras entidades).
+
+## ✅ Corregido (sesión 2026-09-06)
+
+- [x] **`app.routes.ts`: 5 rutas `loadComponent` rotas, `ng build` fallaba.** Migración previa a lazy
+  loading escribió mal 5 paths (`admin/admin-layout.component` en vez de
+  `admin-layout/admin-layout.component`, etc.). Layout admin, listado/edición de instalaciones y
+  alta/edición de usuarios quedaban inaccesibles en cualquier build de producción. Corregido
+  comparando contra el último commit válido (`git diff cd5e1c6`).
+- [x] **`app.routes.ts`: 4 componentes cargados eager rompían patrón lazy.**
+  `EditInstalacionDeportivaComponent`, `ForbiddenComponent`, `ServerErrorComponent`,
+  `NotFoundComponent` usaban `component:` directo con import estático en cabecera. Migrados a
+  `loadComponent`.
+- [x] **"Características" de una instalación → 500.** `Unknown column
+  'ic1_0.id_instalacion_espacio_complementario' in 'field list'`. La entidad JPA
+  `InstalacionCaracteristica` declaraba esa columna pero nunca existió en la tabla real
+  `instalaciones_caracteristicas` (confirmado en todos los scripts `.sql` del repo). Corregido con
+  `ALTER TABLE` en BD local añadiendo columna + FK hacia `instalaciones_espacios_complementarios`.
+  **Pendiente:** aplicar el mismo `ALTER TABLE` en otros entornos (staging/producción) y añadir un
+  script de migración versionado en `scripts/` del backend — no existe todavía.

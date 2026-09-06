@@ -13,7 +13,7 @@ import { Coordenada } from '../../../../../models/coordenada';
 import { mensajesUtil } from '../../../../../utils/mensajes.util';
 import { LocalizameComponent } from './localizame/localizame.component';
 import { PuntoCoordenada } from '../../../../../components/mapa-coordenada/mapa-coordenada.component';
-import { decimalAGms, latLngAUtm } from '../../../../../utils/coordenadas.util';
+import { decimalAGms, gmsADecimal, latLngAUtm, utmALatLng } from '../../../../../utils/coordenadas.util';
 
 @Component({
   standalone: true,
@@ -71,6 +71,9 @@ export class GeoPosicionComponent {
     })
   });
 
+  // Evita bucles al propagar un cambio entre secciones (XY/NMEA/UTM/GMS)
+  private sincronizando = false;
+
   constructor() {
     // Reacciona automáticamente cada vez que idInstalacion cambia de valor
     effect(() => {
@@ -80,6 +83,123 @@ export class GeoPosicionComponent {
         this.cargar(id);
       }
     });
+
+    // Cualquier sección editada manualmente recalcula el resto
+    this.geoForm.get('xy.x')?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.recalcularDesdeXY());
+    this.geoForm.get('xy.y')?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.recalcularDesdeXY());
+
+    this.geoForm.get('nmea.latitud')?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.recalcularDesdeNmea());
+    this.geoForm.get('nmea.longitud')?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.recalcularDesdeNmea());
+
+    ['gradosLatitud', 'minutosLatitud', 'segundosLatitud', 'gradosLongitud', 'minutosLongitud', 'segundosLongitud']
+      .forEach(campo => {
+        this.geoForm.get(`gms.${campo}`)?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+          .subscribe(() => this.recalcularDesdeGms());
+      });
+
+    ['x', 'y', 'huso', 'banda'].forEach(campo => {
+      this.geoForm.get(`utm.${campo}`)?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+        .subscribe(() => this.recalcularDesdeUtm());
+    });
+  }
+
+  /** Aplica un lat/lng a XY, NMEA, GMS y UTM, saltando la sección de origen. */
+  private aplicarLatLng(lat: number, lng: number, origen: 'xy' | 'nmea' | 'gms' | 'utm' | 'mapa'): void {
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+      return;
+    }
+
+    this.sincronizando = true;
+
+    const gmsLatitud = decimalAGms(lat);
+    const gmsLongitud = decimalAGms(lng);
+    const utm = latLngAUtm(lat, lng);
+
+    const valores: any = {};
+
+    if (origen !== 'xy') {
+      valores.xy = { x: lat.toFixed(6), y: lng.toFixed(6) };
+    }
+    if (origen !== 'nmea') {
+      valores.nmea = { latitud: lat.toFixed(6), longitud: lng.toFixed(6) };
+    }
+    if (origen !== 'gms') {
+      valores.gms = {
+        gradosLatitud: gmsLatitud.grados,
+        minutosLatitud: gmsLatitud.minutos,
+        segundosLatitud: gmsLatitud.segundos,
+        gradosLongitud: gmsLongitud.grados,
+        minutosLongitud: gmsLongitud.minutos,
+        segundosLongitud: gmsLongitud.segundos
+      };
+    }
+    if (origen !== 'utm') {
+      valores.utm = { x: utm.x, y: utm.y, banda: utm.banda, huso: utm.huso };
+    }
+
+    this.geoForm.patchValue(valores, { emitEvent: false });
+    this.sincronizando = false;
+  }
+
+  private recalcularDesdeXY(): void {
+    if (this.sincronizando) {
+      return;
+    }
+    const lat = Number(this.geoForm.get('xy.x')?.value);
+    const lng = Number(this.geoForm.get('xy.y')?.value);
+    this.aplicarLatLng(lat, lng, 'xy');
+  }
+
+  private recalcularDesdeNmea(): void {
+    if (this.sincronizando) {
+      return;
+    }
+    const lat = Number(this.geoForm.get('nmea.latitud')?.value);
+    const lng = Number(this.geoForm.get('nmea.longitud')?.value);
+    this.aplicarLatLng(lat, lng, 'nmea');
+  }
+
+  private recalcularDesdeGms(): void {
+    if (this.sincronizando) {
+      return;
+    }
+
+    const gradosLat = Number(this.geoForm.get('gms.gradosLatitud')?.value);
+    const minutosLat = Number(this.geoForm.get('gms.minutosLatitud')?.value);
+    const segundosLat = Number(this.geoForm.get('gms.segundosLatitud')?.value);
+    const gradosLng = Number(this.geoForm.get('gms.gradosLongitud')?.value);
+    const minutosLng = Number(this.geoForm.get('gms.minutosLongitud')?.value);
+    const segundosLng = Number(this.geoForm.get('gms.segundosLongitud')?.value);
+
+    if (![gradosLat, minutosLat, segundosLat, gradosLng, minutosLng, segundosLng].every(Number.isFinite)) {
+      return;
+    }
+
+    const lat = gmsADecimal(gradosLat, minutosLat, segundosLat);
+    const lng = gmsADecimal(gradosLng, minutosLng, segundosLng);
+    this.aplicarLatLng(lat, lng, 'gms');
+  }
+
+  private recalcularDesdeUtm(): void {
+    if (this.sincronizando) {
+      return;
+    }
+
+    const x = Number(this.geoForm.get('utm.x')?.value);
+    const y = Number(this.geoForm.get('utm.y')?.value);
+    const huso = Number(this.geoForm.get('utm.huso')?.value);
+    const banda: string = this.geoForm.get('utm.banda')?.value ?? '';
+
+    if (!x || !y || !Number.isFinite(huso) || huso <= 0 || !banda) {
+      return;
+    }
+
+    const { lat, lng } = utmALatLng(x, y, huso, banda);
+    this.aplicarLatLng(lat, lng, 'utm');
   }
 
   cargar(id: string): void {
@@ -118,7 +238,7 @@ export class GeoPosicionComponent {
                 segundosLongitud: c.segundosLongitud ?? null,
                 altitud: c.altitud ?? null
               }
-            });
+            }, { emitEvent: false });
           }
           this.cargandoGeo.set(false);
         },
@@ -131,34 +251,7 @@ export class GeoPosicionComponent {
   }
 
   onPuntoSeleccionado(punto: PuntoCoordenada): void {
-    const gmsLatitud = decimalAGms(punto.lat);
-    const gmsLongitud = decimalAGms(punto.lng);
-    const utm = latLngAUtm(punto.lat, punto.lng);
-
-    this.geoForm.patchValue({
-      xy: {
-        x: punto.lat.toFixed(6),
-        y: punto.lng.toFixed(6)
-      },
-      nmea: {
-        latitud: punto.lat.toFixed(6),
-        longitud: punto.lng.toFixed(6)
-      },
-      gms: {
-        gradosLatitud: gmsLatitud.grados,
-        minutosLatitud: gmsLatitud.minutos,
-        segundosLatitud: gmsLatitud.segundos,
-        gradosLongitud: gmsLongitud.grados,
-        minutosLongitud: gmsLongitud.minutos,
-        segundosLongitud: gmsLongitud.segundos
-      },
-      utm: {
-        x: utm.x,
-        y: utm.y,
-        banda: utm.banda,
-        huso: utm.huso
-      }
-    });
+    this.aplicarLatLng(punto.lat, punto.lng, 'mapa');
   }
 
   onSubmit(): void {
