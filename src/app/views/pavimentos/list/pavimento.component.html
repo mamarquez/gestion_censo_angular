@@ -115,8 +115,8 @@
             <td>{{ pavimento.nombre }}</td>
             <td>{{ pavimento.descripcion | truncar: 150 }}</td>
             <td class="centrado">
-              <label class="switch-native {{ pavimento.activo ? 'verde' : 'rojo' }}">
-                <input id='{{ pavimento.id }}' type="checkbox" [checked]="pavimento.activo" disabled />
+              <label class="switch-native {{ pavimento.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="pavimento.activo ? 'Activo' : 'Inactivo'">
+                <input type="checkbox" [checked]="pavimento.activo" disabled />
                 <span class="slider-native"></span>
               </label>
             </td>

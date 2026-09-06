@@ -20,7 +20,7 @@ export class ErrorPageComponent {
   textoBotonInicio = input<string>('Ir al inicio');
 
   volverAtras(): void {
-    window.history.back();
+    globalThis.history.back();
   }
 
 }

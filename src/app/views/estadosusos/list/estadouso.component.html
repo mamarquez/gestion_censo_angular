@@ -115,7 +115,7 @@
             <td>{{ estadoUso.nombre }}</td>
             <td>{{ estadoUso.descripcion | truncar: 150 }}</td>
             <td class="centrado">
-              <label class="switch-native {{ estadoUso.activo ? 'verde' : 'rojo' }}">
+              <label class="switch-native {{ estadoUso.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="estadoUso.activo ? 'Activo' : 'Inactivo'">
                 <input type="checkbox" [checked]="estadoUso.activo" disabled />
                 <span class="slider-native"></span>
               </label>

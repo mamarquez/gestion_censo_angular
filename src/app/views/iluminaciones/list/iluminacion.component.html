@@ -115,7 +115,7 @@
           <td>{{ iluminacion.nombre }}</td>
           <td>{{ iluminacion.descripcion | truncar: 150 }}</td>
           <td class='centrado'>
-            <label class="switch-native {{ iluminacion.activo ? 'verde' : 'rojo' }}">
+            <label class="switch-native {{ iluminacion.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="iluminacion.activo ? 'Activo' : 'Inactivo'">
               <input type='checkbox' [checked]='iluminacion.activo' disabled />
               <span class='slider-native'></span>
             </label>

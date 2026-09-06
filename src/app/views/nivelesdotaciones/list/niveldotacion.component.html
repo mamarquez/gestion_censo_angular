@@ -120,7 +120,7 @@
             <td>{{ nivelDotacion.nombre }}</td>
             <td>{{ nivelDotacion.descripcion | truncar: 150 }}</td>
             <td class="centrado">
-              <label class="switch-native {{ nivelDotacion.activo ? 'verde' : 'rojo' }}">
+              <label class="switch-native {{ nivelDotacion.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="nivelDotacion.activo ? 'Activo' : 'Inactivo'">
                 <input type="checkbox" [checked]="nivelDotacion.activo" disabled />
                 <span class="slider-native"></span>
               </label>

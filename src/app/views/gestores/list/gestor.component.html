@@ -136,7 +136,7 @@
           </td>
 
           <td class='centrado'>
-            <label class="switch-native {{ gestor.activo ? 'verde' : 'rojo' }}">
+            <label class="switch-native {{ gestor.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="gestor.activo ? 'Activo' : 'Inactivo'">
               <input type='checkbox' [checked]='gestor.activo' disabled />
               <span class='slider-native'></span>
             </label>

@@ -129,7 +129,7 @@
       <td>{{ tipoInstalacion.nombre }}</td>
       <td>{{ tipoInstalacion.valor }}</td>
       <td class='text-center' style='text-align: center'>
-        <label class="switch-native {{ tipoInstalacion.activo ? 'verde' : 'rojo' }}">
+        <label class="switch-native {{ tipoInstalacion.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="tipoInstalacion.activo ? 'Activo' : 'Inactivo'">
           <input type='checkbox' [checked]='tipoInstalacion.activo' disabled />
           <span class='slider-native'></span>
         </label>

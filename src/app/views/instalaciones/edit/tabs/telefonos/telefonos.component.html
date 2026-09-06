@@ -66,8 +66,8 @@
     <td>{{ telefono.contacto }}</td>
     <td>{{ telefono.notas }}</td>
     <td class="centrado">
-      <label for='espacioDeportivo-activo-{{ telefono.id }}' class="switch-native {{ telefono.visible ? 'verde' : 'rojo' }}">
-        <input id='espacioDeportivo-activo-{{ telefono.id }}' type="checkbox" [checked]="telefono.visible" disabled />
+      <label class="switch-native {{ telefono.visible ? 'verde' : 'rojo' }}" [attr.aria-label]="telefono.visible ? 'Visible' : 'Oculto'">
+        <input type="checkbox" [checked]="telefono.visible" disabled />
         <span class="slider-native"></span>
       </label>
     </td>

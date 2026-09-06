@@ -127,7 +127,7 @@
       <td>{{ ruta.tiempoRunningFormateado }}</td>
       <td>{{ ruta.tiempoBttFormateado }}</td>
       <td class="centrado">
-        <label class="switch-native {{ ruta.visible ? 'verde' : 'rojo' }}">
+        <label class="switch-native {{ ruta.visible ? 'verde' : 'rojo' }}" [attr.aria-label]="ruta.visible ? 'Visible' : 'Oculto'">
           <input type="checkbox" [checked]="ruta.visible" disabled />
           <span class="slider-native"></span>
         </label>

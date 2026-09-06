@@ -331,7 +331,7 @@ export class EditInstalacionRutaComponent implements OnInit {
 
     const ultima = this.coordenadas.reduce((max, c) =>
       (c.id as number) > (max.id as number) ? c : max
-    );
+    , this.coordenadas[0]);
 
     this.borrarCoordenada(ultima.id as number);
   }

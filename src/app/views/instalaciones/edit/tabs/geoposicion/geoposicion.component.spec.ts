@@ -173,6 +173,67 @@ describe('GeoPosicionComponent', () => {
     expect(component.geoForm.get('nmea.latitud')?.value).toBeNull();
   });
 
+  it('teclear NMEA manualmente recalcula XY/GMS/UTM', () => {
+    serviceSpy.get.and.returnValue(of(respuesta(null)));
+    fixture.detectChanges();
+
+    component.geoForm.get('nmea.latitud')?.setValue('40.416775');
+    component.geoForm.get('nmea.longitud')?.setValue('-3.70379');
+
+    expect(component.geoForm.get('xy.x')?.value).toBe('40.416775');
+    expect(component.geoForm.get('gms.gradosLatitud')?.value).toBe('40');
+    expect(component.geoForm.get('utm.huso')?.value).toBe('30');
+  });
+
+  it('teclear un valor no numérico en NMEA no recalcula', () => {
+    serviceSpy.get.and.returnValue(of(respuesta(null)));
+    fixture.detectChanges();
+
+    component.geoForm.get('nmea.latitud')?.setValue('abc');
+    component.geoForm.get('nmea.longitud')?.setValue('-3.70379');
+
+    expect(component.geoForm.get('xy.x')?.value).toBeFalsy();
+  });
+
+  it('teclear GMS incompleto (con campo no numérico) no recalcula', () => {
+    serviceSpy.get.and.returnValue(of(respuesta(null)));
+    fixture.detectChanges();
+
+    component.geoForm.get('gms.segundosLatitud')?.setValue('0.39');
+    component.geoForm.get('gms.gradosLongitud')?.setValue('-3');
+    component.geoForm.get('gms.minutosLongitud')?.setValue('42');
+    component.geoForm.get('gms.segundosLongitud')?.setValue('13.64');
+    component.geoForm.get('gms.gradosLatitud')?.setValue('40');
+    // Último campo con valor no numérico: el recálculo debe abortar
+    component.geoForm.get('gms.minutosLatitud')?.setValue('abc');
+
+    expect(component.geoForm.get('xy.x')?.value).toBeFalsy();
+  });
+
+  it('teclear UTM con banda de hemisferio sur recalcula correctamente', () => {
+    serviceSpy.get.and.returnValue(of(respuesta(null)));
+    fixture.detectChanges();
+
+    component.geoForm.get('utm.x')?.setValue('500000');
+    component.geoForm.get('utm.y')?.setValue('8000000');
+    component.geoForm.get('utm.huso')?.setValue('23');
+    component.geoForm.get('utm.banda')?.setValue('K');
+
+    const lat = Number(component.geoForm.get('xy.x')?.value);
+    expect(lat).toBeLessThan(0);
+  });
+
+  it('teclear UTM incompleto (sin banda) no recalcula', () => {
+    serviceSpy.get.and.returnValue(of(respuesta(null)));
+    fixture.detectChanges();
+
+    component.geoForm.get('utm.x')?.setValue('440000');
+    component.geoForm.get('utm.y')?.setValue('4474000');
+    component.geoForm.get('utm.huso')?.setValue('30');
+
+    expect(component.geoForm.get('xy.x')?.value).toBeFalsy();
+  });
+
   it('onSubmit() no hace nada si el formulario es inválido', () => {
     serviceSpy.get.and.returnValue(of(respuesta(null)));
     fixture.componentRef.setInput('idInstalacion', '7');

@@ -117,7 +117,7 @@
             <td>{{ nivelEnergetico.nombre }}</td>
             <td>{{ nivelEnergetico.descripcion | truncar: 150 }}</td>
           <td class='centrado'>
-            <label class="switch-native {{ nivelEnergetico.activo ? 'verde' : 'rojo' }}">
+            <label class="switch-native {{ nivelEnergetico.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="nivelEnergetico.activo ? 'Activo' : 'Inactivo'">
               <input type='checkbox' [checked]='nivelEnergetico.activo' disabled />
               <span class='slider-native'></span>
             </label>

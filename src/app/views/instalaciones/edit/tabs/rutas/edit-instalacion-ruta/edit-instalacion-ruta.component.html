@@ -35,7 +35,7 @@
     </div>
 
     <div class='field field-checkbox col-2' style='margin-top: 1.2rem;'>
-      <label for='ruta-visible' class="switch-native {{ form.get('visible')?.value ? 'verde' : 'rojo' }}">
+      <label class="switch-native {{ form.get('visible')?.value ? 'verde' : 'rojo' }}" [attr.aria-label]="form.get('visible')?.value ? 'Visible' : 'Oculto'">
         <input id='ruta-visible' type='checkbox' formControlName='visible' />
         <span class='slider-native'></span>
       </label>
@@ -176,10 +176,10 @@
   >
     <ng-template pTemplate='header'>
       <tr>
-        <th>Punto</th>
-        <th>X</th>
-        <th>Y</th>
-        <th style='width: 10%'></th>
+        <th id='ruta.punto'>Punto</th>
+        <th id='ruta.x'>X</th>
+        <th id='ruta.y'>Y</th>
+        <th id='ruta.accion' style='width: 10%'></th>
       </tr>
     </ng-template>
 

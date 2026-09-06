@@ -132,8 +132,8 @@
               }
             </td>
             <td class="centrado">
-              <label for='check-{{ usuario.id }}' class="switch-native {{ usuario.activo ? 'verde' : 'rojo' }}">
-                <input id='check-{{ usuario.id }}' type="checkbox" [checked]="usuario.activo" disabled />
+              <label class="switch-native {{ usuario.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="usuario.activo ? 'Activo' : 'Inactivo'">
+                <input type="checkbox" [checked]="usuario.activo" disabled />
                 <span class="slider-native"></span>
               </label>
             </td>

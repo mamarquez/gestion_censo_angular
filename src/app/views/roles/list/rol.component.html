@@ -120,7 +120,7 @@
           <td><strong>{{ rol.nombre }}</strong></td>
           <td><strong>{{ rol.descripcion | truncar: 150 }}</strong></td>
           <td class='centrado'>
-            <label class="switch-native {{ rol.activo ? 'verde' : 'rojo' }}">
+            <label class="switch-native {{ rol.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="rol.activo ? 'Activo' : 'Inactivo'">
               <input type='checkbox' [checked]='rol.activo' disabled />
               <span class='slider-native'></span>
             </label>

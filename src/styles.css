@@ -317,15 +317,7 @@ app-footer {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  /* background: var(--p-tag-primary-background); */
-  /* color: var(--p-tag-primary-color); */
   font-size: 0.575rem !important;
-  /*
-  font-weight: var(--p-tag-font-weight);
-  padding: var(--p-tag-padding);
-  border-radius: var(--p-tag-border-radius);
-  gap: var(--p-tag-gap);
-  */
 }
 
 /***

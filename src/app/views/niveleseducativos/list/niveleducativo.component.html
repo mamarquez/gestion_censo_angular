@@ -112,7 +112,7 @@
             <td>{{ nivelEducativo.nombre }}</td>
             <td>{{ nivelEducativo.descripcion | truncar: 150 }}</td>
             <td class="centrado">
-              <label class="switch-native {{ nivelEducativo.activo ? 'verde' : 'rojo' }}">
+              <label class="switch-native {{ nivelEducativo.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="nivelEducativo.activo ? 'Activo' : 'Inactivo'">
                 <input type="checkbox" [checked]="nivelEducativo.activo" disabled />
                 <span class="slider-native"></span>
               </label>

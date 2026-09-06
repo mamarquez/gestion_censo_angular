@@ -115,7 +115,7 @@
             <td>{{ cerramiento.nombre }}</td>
             <td>{{ cerramiento.descripcion | truncar: 150 }}</td>
             <td class='centrado'>
-              <label class="switch-native {{ cerramiento.activo ? 'verde' : 'rojo' }}">
+              <label class="switch-native {{ cerramiento.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="cerramiento.activo ? 'Activo' : 'Inactivo'">
                 <input type='checkbox' [checked]='cerramiento.activo' disabled />
                 <span class='slider-native'></span>
               </label>

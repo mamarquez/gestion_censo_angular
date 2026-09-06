@@ -1,9 +1,4 @@
 <div class="tab-content">
-  <!--
-    @if (cargando) {
-      <app-loader />
-    } @else {
-    -->
     <form [formGroup]='form' (ngSubmit)='guardar()'>
 
       <input id='id' type='number' formControlName='id' readonly hidden />
@@ -31,7 +26,7 @@
                 <label for='activo'>Activo</label>
             </div>
 
-            <div class="image-container" (click)="fileInput.click()">
+            <div class="image-container" role="button" tabindex="0" (click)="fileInput.click()" (keydown.enter)="fileInput.click()" (keydown.space)="fileInput.click()">
               <img
                 [src]="avatarUrl"
                 alt="Avatar"
@@ -71,8 +66,8 @@
             <div class='col-6'>
               <p-fieldset legend="Permisos" class='col-12'>
                 <p-fluid>
-                  @for (rol of form.controls.roles.value; track rol.id) {
-                    <p-chip [label]="rol.nombre" value="Success" [rounded]="true" />
+                  @for (rol of form.controls.roles.value ?? []; track rol.id) {
+                    <p-chip [label]="rol.nombre" />
                   } @empty {
                     <span class="text-color-secondary">No hay roles asignados.</span>
                   }
@@ -83,8 +78,8 @@
             <div class='col-6'>
               <p-fieldset legend="Provincias">
                 <p-fluid>
-                  @for (rol of form.controls.roles.value; track rol.id) {
-                    <p-chip [label]="rol.nombre" value="Success" [rounded]="true" />
+                  @for (rol of form.controls.roles.value ?? []; track rol.id) {
+                    <p-chip [label]="rol.nombre" />
                   } @empty {
                     <span class="text-color-secondary">No hay roles asignados.</span>
                   }

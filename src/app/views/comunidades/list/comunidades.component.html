@@ -117,7 +117,7 @@
       <td>{{ comunidad.codigo }}</td>
       <td>{{ comunidad.nombre }}</td>
       <td class='centrado'>
-        <label class="switch-native {{ comunidad.activo ? 'verde' : 'rojo' }}">
+        <label class="switch-native {{ comunidad.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="comunidad.activo ? 'Activo' : 'Inactivo'">
           <input type='checkbox' [checked]='comunidad.activo' disabled />
           <span class='slider-native'></span>
         </label>

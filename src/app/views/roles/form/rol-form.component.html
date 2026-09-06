@@ -37,7 +37,7 @@
     <div class='field col-2'>
       <label for='rol-activo'>Activo</label>
       <div style='display: flex; align-items: center; height: 36px;'>
-        <label for='rol-activo' class="switch-native {{ form.get('activo')?.value ? 'verde' : 'rojo' }}" style='margin: 0;'>
+        <label class="switch-native {{ form.get('activo')?.value ? 'verde' : 'rojo' }}" style='margin: 0;' [attr.aria-label]="form.get('activo')?.value ? 'Activo' : 'Inactivo'">
           <input id='rol-activo' type='checkbox' formControlName='activo' />
           <span class='slider-native'></span>
         </label>

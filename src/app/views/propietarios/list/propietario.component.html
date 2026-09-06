@@ -117,13 +117,13 @@
           <td>{{ propietario.nombre }}</td>
           <td>{{ propietario.descripcion }}</td>
           <td class='centrado'>
-            <label class="switch-native {{ propietario.visible ? 'verde' : 'rojo' }}">
+            <label class="switch-native {{ propietario.visible ? 'verde' : 'rojo' }}" [attr.aria-label]="propietario.visible ? 'Visible' : 'Oculto'">
               <input type='checkbox' [checked]='propietario.visible' disabled />
               <span class='slider-native'></span>
             </label>
           </td>
           <td class='centrado'>
-            <label class="switch-native {{ propietario.activo ? 'verde' : 'rojo' }}">
+            <label class="switch-native {{ propietario.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="propietario.activo ? 'Activo' : 'Inactivo'">
               <input type='checkbox' [checked]='propietario.activo' disabled />
               <span class='slider-native'></span>
             </label>

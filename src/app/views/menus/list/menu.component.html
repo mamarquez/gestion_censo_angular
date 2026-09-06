@@ -141,14 +141,14 @@
             <td>{{ menu.descripcion | truncar: 150 }}</td>
             <td>{{ menu.enlace | truncar: 150 }}</td>
             <td class="centrado">
-                <label class="switch-native {{ menu.visible ? 'verde' : 'rojo' }}">
-                    <input id="menu-visible-{{menu.id}}" type="checkbox" [checked]="menu.visible" disabled />
+                <label class="switch-native {{ menu.visible ? 'verde' : 'rojo' }}" [attr.aria-label]="menu.visible ? 'Visible' : 'Oculto'">
+                    <input type="checkbox" [checked]="menu.visible" disabled />
                     <span class="slider-native"></span>
                 </label>
             </td>
             <td class="centrado">
-                <label class="switch-native {{ menu.activo ? 'verde' : 'rojo' }}">
-                    <input id="menu-activo-{{menu.id}}" type="checkbox" [checked]="menu.activo" disabled />
+                <label class="switch-native {{ menu.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="menu.activo ? 'Activo' : 'Inactivo'">
+                    <input type="checkbox" [checked]="menu.activo" disabled />
                     <span class="slider-native"></span>
                 </label>
             </td>

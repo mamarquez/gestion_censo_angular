@@ -135,7 +135,7 @@
       <td>{{ configuracion.descripcion }}</td>
       <td>{{ configuracion.valor | truncar:150 }}</td>
       <td class='centrado'>
-        <label class="switch-native {{ configuracion.activo ? 'verde' : 'rojo' }}">
+        <label class="switch-native {{ configuracion.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="configuracion.activo ? 'Activo' : 'Inactivo'">
           <input type='checkbox' [checked]='configuracion.activo' disabled />
           <span class='slider-native'></span>
         </label>

@@ -108,31 +108,6 @@ export class DatosCaracteristicaComponent implements OnInit {
     this.modalVisible = true;
   }
 
-  cambiarEstado(id: number) {
-    this.cargando = true;
-
-    this.service.cambiarEstado(id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-      next: () => {
-        const caracteristica = this.caracteristicas.find(p => p.id === id);
-        if (caracteristica) {
-          caracteristica.visible = !caracteristica.visible;
-        }
-
-        this.messageService.add({ severity: 'success', summary: 'Actualizado', detail: 'Se ha actualizado el estado' });
-        this.cargando = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Error al cambiar el estado', err);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar el estado' });
-        this.cargando = false;
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
   cambiarVisible(id: number) {
     this.cargando = true;
 

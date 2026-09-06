@@ -221,7 +221,7 @@ export class RutasComponent implements OnInit {
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
 
-    if (input.files && input.files[0]) {
+    if (input.files?.[0]) {
       const file = input.files[0];
       const reader = new FileReader();
 
@@ -233,14 +233,14 @@ export class RutasComponent implements OnInit {
     this.service.descargarFichero(idRuta).subscribe({
       next: (response) => {
         const blob = new Blob([response], { type: 'application/octet-stream' });
-        const url = window.URL.createObjectURL(blob);
+        const url = globalThis.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = `ruta_${idRuta}.kml`;
         document.body.appendChild(a);
         a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+        globalThis.URL.revokeObjectURL(url);
+        a.remove();
       },
       error: (err) => {
         console.error('Error al descargar el archivo', err);

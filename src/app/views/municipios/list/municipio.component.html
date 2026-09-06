@@ -111,11 +111,6 @@
     <tr>
       <th id='municipio.cpro' class='text-center' pSortableColumn='cpro' style='text-align: center; width: 10%'>C. Provincia<p-sortIcon field='cpro'></p-sortIcon></th>
       <th id='municipio.cmun' class='text-center' pSortableColumn='cmun' style='text-align: center; width: 10%'>C. Municipio<p-sortIcon field='cmun'></p-sortIcon></th>
-      <!--
-      <th id='municipio.dc' class='text-center' pSortableColumn='dc' style='text-align: center; width: 5%'>DC
-        <p-sortIcon field='dc'></p-sortIcon>
-      </th>
-      -->
       <th id='municipio.nombre' pSortableColumn='nombre'>Nombre<p-sortIcon field='nombre'></p-sortIcon></th>
       <th id='municipio.estado' pSortableColumn='activo'  class='text-center' style='width: 10%'>Estado<p-sortIcon field='activo'></p-sortIcon></th>
       <th id='municipio.accion' class='text-right' style='width: 10%'></th>
@@ -143,7 +138,6 @@
     <tr>
       <td class='text-center' style='text-align: center'>{{ municipio.cpro }}</td>
       <td class='text-center' style='text-align: center'>{{ municipio.cmun }}</td>
-      <!-- <td class='text-center' style='text-align: center'>{{ municipio.dc }}</td> -->
       <td>{{ municipio.nombre }}</td>
       <td class='centrado'>
         <label class="switch-native {{ municipio.activo ? 'verde' : 'rojo' }}">

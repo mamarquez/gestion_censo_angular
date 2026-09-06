@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, DestroyRef, inject, input, effect } from 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UsuarioService } from '../../../services/usuario.service';
 import { UsuarioModel } from '../../../models/usuario-model';
+import { Rol } from '../../../models/rol';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button } from 'primeng/button';
@@ -72,12 +73,11 @@ export class PerfilComponent {
     descripcion: [null],
     activo: [true],
     avatar: [null],
-    roles: [null]
+    roles: this.fb.control<Rol[] | null>(null)
   });
 
   constructor() {
     effect(() => {
-      // const userId = this.id();
       const userId = 1;
       if (userId) {
         this.cargarPerfil(String(userId));
@@ -160,7 +160,7 @@ export class PerfilComponent {
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
 
-    if (input.files && input.files[0]) {
+    if (input.files?.[0]) {
       const file = input.files[0];
       const reader = new FileReader();
 

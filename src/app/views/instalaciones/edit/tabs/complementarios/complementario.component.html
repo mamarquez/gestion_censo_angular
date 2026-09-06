@@ -126,8 +126,8 @@
     <tr>
       <td>{{ espacioComplementario.espacioComplementario.nombre }}</td>
       <td class="centrado">
-        <label for='espacioComplementario-visible-{{ espacioComplementario.id }}' class="switch-native {{ espacioComplementario.visible ? 'verde' : 'rojo' }}">
-          <input id='espacioComplementario-visible-{{ espacioComplementario.id }}' type="checkbox" [checked]="espacioComplementario.visible" disabled />
+        <label class="switch-native {{ espacioComplementario.visible ? 'verde' : 'rojo' }}" [attr.aria-label]="espacioComplementario.visible ? 'Visible' : 'Oculto'">
+          <input type="checkbox" [checked]="espacioComplementario.visible" disabled />
           <span class="slider-native"></span>
         </label>
       </td>

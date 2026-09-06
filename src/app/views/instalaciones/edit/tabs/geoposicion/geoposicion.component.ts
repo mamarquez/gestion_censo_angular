@@ -168,12 +168,14 @@ export class GeoPosicionComponent {
       return;
     }
 
-    const gradosLat = Number(this.geoForm.get('gms.gradosLatitud')?.value);
-    const minutosLat = Number(this.geoForm.get('gms.minutosLatitud')?.value);
-    const segundosLat = Number(this.geoForm.get('gms.segundosLatitud')?.value);
-    const gradosLng = Number(this.geoForm.get('gms.gradosLongitud')?.value);
-    const minutosLng = Number(this.geoForm.get('gms.minutosLongitud')?.value);
-    const segundosLng = Number(this.geoForm.get('gms.segundosLongitud')?.value);
+    const campos: string[] = ['gradosLatitud', 'minutosLatitud', 'segundosLatitud', 'gradosLongitud', 'minutosLongitud', 'segundosLongitud'];
+    const valores: unknown[] = campos.map(campo => this.geoForm.get(`gms.${campo}`)?.value);
+
+    if (valores.some(v => v === null || v === undefined || v === '')) {
+      return;
+    }
+
+    const [gradosLat, minutosLat, segundosLat, gradosLng, minutosLng, segundosLng] = valores.map(Number);
 
     if (![gradosLat, minutosLat, segundosLat, gradosLng, minutosLng, segundosLng].every(Number.isFinite)) {
       return;

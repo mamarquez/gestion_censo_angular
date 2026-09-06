@@ -165,14 +165,14 @@ export class ImagenComponent {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (blob: Blob) => {
-                    const url = window.URL.createObjectURL(blob);
+                    const url = globalThis.URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
                     a.download = nombreArchivo;
                     document.body.appendChild(a);
                     a.click();
-                    document.body.removeChild(a);
-                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                    globalThis.URL.revokeObjectURL(url);
                 },
                 error: (err) => {
                     console.error('Error descargando imagen:', err);
@@ -192,7 +192,7 @@ export class ImagenComponent {
     onFileSelected(event: Event): void {
         const input = event.target as HTMLInputElement;
 
-        if (input.files && input.files[0]) {
+        if (input.files?.[0]) {
             const file = input.files[0];
 
             if (!this.formatosPermitidos.includes(file.type)) {

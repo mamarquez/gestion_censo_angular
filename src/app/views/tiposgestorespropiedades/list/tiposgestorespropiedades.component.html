@@ -116,7 +116,7 @@
           <td>{{ tiposGestoresPropiedades.nombre }}</td>
           <td>{{ tiposGestoresPropiedades.mostrar }}</td>
           <td class='centrado'>
-            <label class="switch-native {{ tiposGestoresPropiedades.activo ? 'verde' : 'rojo' }}">
+            <label class="switch-native {{ tiposGestoresPropiedades.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="tiposGestoresPropiedades.activo ? 'Activo' : 'Inactivo'">
               <input type='checkbox' [checked]='tiposGestoresPropiedades.activo' disabled />
               <span class='slider-native'></span>
             </label>
