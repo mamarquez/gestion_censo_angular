@@ -111,7 +111,7 @@
             <td>{{ espacioDeportivo.nombre }}</td>
             <td>{{ espacioDeportivo.descripcion | truncar:150 }}</td>
             <td class="centrado">
-              <label class="switch-native {{ espacioDeportivo.activo ? 'verde' : 'rojo' }}">
+              <label class="switch-native {{ espacioDeportivo.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="espacioDeportivo.activo ? 'Activo' : 'Inactivo'">
                 <input type="checkbox" [checked]="espacioDeportivo.activo" disabled />
                 <span class="slider-native"></span>
               </label>

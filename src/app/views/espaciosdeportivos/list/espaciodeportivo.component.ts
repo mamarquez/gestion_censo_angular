@@ -47,7 +47,7 @@ export class EspacioDeportivoComponent implements OnInit {
   private readonly dialog = inject(DialogService);
   private readonly destroyRef = inject(DestroyRef);
 
-  espacioDeportivo: EspacioDeportivo | any = null;
+  espacioDeportivo: EspacioDeportivo | null = null;
   espaciosDeportivos: EspacioDeportivo [] = [];
   cargando: boolean = true;
   modalVisible = false;
@@ -183,7 +183,7 @@ export class EspacioDeportivoComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: (response: ApiResponseWrapper<EspacioDeportivo>) => {
-        this.espacioDeportivo = response.data || [];
+        this.espacioDeportivo = response.data ?? null;
 
         if (this.espacioDeportivo) {
           this.modalVisible = true;

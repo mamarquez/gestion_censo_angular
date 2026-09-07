@@ -110,7 +110,7 @@
             <td>{{ espacioComplementario.nombre }}</td>
             <td>{{ espacioComplementario.descripcion | truncar: 150 }}</td>
             <td class="centrado">
-              <label class="switch-native {{ espacioComplementario.activo ? 'verde' : 'rojo' }}">
+              <label class="switch-native {{ espacioComplementario.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="espacioComplementario.activo ? 'Activo' : 'Inactivo'">
                 <input type="checkbox" [checked]="espacioComplementario.activo" disabled />
                 <span class="slider-native"></span>
               </label>
