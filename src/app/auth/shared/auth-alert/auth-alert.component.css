@@ -36,7 +36,7 @@
 }
 
 .success .icon{
-    background:#10b981;
+    background:#0c875e;
     color:white;
 }
 
@@ -49,7 +49,7 @@
 }
 
 .error .icon{
-    background:#ef4444;
+    background:#d53d3d;
     color:white;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .warning .icon{
-    background:#f59e0b;
+    background:#a46a07;
     color:white;
 }
 
@@ -76,6 +76,6 @@
 }
 
 .info .icon{
-    background:#3b82f6;
+    background:#3371d6;
     color:white;
 }
