@@ -29,17 +29,6 @@
               <label for='activo'>Activo</label>
             </div>
 
-            <div class="image-container" role="button" tabindex="0" (click)="fileInput.click()" (keydown.enter)="fileInput.click()" (keydown.space)="fileInput.click()">
-              <img [src]="form.get('avatar')?.value || '/images/no_image_user.png'" alt="Avatar" width='60px' height='60px'>
-              <input
-                #fileInput
-                type="file"
-                accept="image/*"
-                style="display: none;"
-                (change)="onFileSelected($event)"
-              />
-            </div>
-
           </div>
 
           @if (!esEdicion) {

@@ -24,7 +24,15 @@
     align-items: center;
 }
 
+.galeria-thumb-boton {
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
 .galeria-thumb {
+    display: block;
     cursor: pointer;
     border-radius: 6px;
     transition: transform 0.15s ease, opacity 0.15s ease, filter 0.15s ease;

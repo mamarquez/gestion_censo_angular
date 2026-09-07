@@ -119,8 +119,8 @@
       <td>{{ espacioDeportivo.tipoInstalacion?.nombre }}</td>
       <td>{{ espacioDeportivo.descripcion }}</td>
       <td class="centrado">
-        <label for='espacioDeportivo-visible-{{ espacioDeportivo.id }}' class="switch-native {{ espacioDeportivo.visible ? 'verde' : 'rojo' }}">
-          <input id='espacioDeportivo-visible-{{ espacioDeportivo.id }}' type="checkbox" [checked]="espacioDeportivo.visible" disabled />
+        <label class="switch-native {{ espacioDeportivo.visible ? 'verde' : 'rojo' }}" [attr.aria-label]="espacioDeportivo.visible ? 'Visible' : 'Oculto'">
+          <input type="checkbox" [checked]="espacioDeportivo.visible" disabled />
           <span class="slider-native"></span>
         </label>
       </td>

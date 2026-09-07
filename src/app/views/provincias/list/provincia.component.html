@@ -128,7 +128,7 @@
       <td>{{ provincia.ine }}</td>
       <td>{{ provincia.nombre }}</td>
       <td class='text-center' style='text-align: center'>
-        <label class="switch-native {{ provincia.activo ? 'verde' : 'rojo' }}">
+        <label class="switch-native {{ provincia.activo ? 'verde' : 'rojo' }}" [attr.aria-label]="provincia.activo ? 'Activo' : 'Inactivo'">
           <input type='checkbox' [checked]='provincia.activo' disabled />
           <span class='slider-native'></span>
         </label>

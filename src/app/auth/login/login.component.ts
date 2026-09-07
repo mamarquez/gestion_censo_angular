@@ -37,7 +37,7 @@ import { AuthService } from '../services/auth.service';
 export class LoginComponent {
 
   // 2. Inyección moderna del detector de cambios
-  private cdr = inject(ChangeDetectorRef);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   loading = false;
   loginError = false;
@@ -45,9 +45,9 @@ export class LoginComponent {
   loginForm: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
+    private readonly fb: FormBuilder,
+    private readonly authService: AuthService,
+    private readonly router: Router
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],

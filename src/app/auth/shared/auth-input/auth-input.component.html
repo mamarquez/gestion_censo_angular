@@ -1,5 +1,6 @@
 <div class="form-field">
     <input
+        [id]="inputId"
         class="form-control"
         [type]="inputType"
         [(ngModel)]="value"
@@ -8,7 +9,7 @@
         [disabled]="disabled"
         (blur)="blur()">
 
-    <label>
+    <label [for]="inputId">
         {{ label }}
     </label>
 

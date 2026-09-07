@@ -11,7 +11,7 @@ import { AuthService } from '../../auth/services/auth.service';
 })
 export class HeaderComponent {
   public authService = inject(AuthService);
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
   @Output() toggleSidebar = new EventEmitter<void>();
 

@@ -87,4 +87,8 @@ export class AuthInputComponent implements ControlValueAccessor {
     }
     return this.showPassword ? 'text' : 'password';
   }
+
+  get inputId(): string {
+    return `auth-input-${this.label.toLowerCase().replace(/\s+/g, '-')}`;
+  }
 }

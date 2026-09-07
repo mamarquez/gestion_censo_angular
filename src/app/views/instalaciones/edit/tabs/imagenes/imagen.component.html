@@ -47,17 +47,19 @@
     <div class="galeria">
         @for (imagen of imagenes; track imagen.id) {
             <div class="galeria-item">
-                <img
-                    [src]="imagen.imagenUrl"
-                    [alt]="imagen.nombre" width="150"
-                    class="galeria-thumb"
-                    [class.galeria-thumb-oculta]="imagen.visible === false"
-                    role="button" tabindex="0"
+                <button
+                    type="button"
+                    class="galeria-thumb-boton"
                     (click)="ampliar(imagen)"
-                    (keydown.enter)="ampliar(imagen)"
-                    (keydown.space)="ampliar(imagen)"
                     [pTooltip]="(imagen.descripcion ? imagen.descripcion : imagen.nombre) | translate"
-                    />
+                >
+                    <img
+                        [src]="imagen.imagenUrl"
+                        [alt]="imagen.nombre" width="150"
+                        class="galeria-thumb"
+                        [class.galeria-thumb-oculta]="imagen.visible === false"
+                        />
+                </button>
                 <p>
                     @if (imagen.visible !== undefined) {
                         <p-button severity='secondary'

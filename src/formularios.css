@@ -188,3 +188,12 @@
 .switch-native.verde .slider-native {
   background-color: #22c55e;
 }
+
+/* Botón de avatar clicable (perfil de usuario) */
+.image-container {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  line-height: 0;
+}

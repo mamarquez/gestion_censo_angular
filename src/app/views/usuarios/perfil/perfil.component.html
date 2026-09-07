@@ -26,7 +26,7 @@
                 <label for='activo'>Activo</label>
             </div>
 
-            <div class="image-container" role="button" tabindex="0" (click)="fileInput.click()" (keydown.enter)="fileInput.click()" (keydown.space)="fileInput.click()">
+            <button type="button" class="image-container" (click)="fileInput.click()">
               <img
                 [src]="avatarUrl"
                 alt="Avatar"
@@ -34,14 +34,14 @@
                 height="60"
                 loading="lazy"
                 style="border-radius: 50%; cursor: pointer; object-fit: cover;" />
-              <input
-                #fileInput
-                type="file"
-                accept="image/*"
-                style="display: none;"
-                (change)="onFileSelected($event)"
-              />
-            </div>
+            </button>
+            <input
+              #fileInput
+              type="file"
+              accept="image/*"
+              style="display: none;"
+              (change)="onFileSelected($event)"
+            />
 
           </div>
 
