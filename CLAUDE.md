@@ -6,6 +6,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Si algo no está confirmado en el código, en la BD real o por el usuario, no lo inventes ni asumas. Pregunta al usuario en vez de adivinar (endpoint, nombre de campo, entidad, esquema de tabla, decisión de producto, etc.).
 
+## Estilo de respuesta
+
+Responde siempre en español usando modo caveman (terso, sin artículos ni relleno, sustancia técnica intacta). Aplica en toda la sesión, sin excepción.
+
+## Memoria de sesión (MemPalace)
+
+Al iniciar sesión en este repo, ejecuta `mempalace wake-up` (CLI instalado en `C:\Users\dunca\.local\bin`, no está en PATH por defecto — usar ruta completa o `$env:PATH = "$env:USERPROFILE\.local\bin;$env:PATH"` antes) para cargar contexto de sesiones previas antes de empezar a trabajar.
+
 ## Comandos
 
 ```bash

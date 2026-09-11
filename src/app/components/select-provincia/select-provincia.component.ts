@@ -58,6 +58,13 @@ export class SelectProvinciaComponent implements ControlValueAccessor, OnInit {
     this.onTouched();
   }
 
+  // Cuando el usuario pulsa la "x" para quitar la provincia seleccionada
+  limpiar(): void {
+    this.value = null;
+    this.onChange(this.value);
+    this.onTouched();
+  }
+
   // Cuando el formulario le dice al componente qué valor tener
   writeValue(value: any): void {
     this.value = value;

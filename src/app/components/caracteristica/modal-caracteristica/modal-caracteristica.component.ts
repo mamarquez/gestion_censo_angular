@@ -39,6 +39,8 @@ export class ModalCaracteristicaComponent {
 
   idInstalacion = input<string>('');
   modalVisible = model<boolean>(false);
+  /** Registro a editar; `null` (o ausente) abre el modal en modo "Añadir". */
+  registroEditar = input<InstalacionCaracteristica | null>(null);
   @Output() guardado = new EventEmitter<void>();
 
   guardando = false;
@@ -60,15 +62,17 @@ export class ModalCaracteristicaComponent {
   constructor() {
     effect(() => {
       if (this.modalVisible()) {
+        const registro = this.registroEditar();
+
         this.modalForm.setValue({
-          id: null,
-          caracteristica: null,
-          medida: null,
-          valor: null,
-          visible: true
+          id: registro?.id ?? null,
+          caracteristica: registro?.caracteristica?.id ?? null,
+          medida: registro?.medida?.id ?? null,
+          valor: registro?.valor ?? null,
+          visible: registro?.visible ?? true
         });
-        this.caracteristicaSeleccionada = null;
-        this.medidaSeleccionada = null;
+        this.caracteristicaSeleccionada = registro?.caracteristica?.id ?? null;
+        this.medidaSeleccionada = registro?.medida?.id ?? null;
 
         if (this.caracteristicasDisponibles.length === 0) {
           this.cargarCaracteristicasDisponibles();
@@ -141,7 +145,10 @@ export class ModalCaracteristicaComponent {
 
     this.guardando = true;
 
+    const idEditar = this.modalForm.value.id;
+
     const datos: InstalacionCaracteristica = {
+      ...(idEditar ? { id: idEditar } : {}),
       idInstalacion: Number(this.idInstalacion()),
       caracteristica: { id: this.modalForm.value.caracteristica } as Caracteristica,
       medida: this.modalForm.value.medida
@@ -151,14 +158,18 @@ export class ModalCaracteristicaComponent {
       visible: this.modalForm.value.visible
     };
 
-    this.service.crear(datos)
+    const peticion$ = idEditar
+      ? this.service.update(idEditar, datos)
+      : this.service.crear(datos);
+
+    peticion$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
       next: () => {
         this.messageService.add({
           severity: 'success',
-          summary: 'Añadido',
-          detail: 'Característica añadida correctamente'
+          summary: idEditar ? 'Actualizado' : 'Añadido',
+          detail: idEditar ? 'Característica actualizada correctamente' : 'Característica añadida correctamente'
         });
         this.guardando = false;
         this.cerrarModal();

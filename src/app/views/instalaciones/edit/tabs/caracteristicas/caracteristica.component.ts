@@ -49,6 +49,7 @@ export class DatosCaracteristicaComponent implements OnInit {
   caracteristicas: InstalacionCaracteristica[] | [];
 
   modalVisible = false;
+  caracteristicaEditar: InstalacionCaracteristica | null = null;
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -105,6 +106,12 @@ export class DatosCaracteristicaComponent implements OnInit {
   }
 
   abrirModal(): void {
+    this.caracteristicaEditar = null;
+    this.modalVisible = true;
+  }
+
+  editar(caracteristica: InstalacionCaracteristica): void {
+    this.caracteristicaEditar = caracteristica;
     this.modalVisible = true;
   }
 

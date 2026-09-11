@@ -67,6 +67,22 @@ describe('SelectMunicipioComponent', () => {
     expect(onTouched).toHaveBeenCalled();
   });
 
+  it('limpiar() resetea value a null y notifica onChange/onTouched', () => {
+    fixture.detectChanges();
+
+    const onChange = jasmine.createSpy('onChange');
+    const onTouched = jasmine.createSpy('onTouched');
+    component.registerOnChange(onChange);
+    component.registerOnTouched(onTouched);
+    component.writeValue(5);
+
+    component.limpiar();
+
+    expect(component.value).toBeNull();
+    expect(onChange).toHaveBeenCalledWith(null);
+    expect(onTouched).toHaveBeenCalled();
+  });
+
   it('writeValue() asigna el valor recibido', () => {
     fixture.detectChanges();
     component.writeValue(3);

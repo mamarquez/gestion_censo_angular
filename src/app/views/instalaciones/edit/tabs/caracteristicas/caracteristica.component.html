@@ -1,6 +1,7 @@
 <app-modal-caracteristica
   [idInstalacion]='idInstalacion()'
   [(modalVisible)]='modalVisible'
+  [registroEditar]='caracteristicaEditar'
   (guardado)='cargarDatos()'
 />
 
@@ -101,6 +102,7 @@
       </td>
       <app-acciones-tabla
         [visible]="caracteristica.visible"
+        (editar)="editar(caracteristica)"
         (toggleVisible)="cambiarVisible(caracteristica.id)"
         (borrar)="confirmarBorrado(caracteristica)"
       />

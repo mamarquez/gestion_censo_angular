@@ -45,3 +45,10 @@ Thumbs.db
 /.gemini
 /.scannerwork
 /.vscode
+
+# MemPalace per-project files (issue #185)
+mempalace.yaml
+entities.json
+
+# Claude Code personal settings (not team-shared)
+.claude/settings.local.json

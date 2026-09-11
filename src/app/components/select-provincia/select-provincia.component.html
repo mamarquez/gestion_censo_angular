@@ -7,9 +7,11 @@
   placeholder="Selecciona una provincia"
   [ngModel]="value"
   (onChange)="seleccionar($event)"
+  (onClear)="limpiar()"
   (onBlur)="onTouched()"
   [disabled]="disabled()"
   [loading]="cargandoProvincias"
+  [showClear]="value !== null"
   styleClass="w-full"
   [style]="{'width': '100%'}"
 ></p-select>

@@ -70,6 +70,13 @@ export class SelectMunicipioComponent implements ControlValueAccessor {
     this.onTouched();
   }
 
+  // Cuando el usuario pulsa la "x" para quitar el municipio seleccionado
+  limpiar(): void {
+    this.value = null;
+    this.onChange(this.value);
+    this.onTouched();
+  }
+
    // Cuando el formulario le dice al componente qué valor tener (ej. al hacer patchValue)
   writeValue(value: any): void {
     this.value = value;
