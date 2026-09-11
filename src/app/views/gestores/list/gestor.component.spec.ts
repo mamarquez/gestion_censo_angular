@@ -53,7 +53,7 @@ describe('GestorComponent', () => {
 
     expect(component).toBeTruthy();
     expect(serviceSpy.getAll).toHaveBeenCalledWith();
-    expect(component.gestores.length).toBe(2);
+    expect(component.gestores).toHaveSize(2);
     expect(component.cargando).toBeFalse();
   });
 

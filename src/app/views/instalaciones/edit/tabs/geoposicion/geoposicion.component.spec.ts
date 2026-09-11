@@ -258,7 +258,7 @@ describe('GeoPosicionComponent', () => {
     component.onSubmit();
 
     expect(serviceSpy.updateRegistro).toHaveBeenCalledWith('7', jasmine.objectContaining({ id: 7 }));
-    expect(emitidos.length).toBe(2);
+    expect(emitidos).toHaveSize(2);
     expect(component.cargandoGeo()).toBeFalse();
   });
 

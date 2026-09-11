@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angul
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { TableModule } from 'primeng/table';
-import { Conservacion } from '../../../models/conservacion';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -151,7 +150,7 @@ export class ConfiguracionComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(registro: Conservacion): void {
+  confirmarBorrado(registro: Configuracion): void {
     this.dialog.confirmar({
       mensaje: `¿Deseas eliminar "<strong>${registro.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',

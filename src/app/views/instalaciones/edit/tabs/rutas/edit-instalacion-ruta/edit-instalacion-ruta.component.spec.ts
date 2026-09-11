@@ -81,8 +81,8 @@ describe('EditInstalacionRutaComponent', () => {
     expect(serviceSpy.get).toHaveBeenCalledWith(5);
     expect(coordenadaServiceSpy.getAll).toHaveBeenCalledWith({ idRuta: 5 });
     expect(component.form.get('nombre')?.value).toBe('Sendero');
-    expect(component.coordenadas.length).toBe(2);
-    expect(component.puntosMapa.length).toBe(2);
+    expect(component.coordenadas).toHaveSize(2);
+    expect(component.puntosMapa).toHaveSize(2);
     expect(component.cargando).toBeFalse();
   });
 

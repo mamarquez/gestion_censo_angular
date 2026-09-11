@@ -64,7 +64,7 @@ describe('ComplementarioComponent', () => {
 
     expect(component).toBeTruthy();
     expect(serviceSpy.getAll).toHaveBeenCalledWith({ idInstalacion: '10' });
-    expect(component.espaciosComplementarios.length).toBe(2);
+    expect(component.espaciosComplementarios).toHaveSize(2);
     expect(component.cargando).toBeFalse();
   });
 

@@ -4,6 +4,7 @@
   } @else {
     <form [formGroup]='form' (ngSubmit)='guardar()'>
 
+      <label for='id' class='sr-only'>Id</label>
       <input id='id' type='number' formControlName='id' readonly hidden />
 
       <p-fieldset legend="Datos personales">

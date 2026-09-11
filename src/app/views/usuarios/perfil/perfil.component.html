@@ -1,6 +1,7 @@
 <div class="tab-content">
     <form [formGroup]='form' (ngSubmit)='guardar()'>
 
+      <label for='id' class='sr-only'>Id</label>
       <input id='id' type='number' formControlName='id' readonly hidden />
 
       <p-fieldset legend="Datos personales">
@@ -35,8 +36,10 @@
                 loading="lazy"
                 style="border-radius: 50%; cursor: pointer; object-fit: cover;" />
             </button>
+            <label for="fileInputAvatar" class="sr-only">Avatar</label>
             <input
               #fileInput
+              id="fileInputAvatar"
               type="file"
               accept="image/*"
               style="display: none;"

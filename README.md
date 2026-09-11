@@ -44,6 +44,9 @@ Para ejecutar un único test, usa `fdescribe`/`fit` en el spec, o
 
 No hay `ng lint` configurado ni ESLint en `package.json`. El análisis estático se hace vía
 SonarQube (`sonar.bat`, requiere `coverage/lcov.info` generado con `ng test --code-coverage`).
+`.hintrc` desactiva la regla `typescript-config/is-valid` de webhint (falso positivo sobre
+`"module": "preserve"` en `tsconfig.json`, valor válido desde TS 5.4+ que el schema de webhint
+aún no reconoce).
 
 ## Configuración de la API
 
@@ -108,6 +111,14 @@ referencia canónica):
 - Acciones de tabla (editar/activar-desactivar/borrar/visible) delegadas al componente compartido
   `utils/acciones-tabla/` (`AccionesTablaComponent`).
 
+**`instalaciones/list`** es la excepción: usa paginación server-side completa con `p-table
+[lazy]="true"`, `(onLazyLoad)="cargarPagina($event)"` y `[totalRecords]`/`[first]` sincronizados
+contra la respuesta paginada del backend (`ApiResponseWrapper` con `paginaActual`, `tamanoPagina`,
+`totalRegistros`, `totalPaginas`). El tamaño de página real lo calcula la directiva
+`appFilasAutoajustables`; un guard `filasCalculadas` + parámetro `forzar` en `cargarPagina()`
+evita que la carga automática inicial de `p-table` (con el `rows` por defecto) pise el cálculo
+real de filas.
+
 ### Instalaciones — la entidad más compleja
 
 `views/instalaciones/edit/editInstalacion.component.ts` es un shell con navegación por pestañas
@@ -133,7 +144,10 @@ expone `@Output() cargandoChange` para que el shell muestre `<app-loader>` mient
 
 `select-comunidad`, `select-provincia`, `select-municipio` (y variantes para deportivo,
 complementario, tipo de gestor) envuelven `p-select` de PrimeNG implementando
-`ControlValueAccessor`, usables con `formControlName` como un input nativo.
+`ControlValueAccessor`, usables con `formControlName` como un input nativo. Todos exponen botón
+de limpiar (`showClear` + `onClear`) para volver a "Todas/Todos". `select-municipio` (~8000
+filas de catálogo) usa `virtualScroll` + `filter` para evitar renderizar el listado completo en
+el DOM.
 
 ## Configuración de estilos
 

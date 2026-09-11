@@ -66,7 +66,7 @@ describe('RutasComponent', () => {
 
     expect(component).toBeTruthy();
     expect(serviceSpy.getAll).toHaveBeenCalledWith({ idInstalacion: '10' });
-    expect(component.rutas.length).toBe(2);
+    expect(component.rutas).toHaveSize(2);
     expect(component.cargando).toBeFalse();
   });
 

@@ -1,6 +1,7 @@
 <div class='bg-white p-5 rounded-xl shadow-sm border border-slate-200 mb-6' [formGroup]='form'>
   <div style='display: flex !important; flex-direction: row !important; align-items: flex-end !important; gap: 1rem !important; flex-wrap: wrap !important;'>
 
+    <label for="idInstalacion" class="sr-only">Instalación</label>
     <input id="idInstalacion" type="number" pInputText formControlName="idInstalacion" readonly [hidden]='true' />
 
     <!-- Nombre -->
@@ -58,8 +59,10 @@
     (onClick)="fileInput.click()"
   ></p-button>
 
+  <label for="fileInputRuta" class="sr-only">Importar</label>
   <input
     #fileInput
+    id="fileInputRuta"
     type="file"
     accept=".kml, .kmz"
     style="display: none;"

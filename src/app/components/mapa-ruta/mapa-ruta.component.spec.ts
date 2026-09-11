@@ -35,7 +35,7 @@ describe('MapaRutaComponent', () => {
     fixture.detectChanges();
     tick(0);
 
-    expect(component.obtenerRuta().length).toBe(2);
+    expect(component.obtenerRuta()).toHaveSize(2);
   }));
 
   it('ngOnChanges recarga los puntos cuando puntosIniciales cambia tras estar listo el mapa', fakeAsync(() => {
@@ -57,7 +57,7 @@ describe('MapaRutaComponent', () => {
 
     (component as any).agregarPunto(L.latLng(10, 20), true);
 
-    expect(component.obtenerRuta().length).toBe(1);
+    expect(component.obtenerRuta()).toHaveSize(1);
     expect(emitida?.length).toBe(1);
   }));
 
@@ -71,7 +71,7 @@ describe('MapaRutaComponent', () => {
     (component as any).agregarPunto(L.latLng(10, 20), false);
 
     expect(emitido).toBeFalse();
-    expect(component.obtenerRuta().length).toBe(1);
+    expect(component.obtenerRuta()).toHaveSize(1);
   }));
 
   it('setBloqueado(true) impide que un click en el mapa añada un punto', fakeAsync(() => {
@@ -81,7 +81,7 @@ describe('MapaRutaComponent', () => {
     component.setBloqueado(true);
     (component as any).mapa.fire('click', { latlng: L.latLng(1, 1) });
 
-    expect(component.obtenerRuta().length).toBe(0);
+    expect(component.obtenerRuta()).toHaveSize(0);
   }));
 
   it('asignarIdUltimoPunto() actualiza el id del último punto añadido', fakeAsync(() => {
@@ -166,6 +166,6 @@ describe('MapaRutaComponent', () => {
 
     (component as any).mapa.fire('click', { latlng: L.latLng(1, 1) });
 
-    expect(component.obtenerRuta().length).toBe(0);
+    expect(component.obtenerRuta()).toHaveSize(0);
   }));
 });

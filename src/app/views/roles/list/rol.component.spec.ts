@@ -68,7 +68,7 @@ describe('RolComponent', () => {
 
     expect(component).toBeTruthy();
     expect(serviceSpy.getAll).toHaveBeenCalledWith();
-    expect(component.roles.length).toBe(2);
+    expect(component.roles).toHaveSize(2);
     expect(component.cargando).toBeFalse();
   });
 
@@ -183,7 +183,7 @@ describe('RolComponent', () => {
 
     expect(component.filasExpandidas[1]).toBeTrue();
     expect(rolPermisoServiceSpy.getAll).toHaveBeenCalledWith({ idRol: 1 });
-    expect(component.permisosPorRol[1].length).toBe(1);
+    expect(component.permisosPorRol[1]).toHaveSize(1);
     expect(component.cargandoPermisos[1]).toBeFalse();
   });
 

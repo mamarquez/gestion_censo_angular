@@ -3,8 +3,10 @@
 } @else {
     <div [formGroup]="imagenForm">
         <div class="galeria-toolbar">
+            <label for="inputArchivoImagen" class="sr-only">{{ 'Añadir imagen' | translate }}</label>
             <input
                 #inputArchivo
+                id="inputArchivoImagen"
                 type="file"
                 accept="image/png,image/jpeg,image/gif,image/bmp,image/vnd.wap.wbmp"
                 hidden
@@ -22,8 +24,10 @@
 
         @if (imagenForm.get('contenido')?.value) {
             <div class="galeria-toolbar">
-                <input pInputText type="text" formControlName="nombre" placeholder="{{ 'Nombre' | translate }}" class="galeria-toolbar-input" />
-                <input pInputText type="text" formControlName="descripcion" placeholder="{{ 'Descripción' | translate }}" class="galeria-toolbar-input" />
+                <label for="imagenNombre" class="sr-only">{{ 'Nombre' | translate }}</label>
+                <input pInputText id="imagenNombre" type="text" formControlName="nombre" placeholder="{{ 'Nombre' | translate }}" class="galeria-toolbar-input" />
+                <label for="imagenDescripcion" class="sr-only">{{ 'Descripción' | translate }}</label>
+                <input pInputText id="imagenDescripcion" type="text" formControlName="descripcion" placeholder="{{ 'Descripción' | translate }}" class="galeria-toolbar-input" />
                 <p-button
                     severity="success"
                     icon="pi pi-check"

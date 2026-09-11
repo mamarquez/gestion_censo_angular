@@ -53,7 +53,7 @@ describe('MunicipioComponent', () => {
 
     expect(component).toBeTruthy();
     expect(serviceSpy.getAll).toHaveBeenCalledWith();
-    expect(component.municipios.length).toBe(2);
+    expect(component.municipios).toHaveSize(2);
     expect(component.cargando).toBeFalse();
   });
 

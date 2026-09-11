@@ -54,7 +54,7 @@ describe('ListProvinciaComponent', () => {
 
     expect(component).toBeTruthy();
     expect(serviceSpy.getAll).toHaveBeenCalledWith();
-    expect(component.provincias().length).toBe(2);
+    expect(component.provincias()).toHaveSize(2);
     expect(component.cargando()).toBeFalse();
   });
 

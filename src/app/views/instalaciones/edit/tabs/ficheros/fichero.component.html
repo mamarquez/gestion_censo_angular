@@ -3,8 +3,10 @@
 } @else {
     <div [formGroup]="ficheroForm">
         <div class="galeria-toolbar">
+            <label for="inputArchivoFichero" class="sr-only">{{ 'Añadir fichero' | translate }}</label>
             <input
                 #inputArchivo
+                id="inputArchivoFichero"
                 type="file"
                 accept="image/png,image/jpeg,image/gif,image/bmp,image/vnd.wap.wbmp"
                 hidden
@@ -22,8 +24,10 @@
 
         @if (ficheroForm.get('contenido')?.value) {
             <div class="galeria-toolbar">
-                <input pInputText type="text" formControlName="nombre" placeholder="{{ 'Nombre' | translate }}" class="galeria-toolbar-input" />
-                <input pInputText type="text" formControlName="descripcion" placeholder="{{ 'Descripción' | translate }}" class="galeria-toolbar-input" />
+                <label for="ficheroNombre" class="sr-only">{{ 'Nombre' | translate }}</label>
+                <input pInputText id="ficheroNombre" type="text" formControlName="nombre" placeholder="{{ 'Nombre' | translate }}" class="galeria-toolbar-input" />
+                <label for="ficheroDescripcion" class="sr-only">{{ 'Descripción' | translate }}</label>
+                <input pInputText id="ficheroDescripcion" type="text" formControlName="descripcion" placeholder="{{ 'Descripción' | translate }}" class="galeria-toolbar-input" />
                 <p-button
                     severity="success"
                     icon="pi pi-check"

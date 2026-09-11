@@ -60,7 +60,7 @@ describe('DatosTelefonosComponent', () => {
 
     expect(component).toBeTruthy();
     expect(serviceSpy.getAll).toHaveBeenCalledWith({ idInstalacion: '10' });
-    expect(component.telefonos.length).toBe(2);
+    expect(component.telefonos).toHaveSize(2);
     expect(component.cargando).toBeFalse();
   });
 

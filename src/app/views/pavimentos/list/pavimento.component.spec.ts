@@ -53,7 +53,7 @@ describe('PavimentoComponent', () => {
 
     expect(component).toBeTruthy();
     expect(serviceSpy.getAll).toHaveBeenCalledWith();
-    expect(component.pavimentos.length).toBe(2);
+    expect(component.pavimentos).toHaveSize(2);
     expect(component.cargando).toBeFalse();
   });
 

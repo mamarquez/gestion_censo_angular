@@ -53,7 +53,7 @@ describe('MenuComponent', () => {
 
     expect(component).toBeTruthy();
     expect(serviceSpy.getAll).toHaveBeenCalledWith();
-    expect(component.menus.length).toBe(2);
+    expect(component.menus).toHaveSize(2);
     expect(component.cargando).toBeFalse();
   });
 

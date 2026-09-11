@@ -14,9 +14,11 @@
 
   <form [formGroup]='form'>
 
+    <label for='id' class='sr-only'>Id</label>
     <input id='id' formControlName='id' hidden='hidden' readonly='readonly' />
 
     @if (camposMostrar().idInstalacion) {
+      <label for='idInstalacion' class='sr-only'>Instalación</label>
       <input id='idInstalacion' formControlName='idInstalacion' hidden='hidden' readonly='readonly' />
     }
 

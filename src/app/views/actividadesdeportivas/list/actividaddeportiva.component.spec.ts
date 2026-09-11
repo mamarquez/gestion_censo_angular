@@ -53,7 +53,7 @@ describe('ActividadDeportivaComponent', () => {
 
     expect(component).toBeTruthy();
     expect(serviceSpy.getAll).toHaveBeenCalledWith();
-    expect(component.actividadesDeportivas.length).toBe(2);
+    expect(component.actividadesDeportivas).toHaveSize(2);
     expect(component.cargando).toBeFalse();
   });
 
@@ -74,7 +74,7 @@ describe('ActividadDeportivaComponent', () => {
     component.buscar();
 
     expect(serviceSpy.getAll).toHaveBeenCalledWith(jasmine.objectContaining({ nombre: 'Fút' }));
-    expect(component.actividadesDeportivas.length).toBe(2);
+    expect(component.actividadesDeportivas).toHaveSize(2);
     expect(component.cargando).toBeFalse();
   });
 

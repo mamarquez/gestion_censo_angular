@@ -92,7 +92,7 @@ describe('RolesComponent (usuarios/edit)', () => {
     expect(component).toBeTruthy();
     expect(usuarioServiceSpy.get).toHaveBeenCalledWith('1');
     expect(component.rolesUsuario).toEqual([2]);
-    expect(component.roles.length).toBe(3);
+    expect(component.roles).toHaveSize(3);
     expect(component.provinciasSeleccionadas.map(p => p.id)).toEqual([1]);
     expect(component.provinciasDisponibles.map(p => p.id)).toEqual([2]);
   });
@@ -178,7 +178,7 @@ describe('RolesComponent (usuarios/edit)', () => {
     component.moverAseleccionadas();
 
     expect(component.provinciasSeleccionadas.map(p => p.id)).toContain(2);
-    expect(component.provinciasDisponibles.length).toBe(0);
+    expect(component.provinciasDisponibles).toHaveSize(0);
     expect(component.provinciasDisponiblesElegidas).toEqual([]);
   });
 
@@ -188,7 +188,7 @@ describe('RolesComponent (usuarios/edit)', () => {
     component.moverTodasASeleccionadas();
 
     expect(component.provinciasDisponibles).toEqual([]);
-    expect(component.provinciasSeleccionadas.length).toBe(2);
+    expect(component.provinciasSeleccionadas).toHaveSize(2);
   });
 
   it('moverADisponibles() traslada las seleccionadas elegidas a disponibles', () => {
@@ -198,7 +198,7 @@ describe('RolesComponent (usuarios/edit)', () => {
     component.moverADisponibles();
 
     expect(component.provinciasDisponibles.map(p => p.id)).toContain(1);
-    expect(component.provinciasSeleccionadas.length).toBe(0);
+    expect(component.provinciasSeleccionadas).toHaveSize(0);
   });
 
   it('moverTodasADisponibles() traslada todas las seleccionadas a disponibles', () => {
@@ -207,7 +207,7 @@ describe('RolesComponent (usuarios/edit)', () => {
     component.moverTodasADisponibles();
 
     expect(component.provinciasSeleccionadas).toEqual([]);
-    expect(component.provinciasDisponibles.length).toBe(2);
+    expect(component.provinciasDisponibles).toHaveSize(2);
   });
 
   it('guardar() no hace nada si no hay provincias seleccionadas', () => {

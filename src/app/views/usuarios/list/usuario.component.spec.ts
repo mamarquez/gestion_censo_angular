@@ -57,7 +57,7 @@ describe('UsuarioComponent', () => {
 
     expect(component).toBeTruthy();
     expect(serviceSpy.getAll).toHaveBeenCalledWith();
-    expect(component.usuarios.length).toBe(2);
+    expect(component.usuarios).toHaveSize(2);
     expect(component.cargando).toBeFalse();
   });
 

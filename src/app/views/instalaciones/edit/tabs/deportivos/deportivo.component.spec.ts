@@ -68,7 +68,7 @@ describe('DatosEspaciosDeportivosComponent', () => {
     inicializarConInstalacion('10');
 
     expect(serviceSpy.getAll).toHaveBeenCalledWith({ idInstalacion: '10' });
-    expect(component.espaciosDeportivos.length).toBe(2);
+    expect(component.espaciosDeportivos).toHaveSize(2);
     expect(component.cargando).toBeFalse();
   });
 

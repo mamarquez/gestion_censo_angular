@@ -9,7 +9,7 @@ describe('truncar', () => {
     const texto = 'a'.repeat(200);
     const resultado = truncar(texto, 150);
 
-    expect(resultado.length).toBe(151); // 150 caracteres + el "…"
+    expect(resultado).toHaveSize(151); // 150 caracteres + el "…"
     expect(resultado.endsWith('…')).toBeTrue();
     expect(resultado.startsWith('a'.repeat(150))).toBeTrue();
   });

@@ -34,7 +34,7 @@ describe('SelectTiposGestoresComponent', () => {
 
     expect(serviceSpy.getAll).toHaveBeenCalledWith({ activo: true });
     const tipos = component.tiposGestores();
-    expect(tipos.length).toBe(2);
+    expect(tipos).toHaveSize(2);
     expect(tipos[0].nombre).toBe('Seleccione');
     expect(tipos[1]).toEqual(tiposMock[0]);
     expect(component.cargando()).toBeFalse();
