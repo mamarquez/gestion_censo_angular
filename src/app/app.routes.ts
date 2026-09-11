@@ -167,18 +167,6 @@ export const routes: Routes = [
         ]
       },
       {
-        path: 'mapa',
-        loadComponent: () => import('./components/mapa-ruta/mapa-ruta.component').then(m => m.MapaRutaComponent)
-      },
-      {
-        path: 'imagenes',
-        loadComponent: () => import('./views/instalaciones/edit/tabs/imagenes/imagen.component').then(m => m.ImagenComponent)
-      },
-      {
-        path: 'ficheros',
-        loadComponent: () => import('./views/instalaciones/edit/tabs/ficheros/fichero.component').then(m => m.FicheroComponent)
-      },
-      {
         path: 'tiposinstalaciones',
         loadComponent: () => import('./views/tiposinstalaciones/tipos-instalaciones.component').then(m => m.TiposInstalacionesComponent)
       },

@@ -10,7 +10,6 @@ import { DialogService } from '../../../services/dialog.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { CentroEducativo } from '../../../models/centroeducativo';
 import { CentroEducativoService } from '../../../services/centroeducativo.service';
-import { ActividadDeportiva } from '../../../models/actividaddeportiva';
 import { AccionesTablaComponent } from '../../../utils/acciones-tabla/acciones-tabla.component';
 import { EditModalComponent } from '../../../components/modal/edit-modal/edit-modal.component';
 import { ApiResponseWrapper } from '../../../interface/api-response-wrapper.interface';
@@ -149,12 +148,12 @@ export class ListCentroEducativoComponent implements OnInit {
     });
   }
 
-  confirmarBorrado(actividadDeportiva: ActividadDeportiva): void {
+  confirmarBorrado(centroEducativo: CentroEducativo): void {
     this.dialog.confirmar({
-      mensaje: `¿Deseas eliminar "<strong>${actividadDeportiva.nombre}"</strong>?`,
+      mensaje: `¿Deseas eliminar "<strong>${centroEducativo.nombre}"</strong>?`,
       titulo: 'Confirmar eliminación',
       labelAceptar: 'Sí, eliminar',
-      onAccept: () => this.borrarRegistro(actividadDeportiva.id)
+      onAccept: () => this.borrarRegistro(centroEducativo.id)
     });
   }
 
