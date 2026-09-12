@@ -1,6 +1,6 @@
-<label for='municipio-select'>Municipios</label>
+<span id='municipio-select-label'>Municipios</span>
 <p-select
-  inputId="municipio-select"
+  [ariaLabelledBy]="'municipio-select-label'"
   [options]="municipios"
   optionLabel="nombre"
   optionValue="id"

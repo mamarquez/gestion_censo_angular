@@ -65,7 +65,7 @@ describe('ImagenComponent', () => {
   it('carga las imágenes de la instalación al recibir idInstalacion', () => {
     inicializarConInstalacion('10');
 
-    expect(serviceSpy.getAll).toHaveBeenCalledWith('10');
+    expect(serviceSpy.getAll).toHaveBeenCalledWith({ idInstalacion: '10' });
     expect(component.imagenes?.length).toBe(2);
     expect((component.imagenes?.[0] as any).imagenUrl).toContain('foto1.png');
     expect(component.cargando).toBeFalse();
@@ -117,7 +117,7 @@ describe('ImagenComponent', () => {
     component.confirmarBorrado(imagenesMock[0]);
 
     expect(serviceSpy.borrarRegistro).toHaveBeenCalledWith(1);
-    expect(serviceSpy.getAll).toHaveBeenCalledWith('10');
+    expect(serviceSpy.getAll).toHaveBeenCalledWith({ idInstalacion: '10' });
   });
 
   it('borrarRegistro() notifica error si falla', () => {
@@ -224,7 +224,7 @@ describe('ImagenComponent', () => {
     expect(datosEnviados.idInstalacion).toBe(10);
     expect(datosEnviados.nombre).toBe('foto.png');
     expect(component.guardando).toBeFalse();
-    expect(serviceSpy.getAll).toHaveBeenCalledWith('10');
+    expect(serviceSpy.getAll).toHaveBeenCalledWith({ idInstalacion: '10' });
   });
 
   it('guardarImagen() notifica error si falla', () => {

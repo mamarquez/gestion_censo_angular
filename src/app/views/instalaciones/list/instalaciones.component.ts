@@ -96,8 +96,7 @@ export class ListInstalacionesComponent {
     codigo: [''],
     nombre: [''],
     provincia: [null],
-    municipio: [null],
-    activo: [true]
+    municipio: [null]
   });
 
   limpiar(): void {
@@ -117,10 +116,6 @@ export class ListInstalacionesComponent {
    * server-side, la tabla ya no pagina en memoria).
    */
   cargarPagina(event: TableLazyLoadEvent, forzar = false): void {
-    // Ignora el onLazyLoad automático que p-table dispara en su propio
-    // ngOnInit con el tamaño de página todavía provisional (10): se
-    // descartaría enseguida al recibirse el tamaño real (ver onFilasChange).
-    // `forzar` deja pasar las llamadas explícitas (buscar/onFilasChange).
     if (!forzar && !this.filasCalculadas) {
       return;
     }

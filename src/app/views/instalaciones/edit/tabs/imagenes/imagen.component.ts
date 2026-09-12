@@ -78,18 +78,16 @@ export class ImagenComponent {
     cargar(id: string): void {
         this.cargando = true;
     
-        this.service.getAll(id)
+        this.service.getAll({ idInstalacion: id })
           .pipe(takeUntilDestroyed(this.destroyRef))
           .subscribe({
             next: (response: ApiResponseWrapper<Imagen[]>) => {
-              if (response.data) {
-                this.imagenes = response.data.map(img => {
-                  return {
-                    ...img,
-                    imagenUrl: `${AUTH.API}/instalacionesgaleria/images/${img.nombre}`
-                  };
-                });
-              }
+              this.imagenes = (response.data ?? []).map(img => {
+                return {
+                  ...img,
+                  imagenUrl: `${AUTH.API}/instalacionesgaleria/images/${img.nombre}`
+                };
+              });
 
               this.cargando = false;
               this.cdr.detectChanges();
@@ -113,9 +111,9 @@ export class ImagenComponent {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: () => {
-                    const actividadDeportiva = this.imagenes?.find(p => p.id === id);
-                    if (actividadDeportiva) {
-                        actividadDeportiva.visible = !actividadDeportiva.visible;
+                    const imagen = this.imagenes?.find(p => p.id === id);
+                    if (imagen) {
+                        imagen.visible = !imagen.visible;
                     }
 
                     mensajesUtil(this.messageService, 'success', 'update');
@@ -133,7 +131,7 @@ export class ImagenComponent {
 
     confirmarBorrado(imagen: Imagen): void {
         this.dialog.confirmar({
-          mensaje: `¿Deseas eliminar el espacio deportivo "<strong>${imagen.nombre}</strong>"?`,
+          mensaje: `¿Deseas eliminar la imagen "<strong>${imagen.nombre}</strong>"?`,
           titulo: 'Confirmar eliminación',
           labelAceptar: 'Sí, eliminar',
           onAccept: () => this.borrarRegistro(imagen.id)

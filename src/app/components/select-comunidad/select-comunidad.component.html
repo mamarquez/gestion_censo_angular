@@ -1,6 +1,6 @@
-<label for='comunidad-select'>Comunidad Autónoma</label>
+<span id='comunidad-select-label'>Comunidad Autónoma</span>
 <p-select
-  inputId="comunidad-select"
+  [ariaLabelledBy]="'comunidad-select-label'"
   [options]="comunidades()"
   optionLabel="nombre"
   optionValue="id"

@@ -1,6 +1,6 @@
-<label for='provincia-select'>Provincia</label>
+<span id='provincia-select-label'>Provincia</span>
 <p-select
-  inputId="provincia-select"
+  [ariaLabelledBy]="'provincia-select-label'"
   [options]="provincias"
   optionLabel="nombre"
   optionValue="id"

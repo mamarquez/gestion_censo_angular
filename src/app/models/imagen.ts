@@ -3,7 +3,8 @@ export interface Imagen {
     idInstalacion: number;
     nombre: string;
     descripcion?: string;
-    url?: string;
+    /** Calculada en frontend a partir de `nombre` (ver ImagenComponent.cargar), no viene del backend. */
+    imagenUrl?: string;
     visible: boolean;
     contenido?: string;
 }
