@@ -61,7 +61,7 @@ describe('FicheroComponent', () => {
   it('carga los ficheros de la instalación al recibir idInstalacion', () => {
     inicializarConInstalacion('10');
 
-    expect(ficheroServiceSpy.getAll).toHaveBeenCalledWith('10');
+    expect(ficheroServiceSpy.getAll).toHaveBeenCalledWith({ idInstalacion: '10' });
     expect(component.ficheros?.length).toBe(2);
     expect(component.cargando).toBeFalse();
   });
@@ -105,7 +105,7 @@ describe('FicheroComponent', () => {
     component.confirmarBorrado(ficherosMock[0]);
 
     expect(ficheroServiceSpy.borrarRegistro).toHaveBeenCalledWith(1);
-    expect(ficheroServiceSpy.getAll).toHaveBeenCalledWith('10');
+    expect(ficheroServiceSpy.getAll).toHaveBeenCalledWith({ idInstalacion: '10' });
   });
 
   it('onFileSelected() lee el fichero y rellena nombre y contenido en Base64', async () => {
@@ -171,7 +171,7 @@ describe('FicheroComponent', () => {
     expect(datosEnviados.idInstalacion).toBe(10);
     expect(datosEnviados.nombre).toBe('documento.pdf');
     expect(component.guardando).toBeFalse();
-    expect(ficheroServiceSpy.getAll).toHaveBeenCalledWith('10');
+    expect(ficheroServiceSpy.getAll).toHaveBeenCalledWith({ idInstalacion: '10' });
   });
 
   it('tooltipVisibilidad() devuelve el texto correcto según la visibilidad', () => {

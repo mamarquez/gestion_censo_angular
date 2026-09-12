@@ -74,7 +74,7 @@ export class FicheroComponent {
     cargar(id: string): void {
         this.cargando = true;
     
-        this.service.getAll(id)
+        this.service.getAll({ idInstalacion: id })
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
             next: (response: ApiResponseWrapper<Fichero[]>) => {
